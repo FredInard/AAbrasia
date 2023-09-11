@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:ital,wght@0,400;1,100&display=swap");
+
+.containeurLogo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centre automatiquement les éléments horizontalement et verticalement */
+
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(
+        -10px
+      ); /* Ajustez la valeur de translation en fonction de la hauteur souhaitée */
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .logoBaner {
+    position: absolute;
+    top: 20%;
+    // left: 0;
+    animation: float 3s infinite; /* Ajustez la durée et les paramètres de l'animation selon vos préférences */
+  }
+
+  .titleBaner {
+    position: absolute;
+    top: 380px; /* Ajustez cette valeur pour déplacer le titre vers le bas */
+    font-size: 5em; /* Définissez la taille de la police en pixels ou avec d'autres unités */
+    font-family: "MedievalSharp", cursive; /* Définissez la police de caractères (utilisez une police existante ou spécifiez une police générique) */
+    text-align: center; /* Centre le texte horizontalement */
+    width: 100%; /* Assurez-vous que le titre prend toute la largeur de son conteneur */
+  }
+}
+
+/* Media query pour les écrans de largeur inférieure ou égale à 399 pixels */
+@media (max-width: 399px) {
+  .containeurLogo .titleBaner {
+    font-size: 4em; /* Réduisez la taille de la police de 10% */
+  }
+}

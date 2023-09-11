@@ -2,19 +2,20 @@ const express = require("express")
 
 const router = express.Router()
 
-const itemControllers = require("./controllers/itemControllers")
-const charactersControllers = require("./controllers/charactersControllers")
+const PartieControllers = require("./controllers/PartieControllers")
+const UtilisateurControllers = require("./controllers/utilisateurControllers")
+// const CreateGameControllers = require("./controllers/CreateGameControllers")
 
-router.get("/characters", charactersControllers.browse)
-router.get("/characters/:id", charactersControllers.read)
-router.post("/characters", charactersControllers.add)
-router.put("/characters/:id", charactersControllers.edit)
-router.delete("/characters/:id", charactersControllers.destroy)
+router.get("/utilisateur", UtilisateurControllers.browse)
+router.get("/utilisateur/:id", UtilisateurControllers.read)
+router.post("/utilisateur", UtilisateurControllers.add)
+router.put("/utilisateur/:id", UtilisateurControllers.edit)
+router.delete("/utilisateur/:id", UtilisateurControllers.destroy)
 
-router.get("/items", itemControllers.browse)
-router.get("/items/:id", itemControllers.read)
-router.put("/items/:id", itemControllers.edit)
-router.post("/items", itemControllers.add)
-router.delete("/items/:id", itemControllers.destroy)
+router.get("/partie", PartieControllers.browse)
+router.get("/partie/:id", PartieControllers.read)
+router.put("/partie/:id", PartieControllers.edit)
+router.post("/partie", PartieControllers.add)
+router.delete("/partie/:id", PartieControllers.destroy)
 
 module.exports = router

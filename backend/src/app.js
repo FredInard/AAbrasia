@@ -1,6 +1,6 @@
 // import some node modules for later
-require("dotenv").config();
-const port = process.env.APP_PORT ?? 5000;
+require("dotenv").config()
+// const port = process.env.APP_PORT ?? 5000;
 // soit lors de la phase de déploiement le serveur nous donnera un numéro de port qui remplacera les ?? soit par défaut il prendra le port 5000.
 
 const fs = require("node:fs")

@@ -1,0 +1,23 @@
+.navBarDesktopContainer {
+  display: flex;
+  border: solid;
+  justify-content: space-between;
+  align-items: center;
+
+  .boxlogoNavBar {
+    .logoNavBar {
+      border: solid;
+      width: 100px;
+      height: 100px;
+    }
+  }
+  .mainButtonsNavBar {
+    display: flex;
+    border: solid;
+    align-items: center;
+
+    .buttonNavBar {
+      margin: 10px;
+    }
+  }
+}
