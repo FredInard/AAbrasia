@@ -1,5 +1,9 @@
 // AuthForm.scss
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .container {
   position: relative;
   width: 100%;
@@ -7,11 +11,6 @@
   min-height: 100vh;
   overflow: hidden;
   font-family: "Poppins", sans-serif;
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
 }
 
 .forms-container {
@@ -177,8 +176,8 @@ form.sign-in-form {
 .container:before {
   content: "";
   position: absolute;
-  height: 2000px;
-  width: 2000px;
+  height: 3000px;
+  width: 3000px;
   top: -10%;
   right: 48%;
   transform: translateY(-50%);
@@ -411,5 +410,91 @@ form.sign-in-form {
   .container.sign-up-mode:before {
     bottom: 28%;
     left: 50%;
+  }
+}
+
+@media (max-height: 836px) {
+  .container {
+    min-height: 100vh; /* Ajustez la hauteur minimale de l'élément container */
+  }
+}
+
+/* Pour les écrans de largeur inférieure ou égale à 850px (vous pouvez ajuster cette valeur selon vos besoins) */
+@media (max-width: 850px) {
+  .container.sign-in-mode .panels-container,
+  .container.sign-up-mode .panels-container {
+    background-size: 110%; /* Changer la valeur de background-size à 150% */
+    background-position: center; /* Centrer l'image de fond */
+  }
+}
+
+/* Pour les écrans de largeur inférieure ou égale à 758px (vous pouvez ajuster cette valeur selon vos besoins) */
+@media (max-width: 758px) {
+  .container.sign-in-mode .panels-container,
+  .container.sign-up-mode .panels-container {
+    background-size: 130%; /* Changer la valeur de background-size à 150% */
+    background-position: center; /* Centrer l'image de fond */
+  }
+}
+
+/* Pour les écrans de largeur inférieure ou égale à 644px (vous pouvez ajuster cette valeur selon vos besoins) */
+@media (max-width: 644px) {
+  .container.sign-in-mode .panels-container,
+  .container.sign-up-mode .panels-container {
+    background-size: 140%; /* Changer la valeur de background-size à 150% */
+    background-position: center; /* Centrer l'image de fond */
+  }
+}
+
+/* Pour les écrans de largeur inférieure ou égale à 578px (vous pouvez ajuster cette valeur selon vos besoins) */
+@media (max-width: 578px) {
+  .container.sign-in-mode .panels-container,
+  .container.sign-up-mode .panels-container {
+    background-size: 180%; /* Changer la valeur de background-size à 150% */
+    background-position: center; /* Centrer l'image de fond */
+  }
+}
+
+/* Pour les écrans de largeur inférieure ou égale à 488px (vous pouvez ajuster cette valeur selon vos besoins) */
+@media (max-width: 488px) {
+  .container.sign-in-mode .panels-container,
+  .container.sign-up-mode .panels-container {
+    background-size: 200%; /* Changer la valeur de background-size à 150% */
+    background-position: center; /* Centrer l'image de fond */
+  }
+}
+
+/* Pour les écrans de largeur inférieure ou égale à 442px (vous pouvez ajuster cette valeur selon vos besoins) */
+@media (max-width: 442px) {
+  .container.sign-in-mode .panels-container,
+  .container.sign-up-mode .panels-container {
+    background-size: 220%; /* Changer la valeur de background-size à 150% */
+    background-position: center; /* Centrer l'image de fond */
+  }
+}
+
+/* Pour les écrans de largeur inférieure ou égale à 404px (vous pouvez ajuster cette valeur selon vos besoins) */
+@media (max-width: 404px) {
+  .container.sign-in-mode .panels-container,
+  .container.sign-up-mode .panels-container {
+    background-size: 250%; /* Changer la valeur de background-size à 150% */
+    background-position: center; /* Centrer l'image de fond */
+  }
+}
+
+/* Pour les écrans de largeur inférieure ou égale à 404px (vous pouvez ajuster cette valeur selon vos besoins) */
+@media (max-width: 404px) {
+  .container.sign-in-mode .panels-container,
+  .container.sign-up-mode .panels-container {
+    background-size: 270%; /* Changer la valeur de background-size à 150% */
+    background-position: center; /* Centrer l'image de fond */
+  }
+}
+/* Pour les écrans de largeur inférieure ou égale à 336px (vous pouvez ajuster cette valeur selon vos besoins) */
+@media (max-width: 336px) {
+  .container.sign-in-mode .panels-container,
+  .container.sign-up-mode .panels-container {
+    background-size: 300%; /* Changer la valeur de background-size à 150% */
+    background-position: center; /* Centrer l'image de fond */
   }
 }

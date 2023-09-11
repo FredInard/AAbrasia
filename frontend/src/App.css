@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:ital,wght@0,400;1,100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:wght@100&display=swap");
+
 body {
   background-color: rgb(6, 1, 39);
   color: white;
@@ -6,6 +9,8 @@ body {
   padding: 0;
 }
 * {
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
+  /* border: solid red; */
 }

@@ -1,10 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:ital,wght@0,400;1,100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:wght@100&display=swap");
 
 .containeurLogo {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center; /* Centre automatiquement les éléments horizontalement et verticalement */
+  margin-top: 307px;
 
   @keyframes float {
     0% {
@@ -23,7 +25,7 @@
   .logoBaner {
     position: absolute;
     top: 20%;
-    // left: 0;
+    z-index: +1;
     animation: float 3s infinite; /* Ajustez la durée et les paramètres de l'animation selon vos préférences */
   }
 
@@ -34,6 +36,114 @@
     font-family: "MedievalSharp", cursive; /* Définissez la police de caractères (utilisez une police existante ou spécifiez une police générique) */
     text-align: center; /* Centre le texte horizontalement */
     width: 100%; /* Assurez-vous que le titre prend toute la largeur de son conteneur */
+    z-index: +1;
+  }
+}
+
+.ContaineurBanner {
+  position: relative;
+  width: 100%; /* La largeur de l'écran */
+  overflow: hidden; /* Masque tout ce qui dépasse */
+}
+
+.scene {
+  width: 100%;
+  height: 1500px;
+  display: block;
+}
+
+.superpose {
+  position: absolute;
+  width: 100%; /* Pour s'adapter à la largeur de l'écran */
+  height: auto; /* Pour conserver le rapport hauteur/largeur de l'image */
+}
+
+.superpose.haut {
+  top: 0;
+}
+
+.superpose.bas {
+  bottom: 0;
+}
+
+.fade-in-right {
+  -webkit-animation: fade-in-right 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+    both;
+  animation: fade-in-right 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+}
+
+.containeurPresentation {
+  .titreh2 {
+    text-align: center; /* Centre le texte horizontalement */
+    margin-top: 0; /* Supprime la marge supérieure par défaut du h2 pour le centrer verticalement */
+    line-height: 1.5; /* Ajustez la hauteur de ligne pour centrer verticalement le texte si nécessaire */
+    font-size: 4em;
+    font-family: "Poppins", Poppins;
+  }
+
+  .boxMage {
+    display: flex;
+    align-items: center;
+    margin: 20px;
+
+    .boxIamgeMage fade-in-right {
+      @-webkit-keyframes fade-in-right {
+        0% {
+          -webkit-transform: translateX(50px);
+          transform: translateX(50px);
+          opacity: 0;
+        }
+        100% {
+          -webkit-transform: translateX(0);
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes fade-in-right {
+        0% {
+          -webkit-transform: translateX(50px);
+          transform: translateX(50px);
+          opacity: 0;
+        }
+        100% {
+          -webkit-transform: translateX(0);
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    }
+
+    .boxTextMage {
+      font-size: 2em;
+    }
+  }
+
+  .boxWarior {
+    display: flex;
+    align-items: center;
+    margin: 20px;
+
+    .boxTextWarior {
+      font-size: 2em;
+      font-family: "Poppins", Poppins;
+    }
+  }
+
+  .boxCitadel {
+    display: flex;
+    align-items: center;
+    margin: 20px;
+
+    .boxTextCitadel {
+      font-size: 2em;
+      font-family: "Poppins", Poppins;
+    }
+  }
+  .boxTextCitadelBis {
+    align-items: center;
+    margin: 20px;
+    font-size: 2em;
+    font-family: "Poppins", Poppins;
   }
 }
 
@@ -42,4 +152,12 @@
   .containeurLogo .titleBaner {
     font-size: 4em; /* Réduisez la taille de la police de 10% */
   }
+}
+
+.agendaDesParties {
+  text-align: center; /* Centre le texte horizontalement */
+  margin-top: 0; /* Supprime la marge supérieure par défaut du h2 pour le centrer verticalement */
+  line-height: 1.5; /* Ajustez la hauteur de ligne pour centrer verticalement le texte si nécessaire */
+  font-size: 4em;
+  font-family: "Poppins", Poppins;
 }
