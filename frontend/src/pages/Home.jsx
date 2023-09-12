@@ -1,5 +1,7 @@
-// import { useState, useEffect } from "react"
-// import axios from "axios"
+import { useState, useEffect } from "react"
+import axios from "axios"
+
+import CartePartie from "../components/CartePartie"
 import "./Home.scss"
 import NavBar from "../components/NavBar"
 
@@ -12,6 +14,30 @@ import BrushUp from "../assets/pics/BrushUp.svg"
 import logo from "../assets/pics/logo.png"
 
 export default function Home() {
+  const [parties, setParties] = useState([])
+  const [utilisateurs, setUtilisateurs] = useState([])
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4242/partie`)
+      .then((res) => {
+        setParties(res.data)
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement des parties", err)
+      })
+    axios
+      .get(`http://localhost:4242/utilisateur`)
+      .then((res) => {
+        setUtilisateurs(res.data)
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement des utilisateurs", err)
+      })
+  }, [])
+
+  console.info("parties", parties)
+  console.info("utilisateur", utilisateurs)
   return (
     <>
       <NavBar />
@@ -112,8 +138,14 @@ export default function Home() {
         <div className="titreAPartie">
           <h2> Agenda des parties</h2>
         </div>
-        <div>
-          <h2> Game carde </h2>
+        <div className="containeurCards">
+          {parties.map((partie) => (
+            <CartePartie
+              key={partie.id}
+              parties={partie}
+              utilisateurs={utilisateurs}
+            />
+          ))}
         </div>
       </div>
     </>

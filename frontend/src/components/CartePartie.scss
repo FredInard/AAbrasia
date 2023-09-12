@@ -1,0 +1,59 @@
+// CartePartie.scss
+
+.globalContainerCard {
+  background-color: rgba(20, 184, 197, 1);
+  // border: 1px solid #ccc;
+  border-radius: 20px;
+  color: rgb(6, 1, 39);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(250, 249, 249, 0.1);
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleContainerCard {
+  font-size: 2.5em;
+  text-align: left;
+}
+
+.boxInfoGlobalCard {
+  display: flex;
+  font-size: 16px;
+  margin-bottom: 16px;
+  flex-direction: column;
+  padding-left: 50px;
+
+  .miniBoxInfo {
+    .infoItem {
+      text-align: left;
+    }
+  }
+}
+
+.boxPlayerAndInfoCard {
+  display: flex;
+  justify-content: space-between;
+}
+
+.boxMaxPlayerCard {
+  font-weight: bold;
+  color: #333;
+  display: flex;
+
+  .NombreJoueur {
+    padding-right: 30px;
+  }
+
+  .playerIcon {
+    width: auto;
+    height: 100px;
+    padding-right: 30px;
+  }
+}
+
+.boxInfoCard {
+  color: #888;
+}

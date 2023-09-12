@@ -79,12 +79,14 @@
     line-height: 1.5; /* Ajustez la hauteur de ligne pour centrer verticalement le texte si nécessaire */
     font-size: 4em;
     font-family: "Poppins", Poppins;
+    padding: 20px;
   }
 
   .boxMage {
     display: flex;
     align-items: center;
     margin: 20px;
+    padding: 20px;
 
     .boxIamgeMage fade-in-right {
       @-webkit-keyframes fade-in-right {
@@ -115,6 +117,7 @@
 
     .boxTextMage {
       font-size: 2em;
+      padding: 20px;
     }
   }
 
@@ -122,10 +125,12 @@
     display: flex;
     align-items: center;
     margin: 20px;
+    padding: 20px;
 
     .boxTextWarior {
       font-size: 2em;
       font-family: "Poppins", Poppins;
+      padding: 20px;
     }
   }
 
@@ -133,10 +138,12 @@
     display: flex;
     align-items: center;
     margin: 20px;
+    padding: 20px;
 
     .boxTextCitadel {
       font-size: 2em;
       font-family: "Poppins", Poppins;
+      padding: 20px;
     }
   }
   .boxTextCitadelBis {
@@ -144,6 +151,7 @@
     margin: 20px;
     font-size: 2em;
     font-family: "Poppins", Poppins;
+    padding: 20px;
   }
 }
 
@@ -160,4 +168,10 @@
   line-height: 1.5; /* Ajustez la hauteur de ligne pour centrer verticalement le texte si nécessaire */
   font-size: 4em;
   font-family: "Poppins", Poppins;
+}
+
+.containeurCards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
