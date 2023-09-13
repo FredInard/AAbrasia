@@ -29,8 +29,12 @@ pool.getConnection().catch(() => {
 
 const models = {}
 
+const ParticipationManager = require("./ParticipationManager")
 const PartieManager = require("./partieManager")
 const UtilisateurManager = require("./utilisateurManager")
+
+models.participation = new ParticipationManager()
+models.participation.setDatabase(pool)
 
 models.partie = new PartieManager()
 models.partie.setDatabase(pool)

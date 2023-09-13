@@ -2,7 +2,7 @@
 
 .globalContainerCard {
   background-color: rgba(20, 184, 197, 1);
-  // border: 1px solid #ccc;
+  border: 1px solid #ccc;
   border-radius: 20px;
   color: rgb(6, 1, 39);
   padding: 16px;
@@ -12,8 +12,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  will-change: transform;
+  transition: all 0.3s ease-in-out;
 }
-
+.globalContainerCard:hover {
+  border-color: #ffffff;
+  transform: scale(1.025);
+  border: 6px solid #ccc;
+  cursor: pointer;
+}
 .titleContainerCard {
   font-size: 2.5em;
   text-align: left;
@@ -36,24 +43,26 @@
 .boxPlayerAndInfoCard {
   display: flex;
   justify-content: space-between;
-}
 
-.boxMaxPlayerCard {
-  font-weight: bold;
-  color: #333;
-  display: flex;
+  .boxMaxPlayerCard {
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    align-items: center;
 
-  .NombreJoueur {
-    padding-right: 30px;
+    .NombreJoueur {
+      padding-right: 50px;
+      font-size: 1em;
+    }
+
+    .playerIcon {
+      width: auto;
+      height: 100px;
+      padding-right: 30px;
+    }
   }
 
-  .playerIcon {
-    width: auto;
-    height: 100px;
-    padding-right: 30px;
+  .boxInfoCard {
+    color: #888;
   }
-}
-
-.boxInfoCard {
-  color: #888;
 }

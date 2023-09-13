@@ -15,11 +15,12 @@ import logo from "../assets/pics/logo.png"
 
 export default function Home() {
   const [parties, setParties] = useState([])
+  const [participation, setParticipation] = useState([])
   const [utilisateurs, setUtilisateurs] = useState([])
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4242/partie`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie`)
       .then((res) => {
         setParties(res.data)
       })
@@ -27,15 +28,23 @@ export default function Home() {
         console.error("Problème lors du chargement des parties", err)
       })
     axios
-      .get(`http://localhost:4242/utilisateur`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateur`)
       .then((res) => {
         setUtilisateurs(res.data)
       })
       .catch((err) => {
         console.error("Problème lors du chargement des utilisateurs", err)
       })
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/participation`)
+      .then((res) => {
+        setParticipation(res.data)
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement des utilisateurs", err)
+      })
   }, [])
-
+  console.info("participation", participation)
   console.info("parties", parties)
   console.info("utilisateur", utilisateurs)
   return (
@@ -144,6 +153,7 @@ export default function Home() {
               key={partie.id}
               parties={partie}
               utilisateurs={utilisateurs}
+              participation={participation}
             />
           ))}
         </div>
