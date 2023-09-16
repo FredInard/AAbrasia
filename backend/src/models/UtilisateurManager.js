@@ -46,6 +46,17 @@ class UtilisateurManager extends AbstractManager {
       ]
     )
   }
+
+  getDisplayPlayer(id) {
+    return this.database.query(
+      `
+    SELECT utilisateur.PhotoProfil, utilisateur.Nom, utilisateur.Prenom, utilisateur.Pseudo
+    FROM ${this.table}
+    JOIN participation ON utilisateur.id = participation.Utilisateur_Id
+    WHERE participation.Partie_Id = ?;`,
+      [id]
+    )
+  }
 }
 
 module.exports = UtilisateurManager

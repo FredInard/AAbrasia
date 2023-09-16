@@ -82,10 +82,23 @@ const destroy = (req, res) => {
     })
 }
 
+const affichageInfoPartie = (req, res) => {
+  models.partie
+    .getAffichageInfoPartie()
+    .then(([rows]) => {
+      res.send(rows)
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
 module.exports = {
   browse,
   read,
   edit,
   add,
   destroy,
+  affichageInfoPartie,
 }

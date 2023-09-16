@@ -80,10 +80,23 @@ const destroy = (req, res) => {
     })
 }
 
+const displayPlayer = (req, res) => {
+  models.utilisateur
+    .getDisplayPlayer(req.params.id)
+    .then(([rows]) => {
+      res.send(rows)
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
 module.exports = {
   browse,
   add,
   read,
   edit,
   destroy,
+  displayPlayer,
 }

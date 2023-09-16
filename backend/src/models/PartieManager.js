@@ -37,6 +37,28 @@ class PartieManager extends AbstractManager {
       ]
     )
   }
+
+  getAffichageInfoPartie() {
+    return this.database.query(`
+    SELECT
+    p.id AS PartieID,
+    p.Titre AS TitrePartie,
+    DATE_FORMAT(p.Date, '%d-%m-%Y') AS DatePartie,
+    DATE_FORMAT(p.Heure, '%H:%i') AS HeurePartie,
+    p.Lieu AS LieuPartie,
+    p.Description AS DescriptionPartie,
+    p.NombreJoueur AS NombreJoueursPartie,
+    p.TypeDeJeux AS TypeDeJeuxPartie,
+    u.Pseudo AS PseudoMaitreDuJeu
+FROM
+    partie AS p
+INNER JOIN
+    utilisateur AS u
+ON
+    p.MaitreDuJeu = u.id;
+
+    `)
+  }
 }
 
 module.exports = PartieManager
