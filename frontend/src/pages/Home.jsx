@@ -8,7 +8,7 @@ import wizard from "../assets/pics/wizard.png"
 import BrushDown from "../assets/pics/BrushDown.svg"
 import scene from "../assets/pics/perudos_Craft_a_vectorial_minimalist_scene_set_in_a_fantasy_tav_5c581142-d45f-4653-b992-cd54a823bd7a.png"
 import BrushUp from "../assets/pics/BrushUp.svg"
-import logo from "../assets/pics/logo.png"
+import logoAiW from "../assets/pics/logoAiW.svg"
 import DisplayPlayers from "../components/displayPlayers"
 
 export default function Home() {
@@ -38,10 +38,10 @@ export default function Home() {
       <div className="containeurLogo">
         <img
           className="logoBaner"
-          src={logo}
-          alt="logo qui représente un dé 12 de couleur bleu et rose"
+          src={logoAiW}
+          alt="logo de l association les arpenteur d abrasia"
         />
-        <h1 className="titleBaner">Les Arpenteurs d'Abrasia</h1>
+        {/* <h1 className="titleBaner">Les Arpenteurs d'Abrasia</h1> */}
       </div>
 
       <div className="ContaineurBanner">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import logo from "../assets/pics/logo.png"
+import logoSeul from "../assets/pics/logoSeul.svg"
 import "./NavBar.scss"
 
 function NavBar() {
@@ -33,7 +33,7 @@ function NavBar() {
       <div className="boxlogoNavBar">
         <img
           className="logoNavBar logo"
-          src={logo}
+          src={logoSeul}
           alt="logo of website in the navbar"
         />
       </div>
