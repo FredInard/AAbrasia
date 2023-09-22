@@ -26,7 +26,6 @@
     height: auto;
     z-index: +1;
     padding-bottom: 150px;
-    
   }
 
   .titleBaner {
@@ -231,4 +230,9 @@
   .boxInfoCard {
     color: #888;
   }
+}
+.displayPlayers-container .post-card {
+  border: solid 2px white;
+  border-radius: 10px;
+  margin-bottom: 20px; /* Ajoutez la marge en bas pour créer un espace entre les post-cards */
 }
