@@ -6,6 +6,7 @@ import "./NavBar.scss"
 function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [navBackgroundColor, setNavBackgroundColor] = useState("transparent")
 
   useEffect(() => {
     const handleResize = () => {
@@ -28,8 +29,36 @@ function NavBar() {
     setIsMenuOpen(!isMenuOpen)
   }
 
+  useEffect(() => {
+    const handleScroll = () => {
+      // Récupérez la position de défilement verticale
+      const scrollY = window.scrollY
+
+      // Déterminez la limite à partir de laquelle vous souhaitez changer la couleur de fond
+      const scrollThreshold = 100 // Vous pouvez ajuster cette valeur selon vos besoins
+
+      // Si la position de défilement dépasse la limite, changez la couleur de fond
+      if (scrollY > scrollThreshold) {
+        setNavBackgroundColor("rgb(6, 1, 39)")
+      } else {
+        setNavBackgroundColor("transparent")
+      }
+    }
+
+    // Ajoutez le gestionnaire d'événements à la fenêtre
+    window.addEventListener("scroll", handleScroll)
+
+    // Assurez-vous de retirer le gestionnaire d'événements lors du démontage du composant
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
   return (
-    <div className="navBarDesktopContainer header">
+    <div
+      className="navBarDesktopContainer header"
+      style={{ backgroundColor: navBackgroundColor }}
+    >
       <div className="boxlogoNavBar">
         <img
           className="logoNavBar logo"

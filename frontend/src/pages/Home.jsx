@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
+import Cookies from "js-cookie"
+
 import "./Home.scss"
 import NavBar from "../components/NavBar"
 import Citadel from "../assets/pics/The_Citadel_of_Sisteron.png"
@@ -15,9 +17,14 @@ export default function Home() {
   const [parties, setParties] = useState([])
   const [postData, setPostData] = useState(null)
   const [isPostCardsOpen, setIsPostCardsOpen] = useState(false)
+  const tokenFromCookie = Cookies.get("authToken")
+  const headers = {
+    Authorization: `Bearer ${tokenFromCookie}`,
+  }
+
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/affichage`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/affichage`, { headers })
       .then((res) => setParties(res.data))
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)
@@ -34,7 +41,7 @@ export default function Home() {
 
   return (
     <>
-      <NavBar />
+      <NavBar className="NavBarHome" />
       <div className="containeurLogo">
         <img
           className="logoBaner"

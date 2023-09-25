@@ -31,7 +31,7 @@ const models = {}
 
 const ParticipationManager = require("./ParticipationManager")
 const PartieManager = require("./partieManager")
-const UtilisateurManager = require("./utilisateurManager")
+const UtilisateursManager = require("./utilisateursManager")
 
 models.participation = new ParticipationManager()
 models.participation.setDatabase(pool)
@@ -39,8 +39,8 @@ models.participation.setDatabase(pool)
 models.partie = new PartieManager()
 models.partie.setDatabase(pool)
 
-models.utilisateur = new UtilisateurManager()
-models.utilisateur.setDatabase(pool)
+models.utilisateurs = new UtilisateursManager()
+models.utilisateurs.setDatabase(pool)
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model

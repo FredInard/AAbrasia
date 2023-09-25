@@ -1,5 +1,6 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
+// import Cookies from "js-cookie"
 
 export default function CreateGame() {
   const [rpgName, setRpgName] = useState("")

@@ -1,4 +1,12 @@
 .navBarDesktopContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1; /* Une valeur élevée pour s'assurer qu'elle est au-dessus de tout le contenu */
+  background-color: transparent;
+  z-index: 1000;
+
   display: flex;
   // border: solid;
   justify-content: space-between;

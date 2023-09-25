@@ -1,94 +1,127 @@
--- MySQL Workbench Forward Engineering
+-- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: aabrasia
+-- ------------------------------------------------------
+-- Server version	8.0.33
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema aabrasia
--- -----------------------------------------------------
+--
+-- Table structure for table `participation`
+--
 
--- -----------------------------------------------------
--- Schema aabrasia
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `aabrasia` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `aabrasia` ;
-
--- -----------------------------------------------------
--- Table `aabrasia`.`utilisateur`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `aabrasia`.`utilisateur` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `Nom` VARCHAR(50) NOT NULL,
-  `Prenom` VARCHAR(50) NOT NULL,
-  `Pseudo` VARCHAR(50) NULL DEFAULT NULL,
-  `Mail` VARCHAR(100) NOT NULL,
-  `Telephone` VARCHAR(20) NULL DEFAULT NULL,
-  `PseudoDiscord` VARCHAR(50) NULL DEFAULT NULL,
-  `Description` TEXT NULL DEFAULT NULL,
-  `PhotoProfil` VARCHAR(100) NULL DEFAULT NULL,
-  `VilleResidence` VARCHAR(50) NULL DEFAULT NULL,
-  `MotDePasse` VARCHAR(100) NOT NULL,
-  `Admin` TINYINT(1) NULL DEFAULT NULL,
-  `MembreEquipe` TINYINT(1) NULL DEFAULT NULL,
-  `MembreAssociation` TINYINT(1) NULL DEFAULT NULL,
+DROP TABLE IF EXISTS `participation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `participation` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Utilisateur_Id` int DEFAULT NULL,
+  `Partie_Id` int DEFAULT NULL,
+  `Partie_IdMaitreDuJeu` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `Mail` (`Mail` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 10
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  KEY `Utilisateur_Id` (`Utilisateur_Id`),
+  KEY `Partie_Id` (`Partie_Id`),
+  CONSTRAINT `participation_ibfk_1` FOREIGN KEY (`Utilisateur_Id`) REFERENCES `utilisateurs` (`id`),
+  CONSTRAINT `participation_ibfk_2` FOREIGN KEY (`Partie_Id`) REFERENCES `partie` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `participation`
+--
 
--- -----------------------------------------------------
--- Table `aabrasia`.`partie`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `aabrasia`.`partie` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `Titre` VARCHAR(100) NOT NULL,
-  `Date` DATE NOT NULL,
-  `Heure` TIME NOT NULL,
-  `Lieu` VARCHAR(100) NOT NULL,
-  `MaitreDuJeu` INT NOT NULL,
-  `Description` TEXT NOT NULL,
-  `NombreJoueur` INT NOT NULL,
-  `TypeDeJeux` VARCHAR(45) NULL DEFAULT NULL,
+LOCK TABLES `participation` WRITE;
+/*!40000 ALTER TABLE `participation` DISABLE KEYS */;
+INSERT INTO `participation` VALUES (55,13,5,10),(56,14,5,10),(57,15,5,10),(58,10,6,13),(59,13,6,13),(60,15,6,13),(61,16,7,10),(62,17,7,10),(63,18,7,10),(64,11,7,10),(65,14,7,10),(66,18,8,10),(67,11,8,10),(68,14,8,10);
+/*!40000 ALTER TABLE `participation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `partie`
+--
+
+DROP TABLE IF EXISTS `partie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `partie` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Titre` varchar(100) NOT NULL,
+  `Date` date NOT NULL,
+  `Heure` time NOT NULL,
+  `Lieu` varchar(100) NOT NULL,
+  `MaitreDuJeu` int NOT NULL,
+  `Description` text NOT NULL,
+  `NombreJoueur` int NOT NULL,
+  `TypeDeJeux` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX `MaitreDuJeu` (`MaitreDuJeu` ASC) VISIBLE,
-  CONSTRAINT `partie_ibfk_1`
-    FOREIGN KEY (`MaitreDuJeu`)
-    REFERENCES `aabrasia`.`utilisateur` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 5
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  KEY `MaitreDuJeu` (`MaitreDuJeu`),
+  CONSTRAINT `partie_ibfk_1` FOREIGN KEY (`MaitreDuJeu`) REFERENCES `utilisateurs` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `partie`
+--
 
--- -----------------------------------------------------
--- Table `aabrasia`.`participation`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `aabrasia`.`participation` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `Utilisateur_Id` INT NULL DEFAULT NULL,
-  `Partie_Id` INT NULL DEFAULT NULL,
-  `Partie_IdMaitreDuJeu` INT NULL DEFAULT NULL,
+LOCK TABLES `partie` WRITE;
+/*!40000 ALTER TABLE `partie` DISABLE KEYS */;
+INSERT INTO `partie` VALUES (5,'L\'Épopée des Héros Perdus','2023-09-15','19:00:00','Discord',10,'Une aventure épique dans les contrées lointaines d\'Abrasia.',5,'Fantasy'),(6,'Mystères à la Maison Hantée','2023-09-20','20:30:00','MJC',10,'Une partie pleine de mystères et de frissons.',4,'Horreur'),(7,'Le Secret des Mages Anciens','2023-09-25','18:15:00','Discord',10,'Une quête pour découvrir les secrets de la magie.',6,'Fantasy'),(8,'La Quête du Trésor Perdu','2023-09-30','21:00:00','MJC',10,'Une aventure périlleuse dans les profondeurs d\'un donjon.',3,'Fantasy');
+/*!40000 ALTER TABLE `partie` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `utilisateurs`
+--
+
+DROP TABLE IF EXISTS `utilisateurs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `utilisateurs` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Nom` varchar(50) NOT NULL,
+  `Prenom` varchar(50) NOT NULL,
+  `Pseudo` varchar(50) DEFAULT NULL,
+  `Mail` varchar(100) NOT NULL,
+  `Telephone` varchar(20) DEFAULT NULL,
+  `PseudoDiscord` varchar(50) DEFAULT NULL,
+  `Description` text,
+  `PhotoProfil` varchar(100) DEFAULT NULL,
+  `VilleResidence` varchar(50) DEFAULT NULL,
+  `hashedPassword` varchar(255) DEFAULT NULL,
+  `Admin` tinyint(1) DEFAULT NULL,
+  `MembreEquipe` tinyint(1) DEFAULT NULL,
+  `MembreAssociation` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX `Utilisateur_Id` (`Utilisateur_Id` ASC) VISIBLE,
-  INDEX `Partie_Id` (`Partie_Id` ASC) VISIBLE,
-  CONSTRAINT `participation_ibfk_1`
-    FOREIGN KEY (`Utilisateur_Id`)
-    REFERENCES `aabrasia`.`utilisateur` (`id`),
-  CONSTRAINT `participation_ibfk_2`
-    FOREIGN KEY (`Partie_Id`)
-    REFERENCES `aabrasia`.`partie` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  UNIQUE KEY `Mail` (`Mail`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `utilisateurs`
+--
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+LOCK TABLES `utilisateurs` WRITE;
+/*!40000 ALTER TABLE `utilisateurs` DISABLE KEYS */;
+INSERT INTO `utilisateurs` VALUES (10,'inard','Fred','Fredo','test.1un@gmail.co','061234567890','Finky','webmaster',NULL,'VSS','$argon2i$v=19$m=16,t=2,p=1$YXplcnR5dWk$mBVGoYt1dS/zZm+BoxqWSA',1,NULL,1),(11,'inard','Mathis','LeP\'ti','Mathis.non@gmail.com',NULL,'Mathisou','Fils du WM',NULL,'VSS','azertyui',NULL,NULL,NULL),(13,'McFly','Marty','Morty','marty.mcfly@gmail.com',NULL,'PseudoDeMCFLY',NULL,NULL,NULL,'azertyui',NULL,NULL,NULL),(14,'Doe','John','johndoe','john.doe@example.com','123-456-7890','john.doe#1234','Lorem ipsum dolor sit amet, consectetur adipiscing elit.','profile1.jpg','New York','azertyui',0,0,0),(15,'Smith','Jane','janesmith','jane.smith@example.com','987-654-3210','jane.smith#5678','Sed euismod quam eu libero hendrerit.','profile2.jpg','Los Angeles','azertyui',0,0,0),(16,'Johnson','Robert','robertjohnson','robert.johnson@example.com','555-123-4567','robert.johnson#9012','Aenean id diam in tellus facilisis tristique.','profile3.jpg','Chicago','azertyui',0,0,0),(17,'Davis','Sarah','sarahdavis','sarah.davis@example.com','444-789-0123','sarah.davis#3456','Nullam volutpat interdum diam, vel luctus ante rhoncus sed.','profile4.jpg','San Francisco','azertyui',0,0,0),(18,'Brown','Michael','michaelbrown','michael.brown@example.com','222-555-7890','michael.brown#7890','Quisque sit amet dui nec nisi imperdiet hendrerit.','profile5.jpg','Miami','azertyui',0,0,0);
+/*!40000 ALTER TABLE `utilisateurs` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-09-26  0:31:28

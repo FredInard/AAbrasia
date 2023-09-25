@@ -53,7 +53,7 @@ class PartieManager extends AbstractManager {
 FROM
     partie AS p
 INNER JOIN
-    utilisateur AS u
+    utilisateurs AS u
 ON
     p.MaitreDuJeu = u.id;
 

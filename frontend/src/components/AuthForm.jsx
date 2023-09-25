@@ -1,6 +1,8 @@
 import React, { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import "./AuthForm.scss"
 import axios from "axios"
+import Cookies from "js-cookie"
 
 function AuthForm() {
   const [isSignIn, setIsSignIn] = useState(true)
@@ -9,10 +11,12 @@ function AuthForm() {
   const [pseudoInscription, setPseudoInscription] = useState([])
   const [mailInscription, setMailInscription] = useState([])
   const [motDePasseInscription, setMotDePasseInscription] = useState([])
+  const [signInPseudo, setSignInPseudo] = useState()
+  const [signInPassword, setSignInPassword] = useState()
 
   const handleSubmit = () => {
     axios
-      .post("http://localhost:4242/utilisateur", {
+      .post("http://localhost:4242/utilisateurs", {
         Nom: nomInscription,
         Prenom: prenomInscription,
         Pseudo: pseudoInscription,
@@ -29,6 +33,48 @@ function AuthForm() {
   const handleSignUpClick = () => {
     setIsSignIn(false)
   }
+
+  const handleKeyDown = (e) => {
+    // console.info("Key down event triggered")
+    if (e.code === "Enter" || (e.key === "Enter" && signInPassword !== "")) {
+      handleLogin(e)
+    }
+  }
+
+  const navigate = useNavigate()
+
+  const handleLogin = (e) => {
+    e.preventDefault()
+    axios
+      .post("http://localhost:4242/login", {
+        Pseudo: signInPseudo,
+        password: signInPassword,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.info("Connexion établie !")
+          document.getElementById("cardLogIn-Input").reset()
+          const token = res.data.token
+          Cookies.set("authToken", token, { expires: 0.5, sameSite: "strict" })
+          Cookies.set("PseudoGm", res.data.user.Pseudo, {
+            sameSite: "strict",
+          })
+          Cookies.set("loggedInUser", JSON.stringify(res.data.user), {
+            sameSite: "strict",
+          })
+          Cookies.set("idUser", JSON.stringify(res.data.user.id), {
+            sameSite: "strict",
+          })
+          setSignInPseudo()
+          setSignInPassword()
+          navigate("/Home")
+        }
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la connexion :", error)
+      })
+  }
+
   return (
     <div className={`container ${isSignIn ? "sign-in-mode" : "sign-up-mode"}`}>
       <div className="forms-container">
@@ -37,16 +83,32 @@ function AuthForm() {
             action="#"
             className={`sign-in-form ${isSignIn ? "active" : ""}`}
           >
-            <h2 className="title">Sign in</h2>
+            <h2 className="title">Connexion</h2>
             <div className="input-field">
               <i className="fas fa-user"></i>
-              <input type="text" placeholder="Username" />
+              <input
+                type="text"
+                placeholder="Pseudo"
+                onChange={(e) => setSignInPseudo(e.target.value)}
+              />
             </div>
             <div className="input-field">
               <i className="fas fa-lock"></i>
-              <input type="password" placeholder="Password" />
+              <input
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setSignInPassword(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
             </div>
-            <input type="submit" value="Login" className="btn solid" />
+            <Link to="/Home">
+              <input
+                type="submit"
+                value="C'est partie"
+                className="btn solid"
+                onClick={handleLogin}
+              />
+            </Link>
             {/* <p className="social-text">Or Sign in with social platforms</p>
             <div className="social-media">
               <a href="#" className="social-icon">
@@ -67,7 +129,7 @@ function AuthForm() {
             action="#"
             className={`sign-up-form ${isSignIn ? "" : "active"}`}
           >
-            <h2 className="title">Sign up</h2>
+            <h2 className="title">Inscription</h2>
             <div className="input-field">
               <i className="fas fa-user"></i>
               <input
@@ -145,17 +207,17 @@ function AuthForm() {
           }`}
         >
           <div className="content">
-            <h3>New here ?</h3>
+            <h3>Tu es nouveau ici ?</h3>
             <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
-              ex ratione. Aliquid!
+              Inscrit toi et découvre notre association, rejoins les autres
+              joueurs et une partie.
             </p>
             <button
               className="btn transparent"
               id="sign-up-btn"
               onClick={handleSignUpClick}
             >
-              Sign up
+              Inscrit toi
             </button>
           </div>
           <img src="img/log.svg" className="image" alt="" />
@@ -168,7 +230,7 @@ function AuthForm() {
           <div className="content">
             <h3>Déjà inscrit ?</h3>
             <p>
-              Tu est déjà un membre de l'association, connecte toi opur de
+              Tu est déjà membre de l'association, connecte toi pour de
               nouvelles aventures.
             </p>
             <button
@@ -176,7 +238,7 @@ function AuthForm() {
               id="sign-in-btn"
               onClick={handleSignInClick}
             >
-              Sign in
+              S'identifier
             </button>
           </div>
           <img src="img/register.svg" className="image" alt="" />
