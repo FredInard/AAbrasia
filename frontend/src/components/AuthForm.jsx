@@ -84,25 +84,25 @@ function AuthForm() {
             className={`sign-in-form ${isSignIn ? "active" : ""}`}
           >
             <h2 className="title">Connexion</h2>
-            <div className="input-field">
-              <i className="fas fa-user"></i>
-              <input
-                id="cardLogIn-Input"
-                type="text"
-                placeholder="Pseudo"
-                onChange={(e) => setSignInPseudo(e.target.value)}
-              />
-            </div>
-            <div className="input-field">
-              <i className="fas fa-lock"></i>
-              <input
-                id="input-password-LogIn"
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setSignInPassword(e.target.value)}
-                onKeyDown={handleKeyDown}
-              />
-            </div>
+            <form id="cardLogIn-Input">
+              <div className="input-field">
+                <i className="fas fa-user"></i>
+                <input
+                  type="text"
+                  placeholder="Pseudo"
+                  onChange={(e) => setSignInPseudo(e.target.value)}
+                />
+              </div>
+              <div className="input-field">
+                <i className="fas fa-lock"></i>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  onChange={(e) => setSignInPassword(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+              </div>
+            </form>
             <Link to="/Home">
               <input
                 type="submit"
