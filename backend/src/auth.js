@@ -30,7 +30,7 @@ const hashPassword = (req, res, next) => {
 
 const verifyPassword = (req, res) => {
   argon2
-    .verify(req.utilisateur.hashedPassword, req.body.password)
+    .verify(req.utilisateur.hashedPassword, req.body.hashedPassword)
     .then((isVerified) => {
       if (isVerified) {
         const payload = { sub: req.utilisateur.id }

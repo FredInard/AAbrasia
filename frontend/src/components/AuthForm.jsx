@@ -21,7 +21,7 @@ function AuthForm() {
         Prenom: prenomInscription,
         Pseudo: pseudoInscription,
         Mail: mailInscription,
-        MotDePasse: motDePasseInscription,
+        hashedPassword: motDePasseInscription,
       })
       .then((res) => res.data)
   }
@@ -48,7 +48,7 @@ function AuthForm() {
     axios
       .post("http://localhost:4242/login", {
         Pseudo: signInPseudo,
-        password: signInPassword,
+        hashedPassword: signInPassword,
       })
       .then((res) => {
         if (res.status === 200) {
@@ -87,6 +87,7 @@ function AuthForm() {
             <div className="input-field">
               <i className="fas fa-user"></i>
               <input
+                id="cardLogIn-Input"
                 type="text"
                 placeholder="Pseudo"
                 onChange={(e) => setSignInPseudo(e.target.value)}
@@ -95,6 +96,7 @@ function AuthForm() {
             <div className="input-field">
               <i className="fas fa-lock"></i>
               <input
+                id="input-password-LogIn"
                 type="password"
                 placeholder="Password"
                 onChange={(e) => setSignInPassword(e.target.value)}

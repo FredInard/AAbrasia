@@ -7,7 +7,7 @@ class UtilisateursManager extends AbstractManager {
 
   insert(utilisateurs) {
     return this.database.query(
-      `insert into ${this.table} (Nom,Prenom, Pseudo, Mail, Telephone, PseudoDiscord, Description, PhotoProfil, VilleResidence, MotDePasse, Admin, MembreEquipe, MembreAssociation) values (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      `insert into ${this.table} (Nom,Prenom, Pseudo, Mail, Telephone, PseudoDiscord, Description, PhotoProfil, VilleResidence, hashedPassword, Admin, MembreEquipe, MembreAssociation) values (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         utilisateurs.Nom,
         utilisateurs.Prenom,
@@ -18,7 +18,7 @@ class UtilisateursManager extends AbstractManager {
         utilisateurs.Description,
         utilisateurs.PhotoProfil,
         utilisateurs.VilleResidence,
-        utilisateurs.MotDePasse,
+        utilisateurs.hashedPassword,
         utilisateurs.Admin,
         utilisateurs.MembreEquipe,
         utilisateurs.MembreAssociation,
@@ -28,7 +28,7 @@ class UtilisateursManager extends AbstractManager {
 
   update(utilisateurs) {
     return this.database.query(
-      `UPDATE ${this.table} SET Nom = ?, Prenom = ?, Pseudo = ?, Mail = ?, Telephone = ?, PseudoDiscord = ?, Description = ?, PhotoProfil = ?, VilleResidence = ?, MotDePasse = ?, Admin = ?, MembreEquipe = ?, MembreAssociation = ? WHERE (id = ?)`,
+      `UPDATE ${this.table} SET Nom = ?, Prenom = ?, Pseudo = ?, Mail = ?, Telephone = ?, PseudoDiscord = ?, Description = ?, PhotoProfil = ?, VilleResidence = ?, hashedPassword = ?, Admin = ?, MembreEquipe = ?, MembreAssociation = ? WHERE (id = ?)`,
       [
         utilisateurs.Nom,
         utilisateurs.Prenom,
@@ -39,7 +39,7 @@ class UtilisateursManager extends AbstractManager {
         utilisateurs.Description,
         utilisateurs.PhotoProfil,
         utilisateurs.VilleResidence,
-        utilisateurs.MotDePasse,
+        utilisateurs.hashedPassword,
         utilisateurs.Admin,
         utilisateurs.MembreEquipe,
         utilisateurs.MembreAssociation,
