@@ -21,7 +21,7 @@ const add = (req, res) => {
   models.utilisateurs
     .insert(utilisateurs)
     .then(([result]) => {
-      res.json(result.insertId)
+      res.location(`/utilisateurs/${result.insertId}`).sendStatus(201)
     })
     .catch((err) => {
       console.error(err)

@@ -87,16 +87,16 @@ DROP TABLE IF EXISTS `utilisateurs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `utilisateurs` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `Nom` varchar(50) NOT NULL,
-  `Prenom` varchar(50) NOT NULL,
-  `Pseudo` varchar(50) DEFAULT NULL,
+  `Nom` varchar(250) NOT NULL,
+  `Prenom` varchar(250) NOT NULL,
+  `Pseudo` varchar(50) NOT NULL,
   `Mail` varchar(100) NOT NULL,
   `Telephone` varchar(20) DEFAULT NULL,
   `PseudoDiscord` varchar(50) DEFAULT NULL,
   `Description` text,
   `PhotoProfil` varchar(100) DEFAULT NULL,
   `VilleResidence` varchar(50) DEFAULT NULL,
-  `hashedPassword` varchar(255) DEFAULT NULL,
+  `hashedPassword` varchar(255) NOT NULL,
   `Admin` tinyint(1) DEFAULT NULL,
   `MembreEquipe` tinyint(1) DEFAULT NULL,
   `MembreAssociation` tinyint(1) DEFAULT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE `utilisateurs` (
 
 LOCK TABLES `utilisateurs` WRITE;
 /*!40000 ALTER TABLE `utilisateurs` DISABLE KEYS */;
-INSERT INTO `utilisateurs` VALUES (10,'inard','Fred','Fredo','test.1un@gmail.co','061234567890','Finky','webmaster',NULL,'VSS','azerty',1,NULL,1),(11,'inard','Mathis','LeP\'ti','Mathis.non@gmail.com',NULL,'Mathisou','Fils du WM',NULL,'VSS','azerty',NULL,NULL,NULL),(13,'McFly','Marty','Morty','marty.mcfly@gmail.com',NULL,'PseudoDeMCFLY',NULL,NULL,NULL,'azerty',NULL,NULL,NULL),(14,'Doe','John','johndoe','john.doe@example.com','123-456-7890','john.doe#1234','Lorem ipsum dolor sit amet, consectetur adipiscing elit.','profile1.jpg','New York','azerty',0,0,0),(15,'Smith','Jane','janesmith','jane.smith@example.com','987-654-3210','jane.smith#5678','Sed euismod quam eu libero hendrerit.','profile2.jpg','Los Angeles','azerty',0,0,0),(16,'Johnson','Robert','robertjohnson','robert.johnson@example.com','555-123-4567','robert.johnson#9012','Aenean id diam in tellus facilisis tristique.','profile3.jpg','Chicago','azerty',0,0,0),(17,'Davis','Sarah','sarahdavis','sarah.davis@example.com','444-789-0123','sarah.davis#3456','Nullam volutpat interdum diam, vel luctus ante rhoncus sed.','profile4.jpg','San Francisco','azerty',0,0,0),(18,'Brown','Michael','michaelbrown','michael.brown@example.com','222-555-7890','michael.brown#7890','Quisque sit amet dui nec nisi imperdiet hendrerit.','profile5.jpg','Miami','azerty',0,0,0);
+INSERT INTO `utilisateurs` VALUES (10,'inard','Fred','Fredo','test.1un@gmail.co','061234567890','Finky','webmaster',NULL,'VSS','$argon2id$v=19$m=65536,t=5,p=1$1cy6eNa1lqGuy6TimPNASw$EhUwJpP6dnQn6yKlEkv2hyVNhGq9SsIVZidjri8rnUM',1,NULL,1),(11,'inard','Mathis','LeP\'ti','Mathis.non@gmail.com',NULL,'Mathisou','Fils du WM',NULL,'VSS','azerty',NULL,NULL,NULL),(13,'McFly','Marty','Morty','marty.mcfly@gmail.com',NULL,'PseudoDeMCFLY',NULL,NULL,NULL,'azerty',NULL,NULL,NULL),(14,'Doe','John','johndoe','john.doe@example.com','123-456-7890','john.doe#1234','Lorem ipsum dolor sit amet, consectetur adipiscing elit.','profile1.jpg','New York','azerty',0,0,0),(15,'Smith','Jane','janesmith','jane.smith@example.com','987-654-3210','jane.smith#5678','Sed euismod quam eu libero hendrerit.','profile2.jpg','Los Angeles','azerty',0,0,0),(16,'Johnson','Robert','robertjohnson','robert.johnson@example.com','555-123-4567','robert.johnson#9012','Aenean id diam in tellus facilisis tristique.','profile3.jpg','Chicago','azerty',0,0,0),(17,'Davis','Sarah','sarahdavis','sarah.davis@example.com','444-789-0123','sarah.davis#3456','Nullam volutpat interdum diam, vel luctus ante rhoncus sed.','profile4.jpg','San Francisco','azerty',0,0,0),(18,'Brown','Michael','michaelbrown','michael.brown@example.com','222-555-7890','michael.brown#7890','Quisque sit amet dui nec nisi imperdiet hendrerit.','profile5.jpg','Miami','azerty',0,0,0);
 /*!40000 ALTER TABLE `utilisateurs` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -124,4 +124,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-26  1:46:43
+-- Dump completed on 2023-09-27 23:22:18

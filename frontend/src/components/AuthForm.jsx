@@ -25,6 +25,13 @@ function AuthForm() {
       })
       .then((res) => res.data)
   }
+  console.info(
+    "data insérées :",
+    nomInscription,
+    prenomInscription,
+    mailInscription,
+    motDePasseInscription
+  )
 
   const handleSignInClick = () => {
     setIsSignIn(true)
@@ -56,18 +63,26 @@ function AuthForm() {
           document.getElementById("cardLogIn-Input").reset()
           const token = res.data.token
           Cookies.set("authToken", token, { expires: 0.5, sameSite: "strict" })
-          Cookies.set("PseudoGm", res.data.user.Pseudo, {
+          Cookies.set("Pseudo", res.data.utilisateur.Pseudo, {
             sameSite: "strict",
           })
-          Cookies.set("loggedInUser", JSON.stringify(res.data.user), {
-            sameSite: "strict",
-          })
-          Cookies.set("idUser", JSON.stringify(res.data.user.id), {
-            sameSite: "strict",
-          })
+          Cookies.set(
+            "loggedInUtilisateur",
+            JSON.stringify(res.data.utilisateur),
+            {
+              sameSite: "strict",
+            }
+          )
+          Cookies.set(
+            "idUtilisateur",
+            JSON.stringify(res.data.utilisateur.id),
+            {
+              sameSite: "strict",
+            }
+          )
           setSignInPseudo()
           setSignInPassword()
-          navigate("/Home")
+          navigate("/")
         }
       })
       .catch((error) => {
@@ -103,7 +118,7 @@ function AuthForm() {
                 />
               </div>
             </form>
-            <Link to="/Home">
+            <Link to="/">
               <input
                 type="submit"
                 value="C'est partie"
@@ -180,7 +195,7 @@ function AuthForm() {
             <input
               type="submit"
               className="btn"
-              value="Sign up"
+              value="S'inscrire"
               onClick={handleSubmit}
             />
             {/* <p className="social-text">Or Sign up with social platforms</p>
