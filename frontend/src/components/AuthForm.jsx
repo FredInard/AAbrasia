@@ -21,7 +21,7 @@ function AuthForm() {
         Prenom: prenomInscription,
         Pseudo: pseudoInscription,
         Mail: mailInscription,
-        hashedPassword: motDePasseInscription,
+        password: motDePasseInscription,
       })
       .then((res) => res.data)
   }

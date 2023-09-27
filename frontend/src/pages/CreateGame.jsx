@@ -1,34 +1,39 @@
 import axios from "axios"
-import React, { useEffect, useState } from "react"
-// import Cookies from "js-cookie"
+import React, { useState } from "react"
+import Cookies from "js-cookie"
 
 export default function CreateGame() {
   const [rpgName, setRpgName] = useState("")
-  const [gm, setGm] = useState("")
+  // const [gm, setGm] = useState("")
   const [date, setDate] = useState("")
   const [hour, setHour] = useState("")
   const [place, setPlace] = useState("")
   const [playersCapacity, setPlayersCapacity] = useState("")
   const [desc, setDesc] = useState("")
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:4242/partie")
-      .then((res) => setRpgName(res.data))
-  }, [])
+  const tokenFromCookie = Cookies.get("authToken")
+  const idUser = Cookies.get("idUtilisateur")
+
+  const headers = {
+    Authorization: `Bearer ${tokenFromCookie}`,
+  }
 
   const handleCreateUser = (e) => {
     e.preventDefault()
     axios
-      .post("http://localhost:4242/partie", {
-        Name: rpgName,
-        Date: date,
-        heure: hour,
-        lieu: place,
-        MaitreDuJeux: gm,
-        Description: desc,
-        NombreJoueur: playersCapacity,
-      })
+      .post(
+        "http://localhost:4242/partie",
+        {
+          Titre: rpgName,
+          Date,
+          Heure: hour,
+          Lieu: place,
+          MaitreDuJeu: idUser,
+          Description: desc,
+          NombreJoueur: playersCapacity,
+        },
+        { headers }
+      )
       .then((res) => {
         if (res.status === 200) {
           console.info("Partie créée avec succès !")
@@ -41,20 +46,25 @@ export default function CreateGame() {
       })
   }
 
+  console.info(
+    "data de createGame :",
+    idUser,
+    rpgName,
+    date,
+    hour,
+    place,
+    desc,
+    playersCapacity
+  )
+
   return (
     <main id="createGameGlobal">
       <form id="createGameForm" onSubmit={handleCreateUser}>
         <div id="createGameInputs">
           <input
             type="text"
-            placeholder="id du GM"
-            onChange={(e) => setGm(e.target.value)}
-          />
-
-          <input
-            type="text"
             placeholder="Nom de ton aventure"
-            onChange={(e) => rpgName(e.target.value)}
+            onChange={(e) => setRpgName(e.target.value)}
           />
 
           <input
