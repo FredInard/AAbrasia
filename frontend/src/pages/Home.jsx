@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 
-import "./Home.scss"
-import NavBar from "../components/NavBar"
-import Citadel from "../assets/pics/The_Citadel_of_Sisteron.png"
-import questioningFemale from "../assets/pics/questioning_female.png"
-import wizard from "../assets/pics/wizard.png"
+import Citadel from "../assets/pics/CitadelOfSisteron.svg"
+import questioningFemale from "../assets/pics/femaleWarrior.svg"
+import wizard from "../assets/pics/wizard.svg"
 import BrushDown from "../assets/pics/BrushDown.svg"
-import scene from "../assets/pics/perudos_Craft_a_vectorial_minimalist_scene_set_in_a_fantasy_tav_5c581142-d45f-4653-b992-cd54a823bd7a.png"
+import scene from "../assets/pics/banner.svg"
 import BrushUp from "../assets/pics/BrushUp.svg"
 import logoAiW from "../assets/pics/logoAiW.svg"
-import DisplayPlayers from "../components/displayPlayers"
 import LogoPlayers from "../assets/pics/playerIcon.svg"
+
+import "./Home.scss"
+import NavBar from "../components/NavBar"
+import DisplayPlayers from "../components/DisplayPlayers"
+// import ModalCardGame from "../components/ModalCardGame"
 
 export default function Home() {
   const [parties, setParties] = useState([])
@@ -37,7 +39,7 @@ export default function Home() {
     setIsPostCardsOpen(true)
     setPostData(allPostData)
   }
-  console.info("postcards1", postData)
+  // console.info("postcards1", postData)
   console.info("parties", parties)
 
   return (
@@ -49,25 +51,26 @@ export default function Home() {
           src={logoAiW}
           alt="logo de l association les arpenteur d abrasia"
         />
-        {/* <h1 className="titleBaner">Les Arpenteurs d'Abrasia</h1> */}
       </div>
 
       <div className="ContaineurBanner">
-        <img
-          src={BrushUp}
-          alt="brush haut pour fondue image de scene"
-          className="superpose haut"
-        />
-        <img
-          src={scene}
-          alt="scene de jeux de rôle avec des personnages de type héroïc fantasy autour d'une table."
-          className="scene"
-        />
-        <img
-          src={BrushDown}
-          alt="brush bas pour fondue image de scene"
-          className="superpose bas"
-        />
+        <div className="scene">
+          <img
+            src={BrushUp}
+            alt="brush haut pour fondue image de scene"
+            className="superpose haut"
+          />
+          <img
+            src={scene}
+            alt="scene de jeux de rôle avec des personnages de type héroïc fantasy autour d'une table."
+            className="scene"
+          />
+          <img
+            src={BrushDown}
+            alt="brush bas pour fondue image de scene"
+            className="superpose bas"
+          />
+        </div>
       </div>
 
       <div className="containeurPresentation">

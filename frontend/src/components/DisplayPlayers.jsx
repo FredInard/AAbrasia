@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
+import Cookies from "js-cookie"
 
 export default function DisplayPlayers({ postData }) {
   const [allPosts, setAllPosts] = useState([])
+
+  const tokenFromCookie = Cookies.get("authToken")
+  const headers = {
+    Authorization: `Bearer ${tokenFromCookie}`,
+  }
 
   useEffect(() => {
     axios
       .get(
         `${import.meta.env.VITE_BACKEND_URL}/utilisateur/displayPlayers/${
           postData.PartieID
-        }`
+        }`,
+        { headers }
         // ,{
         //   headers,
         // }
@@ -28,8 +35,6 @@ export default function DisplayPlayers({ postData }) {
 
   return (
     <div className="displayPlayers-container">
-      {" "}
-      {/* Utilisez la classe CSS du fichier DisplayPlayers.scss */}
       {allPosts.map((post) => (
         <div className="post-card" key={post.id}>
           <img

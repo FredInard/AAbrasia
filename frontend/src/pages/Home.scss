@@ -6,59 +6,40 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 307px;
-
-  @keyframes float {
-    0% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
-
+  height: 55vw;
   .logoBaner {
     position: absolute;
-    width: 80%;
-    z-index: +1;
-    padding-bottom: 150px;
-  }
-
-  .titleBaner {
-    position: absolute;
-    // top: 380px;
-    z-index: +1;
+    width: 90%;
+    z-index: +500; /* Augmentez la valeur de z-index pour placer l'image au-dessus de la bannière */
+    margin-top: 10px; /* Ajustez cette valeur selon votre mise en page */
   }
 }
 
 .ContaineurBanner {
-  margin-top: 150px;
+  /* Styles pour le conteneur principal, si nécessaire */
   position: relative;
-  // width: 100%;
-  overflow: hidden;
 }
 
 .scene {
-  width: 100%;
-  height: 1500px;
-  display: block;
+  position: relative; /* Définissez le conteneur de la scène comme relatif */
+  display: flex; /* Utilisez flexbox pour centrer l'image */
+  justify-content: center; /* Centrez horizontalement l'image */
+  max-width: 100%; /* Définissez une largeur maximale pour l'image */
 }
 
 .superpose {
-  position: absolute;
-  width: 100%;
-  height: auto;
+  position: absolute; /* Définissez les images "Brush" comme absolues */
+  width: 100%; /* Ajustez la largeur au besoin */
+  height: auto; /* Ajustez la hauteur au besoin */
 }
 
 .superpose.haut {
-  top: 0;
+  top: -10px; /* Positionnez l'image "BrushUp" en haut du conteneur */
+  z-index: +1;
 }
 
 .superpose.bas {
-  bottom: 0;
+  bottom: 0; /* Positionnez l'image "BrushDown" en bas du conteneur */
 }
 
 .fade-in-right {
@@ -83,11 +64,17 @@
     margin: 20px;
     padding: 20px;
 
+    .boxImageMage {
+      .imageMage {
+        height: auto;
+        width: 100%;
+      }
+    }
     .boxImageMage fade-in-right {
-      // .imageMage{
-      //   height: auto;
-      //   width: 10vw;
-      // }
+      .imageMage {
+        height: auto;
+        width: 10vw;
+      }
 
       @-webkit-keyframes fade-in-right {
         0% {
@@ -116,7 +103,7 @@
     }
 
     .boxTextMage {
-      font-size: 2em;
+      font-size: 1.5em;
       padding: 20px;
     }
   }
@@ -128,15 +115,17 @@
     padding: 20px;
 
     .boxTextWarior {
-      font-size: 2em;
+      font-size: 1.5em;
       font-family: "Poppins", Poppins;
       padding: 20px;
     }
 
-    /*.boximageWarior{
-      height: auto;
-      width: 30vw;
-    }*/
+    .boximageWarior {
+      .imageWarior {
+        height: auto;
+        width: 100%;
+      }
+    }
   }
 
   .boxCitadel {
@@ -147,21 +136,22 @@
     padding: 20px;
 
     .boxTextCitadel {
-      font-size: 2em;
+      font-size: 1.5em;
       font-family: "Poppins", Poppins;
       padding: 20px;
     }
 
-    /*.boxImageCitadel{
-      .imageCitadel{
+    .boxImageCitadel {
+      .imageCitadel {
         height: auto;
-        width: 90vw;}
-      }*/
+        width: 500px;
+      }
+    }
   }
   .boxTextCitadelBis {
     align-items: center;
     margin: 20px;
-    font-size: 2em;
+    font-size: 1.5em;
     font-family: "Poppins", Poppins;
     padding: 20px;
   }
@@ -169,7 +159,7 @@
 
 @media (max-width: 399px) {
   .containeurLogo .titleBaner {
-    font-size: 4em;
+    font-size: 5em;
   }
 }
 
@@ -181,14 +171,15 @@
   font-family: "Poppins", Poppins;
 
   .titreAPartie {
-    padding: 20px;
+    padding: 10px;
   }
 }
 
 .containeurCards {
   display: flex;
-  // flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 40px;
   padding: 20px;
 
@@ -200,7 +191,7 @@
     padding: 16px;
     margin-bottom: 16px;
     box-shadow: 0 2px 4px rgba(250, 249, 249, 0.1);
-    width: 50%;
+    width: 30%;
     height: auto;
     display: flex;
     flex-wrap: wrap;
@@ -294,29 +285,29 @@
       text-align: center;
       margin-top: 0;
       line-height: 1.5;
-      font-size: 8vw;
+      font-size: 1.5em;
       font-family: "Poppins", Poppins;
-      padding: 20px;
+      padding: 5px;
     }
 
     .boxTextCitadelBis {
       align-items: center;
-      margin: 20px;
-      font-size: 1.5em;
+      margin: 5px;
+      font-size: 1em;
       font-family: "Poppins", Poppins;
-      padding: 20px;
+      padding: 5px;
     }
     .boxCitadel {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       align-items: center;
-      margin: 20px;
-      padding: 20px;
+      margin: 5px;
+      padding: 5px;
 
       .boxTextCitadel {
-        font-size: 1.5em;
+        font-size: 1em;
         font-family: "Poppins", Poppins;
-        padding: 20px;
+        padding: 5px;
       }
 
       .boxImageCitadel {
@@ -329,29 +320,36 @@
 
     .boxWarior {
       display: flex;
-      // flex-wrap: wrap;
-      flex-direction: column-reverse;
+      flex-wrap: nowrap;
+      // flex-direction: column-reverse;
       align-items: center;
-      margin: 10px;
-      padding: 10px;
+      margin: 5px;
+      padding: 5px;
 
       .boxTextWarior {
-        font-size: 1.5em;
+        font-size: 1em;
         font-family: "Poppins", Poppins;
-        padding: 20px;
+        padding: 5px;
+      }
+
+      .boximageWarior {
+        .imageWarior {
+          height: auto;
+          width: 100%;
+        }
       }
     }
 
     .boxMage {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       align-items: center;
-      margin: 20px;
-      padding: 20px;
+      margin: 5px;
+      padding: 5px;
 
       .boxTextMage {
-        font-size: 1.5em;
-        padding: 20px;
+        font-size: 1em;
+        padding: 5px;
       }
 
       .boxImageMage {
@@ -366,11 +364,106 @@
     text-align: center;
     margin-top: 0;
     line-height: 1.5;
-    font-size: 8vw;
+    font-size: 3vw;
     font-family: "Poppins", Poppins;
 
     .titreAPartie {
-      padding: 20px;
+      padding: 10px;
+      font-size: 2em;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .containeurPresentation {
+    .titreh2 {
+      text-align: center;
+      margin-top: 0;
+      line-height: 1.5;
+      font-size: 1em;
+      font-family: "Poppins", Poppins;
+      padding: 5px;
+    }
+
+    .boxTextCitadelBis {
+      align-items: center;
+      margin: 5px;
+      font-size: 1em;
+      font-family: "Poppins", Poppins;
+      padding: 5px;
+    }
+    .boxCitadel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 5px;
+      padding: 5px;
+
+      .boxTextCitadel {
+        font-size: 1em;
+        font-family: "Poppins", Poppins;
+        padding: 5px;
+      }
+
+      .boxImageCitadel {
+        .imageCitadel {
+          height: auto;
+          width: 100%;
+        }
+      }
+    }
+
+    .boxWarior {
+      display: flex;
+      // flex-wrap: nowrap;
+      flex-direction: column-reverse;
+      align-items: center;
+      margin: 5px;
+      padding: 5px;
+
+      .boxTextWarior {
+        font-size: 1em;
+        font-family: "Poppins", Poppins;
+        padding: 5px;
+      }
+
+      .boximageWarior {
+        .imageWarior {
+          height: auto;
+          width: 100%;
+        }
+      }
+    }
+
+    .boxMage {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 5px;
+      padding: 5px;
+
+      .boxTextMage {
+        font-size: 1em;
+        padding: 5px;
+      }
+
+      .boxImageMage {
+        .imageMage {
+          height: auto;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .agendaDesParties {
+    text-align: center;
+    margin-top: 0;
+    line-height: 1.5;
+    font-size: 3vw;
+    font-family: "Poppins", Poppins;
+
+    .titreAPartie {
+      padding: 10px;
     }
   }
 }
