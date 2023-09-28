@@ -44,7 +44,7 @@ class UtilisateursManager extends AbstractManager {
       `
     SELECT utilisateurs.PhotoProfil, utilisateurs.Nom, utilisateurs.Prenom, utilisateurs.Pseudo
     FROM ${this.table}
-    JOIN participation ON utilisateurs.id = participation.Utilisateurs_Id
+    JOIN participation ON utilisateurs.id = participation.Utilisateur_Id
     WHERE participation.Partie_Id = ?;`,
       [id]
     )
@@ -54,6 +54,13 @@ class UtilisateursManager extends AbstractManager {
     return this.database.query(
       `select id, Pseudo, hashedPassword from ${this.table} where Pseudo = ?`,
       [Pseudo]
+    )
+  }
+
+  updateProfilPicture(utilisateurs, profilpicturePath) {
+    return this.database.query(
+      `UPDATE ${this.table} SET PhotoProfil = ? WHERE id = ?`,
+      [profilpicturePath, utilisateurs.id]
     )
   }
 }

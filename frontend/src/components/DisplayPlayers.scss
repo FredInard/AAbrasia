@@ -1,0 +1,33 @@
+.displayPlayers-container {
+  /* Styles pour le conteneur principal */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Espacement entre les cartes */
+  /* Ajoutez d'autres styles au besoin */
+
+  .postCardDisplayPlayer {
+    /* Styles pour chaque carte d'utilisateur */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    width: 200px; /* Ajustez la largeur au besoin */
+    /* Ajoutez d'autres styles au besoin */
+
+    .photoProfilDisplayPlayer {
+      /* Styles pour la photo de profil */
+      max-width: 100%;
+      height: auto; /* Pour maintenir le ratio hauteur/largeur */
+      border-radius: 50%; /* Pour une forme de cercle */
+      /* Ajoutez d'autres styles au besoin */
+    }
+
+    .userNameDisplayPlayer {
+      /* Styles pour le nom d'utilisateur */
+      font-weight: bold;
+      color: darkred;
+      font-size: 0.5em;
+      /* Ajoutez d'autres styles au besoin */
+    }
+  }
+}

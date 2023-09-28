@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
+import "./DisplayPlayers.scss"
 
 export default function DisplayPlayers({ postData }) {
   const [allPosts, setAllPosts] = useState([])
@@ -13,7 +14,7 @@ export default function DisplayPlayers({ postData }) {
   useEffect(() => {
     axios
       .get(
-        `${import.meta.env.VITE_BACKEND_URL}/utilisateur/displayPlayers/${
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/displayPlayers/${
           postData.PartieID
         }`,
         { headers }
@@ -36,14 +37,14 @@ export default function DisplayPlayers({ postData }) {
   return (
     <div className="displayPlayers-container">
       {allPosts.map((post) => (
-        <div className="post-card" key={post.id}>
+        <div className="postCardDisplayPlayer" key={post.id}>
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/${post.profil_picture}`}
+            className="photoProfilDisplayPlayer"
+            src={`${import.meta.env.VITE_BACKEND_URL}/${post.PhotoProfil}`}
             alt="photo de profil de l'utilisateur"
           />
           <div className="post-details">
-            <div className="username">{post.Pseudo}</div>
-            <div className="content">{post.PhotoProfil}</div>
+            <div className="userNameDisplayPlayer">{post.Pseudo}</div>
           </div>
         </div>
       ))}
