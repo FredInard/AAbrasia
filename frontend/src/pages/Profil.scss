@@ -1,3 +1,18 @@
 .boxFormProfil {
   margin-top: 300px;
 }
+.buttonExit {
+  border: solid 1px rgb(255, 255, 255);
+  border-radius: 50%;
+  width: 5%;
+  will-change: transform;
+  transition: all 0.5s ease-in-out;
+
+  &:hover {
+    // Pas d'espace ici
+    border: solid 3px rgb(255, 255, 255);
+    border-radius: 50%;
+    width: 5%;
+    transform: scale(1.5);
+  }
+}

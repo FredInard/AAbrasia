@@ -1,4 +1,7 @@
+import exit from "../assets/pics/Exist.png"
+
 import React, { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Cookies from "js-cookie"
 
@@ -8,6 +11,7 @@ import NavBar from "../components/NavBar"
 
 export default function profil() {
   const idUser = Cookies.get("idUtilisateur")
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios
@@ -63,6 +67,17 @@ export default function profil() {
           console.error("Erreur lors de la mise a jour du profil :", error)
         })
     )
+  }
+
+  const handleLogout = () => {
+    Cookies.remove("authToken")
+    Cookies.remove("loggedInUtilisateur")
+    Cookies.remove("idUtilisateur")
+    Cookies.remove("photoProfilUtilisateur")
+    Cookies.remove("Pseudo")
+    Cookies.remove("adminUtilisateur")
+
+    navigate("/")
   }
 
   return (
@@ -184,6 +199,13 @@ export default function profil() {
           </form>
         </div>
       </header>
+
+      <img
+        className="buttonExit"
+        src={exit}
+        onClick={handleLogout}
+        alt="logo exit"
+      />
     </>
   )
 }

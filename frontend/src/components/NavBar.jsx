@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import logoSeul from "../assets/pics/logoSeul.svg"
 import "./NavBar.scss"
+import Cookies from "js-cookie"
 
 function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [navBackgroundColor, setNavBackgroundColor] = useState("transparent")
+  const idUser = Cookies.get("idUtilisateur")
+  const photoProfilUser = Cookies.get("photoProfilUtilisateur")
 
   useEffect(() => {
     const handleResize = () => {
@@ -54,6 +57,8 @@ function NavBar() {
     }
   }, [])
 
+  console.info("photoProfilUser :", photoProfilUser)
+
   return (
     <div
       className="navBarDesktopContainer header"
@@ -79,17 +84,23 @@ function NavBar() {
           <Link className="menuItem menuItem-2" to="/Inscription">
             Inscription
           </Link>
-          <Link className="menuItem menuItem-2" to="/profil">
-            Profil
-          </Link>
           <Link className="menuItem menuItem-2" to="/create-game">
             Créer ta partie
           </Link>
           <Link className="menuItem menuItem-2" to="/Association">
             L'Association
           </Link>
-          <Link className="menuItem menuItem-2" to="/Creation">
+          {/* <Link className="menuItem menuItem-2" to="/Creation">
             Création
+          </Link> */}
+          <Link className="menuItem menuItem-2" to="/profil">
+            <img
+              className="photoProfilUserNavBar"
+              src={`${import.meta.env.VITE_BACKEND_URL}/${
+                photoProfilUser.PhotoProfil
+              }`}
+              alt="photo de profil de l'utilisateur"
+            />
           </Link>
         </div>
       )}
@@ -101,18 +112,22 @@ function NavBar() {
           <Link className="buttonNavBar nav-item" to="/Inscription">
             <p>Inscription</p>
           </Link>
-          <Link className="buttonNavBar nav-item" to="/profil">
-            <p>Profil</p>
-          </Link>
+
           <Link className="buttonNavBar nav-item" to="/create-game">
             <p>Créer ta partie</p>
           </Link>
           <Link className="buttonNavBar nav-item" to="/Association">
             <p>L'Association</p>
           </Link>
-          <Link className="buttonNavBar nav-item" to="/Creation">
+          {/* <Link className="buttonNavBar nav-item" to="/Creation">
             <p>Création</p>
-          </Link>
+          </Link> */}
+
+          {idUser ? (
+            <Link className="buttonNavBar nav-item" to="/profil">
+              <p>Profil</p>
+            </Link>
+          ) : null}
         </div>
       )}
     </div>
