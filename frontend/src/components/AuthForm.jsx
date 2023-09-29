@@ -80,6 +80,13 @@ function AuthForm() {
               sameSite: "strict",
             }
           )
+          Cookies.set(
+            "adminUtilisateur",
+            JSON.stringify(res.data.utilisateur.Admin),
+            {
+              sameSite: "strict",
+            }
+          )
           setSignInPseudo()
           setSignInPassword()
           navigate("/")

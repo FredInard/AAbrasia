@@ -39,6 +39,26 @@ class UtilisateursManager extends AbstractManager {
     )
   }
 
+  readlessPW(id) {
+    return this.database.query(
+      `
+      SELECT
+        Nom,
+        Prenom,
+        Pseudo,
+        Mail,
+        Telephone,
+        PseudoDiscord,
+        Description,
+        PhotoProfil,
+        VilleResidence
+      FROM ${this.table}
+      WHERE id = ?
+    `,
+      [id]
+    )
+  }
+
   getDisplayPlayer(id) {
     return this.database.query(
       `

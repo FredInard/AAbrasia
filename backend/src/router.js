@@ -19,6 +19,7 @@ router.get(
   UtilisateursControllers.displayPlayer
 )
 router.get("/utilisateurs/:id", UtilisateursControllers.read)
+router.get("/utilisateurs/profil/:id", UtilisateursControllers.read2)
 router.post("/utilisateurs", UtilisateursControllers.add)
 
 router.get("/partie", PartieControllers.browse)

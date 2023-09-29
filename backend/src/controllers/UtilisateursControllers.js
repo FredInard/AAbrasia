@@ -44,6 +44,22 @@ const read = (req, res) => {
     })
 }
 
+const read2 = (req, res) => {
+  models.utilisateurs
+    .readlessPW(req.params.id)
+    .then(([rows]) => {
+      if (rows[0] == null) {
+        res.sendStatus(404)
+      } else {
+        res.send(rows[0])
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
 const edit = (req, res) => {
   const utilisateurs = req.body
 
@@ -154,6 +170,7 @@ module.exports = {
   browse,
   add,
   read,
+  read2,
   edit,
   destroy,
   displayPlayer,
