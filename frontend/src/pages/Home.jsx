@@ -39,8 +39,6 @@ export default function Home() {
     setIsPostCardsOpen(true)
     setPostData(allPostData)
   }
-  // console.info("postcards1", postData)
-  console.info("parties", parties)
 
   return (
     <>

@@ -25,13 +25,6 @@ function AuthForm() {
       })
       .then((res) => res.data)
   }
-  console.info(
-    "data insérées :",
-    nomInscription,
-    prenomInscription,
-    mailInscription,
-    motDePasseInscription
-  )
 
   const handleSignInClick = () => {
     setIsSignIn(true)
@@ -42,7 +35,6 @@ function AuthForm() {
   }
 
   const handleKeyDown = (e) => {
-    // console.info("Key down event triggered")
     if (e.code === "Enter" || (e.key === "Enter" && signInPassword !== "")) {
       handleLogin(e)
     }
@@ -82,14 +74,14 @@ function AuthForm() {
           )
           Cookies.set(
             "photoProfilUtilisateur",
-            JSON.stringify(res.data.utilisateur.photoProfil),
+            JSON.stringify(res.data.utilisateur.PhotoProfil),
             {
               sameSite: "strict",
             }
           )
           Cookies.set(
             "adminUtilisateur",
-            JSON.stringify(res.data.utilisateur.admin),
+            JSON.stringify(res.data.utilisateur.Admin),
             {
               sameSite: "strict",
             }
@@ -97,19 +89,6 @@ function AuthForm() {
           setSignInPseudo()
           setSignInPassword()
           navigate("/")
-          console.info(
-            "res.data.utilisateur.utilisateur :",
-            res.data.utilisateur
-          )
-          console.info(
-            "res.data.utilisateur.Admin :",
-            res.data.utilisateur.Admin
-          )
-          console.info("res.data.utilisateur.id :", res.data.utilisateur.id)
-          console.info(
-            "res.data.utilisateur.PhotoProfil :",
-            res.data.utilisateur.PhotoProfil
-          )
         }
       })
       .catch((error) => {

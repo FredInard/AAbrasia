@@ -6,6 +6,10 @@ import axios from "axios"
 import Cookies from "js-cookie"
 
 import "./Profil.scss"
+import Toggle from "../components/Toggle.jsx"
+
+import king from "../assets/pics/medievalKing.svg"
+import queen from "../assets/pics/queen.svg"
 
 import NavBar from "../components/NavBar"
 
@@ -29,7 +33,9 @@ export default function profil() {
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
+  const [showBoxListeParties, setShowBoxListeParties] = useState(true)
   const [utilisateur, setUtilisateur] = useState({})
+  const [parties, setParties] = useState()
   const [nom, setNom] = useState(utilisateur.Nom)
   const [prenom, setPrenom] = useState(utilisateur.Prenom)
   const [pseudo, setPseudo] = useState(utilisateur.Pseudo)
@@ -44,12 +50,25 @@ export default function profil() {
   const [hashedPassword, setHashedPassword] = useState(
     utilisateur.hashedPassword
   )
-  console.info("data de utilisateur :", utilisateur)
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    useEffect(() => {
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/partie/profil/${idUser}`, {
+          headers,
+        })
+        .then((res) => {
+          console.info("Réponse Axios (succès) :", res)
+          setParties(res.data)
+        })
+        .catch((err) => {
+          console.error("Problème lors du chargement des parties", err)
+        })
+    }, [])
+
     axios.post(
-      "http://localhost:4242/utilisateurs",
+      `${import.meta.env.VITE_BACKEND_URL}/utilisateurs`,
       ({
         Nom: nom,
         Prenom: prenom,
@@ -68,7 +87,7 @@ export default function profil() {
         })
     )
   }
-
+  console.info("Data de partie dans Profil :", parties)
   const handleLogout = () => {
     Cookies.remove("authToken")
     Cookies.remove("loggedInUtilisateur")
@@ -79,133 +98,158 @@ export default function profil() {
 
     navigate("/")
   }
-
+  console.info("etat du toggle :", showBoxListeParties)
   return (
     <>
       <NavBar className="NavBarHome" />
-      <header className="App-header">
-        <div className="boxFormProfil">
-          <form className="boxFormProfil" onSubmit={handleSubmit}>
-            <label>
-              Nom:
-              <input
-                type="text"
-                placeholder={utilisateur.Nom}
-                value={nom}
-                onChange={(e) => setNom(e.target.value)}
+      <div className="boxBouttonExit">
+        <img
+          className="buttonExit"
+          src={exit}
+          onClick={handleLogout}
+          alt="logo exit"
+        />
+      </div>
+      <div className="bouttonSwitch">
+        <Toggle onClick={() => setShowBoxListeParties(!showBoxListeParties)} />
+      </div>
+      <div className="globalBoxProfil">
+        {showBoxListeParties === true ? (
+          <div className="boxListeParties">
+            <div className="boxPictureLeft fade-in-left">
+              <img className="kingPicture" src={king} alt="image d'un roi" />
+            </div>
+            <div className="boxListeGame fade-in-right"></div>
+          </div>
+        ) : (
+          <div className="boxModifProfil">
+            <div className="boxFormProfil">
+              <form
+                className="boxFormProfil fade-in-left"
+                onSubmit={handleSubmit}
+              >
+                <label>
+                  Nom:
+                  <input
+                    type="text"
+                    placeholder={utilisateur.Nom}
+                    value={nom}
+                    onChange={(e) => setNom(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <label>
+                  Prénom:
+                  <input
+                    type="text"
+                    placeholder={utilisateur.Prenom}
+                    value={prenom}
+                    onChange={(e) => setPrenom(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <label>
+                  Pseudo:
+                  <input
+                    type="text"
+                    placeholder={utilisateur.Pseudo}
+                    value={pseudo}
+                    onChange={(e) => setPseudo(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <label>
+                  Mail:
+                  <input
+                    type="text"
+                    placeholder={utilisateur.Mail}
+                    value={mail}
+                    onChange={(e) => setMail(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <label>
+                  Téléphone:
+                  <input
+                    type="text"
+                    placeholder={utilisateur.Telephone}
+                    value={telephone}
+                    onChange={(e) => setTelephone(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <label>
+                  Pseudo Discord:
+                  <input
+                    type="text"
+                    placeholder={utilisateur.PseudoDiscord}
+                    value={pseudoDiscord}
+                    onChange={(e) => setPseudoDiscord(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <label>
+                  Description:
+                  <input
+                    type="text"
+                    placeholder={utilisateur.Description}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <label>
+                  Photo de Profil:
+                  <input
+                    type="text"
+                    placeholder="clic et insert ta photo"
+                    value={photoProfil}
+                    onChange={(e) => setPhotoProfil(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <label>
+                  Ville de Résidence:
+                  <input
+                    type="text"
+                    placeholder={utilisateur.villeResidence}
+                    value={villeResidence}
+                    onChange={(e) => setVilleResidence(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <label>
+                  Mot de Passe:
+                  <input
+                    type="password"
+                    value={hashedPassword}
+                    onChange={(e) => setHashedPassword(e.target.value)}
+                  />
+                </label>
+                <br />
+
+                <button type="submit">Soumettre</button>
+              </form>
+            </div>
+            <div className="boxPictureRight">
+              <img
+                className="queenPicture fade-in-right"
+                src={queen}
+                alt="image d'un reine"
               />
-            </label>
-            <br />
-
-            <label>
-              Prénom:
-              <input
-                type="text"
-                placeholder={utilisateur.Prenom}
-                value={prenom}
-                onChange={(e) => setPrenom(e.target.value)}
-              />
-            </label>
-            <br />
-
-            <label>
-              Pseudo:
-              <input
-                type="text"
-                placeholder={utilisateur.Pseudo}
-                value={pseudo}
-                onChange={(e) => setPseudo(e.target.value)}
-              />
-            </label>
-            <br />
-
-            <label>
-              Mail:
-              <input
-                type="text"
-                placeholder={utilisateur.Mail}
-                value={mail}
-                onChange={(e) => setMail(e.target.value)}
-              />
-            </label>
-            <br />
-
-            <label>
-              Téléphone:
-              <input
-                type="text"
-                placeholder={utilisateur.Telephone}
-                value={telephone}
-                onChange={(e) => setTelephone(e.target.value)}
-              />
-            </label>
-            <br />
-
-            <label>
-              Pseudo Discord:
-              <input
-                type="text"
-                placeholder={utilisateur.PseudoDiscord}
-                value={pseudoDiscord}
-                onChange={(e) => setPseudoDiscord(e.target.value)}
-              />
-            </label>
-            <br />
-
-            <label>
-              Description:
-              <input
-                type="text"
-                placeholder={utilisateur.Description}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </label>
-            <br />
-
-            <label>
-              Photo de Profil:
-              <input
-                type="text"
-                placeholder="clic et insert ta photo"
-                value={photoProfil}
-                onChange={(e) => setPhotoProfil(e.target.value)}
-              />
-            </label>
-            <br />
-
-            <label>
-              Ville de Résidence:
-              <input
-                type="text"
-                placeholder={utilisateur.villeResidence}
-                value={villeResidence}
-                onChange={(e) => setVilleResidence(e.target.value)}
-              />
-            </label>
-            <br />
-
-            <label>
-              Mot de Passe:
-              <input
-                type="password"
-                value={hashedPassword}
-                onChange={(e) => setHashedPassword(e.target.value)}
-              />
-            </label>
-            <br />
-
-            <button type="submit">Soumettre</button>
-          </form>
-        </div>
-      </header>
-
-      <img
-        className="buttonExit"
-        src={exit}
-        onClick={handleLogout}
-        alt="logo exit"
-      />
+            </div>
+          </div>
+        )}
+      </div>
     </>
   )
 }

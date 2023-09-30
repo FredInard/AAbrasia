@@ -3,13 +3,30 @@ import { Link } from "react-router-dom"
 import logoSeul from "../assets/pics/logoSeul.svg"
 import "./NavBar.scss"
 import Cookies from "js-cookie"
+import axios from "axios"
 
 function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [navBackgroundColor, setNavBackgroundColor] = useState("transparent")
+  const [utilisateur, setUtilisateur] = useState({})
   const idUser = Cookies.get("idUtilisateur")
-  const photoProfilUser = Cookies.get("photoProfilUtilisateur")
+  const tokenFromCookie = Cookies.get("authToken")
+  const headers = {
+    Authorization: `Bearer ${tokenFromCookie}`,
+  }
+
+  useEffect(() => {
+    axios
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUser}`,
+        { headers }
+      )
+      .then((res) => setUtilisateur(res.data))
+      .catch((err) => {
+        console.error("Problème lors du chargement de l'utlisateur", err)
+      })
+  }, [])
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,8 +74,6 @@ function NavBar() {
     }
   }, [])
 
-  console.info("photoProfilUser :", photoProfilUser)
-
   return (
     <div
       className="navBarDesktopContainer header"
@@ -97,7 +112,7 @@ function NavBar() {
             <img
               className="photoProfilUserNavBar"
               src={`${import.meta.env.VITE_BACKEND_URL}/${
-                photoProfilUser.PhotoProfil
+                utilisateur.PhotoProfil
               }`}
               alt="photo de profil de l'utilisateur"
             />
@@ -112,10 +127,6 @@ function NavBar() {
           <Link className="buttonNavBar nav-item" to="/Inscription">
             <p>Inscription</p>
           </Link>
-
-          <Link className="buttonNavBar nav-item" to="/create-game">
-            <p>Créer ta partie</p>
-          </Link>
           <Link className="buttonNavBar nav-item" to="/Association">
             <p>L'Association</p>
           </Link>
@@ -124,9 +135,23 @@ function NavBar() {
           </Link> */}
 
           {idUser ? (
-            <Link className="buttonNavBar nav-item" to="/profil">
-              <p>Profil</p>
-            </Link>
+            <>
+              <Link className="buttonNavBar nav-item" to="/create-game">
+                <p>Créer ta partie</p>
+              </Link>
+              <Link
+                className="buttonNavBar nav-item boxPhotoProfil"
+                to="/profil"
+              >
+                <img
+                  className="photoProfilNB"
+                  src={`${import.meta.env.VITE_BACKEND_URL}/${
+                    utilisateur.PhotoProfil
+                  }`}
+                  alt="photo de profil de l'utilisateur"
+                />
+              </Link>
+            </>
           ) : null}
         </div>
       )}

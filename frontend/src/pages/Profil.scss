@@ -1,18 +1,128 @@
-.boxFormProfil {
-  margin-top: 300px;
+.fade-in-left {
+  -webkit-animation: fade-in-left 1.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-in-left 1.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
-.buttonExit {
-  border: solid 1px rgb(255, 255, 255);
-  border-radius: 50%;
-  width: 5%;
-  will-change: transform;
-  transition: all 0.5s ease-in-out;
 
-  &:hover {
-    // Pas d'espace ici
-    border: solid 3px rgb(255, 255, 255);
+.fade-in-right {
+  -webkit-animation: fade-in-right 1.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-in-right 1.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+.boxBouttonExit {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 100px;
+  width: 98%;
+  .buttonExit {
+    border: solid 1px rgb(255, 255, 255);
     border-radius: 50%;
-    width: 5%;
-    transform: scale(1.5);
+    width: 4%;
+    will-change: transform;
+    transition: all 0.3s ease-in;
+
+    &:hover {
+      border: solid 3px rgb(255, 255, 255);
+      transform: scale(1.2);
+    }
+  }
+}
+
+.bouttonSwitch {
+  display: flex;
+  justify-content: center;
+}
+
+.globalBoxProfil {
+  .boxListeParties {
+    border: solid 2px yellow;
+    display: flex;
+    .boxPictureLeft {
+      border: solid 1px red;
+      width: 50%;
+      .kingPicture {
+        -webkit-mask-image: linear-gradient(
+          to right,
+          rgb(6, 1, 39) 10%,
+          transparent 90%
+        );
+        mask-image: linear-gradient(
+          to right,
+          rgb(6, 1, 39) 10%,
+          transparent 90%
+        );
+      }
+    }
+
+    .boxListeGame {
+      border: solid 1px rgb(11, 240, 49);
+      width: 50%;
+    }
+  }
+  .boxModifProfil {
+    border: solid 2px orange;
+    display: flex;
+    .boxFormProfil {
+      width: 50%;
+      border: solid 1px white;
+    }
+    .boxPictureRight {
+      width: 50%;
+      -webkit-mask-image: linear-gradient(
+        to left,
+        rgb(6, 1, 39) 10%,
+        transparent 90%
+      );
+      mask-image: linear-gradient(to left, rgb(6, 1, 39) 10%, transparent 90%);
+    }
+  }
+}
+
+@-webkit-keyframes fade-in-left {
+  0% {
+    -webkit-transform: translateX(-50px);
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes fade-in-left {
+  0% {
+    -webkit-transform: translateX(-50px);
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fade-in-right {
+  0% {
+    -webkit-transform: translateX(50px);
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes fade-in-right {
+  0% {
+    -webkit-transform: translateX(50px);
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
   }
 }

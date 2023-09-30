@@ -32,8 +32,6 @@ export default function DisplayPlayers({ postData }) {
       })
   }, [postData])
 
-  console.info("postcards2", postData)
-
   return (
     <div className="displayPlayers-container">
       {allPosts.map((post) => (

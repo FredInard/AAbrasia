@@ -72,7 +72,7 @@ class UtilisateursManager extends AbstractManager {
 
   getUserByPseudoWithPassword(Pseudo) {
     return this.database.query(
-      `select id, Pseudo, hashedPassword from ${this.table} where Pseudo = ?`,
+      `select id, Pseudo, PhotoProfil, Admin, hashedPassword from ${this.table} where Pseudo = ?`,
       [Pseudo]
     )
   }
@@ -81,6 +81,18 @@ class UtilisateursManager extends AbstractManager {
     return this.database.query(
       `UPDATE ${this.table} SET PhotoProfil = ? WHERE id = ?`,
       [profilpicturePath, utilisateurs.id]
+    )
+  }
+
+  getReadPartieByUtilisateurId(id) {
+    return this.database.query(
+      `
+      SELECT *
+      FROM partie
+      INNER JOIN participation ON partie.id = participation.Partie_Id
+      WHERE participation.Utilisateur_Id = ? ;
+      `,
+      [id]
     )
   }
 }

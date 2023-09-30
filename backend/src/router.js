@@ -29,6 +29,7 @@ router.get("/partie/:id", PartieControllers.read)
 router.get("/participation", ParticipationControllers.browse)
 
 router.use(verifyToken)
+
 router.put(
   "/utilisateurs/:id/upload",
   upload.single("myFile"),
@@ -36,7 +37,11 @@ router.put(
 )
 router.put("/utilisateurs/:id", UtilisateursControllers.edit)
 router.delete("/utilisateurs/:id", UtilisateursControllers.destroy)
-
+router.get(
+  "/utilisateurs/profil/:id",
+  UtilisateursControllers.readPartieByUtilisateurId
+)
+router.get("/partie/profil/:id", PartieControllers.partieByUtilisateurId)
 router.put("/partie/:id", PartieControllers.edit)
 router.post("/partie", PartieControllers.add)
 router.delete("/partie/:id", PartieControllers.destroy)

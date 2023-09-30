@@ -59,6 +59,18 @@ ON
 
     `)
   }
+
+  findpartieByUtilisateurId(id) {
+    return this.database.query(
+      `
+    SELECT *
+      FROM partie
+      INNER JOIN participation ON partie.id = participation.Partie_Id
+      WHERE participation.Utilisateur_Id = ? ;
+    `,
+      [id]
+    )
+  }
 }
 
 module.exports = PartieManager
