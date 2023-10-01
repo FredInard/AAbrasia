@@ -42,6 +42,7 @@ router.get(
   UtilisateursControllers.readPartieByUtilisateurId
 )
 router.get("/partie/profil/:id", PartieControllers.partieByUtilisateurId)
+router.get("/partie/count/:id", PartieControllers.countPartieById)
 router.put("/partie/:id", PartieControllers.edit)
 router.post("/partie", PartieControllers.add)
 router.delete("/partie/:id", PartieControllers.destroy)

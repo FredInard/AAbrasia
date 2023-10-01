@@ -49,7 +49,8 @@ class PartieManager extends AbstractManager {
     p.Description AS DescriptionPartie,
     p.NombreJoueur AS NombreJoueursPartie,
     p.TypeDeJeux AS TypeDeJeuxPartie,
-    u.Pseudo AS PseudoMaitreDuJeu
+    u.Pseudo AS PseudoMaitreDuJeu,
+    p.MaitreDuJeu AS IDMaitreDuJeu
 FROM
     partie AS p
 INNER JOIN
@@ -63,11 +64,21 @@ ON
   findpartieByUtilisateurId(id) {
     return this.database.query(
       `
-    SELECT *
+      SELECT *
       FROM partie
-      INNER JOIN participation ON partie.id = participation.Partie_Id
+      JOIN participation ON partie.id = participation.Partie_Id
       WHERE participation.Utilisateur_Id = ? ;
     `,
+      [id]
+    )
+  }
+
+  getCountPartieById(id) {
+    return this.database.query(
+      `
+      SELECT Partie_Id, COUNT(*) AS nbParticipants
+      FROM participation
+      WHERE Partie_Id = ?;`,
       [id]
     )
   }

@@ -20,7 +20,7 @@ export default function CreateGame() {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
 
-  const handleCreateUser = (e) => {
+  const handleCreateGame = (e) => {
     e.preventDefault()
     axios
       .post(
@@ -49,22 +49,11 @@ export default function CreateGame() {
       })
   }
 
-  console.info(
-    "data de createGame :",
-    idUser,
-    rpgName,
-    date,
-    hour,
-    place,
-    desc,
-    playersCapacity
-  )
-
   return (
     <>
       <NavBar className="NavBarHome" />
       <main id="createGameGlobal">
-        <form id="createGameForm" onSubmit={handleCreateUser}>
+        <form id="createGameForm" onSubmit={handleCreateGame}>
           <div id="createGameInputs">
             <input
               type="text"

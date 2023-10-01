@@ -184,7 +184,8 @@
   padding: 20px;
 
   .globalContainerCard {
-    background-color: rgba(20, 184, 197, 1);
+    // background-color: rgba(20, 184, 197, 1);
+    background-color: rgba(255, 255, 255, 0.657);
     border: 1px solid #ccc;
     border-radius: 30px;
     color: rgb(6, 1, 39);
@@ -246,8 +247,9 @@
 
   .globalContainerCard:hover {
     border-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.857);
     transform: scale(1.025);
-    border: 6px solid #ccc;
+    border: 2px solid #ccc;
     cursor: pointer;
   }
 
@@ -478,7 +480,7 @@
     padding: 20px;
 
     .globalContainerCard {
-      background-color: rgba(20, 184, 197, 1);
+      background-color: rgba(255, 255, 255, 0.857);
       border: 1px solid #ccc;
       border-radius: 30px;
       color: rgb(6, 1, 39);
@@ -540,8 +542,10 @@
 
     .globalContainerCard:hover {
       border-color: #ffffff;
+      background-color: rgb(255, 255, 255);
       transform: scale(1.025);
-      border: 6px solid #ccc;
+      border: 3px solid #ffffff;
+      box-shadow: #ffffff;
       cursor: pointer;
     }
 

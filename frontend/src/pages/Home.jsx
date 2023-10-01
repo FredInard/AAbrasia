@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
-
 import Citadel from "../assets/pics/CitadelOfSisteron.svg"
 import questioningFemale from "../assets/pics/femaleWarrior.svg"
 import wizard from "../assets/pics/wizard.svg"
@@ -10,11 +9,10 @@ import scene from "../assets/pics/banner.svg"
 import BrushUp from "../assets/pics/BrushUp.svg"
 import logoAiW from "../assets/pics/logoAiW.svg"
 import LogoPlayers from "../assets/pics/playerIcon.svg"
-
 import "./Home.scss"
 import NavBar from "../components/NavBar"
 import DisplayPlayers from "../components/DisplayPlayers"
-// import ModalCardGame from "../components/ModalCardGame"
+import Modal from "../components/Modal"
 
 export default function Home() {
   const [parties, setParties] = useState([])
@@ -35,7 +33,6 @@ export default function Home() {
   }, [])
 
   const handlePostClick = (allPostData) => {
-    // Ouvrez le composant PlayerCards en passant les informations du joueur sélectionné.
     setIsPostCardsOpen(true)
     setPostData(allPostData)
   }
@@ -105,7 +102,7 @@ export default function Home() {
               histoire dans laquelle chacune des personnes attablées incarne un
               personnage. Le but est d’imaginer et mettre en place
               collectivement des solutions pour déjouer les pièges et mener à
-              bien l’aventure... A conditions que les dés le permettent !
+              bien l’aventure... À condition que les dés le permettent !
             </p>
           </div>
           <div className="boximageWarior">
@@ -121,7 +118,7 @@ export default function Home() {
             <img
               className="imageCitadel"
               src={Citadel}
-              alt="image de la citadel de Sisteton"
+              alt="image de la citadel de Sisteron"
             />
           </div>
           <div className="boxTextCitadel">
@@ -139,7 +136,7 @@ export default function Home() {
             Elle se donne pour mission de créer du lien social, d'une part en
             créant des espaces de jeu mixtes et bienveillants pour toute
             personne souhaitant la rejoindre, d'autre part en allant vers des
-            publics en recherche de sociabilités et/ou isolées, telles que les
+            publics en recherche de sociabilité et/ou isolés, tels que les
             personnes retraitées ou les adolescents. L'association entend
             développer un volet culturel en organisant des ateliers d'écriture
             comme un complément des activités de jeu de rôle, des groupes de
@@ -182,25 +179,22 @@ export default function Home() {
                       />
                       X{partie.NombreJoueursPartie}
                     </div>
-                    {/* <div className="infoItem">
-                      Description : {partie.DescriptionPartie}
-                    </div> */}
                   </div>
                 </div>
               </div>
             ))}
           </div>
         )}
-        {isPostCardsOpen && (
+      </div>
+      <Modal isOpen={isPostCardsOpen} onClose={() => setIsPostCardsOpen(false)}>
+        {postData && (
           <DisplayPlayers
-            isOpen={isPostCardsOpen}
-            onClose={() => setIsPostCardsOpen(false)}
             postData={postData}
             // headers={headers}
-            // formattedSchedule={formattedSchedule}
+            // formataedSchedule={formattedSchedule}
           />
         )}
-      </div>
+      </Modal>
     </>
   )
 }

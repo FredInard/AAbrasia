@@ -20,6 +20,7 @@ const add = (req, res) => {
   models.participation
     .insert(participation)
     .then(([result]) => {
+      console.info("inscription à la partie réussit")
       res.json(result.insertId)
     })
     .catch((err) => {
