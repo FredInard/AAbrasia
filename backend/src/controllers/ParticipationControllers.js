@@ -81,10 +81,32 @@ const destroy = (req, res) => {
     })
 }
 
+const countUserParticipation = (req, res) => {
+  const utilisateurId = req.params.utilisateurId
+  const partieId = req.params.partieId
+
+  models.participation
+    .getCountUserParticipation(utilisateurId, partieId)
+    .then((result) => {
+      const count = result[0][0].count // Extraire la valeur de "count" de la réponse
+      if (count > 0) {
+        console.info("L'utilisateur est déjà inscrit à cette partie.")
+        res.json({ isSubscribed: true })
+      } else {
+        res.json({ isSubscribed: false })
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
 module.exports = {
   browse,
   add,
   read,
   edit,
   destroy,
+  countUserParticipation,
 }

@@ -50,5 +50,9 @@ router.delete("/partie/:id", PartieControllers.destroy)
 router.put("/participation/:id", ParticipationControllers.edit)
 router.post("/participation", ParticipationControllers.add)
 router.delete("/participation/:id", ParticipationControllers.destroy)
+router.get(
+  "/participation/count/:utilisateurId/:partieId",
+  ParticipationControllers.countUserParticipation
+)
 
 module.exports = router

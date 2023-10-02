@@ -27,6 +27,13 @@ class ParticipationManager extends AbstractManager {
       ]
     )
   }
+
+  getCountUserParticipation(utilisateurId, partieId) {
+    return this.database.query(
+      `SELECT COUNT(*) AS count FROM participation WHERE Utilisateur_Id = ? AND Partie_Id = ?`,
+      [utilisateurId, partieId]
+    )
+  }
 }
 
 module.exports = ParticipationManager

@@ -48,32 +48,59 @@ export default function DisplayPlayers({ postData }) {
 
   const handleSuscribeGame = (e) => {
     e.preventDefault()
+    // Ajoutez une vérification côté serveur ici
     axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/participation`,
-        {
-          Utilisateur_Id: idUser,
-          Partie_Id: postData.PartieID,
-          Partie_IdMaitreDuJeu: postData.IDMaitreDuJeu,
-        },
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/participation/count/${idUser}/${
+          postData.PartieID
+        }`,
         { headers }
       )
-      .then((res) => {
-        if (res.status === 200) {
-          console.info("Partie créée avec succès !")
+      .then((checkResponse) => {
+        if (checkResponse.data.isSubscribed) {
+          console.info("L'utilisateur est déjà inscrit à cette partie.")
+          // Gérez le cas où l'utilisateur est déjà inscrit (peut-être afficher un message à l'utilisateur)
+        } else {
+          // Si l'utilisateur n'est pas déjà inscrit, inscrivez-le à la partie
+          axios
+            .post(
+              `${import.meta.env.VITE_BACKEND_URL}/participation`,
+              {
+                Utilisateur_Id: idUser,
+                Partie_Id: postData.PartieID,
+                Partie_IdMaitreDuJeu: postData.IDMaitreDuJeu,
+              },
+              { headers }
+            )
+            .then((res) => {
+              if (res.status === 200) {
+                console.info("L'utilisateur à rejoin la partie avec succès !")
+              }
+              // document.getElementById("createGameForm").reset()
+            })
+            .catch((error) => {
+              console.error(
+                "Erreur l'utilisateur n'a pas put rejoindre la partie :",
+                error
+              )
+            })
         }
-        document.getElementById("createGameForm").reset()
-        // document.getElementById("createGameSelecter").selectedIndex = 0
       })
       .catch((error) => {
-        console.error("Erreur lors de la création de la partie :", error)
+        console.error(
+          "Erreur lors de la vérification de l'inscription :",
+          error
+        )
       })
   }
 
   console.info(
     "info sur la subcription :",
+    "idUser :",
     idUser,
+    "postData.PartieID :",
     postData.PartieID,
+    "postData.IDMaitreDuJeu :",
     postData.IDMaitreDuJeu
   )
   return (
