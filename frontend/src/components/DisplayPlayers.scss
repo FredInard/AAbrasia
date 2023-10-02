@@ -13,6 +13,9 @@
     p {
       color: rgb(6, 1, 39);
     }
+    h3 {
+      color: rgb(6, 1, 39);
+    }
   }
   .mapParticipants {
     display: flex;
@@ -59,9 +62,12 @@
 }
 
 .buttonJoinAdventure {
-  border-radius: 50px;
-  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
   height: 50px;
+  border-radius: 50px;
 }
 
 .buttonJoinAdventure:hover {
@@ -69,4 +75,15 @@
   transform: scale(1.025);
   box-shadow: #000000;
   cursor: pointer;
+}
+
+.photoMaitreDuJeux {
+  border-radius: 50%;
+  width: 10%;
+  height: auto;
+}
+
+.meneurPartieDisplayPlayer {
+  color: darkred;
+  font-size: 1.5em;
 }

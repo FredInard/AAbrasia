@@ -14,6 +14,7 @@ class UtilisateursManager extends AbstractManager {
         utilisateurs.Pseudo,
         utilisateurs.Mail,
         utilisateurs.hashedPassword,
+        utilisateurs.PhotoProfil,
       ]
     )
   }

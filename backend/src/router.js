@@ -11,8 +11,9 @@ const UtilisateursControllers = require("./controllers/UtilisateursControllers.j
 // const CreateGameControllers = require("./controllers/CreateGameControllers")
 
 router.post("/login", UtilisateursControllers.verifyUtilisateur, verifyPassword)
-router.post("/utilisateurs", hashPassword, UtilisateursControllers.add)
 
+router.post("/utilisateurs", hashPassword, UtilisateursControllers.add)
+// router.post("/utilisateurs", UtilisateursControllers.add)
 router.get("/utilisateurs", UtilisateursControllers.browse)
 router.get(
   "/utilisateurs/displayPlayers/:id",
@@ -20,11 +21,11 @@ router.get(
 )
 router.get("/utilisateurs/:id", UtilisateursControllers.read)
 router.get("/utilisateurs/profil/:id", UtilisateursControllers.read2)
-router.post("/utilisateurs", UtilisateursControllers.add)
 
 router.get("/partie", PartieControllers.browse)
 router.get("/partie/affichage", PartieControllers.affichageInfoPartie)
 router.get("/partie/:id", PartieControllers.read)
+router.get("/partie/count/:id", PartieControllers.countPartieById)
 
 router.get("/participation", ParticipationControllers.browse)
 
@@ -42,7 +43,7 @@ router.get(
   UtilisateursControllers.readPartieByUtilisateurId
 )
 router.get("/partie/profil/:id", PartieControllers.partieByUtilisateurId)
-router.get("/partie/count/:id", PartieControllers.countPartieById)
+
 router.put("/partie/:id", PartieControllers.edit)
 router.post("/partie", PartieControllers.add)
 router.delete("/partie/:id", PartieControllers.destroy)

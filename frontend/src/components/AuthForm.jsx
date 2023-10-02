@@ -13,17 +13,54 @@ function AuthForm() {
   const [motDePasseInscription, setMotDePasseInscription] = useState([])
   const [signInPseudo, setSignInPseudo] = useState()
   const [signInPassword, setSignInPassword] = useState()
+  const [errorMessage, setErrorMessage] = useState("")
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const imageParDefaut = `${
+    import.meta.env.VITE_BACKEND_URL
+  }/assets/images/profilPictures/portraitOfMerchant.png`
 
   const handleSubmit = () => {
+    // Effectuer d'abord une requête GET pour vérifier si l'utilisateur existe déjà
     axios
-      .post("http://localhost:4242/utilisateurs", {
-        Nom: nomInscription,
-        Prenom: prenomInscription,
-        Pseudo: pseudoInscription,
-        Mail: mailInscription,
-        password: motDePasseInscription,
+      .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`, {
+        params: {
+          Pseudo: pseudoInscription, // Vous pouvez également vérifier l'e-mail ici
+        },
       })
-      .then((res) => res.data)
+      .then((res) => {
+        if (res.data.length > 0) {
+          // Un utilisateur avec le même pseudo ou la même adresse e-mail existe déjà
+          setErrorMessage(
+            "Le pseudo est déjà pris ou l'utilisateur existe déjà."
+          )
+          setIsModalOpen(true)
+          console.error("L'utilisateur existe déjà.")
+        } else {
+          // Aucun utilisateur avec le même pseudo ou la même adresse e-mail n'existe
+          // Vous pouvez maintenant effectuer la requête POST pour ajouter l'utilisateur
+          axios
+            .post(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`, {
+              Nom: nomInscription,
+              Prenom: prenomInscription,
+              Pseudo: pseudoInscription,
+              Mail: mailInscription,
+              password: motDePasseInscription,
+              PhotoProfil: imageParDefaut,
+            })
+            .then((res) => {
+              // Gérer la réponse de la requête POST ici
+            })
+            .catch((error) => {
+              console.error("Erreur lors de l'inscription :", error)
+            })
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la vérification de l'utilisateur :",
+          error
+        )
+      })
   }
 
   const handleSignInClick = () => {
@@ -45,7 +82,7 @@ function AuthForm() {
   const handleLogin = (e) => {
     e.preventDefault()
     axios
-      .post("http://localhost:4242/login", {
+      .post(`${import.meta.env.VITE_BACKEND_URL}/login`, {
         Pseudo: signInPseudo,
         hashedPassword: signInPassword,
       })
@@ -97,42 +134,117 @@ function AuthForm() {
   }
 
   return (
-    <div className={`container ${isSignIn ? "sign-in-mode" : "sign-up-mode"}`}>
-      <div className="forms-container">
-        <div className="signin-signup">
-          <form
-            action="#"
-            className={`sign-in-form ${isSignIn ? "active" : ""}`}
-          >
-            <h2 className="title">Connexion</h2>
-            <form id="cardLogIn-Input">
+    <>
+      <div
+        className={`container ${isSignIn ? "sign-in-mode" : "sign-up-mode"}`}
+      >
+        <div className="forms-container">
+          <div className="signin-signup">
+            <form
+              action="#"
+              className={`sign-in-form ${isSignIn ? "active" : ""}`}
+            >
+              <h2 className="title">Connexion</h2>
+              <form id="cardLogIn-Input">
+                <div className="input-field">
+                  <i className="fas fa-user"></i>
+                  <input
+                    type="text"
+                    placeholder="Pseudo"
+                    onChange={(e) => setSignInPseudo(e.target.value)}
+                  />
+                </div>
+                <div className="input-field">
+                  <i className="fas fa-lock"></i>
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => setSignInPassword(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                  />
+                </div>
+              </form>
+              <Link to="/">
+                <input
+                  type="submit"
+                  value="C'est partie"
+                  className="btn solid"
+                  onClick={handleLogin}
+                />
+              </Link>
+              {/* <p className="social-text">Or Sign in with social platforms</p>
+            <div className="social-media">
+              <a href="#" className="social-icon">
+                <i className="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" className="social-icon">
+                <i className="fab fa-twitter"></i>
+              </a>
+              <a href="#" className="social-icon">
+                <i className="fab fa-google"></i>
+              </a>
+              <a href="#" className="social-icon">
+                <i className="fab fa-linkedin-in"></i>
+              </a>
+            </div> */}
+            </form>
+            <form
+              action="#"
+              className={`sign-up-form ${isSignIn ? "" : "active"}`}
+            >
+              <h2 className="title">Inscription</h2>
               <div className="input-field">
                 <i className="fas fa-user"></i>
                 <input
                   type="text"
+                  placeholder="Prénom"
+                  value={prenomInscription}
+                  onChange={(e) => setPrenomInscription(e.target.value)}
+                />
+              </div>
+              <div className="input-field">
+                <i className="fas fa-envelope"></i>
+                <input
+                  type="text"
+                  placeholder="Nom"
+                  value={nomInscription}
+                  onChange={(e) => setNomInscription(e.target.value)}
+                />
+              </div>
+              <div className="input-field">
+                <i className="fas fa-envelope"></i>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={mailInscription}
+                  onChange={(e) => setMailInscription(e.target.value)}
+                />
+              </div>
+              <div className="input-field">
+                <i className="fas fa-envelope"></i>
+                <input
+                  type="text"
                   placeholder="Pseudo"
-                  onChange={(e) => setSignInPseudo(e.target.value)}
+                  value={pseudoInscription}
+                  onChange={(e) => setPseudoInscription(e.target.value)}
                 />
               </div>
               <div className="input-field">
                 <i className="fas fa-lock"></i>
                 <input
                   type="password"
-                  placeholder="Password"
-                  onChange={(e) => setSignInPassword(e.target.value)}
-                  onKeyDown={handleKeyDown}
+                  placeholder="mot de passe"
+                  value={motDePasseInscription}
+                  onChange={(e) => setMotDePasseInscription(e.target.value)}
                 />
               </div>
-            </form>
-            <Link to="/">
               <input
                 type="submit"
-                value="C'est partie"
-                className="btn solid"
-                onClick={handleLogin}
+                className="btn"
+                value="S'inscrire"
+                onClick={handleSubmit}
               />
-            </Link>
-            {/* <p className="social-text">Or Sign in with social platforms</p>
+              {/* <p className="social-text">Or Sign up with social platforms</p>
             <div className="social-media">
               <a href="#" className="social-icon">
                 <i className="fab fa-facebook-f"></i>
@@ -147,127 +259,65 @@ function AuthForm() {
                 <i className="fab fa-linkedin-in"></i>
               </a>
             </div> */}
-          </form>
-          <form
-            action="#"
-            className={`sign-up-form ${isSignIn ? "" : "active"}`}
-          >
-            <h2 className="title">Inscription</h2>
-            <div className="input-field">
-              <i className="fas fa-user"></i>
-              <input
-                type="text"
-                placeholder="Prénom"
-                value={prenomInscription}
-                onChange={(e) => setPrenomInscription(e.target.value)}
-              />
-            </div>
-            <div className="input-field">
-              <i className="fas fa-envelope"></i>
-              <input
-                type="text"
-                placeholder="Nom"
-                value={nomInscription}
-                onChange={(e) => setNomInscription(e.target.value)}
-              />
-            </div>
-            <div className="input-field">
-              <i className="fas fa-envelope"></i>
-              <input
-                type="email"
-                placeholder="Email"
-                value={mailInscription}
-                onChange={(e) => setMailInscription(e.target.value)}
-              />
-            </div>
-            <div className="input-field">
-              <i className="fas fa-envelope"></i>
-              <input
-                type="text"
-                placeholder="Pseudo"
-                value={pseudoInscription}
-                onChange={(e) => setPseudoInscription(e.target.value)}
-              />
-            </div>
-            <div className="input-field">
-              <i className="fas fa-lock"></i>
-              <input
-                type="password"
-                placeholder="mot de passe"
-                value={motDePasseInscription}
-                onChange={(e) => setMotDePasseInscription(e.target.value)}
-              />
-            </div>
-            <input
-              type="submit"
-              className="btn"
-              value="S'inscrire"
-              onClick={handleSubmit}
-            />
-            {/* <p className="social-text">Or Sign up with social platforms</p>
-            <div className="social-media">
-              <a href="#" className="social-icon">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-google"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-linkedin-in"></i>
-              </a>
-            </div> */}
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
 
-      <div className="panels-container">
-        <div
-          className={`panel left-panel ${
-            isSignIn ? "sign-in-mode" : "sign-up-mode"
-          }`}
-        >
-          <div className="content">
-            <h3>Tu es nouveau ici ?</h3>
-            <p>
-              Inscrit toi et découvre notre association, rejoins les autres
-              joueurs et une partie.
-            </p>
-            <button
-              className="btn transparent"
-              id="sign-up-btn"
-              onClick={handleSignUpClick}
-            >
-              Inscrit toi
-            </button>
+        <div className="panels-container">
+          <div
+            className={`panel left-panel ${
+              isSignIn ? "sign-in-mode" : "sign-up-mode"
+            }`}
+          >
+            <div className="content">
+              <h3>Tu es nouveau ici ?</h3>
+              <p>
+                Inscrit toi et découvre notre association, rejoins les autres
+                joueurs et une partie.
+              </p>
+              <button
+                className="btn transparent"
+                id="sign-up-btn"
+                onClick={handleSignUpClick}
+              >
+                Inscrit toi
+              </button>
+            </div>
+            <img src="img/log.svg" className="image" alt="" />
           </div>
-          <img src="img/log.svg" className="image" alt="" />
-        </div>
-        <div
-          className={`panel right-panel ${
-            isSignIn ? "sign-in-mode" : "sign-up-mode"
-          }`}
-        >
-          <div className="content">
-            <h3>Déjà inscrit ?</h3>
-            <p>
-              Tu est déjà membre de l'association, connecte toi pour de
-              nouvelles aventures.
-            </p>
-            <button
-              className="btn transparent"
-              id="sign-in-btn"
-              onClick={handleSignInClick}
-            >
-              S'identifier
-            </button>
+          <div
+            className={`panel right-panel ${
+              isSignIn ? "sign-in-mode" : "sign-up-mode"
+            }`}
+          >
+            <div className="content">
+              <h3>Déjà inscrit ?</h3>
+              <p>
+                Tu est déjà membre de l'association, connecte toi pour de
+                nouvelles aventures.
+              </p>
+              <button
+                className="btn transparent"
+                id="sign-in-btn"
+                onClick={handleSignInClick}
+              >
+                S'identifier
+              </button>
+            </div>
+            <img src="img/register.svg" className="image" alt="" />
           </div>
-          <img src="img/register.svg" className="image" alt="" />
         </div>
       </div>
-    </div>
+      <div className={`modalAuthForm ${isModalOpen ? "open" : "closed"}`}>
+        <div
+          id="error-modal"
+          className={`error-modalAuthForm ${errorMessage ? "visible" : ""}`}
+        >
+          <p className="error-message">{errorMessage}</p>
+          <button onClick={() => setIsModalOpen(false)}>Fermer</button>
+        </div>
+      </div>
+    </>
   )
 }
 

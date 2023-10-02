@@ -2,11 +2,14 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import "./DisplayPlayers.scss"
+import { Link } from "react-router-dom"
+import SubmitButton from "./SubmitButton"
 
 export default function DisplayPlayers({ postData }) {
   const [allPosts, setAllPosts] = useState([])
   const [xJoueurs, setXJoueurs] = useState([])
   const idUser = Cookies.get("idUtilisateur")
+  const idUserNumber = parseInt(idUser, 10)
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
@@ -44,7 +47,7 @@ export default function DisplayPlayers({ postData }) {
         )
         // Gérez l'erreur ici (peut-être un message à l'utilisateur)
       })
-  }, [postData])
+  }, [])
 
   const handleSuscribeGame = (e) => {
     e.preventDefault()
@@ -94,20 +97,26 @@ export default function DisplayPlayers({ postData }) {
       })
   }
 
-  console.info(
-    "info sur la subcription :",
-    "idUser :",
-    idUser,
-    "postData.PartieID :",
-    postData.PartieID,
-    "postData.IDMaitreDuJeu :",
-    postData.IDMaitreDuJeu
-  )
+  console.info("postData:", postData)
+  console.info("idUser:", idUser)
+  console.info("NombreJoueursPartie:", postData.NombreJoueursPartie)
+  console.info("nbParticipants:", xJoueurs.nbParticipants)
+  console.info("MaitreDuJeu:", postData.IDMaitreDuJeu)
+
   return (
     <div className="displayPlayers-container">
       <div className="titreDisplayPlayer">
         <h2>{postData.TitrePartie}</h2>
         <p>{postData.DescriptionPartie}</p>
+        <h3>Meneur de partie :</h3>
+        <img
+          className="photoMaitreDuJeux"
+          src={`${import.meta.env.VITE_BACKEND_URL}/${
+            postData.PhotoProfilUtilisateur
+          }`}
+          alt="photo de profil du meneur de partie"
+        />
+        <div className="photoMaitreDuJeux">{postData.PseudoMaitreDuJeu}</div>
       </div>
       <div className="titreDisplayPlayer">
         <h2>Participants :</h2>
@@ -134,12 +143,19 @@ export default function DisplayPlayers({ postData }) {
               Il reste {postData.NombreJoueursPartie - xJoueurs.nbParticipants}{" "}
               place(s), inscris-toi !
             </p>
-            <button
-              className="buttonJoinAdventure"
-              onClick={handleSuscribeGame}
-            >
-              Rejoins l'aventure
-            </button>
+            {!idUserNumber && (
+              <Link className=" " to="/Inscription">
+                <button className="buttonJoinAdventure">Inscris-toi</button>
+              </Link>
+            )}
+            {idUserNumber && idUserNumber !== postData.IDMaitreDuJeu && (
+              <div className="buttonJoinAdventure" onClick={handleSuscribeGame}>
+                <SubmitButton />
+              </div>
+            )}
+            {idUserNumber === postData.IDMaitreDuJeu && (
+              <p>Vous ne pouvez pas vous inscrire à votre propre partie.</p>
+            )}
           </>
         ) : (
           <p>

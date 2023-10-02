@@ -50,13 +50,15 @@ class PartieManager extends AbstractManager {
     p.NombreJoueur AS NombreJoueursPartie,
     p.TypeDeJeux AS TypeDeJeuxPartie,
     u.Pseudo AS PseudoMaitreDuJeu,
-    p.MaitreDuJeu AS IDMaitreDuJeu
+    p.MaitreDuJeu AS IDMaitreDuJeu,
+    u.PhotoProfil AS PhotoProfilUtilisateur
 FROM
     partie AS p
 INNER JOIN
     utilisateurs AS u
 ON
     p.MaitreDuJeu = u.id;
+
 
     `)
   }

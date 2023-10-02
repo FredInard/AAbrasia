@@ -498,3 +498,34 @@ form.sign-in-form {
     background-position: center; /* Centrer l'image de fond */
   }
 }
+
+.error-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.error-modalAuthForm.visible {
+  display: block;
+  z-index: +100;
+  color: brown;
+}
+
+.modalAuthForm {
+  display: none;
+  /* Autres styles pour positionner et styliser la modal */
+}
+
+.modalAuthForm.open {
+  display: block;
+}
+
+.modalAuthForm.closed {
+  display: none;
+}
