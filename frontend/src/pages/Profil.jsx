@@ -1,41 +1,22 @@
-import exit from "../assets/pics/Exist.png"
-
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Cookies from "js-cookie"
 
-import "./Profil.scss"
 import Toggle from "../components/Toggle.jsx"
+import NavBar from "../components/NavBar"
 
+import exit from "../assets/pics/Exist.png"
 import king from "../assets/pics/medievalKing.svg"
 import queen from "../assets/pics/queen.svg"
 
-import NavBar from "../components/NavBar"
+import "./Profil.scss"
 
 export default function profil() {
-  const idUser = Cookies.get("idUtilisateur")
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    axios
-      .get(
-        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUser}`,
-        { headers }
-      )
-      .then((res) => setUtilisateur(res.data))
-      .catch((err) => {
-        console.error("Problème lors du chargement de l'utlisateur", err)
-      })
-  }, [])
-
-  const tokenFromCookie = Cookies.get("authToken")
-  const headers = {
-    Authorization: `Bearer ${tokenFromCookie}`,
-  }
   const [showBoxListeParties, setShowBoxListeParties] = useState(true)
   const [utilisateur, setUtilisateur] = useState({})
   const [parties, setParties] = useState()
+  const [meneurParties, setMeneurParties] = useState()
   const [nom, setNom] = useState(utilisateur.Nom)
   const [prenom, setPrenom] = useState(utilisateur.Prenom)
   const [pseudo, setPseudo] = useState(utilisateur.Pseudo)
@@ -50,22 +31,55 @@ export default function profil() {
   const [hashedPassword, setHashedPassword] = useState(
     utilisateur.hashedPassword
   )
+  const idUser = Cookies.get("idUtilisateur")
+  const navigate = useNavigate()
+  const tokenFromCookie = Cookies.get("authToken")
+  const headers = {
+    Authorization: `Bearer ${tokenFromCookie}`,
+  }
+
+  useEffect(() => {
+    axios
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUser}`,
+        { headers }
+      )
+      .then((res) => setUtilisateur(res.data))
+      .catch((err) => {
+        console.error("Problème lors du chargement de l'utlisateur", err)
+      })
+  }, [])
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/profil/${idUser}`, {
+        headers,
+      })
+      .then((res) => {
+        console.info("Réponse Axios (succès) :", res)
+        setParties(res.data)
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement des parties", err)
+      })
+  }, [])
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/meneur/${idUser}`, {
+        headers,
+      })
+      .then((res) => {
+        console.info("Réponse Axios (succès) :", res)
+        setMeneurParties(res.data)
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement des parties", err)
+      })
+  }, [])
+
   const handleSubmit = (e) => {
     e.preventDefault()
-
-    useEffect(() => {
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/partie/profil/${idUser}`, {
-          headers,
-        })
-        .then((res) => {
-          console.info("Réponse Axios (succès) :", res)
-          setParties(res.data)
-        })
-        .catch((err) => {
-          console.error("Problème lors du chargement des parties", err)
-        })
-    }, [])
 
     axios.post(
       `${import.meta.env.VITE_BACKEND_URL}/utilisateurs`,
@@ -87,7 +101,7 @@ export default function profil() {
         })
     )
   }
-  console.info("Data de partie dans Profil :", parties)
+
   const handleLogout = () => {
     Cookies.remove("authToken")
     Cookies.remove("loggedInUtilisateur")
@@ -98,7 +112,9 @@ export default function profil() {
 
     navigate("/")
   }
-  console.info("etat du toggle :", showBoxListeParties)
+
+  console.info("Data de partie dans Profil :", meneurParties)
+
   return (
     <>
       <NavBar className="NavBarHome" />
@@ -119,7 +135,25 @@ export default function profil() {
             <div className="boxPictureLeft fade-in-left">
               <img className="kingPicture" src={king} alt="image d'un roi" />
             </div>
-            <div className="boxListeGame fade-in-right"></div>
+            <div className="boxListeGame fade-in-right">
+              {parties && (
+                <div className="boxCardsResumPartie">
+                  <h2>Mes parties :</h2>
+                  {parties.map((partie) => (
+                    <div key={partie.id}>
+                      <div className="cardResumPartie">
+                        <h2>{partie.Titre}</h2>
+                        <p>Type :{partie.TypeDeJeux}</p>
+                        <p>Date :{partie.Date}</p>
+                        <p>Lieu :{partie.Lieu}</p>
+                        <p>Description :{partie.Description}</p>
+                        {/* Affichez les autres données ici */}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <div className="boxModifProfil">

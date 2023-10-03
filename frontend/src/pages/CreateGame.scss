@@ -1,101 +1,61 @@
-// Création d'une classe pour le formulaire
-.createGameForm {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-  background-color: #f0f0f04d;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  width: 30%;
-  margin: 0 auto;
-  margin-top: 200px;
-  background-image: url("frontend/src/assets/pics/orc.svg");
+.createGameGlobal {
+  font-display: flex;
+  height: 100vh;
+  width: 100%;
 
-  input {
-    margin: 10px;
-    padding: 10px;
-    width: 95%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-
-  button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: #010a13;
+  .boxPictureOrc {
+    margin-top: 100px;
+    .orcPicture {
+      // width: auto;
+      // height: 100vh;
+      -webkit-mask-image: linear-gradient(
+        to right,
+        rgb(6, 1, 39) 10%,
+        transparent 90%
+      );
+      mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
     }
   }
-}
-
-// Création d'une classe pour le conteneur global de la page
-.createGameGlobal {
-  // position: absolute;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-image: url("../assets/pics/orc.svg");
-  -webkit-mask-image: linear-gradient(
-    to right,
-    rgb(6, 1, 39) 10%,
-    transparent 90%
-  );
-  mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
-
-  /* Éviter la répétition de l'image de fond */
-  background-size: cover; /* Ajustez selon vos besoins */
-  background-repeat: no-repeat;
 
   .createGameForm {
-    // Styles du formulaire (référence à la classe ci-dessus)
-    .createGameInputs {
-      .textDescriptionOrc {
-        height: 10px;
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background-color: #f0f0f04d;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 200px;
+    min-width: 300px;
+
+    input {
+      margin: 10px;
+      padding: 10px;
+      width: 95%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #010a13;
       }
     }
   }
-}
-
-.orcPicture {
-  height: 100vh;
-
-  -webkit-mask-image: linear-gradient(
-    to right,
-    rgb(6, 1, 39) 10%,
-    transparent 90%
-  );
-  mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
-}
-
-// @media (max-width: 399px) {
-
-// .orcPicture{
-//     height: 100vh;
-//       -webkit-mask-image: linear-gradient(
-//             to right,
-//             rgb(6, 1, 39) 10%,
-//             transparent 90%
-//           );
-//           mask-image: linear-gradient(
-//             to right,
-//             rgb(6, 1, 39) 10%,
-//             transparent 90%
-//           );
-//   }
-// }
-.textDescriptionOrc {
-  height: 50px;
 }

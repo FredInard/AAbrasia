@@ -54,9 +54,10 @@ export default function CreateGame() {
   return (
     <>
       <NavBar className="NavBarHome" />
-
-      <main className="createGameGlobal">
-        <img src={orc} alt="portrait d'un orc" className="orcPicture" />
+      <div className="createGameGlobal">
+        <div className="boxPictureOrc">
+          <img src={orc} alt="portrait d'un orc" className="orcPicture" />
+        </div>
         <form className="createGameForm" onSubmit={handleCreateGame}>
           <div className="createGameInputs">
             <input
@@ -96,7 +97,7 @@ export default function CreateGame() {
             <button type="submit">Créer ma partie</button>
           </div>
         </form>
-      </main>
+      </div>
     </>
   )
 }

@@ -53,7 +53,7 @@ class PartieManager extends AbstractManager {
     p.MaitreDuJeu AS IDMaitreDuJeu,
     u.PhotoProfil AS PhotoProfilUtilisateur
 FROM
-    partie AS p
+${this.table} AS p
 INNER JOIN
     utilisateurs AS u
 ON
@@ -64,12 +64,26 @@ ON
   }
 
   findpartieByUtilisateurId(id) {
+    console.info("ID de l'utilisateur de findpartieByUtilisateurId:", id)
     return this.database.query(
       `
       SELECT *
-      FROM partie
+      FROM ${this.table}
       JOIN participation ON partie.id = participation.Partie_Id
       WHERE participation.Utilisateur_Id = ? ;
+    `,
+      [id]
+    )
+  }
+
+  findpartieMeneurByUtilisateurId(id) {
+    console.info("ID de l'utilisateur de findpartieByUtilisateurId:", id)
+    return this.database.query(
+      `
+      SELECT *
+      FROM ${this.table}
+      JOIN participation ON partie.id = participation.Partie_Id
+      WHERE participation.Partie_IdMaitreDuJeu = ? ;
     `,
       [id]
     )

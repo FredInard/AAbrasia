@@ -96,12 +96,32 @@ const affichageInfoPartie = (req, res) => {
 
 const partieByUtilisateurId = (req, res) => {
   models.partie
+
     .findpartieByUtilisateurId(req.params.id)
-    .then(([rows]) => {
-      if (rows[0] == null) {
+    .then(([result]) => {
+      if (result[0] == null) {
         res.sendStatus(404)
       } else {
-        res.send(rows[0])
+        // res.send(result[0])
+        res.json(result)
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
+const partieMeneurByUtilisateurId = (req, res) => {
+  models.partie
+
+    .findpartieMeneurByUtilisateurId(req.params.id)
+    .then(([result]) => {
+      if (result[0] == null) {
+        res.sendStatus(404)
+      } else {
+        // res.send(result[0])
+        res.json(result)
       }
     })
     .catch((err) => {
@@ -135,4 +155,5 @@ module.exports = {
   affichageInfoPartie,
   partieByUtilisateurId,
   countPartieById,
+  partieMeneurByUtilisateurId,
 }
