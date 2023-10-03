@@ -15,20 +15,21 @@ function AuthForm() {
   const [signInPassword, setSignInPassword] = useState()
   const [errorMessage, setErrorMessage] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const imageParDefaut = `${
-    import.meta.env.VITE_BACKEND_URL
-  }/assets/images/profilPictures/portraitOfMerchant.png`
+  const imageParDefaut = "assets/images/profilPictures/portraitOfMerchant.png"
+  console.info("imageParDefaut", imageParDefaut)
 
   const handleSubmit = () => {
     // Effectuer d'abord une requête GET pour vérifier si l'utilisateur existe déjà
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`, {
-        params: {
-          Pseudo: pseudoInscription, // Vous pouvez également vérifier l'e-mail ici
-        },
-      })
+      .get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/utilisateurs/pseudo/${pseudoInscription}`
+      )
       .then((res) => {
-        if (res.data.length > 0) {
+        console.info("Réponse de la requête GET :", res.data)
+        if (res.data.isPseudoExist === true) {
+          console.info("res.data.isPseudoExist", res.data.isPseudoExist)
           // Un utilisateur avec le même pseudo ou la même adresse e-mail existe déjà
           setErrorMessage(
             "Le pseudo est déjà pris ou l'utilisateur existe déjà."
@@ -48,6 +49,7 @@ function AuthForm() {
               PhotoProfil: imageParDefaut,
             })
             .then((res) => {
+              console.info("Insertion réussie :", res.data)
               // Gérer la réponse de la requête POST ici
             })
             .catch((error) => {
@@ -58,7 +60,7 @@ function AuthForm() {
       .catch((error) => {
         console.error(
           "Erreur lors de la vérification de l'utilisateur :",
-          error
+          error.response.data
         )
       })
   }
@@ -132,6 +134,8 @@ function AuthForm() {
         console.error("Erreur lors de la connexion :", error)
       })
   }
+
+  console.info("pseudoInscription", pseudoInscription)
 
   return (
     <>

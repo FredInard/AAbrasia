@@ -13,7 +13,10 @@ const UtilisateursControllers = require("./controllers/UtilisateursControllers.j
 router.post("/login", UtilisateursControllers.verifyUtilisateur, verifyPassword)
 
 router.post("/utilisateurs", hashPassword, UtilisateursControllers.add)
-// router.post("/utilisateurs", UtilisateursControllers.add)
+router.get(
+  "/utilisateurs/pseudo/:pseudoInscription",
+  UtilisateursControllers.browsePseudo
+)
 router.get("/utilisateurs", UtilisateursControllers.browse)
 router.get(
   "/utilisateurs/displayPlayers/:id",

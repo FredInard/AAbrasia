@@ -5,9 +5,17 @@ class UtilisateursManager extends AbstractManager {
     super({ table: "utilisateurs" })
   }
 
+  findAllPseudo(pseudoInscription) {
+    return this.database.query(
+      `
+    SELECT Pseudo FROM ${this.table} WHERE Pseudo = ?`,
+      [pseudoInscription]
+    )
+  }
+
   insert(utilisateurs) {
     return this.database.query(
-      `insert into ${this.table} (Nom,Prenom, Pseudo, Mail, hashedPassword) values (?,?,?,?,?)`,
+      `insert into ${this.table} (Nom,Prenom, Pseudo, Mail, hashedPassword, PhotoProfil) values (?,?,?,?,?,?)`,
       [
         utilisateurs.Nom,
         utilisateurs.Prenom,

@@ -28,6 +28,22 @@ const add = (req, res) => {
       res.sendStatus(500)
     })
 }
+
+const browsePseudo = (req, res) => {
+  const pseudoInscription = req.params.pseudoInscription
+
+  models.utilisateurs
+    .findAllPseudo(pseudoInscription)
+    .then(([result]) => {
+      const isPseudoExist = result.length > 0
+      res.json({ isPseudoExist }) // renvois true ou fals via "isPseudoExist" en fonction de la correspondance du pseudo. true s'il y a une correspondance et false s'il n'y en a pas.
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
 const read = (req, res) => {
   models.utilisateurs
     .find(req.params.id)
@@ -193,4 +209,5 @@ module.exports = {
   verifyUtilisateur,
   updateProfilPicture,
   readPartieByUtilisateurId,
+  browsePseudo,
 }
