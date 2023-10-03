@@ -145,7 +145,7 @@ export default function Home() {
           </p>
         </div>
       </div>
-      <div className="agendaDesParties">
+      <div className="agendaDesParties" id="agenda">
         <div className="titreAPartie">
           <h2>Agenda des parties</h2>
         </div>

@@ -1,6 +1,8 @@
 import axios from "axios"
 import React, { useState } from "react"
 import Cookies from "js-cookie"
+import "./CreateGame.scss"
+import orc from "../assets/pics/orc.svg"
 
 import NavBar from "../components/NavBar"
 
@@ -52,9 +54,11 @@ export default function CreateGame() {
   return (
     <>
       <NavBar className="NavBarHome" />
-      <main id="createGameGlobal">
-        <form id="createGameForm" onSubmit={handleCreateGame}>
-          <div id="createGameInputs">
+
+      <main className="createGameGlobal">
+        <img src={orc} alt="portrait d'un orc" className="orcPicture" />
+        <form className="createGameForm" onSubmit={handleCreateGame}>
+          <div className="createGameInputs">
             <input
               type="text"
               placeholder="Nom de ton aventure"
@@ -85,7 +89,7 @@ export default function CreateGame() {
               onChange={(e) => setTypeOfGame(e.target.value)}
             />
             <input
-              type="text"
+              type="textDescriptionOrc"
               placeholder="description"
               onChange={(e) => setDesc(e.target.value)}
             />

@@ -14,18 +14,7 @@ import Profil from "./pages/Profil"
 import "./App.css"
 
 function App() {
-  // const [users, setUsers] = useState([])
-  // const [user, setUser] = useState([])
-
   return (
-    // <AuthContext.Provider
-    //           value={{
-    //             users,
-    //             setUsers,
-    //             user,
-    //             setUser,
-    //           }}
-    // >
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />

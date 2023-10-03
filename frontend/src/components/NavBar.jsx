@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+// import { Link } from "react-router-dom"
 import logoSeul from "../assets/pics/logoSeul.svg"
 import "./NavBar.scss"
 import Cookies from "js-cookie"
 import axios from "axios"
+// import { Link } from "react-scroll"
+import { Link as ScrollLink } from "react-scroll"
+import { Link as RouterLink } from "react-router-dom"
 
 function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -93,22 +96,34 @@ function NavBar() {
       )}
       {isMenuOpen && isMobile && (
         <div className="menuItems">
-          <Link className="menuItem menuItem-2" to="/">
-            Home
-          </Link>
-          <Link className="menuItem menuItem-2" to="/Inscription">
-            Inscription
-          </Link>
-          <Link className="menuItem menuItem-2" to="/create-game">
+          {window.location.pathname === "/" && (
+            <ScrollLink
+              className="menuItem menuItem-2"
+              to="agenda"
+              spy={true}
+              smooth={true}
+              duration={500}
+            >
+              Agenda
+            </ScrollLink>
+          )}
+          {window.location.pathname !== "/" && (
+            <RouterLink className="menuItem menuItem-2" to="/">
+              Abrasia
+            </RouterLink>
+          )}
+          {idUser ? null : (
+            <RouterLink className="buttonNavBar nav-item" to="/Inscription">
+              Inscription
+            </RouterLink>
+          )}
+          <RouterLink className="menuItem menuItem-2" to="/create-game">
             Créer ta partie
-          </Link>
-          <Link className="menuItem menuItem-2" to="/Association">
+          </RouterLink>
+          <RouterLink className="menuItem menuItem-2" to="/Association">
             L'Association
-          </Link>
-          {/* <Link className="menuItem menuItem-2" to="/Creation">
-            Création
-          </Link> */}
-          <Link className="menuItem menuItem-2" to="/profil">
+          </RouterLink>
+          <RouterLink className="menuItem menuItem-2" to="/profil">
             <img
               className="photoProfilUserNavBar"
               src={`${import.meta.env.VITE_BACKEND_URL}/${
@@ -116,30 +131,42 @@ function NavBar() {
               }`}
               alt="photo de profil de l'utilisateur"
             />
-          </Link>
+            <p>Profil</p>
+          </RouterLink>
         </div>
       )}
       {!isMobile && (
         <div className="mainButtonsNavBar">
-          <Link className="buttonNavBar nav-item" to="/">
-            <p>HOME</p>
-          </Link>
-          <Link className="buttonNavBar nav-item" to="/Inscription">
-            <p>Inscription</p>
-          </Link>
-          <Link className="buttonNavBar nav-item" to="/Association">
-            <p>L'Association</p>
-          </Link>
-          {/* <Link className="buttonNavBar nav-item" to="/Creation">
-            <p>Création</p>
-          </Link> */}
-
+          {window.location.pathname === "/" && (
+            <ScrollLink
+              className="buttonNavBar nav-item"
+              to="agenda"
+              spy={true}
+              smooth={true}
+              duration={500}
+            >
+              Agenda
+            </ScrollLink>
+          )}
+          {window.location.pathname !== "/" && (
+            <RouterLink className="buttonNavBar nav-item" to="/">
+              Abrasia
+            </RouterLink>
+          )}
+          {idUser ? null : (
+            <RouterLink className="buttonNavBar nav-item" to="/Inscription">
+              Inscription
+            </RouterLink>
+          )}
+          <RouterLink className="buttonNavBar nav-item" to="/Association">
+            L'Association
+          </RouterLink>
           {idUser ? (
             <>
-              <Link className="buttonNavBar nav-item" to="/create-game">
-                <p>Créer ta partie</p>
-              </Link>
-              <Link
+              <RouterLink className="buttonNavBar nav-item" to="/create-game">
+                Créer ta partie
+              </RouterLink>
+              <RouterLink
                 className="buttonNavBar nav-item boxPhotoProfil"
                 to="/profil"
               >
@@ -150,7 +177,7 @@ function NavBar() {
                   }`}
                   alt="photo de profil de l'utilisateur"
                 />
-              </Link>
+              </RouterLink>
             </>
           ) : null}
         </div>
@@ -158,5 +185,4 @@ function NavBar() {
     </div>
   )
 }
-
 export default NavBar
