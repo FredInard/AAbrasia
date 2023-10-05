@@ -30,6 +30,12 @@
 .bouttonSwitch {
   display: flex;
   justify-content: center;
+  margin-bottom: 10px;
+
+  p {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
 }
 
 .globalBoxProfil {
@@ -64,6 +70,9 @@
     .boxFormProfil {
       width: 50%;
       border: solid 1px white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .boxPictureRight {
       width: 50%;
@@ -127,6 +136,7 @@
   }
 }
 
+//CSS pour les cartes des parties Fetchés
 .boxCardsResumPartie {
   width: 90%;
 }
@@ -158,6 +168,36 @@
 
 /* Style pour les autres informations */
 .cardResumPartie p {
+  font-size: 14px; /* Taille de police */
+  color: #666; /* Couleur du texte */
+  margin-bottom: 5px; /* Marge en bas pour espacer les éléments */
+}
+
+//CSS pour les partie en tant que meneur Fetché
+.boxCardsResumPartieMeneur {
+  width: 90%;
+}
+
+/* Style pour chaque carte de résumé de partie */
+.cardResumMeneurParties {
+  margin: 20px;
+  background-color: #f0f0f0; /* Couleur de fond */
+  padding: 20px; /* Marge intérieure pour l'espace entre le contenu et le bord */
+  border-radius: 10px; /* Coins arrondis */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  width: 100%; /*calc(33.33% - 20px) Largeur de chaque carte (1/3 de la largeur parente) */
+  min-width: 200px; /* Largeur minimale pour éviter une réduction excessive */
+}
+
+/* Style pour le titre */
+.cardResumMeneurParties h2 {
+  font-size: 18px; /* Taille de police */
+  color: #333; /* Couleur du texte */
+  margin-bottom: 5px; /* Marge en bas pour espacer les éléments */
+}
+
+/* Style pour les autres informations */
+.cardResumMeneurParties p {
   font-size: 14px; /* Taille de police */
   color: #666; /* Couleur du texte */
   margin-bottom: 5px; /* Marge en bas pour espacer les éléments */

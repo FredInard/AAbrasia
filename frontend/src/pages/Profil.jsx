@@ -5,18 +5,20 @@ import Cookies from "js-cookie"
 
 import Toggle from "../components/Toggle.jsx"
 import NavBar from "../components/NavBar"
-
+import ModificationPartieModal from "../components/ModificationPartieModal.jsx" // Importez la modal
 import exit from "../assets/pics/Exist.png"
 import king from "../assets/pics/medievalKing.svg"
 import queen from "../assets/pics/queen.svg"
 
 import "./Profil.scss"
 
-export default function profil() {
+export default function Profil() {
+  const [showModalModifPartie, setShowModalModifPartie] = useState(false)
   const [showBoxListeParties, setShowBoxListeParties] = useState(true)
   const [utilisateur, setUtilisateur] = useState({})
   const [parties, setParties] = useState()
   const [meneurParties, setMeneurParties] = useState()
+  const [selectedPartie, setSelectedPartie] = useState(null) // État pour stocker les données de la partie sélectionnée
   const [nom, setNom] = useState(utilisateur.Nom)
   const [prenom, setPrenom] = useState(utilisateur.Prenom)
   const [pseudo, setPseudo] = useState(utilisateur.Pseudo)
@@ -36,6 +38,11 @@ export default function profil() {
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
+  }
+
+  const handleEditClick = (partie) => {
+    setSelectedPartie(partie) // Stockez les données de la partie sélectionnée dans l'état
+    setShowModalModifPartie(true) // Ouvrez la modal
   }
 
   useEffect(() => {
@@ -81,25 +88,26 @@ export default function profil() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/utilisateurs`,
-      ({
-        Nom: nom,
-        Prenom: prenom,
-        Pseudo: pseudo,
-        Mail: mail,
-        Telephone: telephone,
-        PseudoDiscord: pseudoDiscord,
-        Description: description,
-        VilleResidence: villeResidence,
-        hashedPassword,
-      },
-      { headers })
-        .then((res) => res.data)
-        .catch((error) => {
-          console.error("Erreur lors de la mise a jour du profil :", error)
-        })
-    )
+    axios
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs`,
+        {
+          Nom: nom,
+          Prenom: prenom,
+          Pseudo: pseudo,
+          Mail: mail,
+          Telephone: telephone,
+          PseudoDiscord: pseudoDiscord,
+          Description: description,
+          VilleResidence: villeResidence,
+          hashedPassword,
+        },
+        { headers }
+      )
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error("Erreur lors de la mise a jour du profil :", error)
+      })
   }
 
   const handleLogout = () => {
@@ -113,8 +121,6 @@ export default function profil() {
     navigate("/")
   }
 
-  console.info("Data de partie dans Profil :", meneurParties)
-
   return (
     <>
       <NavBar className="NavBarHome" />
@@ -127,7 +133,9 @@ export default function profil() {
         />
       </div>
       <div className="bouttonSwitch">
+        <p> Tableau de bord des parties</p>
         <Toggle onClick={() => setShowBoxListeParties(!showBoxListeParties)} />
+        <p> Modifier mon profil</p>
       </div>
       <div className="globalBoxProfil">
         {showBoxListeParties === true ? (
@@ -143,11 +151,34 @@ export default function profil() {
                     <div key={partie.id}>
                       <div className="cardResumPartie">
                         <h2>{partie.Titre}</h2>
-                        <p>Type :{partie.TypeDeJeux}</p>
-                        <p>Date :{partie.Date}</p>
-                        <p>Lieu :{partie.Lieu}</p>
-                        <p>Description :{partie.Description}</p>
-                        {/* Affichez les autres données ici */}
+                        <p>Type : {partie.TypeDeJeux}</p>
+                        <p>Date : {partie.Date}</p>
+                        <p>Lieu : {partie.Lieu}</p>
+                        <p>Nombre de Joueur : {partie.NombreJoueur}</p>
+                        <p>Description : {partie.Description}</p>
+                        {/* Bouton "Modifier" pour ouvrir la modal */}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {meneurParties && (
+                <div className="boxCardsResumPartieMeneur">
+                  <h2>Mes parties en tant que meneur :</h2>
+                  {meneurParties.map((meneurPartie) => (
+                    <div key={meneurPartie.id}>
+                      <div className="cardResumMeneurParties">
+                        <h2>{meneurPartie.Titre}</h2>
+                        <p>Type : {meneurPartie.TypeDeJeux}</p>
+                        <p>Date : {meneurPartie.Date}</p>
+                        <p>Lieu : {meneurPartie.Lieu}</p>
+                        <p>Nombre de Joueur : {meneurPartie.NombreJoueur}</p>
+                        <p>Description : {meneurPartie.Description}</p>
+                        {/* Bouton "Modifier" pour ouvrir la modal */}
+                        <button onClick={() => handleEditClick(meneurPartie)}>
+                          Modifier
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -254,7 +285,7 @@ export default function profil() {
                   Ville de Résidence:
                   <input
                     type="text"
-                    placeholder={utilisateur.villeResidence}
+                    placeholder={utilisateur.VilleResidence}
                     value={villeResidence}
                     onChange={(e) => setVilleResidence(e.target.value)}
                   />
@@ -284,6 +315,18 @@ export default function profil() {
           </div>
         )}
       </div>
+
+      {/* Affichez la modal s'il y a une partie sélectionnée */}
+      {selectedPartie && (
+        <ModificationPartieModal
+          isOpen={showModalModifPartie}
+          onClose={() => {
+            setShowModalModifPartie(false)
+            setSelectedPartie(null) // Réinitialisez les données de la partie sélectionnée
+          }}
+          partie={selectedPartie}
+        />
+      )}
     </>
   )
 }

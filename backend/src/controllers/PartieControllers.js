@@ -34,6 +34,8 @@ const edit = (req, res) => {
   // TODO validations (length, format...)
 
   partie.id = parseInt(req.params.id, 10)
+  console.info("id envoyé a partie/:id", partie.id)
+  console.info("req.body", req.body)
 
   models.partie
     .update(partie)
@@ -104,6 +106,7 @@ const partieByUtilisateurId = (req, res) => {
       } else {
         // res.send(result[0])
         res.json(result)
+        console.info("result de findpartieByUtilisateurId", result)
       }
     })
     .catch((err) => {

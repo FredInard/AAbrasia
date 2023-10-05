@@ -21,6 +21,7 @@
   position: relative;
   aspect-ratio: 292 / 142;
   height: em(30px);
+  --active-color: rgba(128, 30, 133, 1);
 
   &:nth-child(1) {
     --active-color: rgba(128, 30, 133, 1);

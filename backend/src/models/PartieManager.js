@@ -67,10 +67,19 @@ ON
     console.info("ID de l'utilisateur de findpartieByUtilisateurId:", id)
     return this.database.query(
       `
-      SELECT *
-      FROM ${this.table}
-      JOIN participation ON partie.id = participation.Partie_Id
-      WHERE participation.Utilisateur_Id = ? ;
+      SELECT
+      partie.id AS PartieId,
+      Titre,
+      DATE_FORMAT(partie.Date, '%Y-%m-%d') AS Date,
+      TIME_FORMAT(partie.Heure, '%H:%i'),
+      Lieu,
+      MaitreDuJeu,
+      Description,
+      NombreJoueur,
+      TypeDeJeux
+    FROM ${this.table}
+    JOIN participation ON partie.id = participation.Partie_Id
+    WHERE participation.Utilisateur_Id = ?;
     `,
       [id]
     )
@@ -80,11 +89,20 @@ ON
     console.info("ID de l'utilisateur de findpartieByUtilisateurId:", id)
     return this.database.query(
       `
-      SELECT *
+      SELECT DISTINCT 
+      partie.id AS meneurPartieId,
+      Titre,
+      DATE_FORMAT(partie.Date, '%Y-%m-%d') AS Date,
+      TIME_FORMAT(partie.Heure, '%H:%i') AS Heure,
+      Lieu,
+      MaitreDuJeu,
+      Description,
+      NombreJoueur,
+      TypeDeJeux
       FROM ${this.table}
       JOIN participation ON partie.id = participation.Partie_Id
-      WHERE participation.Partie_IdMaitreDuJeu = ? ;
-    `,
+      WHERE participation.Partie_IdMaitreDuJeu = ?
+       ;`,
       [id]
     )
   }
