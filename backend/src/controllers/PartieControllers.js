@@ -34,8 +34,6 @@ const edit = (req, res) => {
   // TODO validations (length, format...)
 
   partie.id = parseInt(req.params.id, 10)
-  console.info("id envoyé a partie/:id", partie.id)
-  console.info("req.body", req.body)
 
   models.partie
     .update(partie)
@@ -54,7 +52,6 @@ const edit = (req, res) => {
 
 const add = (req, res) => {
   const partie = req.body
-  console.info("poulet", partie)
   // TODO validations (length, format...)
 
   models.partie

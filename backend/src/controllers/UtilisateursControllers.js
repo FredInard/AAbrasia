@@ -145,9 +145,6 @@ const verifyUtilisateur = (req, res, next) => {
 const updateProfilPicture = async (req, res) => {
   const utilisateurs = req.body
 
-  console.info(req.file)
-  console.info(req.body)
-
   // TODO validations (length, format...)
 
   utilisateurs.id = parseInt(req.params.id, 10)

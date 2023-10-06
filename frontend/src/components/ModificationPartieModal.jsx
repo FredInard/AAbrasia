@@ -8,7 +8,7 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
   const [date, setDate] = useState(partie.Date)
   const [heure, setHeure] = useState(partie.Time)
   const [lieu, setLieu] = useState(partie.Lieu)
-  // const [idMaitreDuJeu, setIdMaitreDuJeu] = useState(partie.MaitreDuJeu)
+  const idMaitreDuJeu = partie.MaitreDuJeu
   const [description, setDescription] = useState(partie.Description)
   const [nombreJoueur, setNombreJoueur] = useState(partie.NombreJoueur)
   const [typeDeJeux, setTypeDeJeux] = useState(partie.TypeDeJeux)
@@ -26,7 +26,7 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
           Date: date,
           Heure: heure,
           Lieu: lieu,
-          // IdMaitreDuJeu: idMaitreDuJeu,
+          IdMaitreDuJeu: idMaitreDuJeu,
           Description: description,
           NombreJoueur: nombreJoueur,
           TypeDeJeux: typeDeJeux,
@@ -43,9 +43,6 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
         console.error("Erreur lors de la mise à jour de la partie :", error)
       })
   }
-
-  console.info("partie", partie)
-  console.info("heure", heure)
 
   return (
     <div className={`modalModificationPartie ${isOpen ? "open" : ""}`}>

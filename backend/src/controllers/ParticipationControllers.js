@@ -102,6 +102,30 @@ const countUserParticipation = (req, res) => {
     })
 }
 
+const deleteUserParticipation = (req, res) => {
+  const utilisateurId = req.params.utilisateurId
+  const partieId = req.params.partieId
+
+  models.participation
+    .getDeleteUserParticipation(utilisateurId, partieId)
+    .then((result) => {
+      // A changer en fonction du résultat
+      if (result.affectedRows === 0) {
+        console.info(
+          "Une erreur s'est produite lors de la tentative de suppression de la partie"
+        )
+        res.sendStatus(404)
+      } else {
+        console.info("L'utilisateur à été retirer de la partie")
+        res.sendStatus(204)
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
 module.exports = {
   browse,
   add,
@@ -109,4 +133,5 @@ module.exports = {
   edit,
   destroy,
   countUserParticipation,
+  deleteUserParticipation,
 }

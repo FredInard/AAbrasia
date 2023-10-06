@@ -59,5 +59,8 @@ router.get(
   "/participation/count/:utilisateurId/:partieId",
   ParticipationControllers.countUserParticipation
 )
-
+router.delete(
+  "/participation/delete/:utilisateurId/:partieId",
+  ParticipationControllers.deleteUserParticipation
+)
 module.exports = router

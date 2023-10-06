@@ -6,6 +6,7 @@ import Cookies from "js-cookie"
 import Toggle from "../components/Toggle.jsx"
 import NavBar from "../components/NavBar"
 import ModificationPartieModal from "../components/ModificationPartieModal.jsx" // Importez la modal
+import ModalExitPartie from "../components/ModalExitPartie.jsx"
 import exit from "../assets/pics/Exist.png"
 import king from "../assets/pics/medievalKing.svg"
 import queen from "../assets/pics/queen.svg"
@@ -14,6 +15,7 @@ import "./Profil.scss"
 
 export default function Profil() {
   const [showModalModifPartie, setShowModalModifPartie] = useState(false)
+  const [showModalExitPartie, setShowModalExitPartie] = useState(false)
   const [showBoxListeParties, setShowBoxListeParties] = useState(true)
   const [utilisateur, setUtilisateur] = useState({})
   const [parties, setParties] = useState()
@@ -43,6 +45,11 @@ export default function Profil() {
   const handleEditClick = (partie) => {
     setSelectedPartie(partie) // Stockez les données de la partie sélectionnée dans l'état
     setShowModalModifPartie(true) // Ouvrez la modal
+  }
+
+  const handleExitPartieClick = (partie) => {
+    setSelectedPartie(partie) // Stockez les données de la partie sélectionnée dans l'état
+    setShowModalExitPartie(true) // Ouvrez la modal
   }
 
   useEffect(() => {
@@ -157,6 +164,9 @@ export default function Profil() {
                         <p>Nombre de Joueur : {partie.NombreJoueur}</p>
                         <p>Description : {partie.Description}</p>
                         {/* Bouton "Modifier" pour ouvrir la modal */}
+                        <button onClick={() => handleExitPartieClick(partie)}>
+                          Se retirer de la partie
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -322,6 +332,16 @@ export default function Profil() {
           isOpen={showModalModifPartie}
           onClose={() => {
             setShowModalModifPartie(false)
+            setSelectedPartie(null) // Réinitialisez les données de la partie sélectionnée
+          }}
+          partie={selectedPartie}
+        />
+      )}
+      {selectedPartie && (
+        <ModalExitPartie
+          isOpen={showModalExitPartie}
+          onClose={() => {
+            setShowModalExitPartie(false)
             setSelectedPartie(null) // Réinitialisez les données de la partie sélectionnée
           }}
           partie={selectedPartie}
