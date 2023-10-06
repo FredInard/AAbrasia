@@ -32,10 +32,9 @@ export default function Profil() {
   const [villeResidence, setVilleResidence] = useState(
     utilisateur.VilleResidence
   )
-  const [hashedPassword, setHashedPassword] = useState(
-    utilisateur.hashedPassword
-  )
+  const [password, setpassword] = useState(utilisateur.password)
   const idUser = Cookies.get("idUtilisateur")
+  const idUserNumb = parseInt(idUser)
   const navigate = useNavigate()
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
@@ -55,7 +54,7 @@ export default function Profil() {
   useEffect(() => {
     axios
       .get(
-        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUser}`,
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUserNumb}`,
         { headers }
       )
       .then((res) => setUtilisateur(res.data))
@@ -66,7 +65,7 @@ export default function Profil() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/profil/${idUser}`, {
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/profil/${idUserNumb}`, {
         headers,
       })
       .then((res) => {
@@ -76,11 +75,11 @@ export default function Profil() {
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)
       })
-  }, [])
+  }, [showModalExitPartie])
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/meneur/${idUser}`, {
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/meneur/${idUserNumb}`, {
         headers,
       })
       .then((res) => {
@@ -90,7 +89,7 @@ export default function Profil() {
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)
       })
-  }, [])
+  }, [showModalModifPartie])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -107,7 +106,7 @@ export default function Profil() {
           PseudoDiscord: pseudoDiscord,
           Description: description,
           VilleResidence: villeResidence,
-          hashedPassword,
+          hashedPassword: password,
         },
         { headers }
       )
@@ -139,6 +138,7 @@ export default function Profil() {
           alt="logo exit"
         />
       </div>
+      <h1> Bienvenue {utilisateur.Pseudo}</h1>
       <div className="bouttonSwitch">
         <p> Tableau de bord des parties</p>
         <Toggle onClick={() => setShowBoxListeParties(!showBoxListeParties)} />
@@ -306,8 +306,8 @@ export default function Profil() {
                   Mot de Passe:
                   <input
                     type="password"
-                    value={hashedPassword}
-                    onChange={(e) => setHashedPassword(e.target.value)}
+                    value={password}
+                    onChange={(e) => setpassword(e.target.value)}
                   />
                 </label>
                 <br />

@@ -176,7 +176,9 @@ function NavBar() {
                     utilisateur.PhotoProfil
                   }`}
                   alt="photo de profil de l'utilisateur"
-                />
+                />{" "}
+                <br />
+                <p>Profil</p>
               </RouterLink>
             </>
           ) : null}

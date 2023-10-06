@@ -19,7 +19,7 @@ export default function DisplayPlayers({ postData }) {
     axios
       .get(
         `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/displayPlayers/${
-          postData.PartieID
+          postData.PartieId
         }`,
         { headers }
       )
@@ -31,12 +31,12 @@ export default function DisplayPlayers({ postData }) {
         )
         // Gérez l'erreur ici (peut-être un message à l'utilisateur)
       })
-  }, [postData])
+  }, [xJoueurs])
 
   useEffect(() => {
     axios
       .get(
-        `${import.meta.env.VITE_BACKEND_URL}/partie/count/${postData.PartieID}`,
+        `${import.meta.env.VITE_BACKEND_URL}/partie/count/${postData.PartieId}`,
         { headers }
       )
       .then((res) => setXJoueurs(res.data))
@@ -47,16 +47,16 @@ export default function DisplayPlayers({ postData }) {
         )
         // Gérez l'erreur ici (peut-être un message à l'utilisateur)
       })
-  }, [])
+  }, [xJoueurs])
 
   const handleSuscribeGame = (e) => {
     e.preventDefault()
     // Ajoutez une vérification côté serveur ici
     axios
       .get(
-        `${import.meta.env.VITE_BACKEND_URL}/participation/count/${idUser}/${
-          postData.PartieID
-        }`,
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/participation/count/${idUserNumber}/${postData.PartieId}`,
         { headers }
       )
       .then((checkResponse) => {
@@ -69,9 +69,9 @@ export default function DisplayPlayers({ postData }) {
             .post(
               `${import.meta.env.VITE_BACKEND_URL}/participation`,
               {
-                Utilisateur_Id: idUser,
-                Partie_Id: postData.PartieID,
-                Partie_IdMaitreDuJeu: postData.IDMaitreDuJeu,
+                Utilisateurs_Id: idUserNumber,
+                Partie_Id: postData.PartieId,
+                Partie_IdMaitreDuJeu: postData.MaitreDuJeu,
               },
               { headers }
             )
@@ -98,21 +98,21 @@ export default function DisplayPlayers({ postData }) {
   }
 
   console.info("postData:", postData)
-  console.info("idUser:", idUser)
-  console.info("NombreJoueursPartie:", postData.NombreJoueursPartie)
+  console.info("idUserNumber:", idUserNumber)
+  console.info("NombreJoueur:", postData.NombreJoueur)
   console.info("nbParticipants:", xJoueurs.nbParticipants)
-  console.info("MaitreDuJeu:", postData.IDMaitreDuJeu)
+  console.info("MaitreDuJeu:", postData.MaitreDuJeu)
 
   return (
     <div className="displayPlayers-container">
       <div className="titreDisplayPlayer">
-        <h2>{postData.TitrePartie}</h2>
-        <p>{postData.DescriptionPartie}</p>
+        <h2>{postData.Titre}</h2>
+        <p>{postData.Description}</p>
         <h3>Meneur de partie :</h3>
         <img
           className="photoMaitreDuJeux"
           src={`${import.meta.env.VITE_BACKEND_URL}/${
-            postData.PhotoProfilUtilisateur
+            postData.PhotoProfilMaitreDuJeu
           }`}
           alt="photo de profil du meneur de partie"
         />
@@ -137,10 +137,10 @@ export default function DisplayPlayers({ postData }) {
       </div>
       <div className="mapPlacesDisponibles">
         <h2>Places disponibles :</h2>
-        {postData.NombreJoueursPartie - xJoueurs.nbParticipants > 0 ? (
+        {postData.NombreJoueur - xJoueurs.nbParticipants > 0 ? (
           <>
             <p>
-              Il reste {postData.NombreJoueursPartie - xJoueurs.nbParticipants}{" "}
+              Il reste {postData.NombreJoueur - xJoueurs.nbParticipants}{" "}
               place(s), inscris-toi !
             </p>
             {!idUserNumber && (
@@ -148,12 +148,12 @@ export default function DisplayPlayers({ postData }) {
                 <button className="buttonJoinAdventure">Inscris-toi</button>
               </Link>
             )}
-            {idUserNumber && idUserNumber !== postData.IDMaitreDuJeu && (
+            {idUserNumber && idUserNumber !== postData.MaitreDuJeu && (
               <div className="buttonJoinAdventure" onClick={handleSuscribeGame}>
                 <SubmitButton />
               </div>
             )}
-            {idUserNumber === postData.IDMaitreDuJeu && (
+            {idUserNumber === postData.MaitreDuJeu && (
               <p>Vous ne pouvez pas vous inscrire à votre propre partie.</p>
             )}
           </>

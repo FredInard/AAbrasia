@@ -6,7 +6,7 @@ import "./ModificationPartieModal.scss"
 function ModificationPartieModal({ isOpen, onClose, partie }) {
   const [titre, setTitre] = useState(partie.Titre)
   const [date, setDate] = useState(partie.Date)
-  const [heure, setHeure] = useState(partie.Time)
+  const [heure, setHeure] = useState(partie.Heure)
   const [lieu, setLieu] = useState(partie.Lieu)
   const idMaitreDuJeu = partie.MaitreDuJeu
   const [description, setDescription] = useState(partie.Description)
@@ -20,7 +20,7 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
   const handleSaveChanges = () => {
     axios
       .put(
-        `${import.meta.env.VITE_BACKEND_URL}/partie/${partie.meneurPartieId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/partie/${partie.id}`,
         {
           Titre: titre,
           Date: date,
@@ -74,7 +74,7 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
             <input
               type="Heure"
               name="Heure"
-              placeholder={partie.Time}
+              placeholder={partie.Heure}
               value={heure}
               onChange={(e) => setHeure(e.target.value)}
             />

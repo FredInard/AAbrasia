@@ -62,6 +62,7 @@ const read = (req, res) => {
 
 const read2 = (req, res) => {
   models.utilisateurs
+
     .readlessPW(req.params.id)
     .then(([rows]) => {
       if (rows[0] == null) {

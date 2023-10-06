@@ -58,7 +58,11 @@ export default function CreateGame() {
         <div className="boxPictureOrc">
           <img src={orc} alt="portrait d'un orc" className="orcPicture" />
         </div>
-        <form className="createGameForm" onSubmit={handleCreateGame}>
+        <form
+          className="createGameForm"
+          id="createGameForm"
+          onSubmit={handleCreateGame}
+        >
           <div className="createGameInputs">
             <input
               type="text"

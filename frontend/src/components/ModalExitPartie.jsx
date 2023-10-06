@@ -18,11 +18,7 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
         `${
           import.meta.env.VITE_BACKEND_URL
         }/participation/delete/${idDuUser}/${idExitPartie}`,
-        {
-          Utilisateur_Id: idDuUser,
-          Partie_Id: idExitPartie,
-          Partie_IdMaitreDuJeu: idMaitreDuJeu,
-        },
+
         { headers }
       )
       .then((res) => {
