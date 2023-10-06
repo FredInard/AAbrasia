@@ -7,9 +7,9 @@ class ParticipationManager extends AbstractManager {
 
   insert(participation) {
     return this.database.query(
-      `insert into participation (Utilisateur_Id, Partie_Id, Partie_IdMaitreDuJeu) VALUES (?, ?, ?)`,
+      `insert into participation (Utilisateurs_Id, Partie_Id, Partie_IdMaitreDuJeu) VALUES (?, ?, ?)`,
       [
-        participation.Utilisateur_Id,
+        participation.Utilisateurs_Id,
         participation.Partie_Id,
         participation.Partie_IdMaitreDuJeu,
       ]
@@ -18,9 +18,9 @@ class ParticipationManager extends AbstractManager {
 
   update(participation) {
     return this.database.query(
-      `update ${this.table} set Utilisateur_Id = ?, Partie_Id = ?, Partie_IdMaitreDuJeu = ?`, // Utilisation de "id" au lieu de "participation_id"
+      `update ${this.table} set Utilisateurs_Id = ?, Partie_Id = ?, Partie_IdMaitreDuJeu = ?`, // Utilisation de "id" au lieu de "participation_id"
       [
-        participation.Utilisateur_Id,
+        participation.Utilisateurs_Id,
         participation.Partie_Id,
         participation.Partie_IdMaitreDuJeu,
         participation.id, // Assurez-vous que l'identifiant (ID) est bien présent ici.
@@ -30,14 +30,14 @@ class ParticipationManager extends AbstractManager {
 
   getCountUserParticipation(utilisateurId, partieId) {
     return this.database.query(
-      `SELECT COUNT(*) AS count FROM participation WHERE Utilisateur_Id = ? AND Partie_Id = ?`,
+      `SELECT COUNT(*) AS count FROM participation WHERE Utilisateurs_Id = ? AND Partie_Id = ?`,
       [utilisateurId, partieId]
     )
   }
 
   getDeleteUserParticipation(utilisateurId, partieId) {
     return this.database.query(
-      `DELETE FROM ${this.table} WHERE Utilisateur_Id = ? AND Partie_Id = ?`,
+      `DELETE FROM ${this.table} WHERE Utilisateurs_Id = ? AND Partie_Id = ?`,
       [utilisateurId, partieId]
     )
   }

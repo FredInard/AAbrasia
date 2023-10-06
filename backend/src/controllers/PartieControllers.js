@@ -95,7 +95,6 @@ const affichageInfoPartie = (req, res) => {
 
 const partieByUtilisateurId = (req, res) => {
   models.partie
-
     .findpartieByUtilisateurId(req.params.id)
     .then(([result]) => {
       if (result[0] == null) {
@@ -103,7 +102,6 @@ const partieByUtilisateurId = (req, res) => {
       } else {
         // res.send(result[0])
         res.json(result)
-        console.info("result de findpartieByUtilisateurId", result)
       }
     })
     .catch((err) => {
@@ -116,11 +114,12 @@ const partieMeneurByUtilisateurId = (req, res) => {
   models.partie
 
     .findpartieMeneurByUtilisateurId(req.params.id)
+
     .then(([result]) => {
       if (result[0] == null) {
+        console.info("result 404", result)
         res.sendStatus(404)
       } else {
-        // res.send(result[0])
         res.json(result)
       }
     })

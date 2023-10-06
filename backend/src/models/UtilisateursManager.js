@@ -73,7 +73,7 @@ class UtilisateursManager extends AbstractManager {
       `
     SELECT utilisateurs.PhotoProfil, utilisateurs.Nom, utilisateurs.Prenom, utilisateurs.Pseudo
     FROM ${this.table}
-    JOIN participation ON utilisateurs.id = participation.Utilisateur_Id
+    JOIN participation ON utilisateurs.id = participation.Utilisateurs_Id
     WHERE participation.Partie_Id = ?;`,
       [id]
     )
@@ -99,7 +99,7 @@ class UtilisateursManager extends AbstractManager {
       SELECT *
       FROM partie
       INNER JOIN participation ON partie.id = participation.Partie_Id
-      WHERE participation.Utilisateur_Id = ? ;
+      WHERE participation.Utilisateurs_Id = ? ;
       `,
       [id]
     )

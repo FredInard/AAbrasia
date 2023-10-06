@@ -37,6 +37,7 @@ export default function Home() {
     setPostData(allPostData)
   }
 
+  console.info("parties", parties)
   return (
     <>
       <NavBar className="NavBarHome" />
@@ -154,18 +155,16 @@ export default function Home() {
           <div className="containeurCards">
             {parties.map((partie) => (
               <div key={partie.id} className="globalContainerCard">
-                <div className="titleContainerCard">{partie.TitrePartie}</div>
+                <div className="titleContainerCard">{partie.Titre}</div>
                 <div className="miniBoxInfo">
                   <div className="allInfoItem">
-                    <div className="infoItem">Date : {partie.DatePartie}</div>
-                    <div className="infoItem">Heure : {partie.HeurePartie}</div>
-                    <div className="infoItem">Lieu : {partie.LieuPartie}</div>
+                    <div className="infoItem">Date : {partie.Date}</div>
+                    <div className="infoItem">Heure : {partie.Heure}</div>
+                    <div className="infoItem">Lieu : {partie.Lieu}</div>
                     <div className="infoItem">
                       Maitre du jeu : {partie.PseudoMaitreDuJeu}
                     </div>
-                    <div className="infoItem">
-                      Type : {partie.TypeDeJeuxPartie}
-                    </div>
+                    <div className="infoItem">Type : {partie.TypeDeJeux}</div>
                     <button onClick={() => handlePostClick(partie)}>
                       Voir les détails
                     </button>
@@ -177,7 +176,7 @@ export default function Home() {
                         src={LogoPlayers}
                         alt="logo d'un joueur"
                       />
-                      X{partie.NombreJoueursPartie}
+                      X{partie.NombreJoueur}
                     </div>
                   </div>
                 </div>

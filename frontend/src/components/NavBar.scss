@@ -37,7 +37,7 @@
       letter-spacing: -0.13px;
       text-decoration: none;
       margin-left: 1.2rem;
-      margin-right: 1.2rem;
+      margin-right: 2.2rem;
       transition: all 0.5s ease;
       will-change: transform;
     }
@@ -59,7 +59,7 @@
     }
 
     .nav-item:hover::after {
-      width: 100%;
+      width: 90%;
     }
 
     .boxPhotoProfil {
