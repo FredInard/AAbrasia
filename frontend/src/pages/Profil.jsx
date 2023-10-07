@@ -105,8 +105,12 @@ export default function Profil() {
           Telephone: telephone,
           PseudoDiscord: pseudoDiscord,
           Description: description,
+          // PhotoProfil: imageParDefaut,
           VilleResidence: villeResidence,
-          hashedPassword: password,
+          // password: motDePasseInscription,
+          // Admin: ,
+          // MembreEquipe: ,
+          // MembreAssociation: ,
         },
         { headers }
       )
@@ -127,6 +131,7 @@ export default function Profil() {
     navigate("/")
   }
 
+  console.info("utilisateur", utilisateur)
   return (
     <>
       <NavBar className="NavBarHome" />
