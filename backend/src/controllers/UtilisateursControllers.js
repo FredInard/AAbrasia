@@ -1,5 +1,6 @@
 const models = require("../models")
 const fs = require("fs")
+const sharp = require("sharp")
 
 const browse = (req, res) => {
   models.utilisateurs
@@ -149,36 +150,45 @@ const updateProfilPicture = async (req, res) => {
   // TODO validations (length, format...)
 
   utilisateurs.id = parseInt(req.params.id, 10)
-  console.info("Avant la mise à jour de la base de données", utilisateurs)
-  models.utilisateurs
-    .updateProfilPicture(
-      utilisateurs,
-      `assets/images/profilPictures/${req.file.originalname}`
-    )
-    .then(([result]) => {
-      if (result.affectedRows === 0) {
-        res.sendStatus(404)
-      } else {
-        console.info("Apres la mise à jour de la base de données", result)
-        // Déplacez la photo après avoir effectué l'opération de mise à jour
-        fs.rename(
-          req.file.path,
-          `public/assets/images/profilPictures/${req.file.originalname}`,
-          (err) => {
-            if (err) {
-              console.error(err)
-              res.status(500).send("Error while moving the uploaded file")
-            } else {
-              res.sendStatus(204)
-            }
-          }
-        )
+
+  // Utilisez sharp pour redimensionner l'image
+  sharp(req.file.path)
+    .resize(1023, 1024) // Redimensionnez l'image à 1023x1024 pixels
+    .toFile(
+      `public/assets/images/profilPictures/${req.file.originalname}`,
+      (err, info) => {
+        if (err) {
+          console.error(err)
+          res
+            .status(500)
+            .send("Error while resizing and moving the uploaded file")
+        } else {
+          // La mise à jour de la base de données se fait après le redimensionnement
+          models.utilisateurs
+            .updateProfilPicture(
+              utilisateurs,
+              `assets/images/profilPictures/${req.file.originalname}`
+            )
+            .then(([result]) => {
+              if (result.affectedRows === 0) {
+                res.sendStatus(404)
+              } else {
+                // Supprimez le fichier temporaire une fois la mise à jour terminée
+                fs.unlink(req.file.path, (unlinkErr) => {
+                  if (unlinkErr) {
+                    console.error(unlinkErr)
+                  }
+                  res.sendStatus(204)
+                })
+              }
+            })
+            .catch((dbErr) => {
+              console.error(dbErr)
+              res.sendStatus(500)
+            })
+        }
       }
-    })
-    .catch((err) => {
-      console.error(err)
-      res.sendStatus(500)
-    })
+    )
 }
 
 const readPartieByUtilisateurId = (req, res) => {
