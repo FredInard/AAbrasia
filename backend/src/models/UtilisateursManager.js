@@ -52,15 +52,7 @@ class UtilisateursManager extends AbstractManager {
     return this.database.query(
       `
       SELECT
-        Nom,
-        Prenom,
-        Pseudo,
-        Mail,
-        Telephone,
-        PseudoDiscord,
-        Description,
-        PhotoProfil,
-        VilleResidence
+        *
       FROM ${this.table}
       WHERE id = ?
     `,

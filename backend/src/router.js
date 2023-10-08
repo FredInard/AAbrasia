@@ -4,7 +4,7 @@ const multer = require("multer")
 const router = express.Router()
 const { hashPassword, verifyPassword, verifyToken } = require("./auth.js")
 
-const upload = multer({ dest: "public/assets/uploads" })
+const upload = multer({ dest: "public/assets/tmp" })
 const ParticipationControllers = require("./controllers/ParticipationControllers")
 const PartieControllers = require("./controllers/PartieControllers")
 const UtilisateursControllers = require("./controllers/UtilisateursControllers.js")

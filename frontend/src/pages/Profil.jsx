@@ -28,11 +28,15 @@ export default function Profil() {
   const [telephone, setTelephone] = useState(utilisateur.Telephone)
   const [pseudoDiscord, setPseudoDiscord] = useState(utilisateur.PseudoDiscord)
   const [description, setDescription] = useState(utilisateur.Description)
-  const [photoProfil, setPhotoProfil] = useState(utilisateur.PhotoProfil)
+  const photoProfil = utilisateur.PhotoProfil
   const [villeResidence, setVilleResidence] = useState(
     utilisateur.VilleResidence
   )
-  const [password, setpassword] = useState(utilisateur.password)
+  const hashedPassword = utilisateur.hashedPassword
+  const admin = utilisateur.Admin
+  const membreEquipe = utilisateur.MembreEquipe
+  const membreAssociation = utilisateur.MembreAssociation
+  const [imageUrl, setImageUrl] = useState(null)
   const idUser = Cookies.get("idUtilisateur")
   const idUserNumb = parseInt(idUser)
   const navigate = useNavigate()
@@ -40,6 +44,12 @@ export default function Profil() {
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
+
+  useEffect(() => {
+    setImageUrl(
+      `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.PhotoProfil}`
+    )
+  }, [utilisateur.PhotoProfil])
 
   const handleEditClick = (partie) => {
     setSelectedPartie(partie) // Stockez les données de la partie sélectionnée dans l'état
@@ -105,12 +115,12 @@ export default function Profil() {
           Telephone: telephone,
           PseudoDiscord: pseudoDiscord,
           Description: description,
-          // PhotoProfil: imageParDefaut,
+          PhotoProfil: photoProfil,
           VilleResidence: villeResidence,
-          // password: motDePasseInscription,
-          // Admin: ,
-          // MembreEquipe: ,
-          // MembreAssociation: ,
+          hashedPassword,
+          Admin: admin,
+          MembreEquipe: membreEquipe,
+          MembreAssociation: membreAssociation,
         },
         { headers }
       )
@@ -131,6 +141,41 @@ export default function Profil() {
     navigate("/")
   }
 
+  const updateProfilPictureOnServer = async (idUserNumb, formData) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUserNumb}/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Important for sending files,
+            Authorization: `Bearer ${tokenFromCookie}`,
+          },
+        }
+      )
+      return response.data
+    } catch (error) {
+      console.error(
+        "Erreur lors de la mise à jour de la photo de profil :",
+        error
+      )
+      throw error
+    }
+  }
+
+  const handlePictureChange = (e) => {
+    const picture = e.target.files[0]
+
+    // Créez un objet FormData pour envoyer la photo
+    const formData = new FormData()
+    formData.append("myFile", picture)
+
+    setImageUrl(URL.createObjectURL(picture))
+
+    // Appel de la fonction pour mettre à jour la photo de profil sur le serveur
+    updateProfilPictureOnServer(utilisateur.id, formData)
+  }
+  console.info(imageUrl)
   console.info("utilisateur", utilisateur)
   return (
     <>
@@ -286,17 +331,6 @@ export default function Profil() {
                 <br />
 
                 <label>
-                  Photo de Profil:
-                  <input
-                    type="text"
-                    placeholder="clic et insert ta photo"
-                    value={photoProfil}
-                    onChange={(e) => setPhotoProfil(e.target.value)}
-                  />
-                </label>
-                <br />
-
-                <label>
                   Ville de Résidence:
                   <input
                     type="text"
@@ -305,20 +339,31 @@ export default function Profil() {
                     onChange={(e) => setVilleResidence(e.target.value)}
                   />
                 </label>
-                <br />
-
-                <label>
-                  Mot de Passe:
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setpassword(e.target.value)}
-                  />
-                </label>
-                <br />
 
                 <button type="submit">Soumettre</button>
               </form>
+              <label>
+                Photo de Profil:
+                <img
+                  src={imageUrl}
+                  alt="image de profil de l'utilisateur"
+                  className="profilPictureChange"
+                />
+                <input
+                  type="file"
+                  id="buttonPicture"
+                  // placeholder="clic et insert ta photo"
+                  // value={photoProfil}
+                  // value={photoProfil}
+                  accept="image/*"
+                  onChange={handlePictureChange}
+                  // onChange={(e) => {
+                  //   handlePictureChange(e)
+                  // }}
+                  // onChange={(e) => setPhotoProfil(e.target.value)}
+                />
+              </label>
+              <br />
             </div>
             <div className="boxPictureRight">
               <img
