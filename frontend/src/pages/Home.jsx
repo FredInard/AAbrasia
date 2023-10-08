@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
+
 import Citadel from "../assets/pics/CitadelOfSisteron.svg"
 import questioningFemale from "../assets/pics/femaleWarrior.svg"
 import wizard from "../assets/pics/wizard.svg"
@@ -9,6 +10,10 @@ import scene from "../assets/pics/banner.svg"
 import BrushUp from "../assets/pics/BrushUp.svg"
 import logoAiW from "../assets/pics/logoAiW.svg"
 import LogoPlayers from "../assets/pics/playerIcon.svg"
+import iconeDiscorde from "../assets/pics/iconeDiscorde.svg"
+import iconeFacebook from "../assets/pics/iconeFacebook2.svg"
+import iconeMail from "../assets/pics/iconeGmail.svg"
+
 import "./Home.scss"
 import NavBar from "../components/NavBar"
 import DisplayPlayers from "../components/DisplayPlayers"
@@ -185,6 +190,24 @@ export default function Home() {
           </div>
         )}
       </div>
+      <div className="boxLienAsso">
+        <h2>Nos amis</h2>
+        <p>Liens vers d’autres assos du 04</p>
+        L’espace de jeu
+        <p></p>Lien vers la page de l’ECE de Malijai
+        <h2>Partenaires</h2>
+        <p>
+          Lien vers les sites du Théâtre Durance, Librairie, Médiathèque, etc...
+        </p>
+        <h2>Abrasia</h2>
+        <p>Lien vers le site worldanvil d’Abrasia</p>
+        <h2>Payer sa cotisation sur HelloAsso</h2>
+        <h2>Nous rejoindre sur :</h2>
+        <img src={iconeDiscorde} alt="logo Discorde" />
+        <img src={iconeFacebook} alt="logo Discorde" />
+        <img src={iconeMail} alt="logo Discorde" />
+      </div>
+
       <Modal isOpen={isPostCardsOpen} onClose={() => setIsPostCardsOpen(false)}>
         {postData && (
           <DisplayPlayers

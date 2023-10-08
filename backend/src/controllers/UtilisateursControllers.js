@@ -149,7 +149,7 @@ const updateProfilPicture = async (req, res) => {
   // TODO validations (length, format...)
 
   utilisateurs.id = parseInt(req.params.id, 10)
-
+  console.info("Avant la mise à jour de la base de données", utilisateurs)
   models.utilisateurs
     .updateProfilPicture(
       utilisateurs,
@@ -159,6 +159,7 @@ const updateProfilPicture = async (req, res) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404)
       } else {
+        console.info("Apres la mise à jour de la base de données", result)
         // Déplacez la photo après avoir effectué l'opération de mise à jour
         fs.rename(
           req.file.path,
