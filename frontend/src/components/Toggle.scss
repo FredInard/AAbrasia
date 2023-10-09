@@ -1,13 +1,3 @@
-// body {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   min-height: 100vh;
-//   font-size: 2em; // resize for demo
-//   gap: 1em;
-// }
-
 @function em($pixels) {
   @if not(unit($pixels) == "px") {
     @error 'Value #{$pixels} must have `px` unit.';

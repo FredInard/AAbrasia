@@ -117,45 +117,33 @@ $b4w: 7px;
   }
 }
 
-// html {
-//   background: #fff;
+// .contSubmitButton {
+// position: absolute;
+// display: flex;
+// align-items: center;
+// justify-content: center;
+// width: 150px;
+// height: 10px;
+// left: 50%;
+// top: 50%;
+// margin: -100px 0 0 -300px;
 // }
-
-// input,
-// button,
-// submit {
-//   border: none;
-// }
-
-.contSubmitButton {
-  // position: absolute;
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
-  // width: 150px;
-  // height: 10px;
-  // left: 50%;
-  // top: 50%;
-  // margin: -100px 0 0 -300px;
-}
 
 .submitButton {
-  // border-width: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 150px;
   height: 50px;
-  /*border-radius*/
+
   border-radius: 100px;
   background: #fff;
-  // position: absolute;
+
   border: 5px solid #6fb07f;
   cursor: pointer;
   transition: all 0.3s;
 
   &:focus {
-    /*animation*/
     -webkit-animation: extend 1s ease-in-out;
     -ms-animation: extend 1s ease-in-out;
     animation: extend 1s ease-in-out;
@@ -173,12 +161,6 @@ $b4w: 7px;
 
   > img {
     position: absolute;
-    // top: 0;
-    // left: 0;
-    // right: 0;
-    // bottom: 0;
-    // margin: auto;
-    // -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     opacity: 0;
     transition: all 0.3s;

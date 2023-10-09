@@ -10,19 +10,26 @@
 
 .boxBouttonExit {
   display: flex;
-  justify-content: flex-end;
   margin-top: 100px;
   width: 98%;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 15px;
+
   .buttonExit {
     border: solid 1px rgb(255, 255, 255);
     border-radius: 50%;
-    width: 4%;
+    width: 5%;
     will-change: transform;
     transition: all 0.3s ease-in;
 
     &:hover {
       border: solid 3px rgb(255, 255, 255);
       transform: scale(1.2);
+    }
+
+    @media screen and (max-width: 850px) {
+      width: 80px;
     }
   }
 }
@@ -31,7 +38,7 @@
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-
+  margin-right: 75px;
   p {
     margin-right: 10px;
     margin-left: 10px;
@@ -45,7 +52,20 @@
     .boxPictureLeft {
       border: solid 1px red;
       width: 50%;
+      width: 100%; /* Largeur du conteneur, ajustez selon vos besoins */
+      height: 100vh; /* Hauteur du conteneur, ajustez selon vos besoins */
+      background-image: url("../assets/pics/medievalKing.svg"); /* URL de votre image */
+      background-size: cover; /* La propriété qui fait zoomer l'image */
+      background-position: right center; /* Centrez l'image horizontalement et verticalement */
+      -webkit-mask-image: linear-gradient(
+        to right,
+        rgb(6, 1, 39) 10%,
+        transparent 90%
+      );
+      mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
+
       .kingPicture {
+        // width: 99.5%;
         -webkit-mask-image: linear-gradient(
           to right,
           rgb(6, 1, 39) 10%,
@@ -68,20 +88,129 @@
     border: solid 2px orange;
     display: flex;
     .boxFormProfil {
-      width: 50%;
+      width: 85%;
       border: solid 1px white;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
+
+      .labelChangeProfil {
+        width: 100%;
+        .imputChangeProfil {
+          // max-width: 380px;
+          width: 100%;
+          background-color: #f0f0f0;
+          margin: 10px 0;
+          height: 55px;
+          border-radius: 55px;
+          display: grid;
+          grid-template-columns: 15% 85%;
+          padding: 0 0.4rem;
+          position: relative;
+        }
+      }
     }
     .boxPictureRight {
-      width: 50%;
-      -webkit-mask-image: linear-gradient(
-        to left,
-        rgb(6, 1, 39) 10%,
-        transparent 90%
-      );
-      mask-image: linear-gradient(to left, rgb(6, 1, 39) 10%, transparent 90%);
+      width: 100%; /* Largeur du conteneur, ajustez selon vos besoins */
+      height: 100vh; /* Hauteur du conteneur, ajustez selon vos besoins */
+      background-image: url("../assets/pics/queen.svg"); /* URL de votre image */
+      background-size: cover; /* La propriété qui fait zoomer l'image */
+      background-position: center; /* Centrez l'image horizontalement et verticalement */
+
+      .queenPicture {
+        width: 100%;
+        -webkit-mask-image: linear-gradient(
+          to left,
+          rgb(6, 1, 39) 10%,
+          transparent 90%
+        );
+        mask-image: linear-gradient(
+          to left,
+          rgb(6, 1, 39) 10%,
+          transparent 90%
+        );
+      }
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    .boxListeParties {
+      border: solid 2px yellow;
+      display: flex;
+      .boxPictureLeft {
+        border: solid 1px red;
+        position: absolute;
+        width: 100%; /* Largeur du conteneur, ajustez selon vos besoins */
+        height: 100vh; /* Hauteur du conteneur, ajustez selon vos besoins */
+        background-image: url("../assets/pics/medievalKing.svg"); /* URL de votre image */
+        background-size: cover; /* La propriété qui fait zoomer l'image */
+        background-position: center; /* Centrez l'image horizontalement et verticalement */
+        -webkit-mask-image: linear-gradient(
+          to right,
+          rgb(6, 1, 39) 10%,
+          transparent 90%
+        );
+        mask-image: linear-gradient(
+          to right,
+          rgb(6, 1, 39) 10%,
+          transparent 90%
+        );
+      }
+
+      .boxListeGame {
+        border: solid 1px rgb(11, 240, 49);
+        width: 50%;
+      }
+    }
+    .boxModifProfil {
+      border: solid 2px orange;
+      display: flex;
+      .boxFormProfil {
+        width: 85%;
+        border: solid 1px white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        .labelChangeProfil {
+          width: 100%;
+          .imputChangeProfil {
+            // max-width: 380px;
+            width: 100%;
+            background-color: #f0f0f0;
+            margin: 10px 0;
+            height: 55px;
+            border-radius: 55px;
+            display: grid;
+            grid-template-columns: 15% 85%;
+            padding: 0 0.4rem;
+            position: relative;
+          }
+        }
+      }
+      .boxPictureRight {
+        width: 100%; /* Largeur du conteneur, ajustez selon vos besoins */
+        height: 100vh; /* Hauteur du conteneur, ajustez selon vos besoins */
+        background-image: url("../assets/pics/queen.svg"); /* URL de votre image */
+        background-size: cover; /* La propriété qui fait zoomer l'image */
+        background-position: center; /* Centrez l'image horizontalement et verticalement */
+
+        .queenPicture {
+          width: 100%;
+          -webkit-mask-image: linear-gradient(
+            to left,
+            rgb(6, 1, 39) 10%,
+            transparent 90%
+          );
+          mask-image: linear-gradient(
+            to left,
+            rgb(6, 1, 39) 10%,
+            transparent 90%
+          );
+        }
+      }
     }
   }
 }

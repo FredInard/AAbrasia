@@ -8,8 +8,8 @@ import NavBar from "../components/NavBar"
 import ModificationPartieModal from "../components/ModificationPartieModal.jsx" // Importez la modal
 import ModalExitPartie from "../components/ModalExitPartie.jsx"
 import exit from "../assets/pics/Exist.png"
-import king from "../assets/pics/medievalKing.svg"
-import queen from "../assets/pics/queen.svg"
+// import king from "../assets/pics/medievalKing.svg"
+// import queen from "../assets/pics/queen.svg"
 
 import "./Profil.scss"
 
@@ -187,8 +187,9 @@ export default function Profil() {
           onClick={handleLogout}
           alt="logo exit"
         />
+        <p>Déconexion</p>
       </div>
-      <h1> Bienvenue {utilisateur.Pseudo}</h1>
+      <h1 className="bienvenurName"> Bienvenue {utilisateur.Pseudo}</h1>
       <div className="bouttonSwitch">
         <p> Tableau de bord des parties</p>
         <Toggle onClick={() => setShowBoxListeParties(!showBoxListeParties)} />
@@ -196,143 +197,148 @@ export default function Profil() {
       </div>
       <div className="globalBoxProfil">
         {showBoxListeParties === true ? (
-          <div className="boxListeParties">
+          <div className="boxListeParties ">
             <div className="boxPictureLeft fade-in-left">
-              <img className="kingPicture" src={king} alt="image d'un roi" />
+              {/* <img className="kingPicture" src={king} alt="image d'un roi" /> */}
             </div>
-            <div className="boxListeGame fade-in-right">
-              {parties && (
-                <div className="boxCardsResumPartie">
-                  <h2>Mes parties :</h2>
-                  {parties.map((partie) => (
-                    <div key={partie.id}>
-                      <div className="cardResumPartie">
-                        <h2>{partie.Titre}</h2>
-                        <p>Type : {partie.TypeDeJeux}</p>
-                        <p>Date : {partie.Date}</p>
-                        <p>Lieu : {partie.Lieu}</p>
-                        <p>Nombre de Joueur : {partie.NombreJoueur}</p>
-                        <p>Description : {partie.Description}</p>
-                        {/* Bouton "Modifier" pour ouvrir la modal */}
-                        <button onClick={() => handleExitPartieClick(partie)}>
-                          Se retirer de la partie
-                        </button>
+            <div className="boxListeGame">
+              <h1>Tableau de bord de tes parties :</h1>
+              <div className="boxResumeParties fade-in-right">
+                {parties && (
+                  <div className="boxCardsResumPartie">
+                    <h2>Mes parties :</h2>
+                    {parties.map((partie) => (
+                      <div key={partie.id}>
+                        <div className="cardResumPartie">
+                          <h2>{partie.Titre}</h2>
+                          <p>Type : {partie.TypeDeJeux}</p>
+                          <p>Date : {partie.Date}</p>
+                          <p>Lieu : {partie.Lieu}</p>
+                          <p>Nombre de Joueur : {partie.NombreJoueur}</p>
+                          <p>Description : {partie.Description}</p>
+                          {/* Bouton "Modifier" pour ouvrir la modal */}
+                          <button onClick={() => handleExitPartieClick(partie)}>
+                            Se retirer de la partie
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
 
-              {meneurParties && (
-                <div className="boxCardsResumPartieMeneur">
-                  <h2>Mes parties en tant que meneur :</h2>
-                  {meneurParties.map((meneurPartie) => (
-                    <div key={meneurPartie.id}>
-                      <div className="cardResumMeneurParties">
-                        <h2>{meneurPartie.Titre}</h2>
-                        <p>Type : {meneurPartie.TypeDeJeux}</p>
-                        <p>Date : {meneurPartie.Date}</p>
-                        <p>Lieu : {meneurPartie.Lieu}</p>
-                        <p>Nombre de Joueur : {meneurPartie.NombreJoueur}</p>
-                        <p>Description : {meneurPartie.Description}</p>
-                        {/* Bouton "Modifier" pour ouvrir la modal */}
-                        <button onClick={() => handleEditClick(meneurPartie)}>
-                          Modifier
-                        </button>
+                {meneurParties && (
+                  <div className="boxCardsResumPartieMeneur">
+                    <h2>Mes parties en tant que meneur :</h2>
+                    {meneurParties.map((meneurPartie) => (
+                      <div key={meneurPartie.id}>
+                        <div className="cardResumMeneurParties">
+                          <h2>{meneurPartie.Titre}</h2>
+                          <p>Type : {meneurPartie.TypeDeJeux}</p>
+                          <p>Date : {meneurPartie.Date}</p>
+                          <p>Lieu : {meneurPartie.Lieu}</p>
+                          <p>Nombre de Joueur : {meneurPartie.NombreJoueur}</p>
+                          <p>Description : {meneurPartie.Description}</p>
+                          {/* Bouton "Modifier" pour ouvrir la modal */}
+                          <button onClick={() => handleEditClick(meneurPartie)}>
+                            Modifier
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ) : (
           <div className="boxModifProfil">
-            <div className="boxFormProfil">
+            <div className="bigBoxFormProfil ">
+              <h1>Modifie ton profil :</h1>
               <form
                 className="boxFormProfil fade-in-left"
                 onSubmit={handleSubmit}
               >
-                <label>
+                <label className="labelChangeProfil">
                   Nom:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Nom}
                     value={nom}
                     onChange={(e) => setNom(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Prénom:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Prenom}
                     value={prenom}
                     onChange={(e) => setPrenom(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Pseudo:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Pseudo}
                     value={pseudo}
                     onChange={(e) => setPseudo(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Mail:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Mail}
                     value={mail}
                     onChange={(e) => setMail(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Téléphone:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Telephone}
                     value={telephone}
                     onChange={(e) => setTelephone(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Pseudo Discord:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.PseudoDiscord}
                     value={pseudoDiscord}
                     onChange={(e) => setPseudoDiscord(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Description:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Description}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Ville de Résidence:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.VilleResidence}
                     value={villeResidence}
@@ -342,7 +348,7 @@ export default function Profil() {
 
                 <button type="submit">Soumettre</button>
               </form>
-              <label>
+              <label className="boxChangePhotoProfil">
                 Photo de Profil:
                 <img
                   src={imageUrl}
@@ -352,25 +358,18 @@ export default function Profil() {
                 <input
                   type="file"
                   id="buttonPicture"
-                  // placeholder="clic et insert ta photo"
-                  // value={photoProfil}
-                  // value={photoProfil}
                   accept="image/*"
                   onChange={handlePictureChange}
-                  // onChange={(e) => {
-                  //   handlePictureChange(e)
-                  // }}
-                  // onChange={(e) => setPhotoProfil(e.target.value)}
                 />
               </label>
               <br />
             </div>
-            <div className="boxPictureRight">
-              <img
-                className="queenPicture fade-in-right"
+            <div className="boxPictureRight fade-in-right">
+              {/* <img
+                className="queenPicture "
                 src={queen}
                 alt="image d'un reine"
-              />
+              /> */}
             </div>
           </div>
         )}
