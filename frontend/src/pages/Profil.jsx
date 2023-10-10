@@ -254,7 +254,7 @@ export default function Profil() {
           <div className="boxModifProfil">
             <div className="bigBoxFormProfil ">
               <h1>Modifie ton profil :</h1>
-              <form
+              <form2
                 className="boxFormProfil fade-in-left"
                 onSubmit={handleSubmit}
               >
@@ -347,7 +347,7 @@ export default function Profil() {
                 </label>
 
                 <button type="submit">Soumettre</button>
-              </form>
+              </form2>
               <label className="boxChangePhotoProfil">
                 Photo de Profil:
                 <img
