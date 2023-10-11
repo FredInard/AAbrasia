@@ -112,30 +112,39 @@ function NavBar() {
               Abrasia
             </RouterLink>
           )}
-          {idUser ? null : (
-            <RouterLink className="buttonNavBar nav-item" to="/Inscription">
-              Inscription
-            </RouterLink>
+          {idUser ? (
+            <>
+              <RouterLink className="menuItem menuItem-2" to="/create-game">
+                Créer ta partie
+              </RouterLink>
+              <RouterLink className="menuItem menuItem-2" to="/Association">
+                L'Association
+              </RouterLink>
+              <RouterLink className="menuItem menuItem-2" to="/profil">
+                <img
+                  className="photoProfilUserNavBar"
+                  src={`${import.meta.env.VITE_BACKEND_URL}/${
+                    utilisateur.PhotoProfil
+                  }`}
+                  alt="photo de profil de l'utilisateur"
+                />
+                <p>Profil</p>
+              </RouterLink>
+            </>
+          ) : (
+            <>
+              <RouterLink className="buttonNavBar nav-item" to="/Inscription">
+                Inscription
+              </RouterLink>
+              <RouterLink className="menuItem menuItem-2" to="/Association">
+                L'Association
+              </RouterLink>
+            </>
           )}
-          <RouterLink className="menuItem menuItem-2" to="/create-game">
-            Créer ta partie
-          </RouterLink>
-          <RouterLink className="menuItem menuItem-2" to="/Association">
-            L'Association
-          </RouterLink>
-          <RouterLink className="menuItem menuItem-2" to="/profil">
-            <img
-              className="photoProfilUserNavBar"
-              src={`${import.meta.env.VITE_BACKEND_URL}/${
-                utilisateur.PhotoProfil
-              }`}
-              alt="photo de profil de l'utilisateur"
-            />
-            <p>Profil</p>
-          </RouterLink>
         </div>
       )}
-      {!isMobile && (
+
+      {!isMobile && !isMenuOpen && (
         <div className="mainButtonsNavBar">
           {window.location.pathname === "/" && (
             <ScrollLink

@@ -20,14 +20,17 @@
   .mapParticipants {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
     .postCardDisplayPlayer {
       /* Styles pour chaque carte d'utilisateur */
       background-color: #fff;
       border: 1px solid #ccc;
       border-radius: 8px;
       padding: 16px;
-      width: 150px; /* Ajustez la largeur au besoin */
-      /* Ajoutez d'autres styles au besoin */
+      width: 30%; /* Ajustez la largeur au besoin */
+      max-width: 150px;
+      min-width: 110px; /* Ajoutez d'autres styles au besoin */
 
       .photoProfilDisplayPlayer {
         /* Styles pour la photo de profil */
@@ -79,11 +82,14 @@
 
 .photoMaitreDuJeux {
   border-radius: 50%;
-  width: 10%;
+  width: 11%;
+  min-width: 95px;
   height: auto;
-}
-
-.meneurPartieDisplayPlayer {
   color: darkred;
   font-size: 1.5em;
 }
+
+// .meneurPartieDisplayPlayer {
+//   color: darkred;
+//   font-size: 1.5em;
+// }

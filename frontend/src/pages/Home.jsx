@@ -159,7 +159,11 @@ export default function Home() {
         {!isPostCardsOpen && (
           <div className="containeurCards">
             {parties.map((partie) => (
-              <div key={partie.id} className="globalContainerCard">
+              <div
+                key={partie.id}
+                className="globalContainerCard"
+                onClick={() => handlePostClick(partie)}
+              >
                 <div className="titleContainerCard">{partie.Titre}</div>
                 <div className="miniBoxInfo">
                   <div className="allInfoItem">
@@ -170,9 +174,9 @@ export default function Home() {
                       Maitre du jeu : {partie.PseudoMaitreDuJeu}
                     </div>
                     <div className="infoItem">Type : {partie.TypeDeJeux}</div>
-                    <button onClick={() => handlePostClick(partie)}>
+                    {/* <button onClick={() => handlePostClick(partie)}>
                       Voir les détails
-                    </button>
+                    </button> */}
                   </div>
                   <div className="maxPlayerInfoItem">
                     <div className="logoPlayerAndMaxPlayer">

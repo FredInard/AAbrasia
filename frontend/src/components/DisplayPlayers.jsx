@@ -97,11 +97,12 @@ export default function DisplayPlayers({ postData }) {
       })
   }
 
-  console.info("postData:", postData)
-  console.info("idUserNumber:", idUserNumber)
-  console.info("NombreJoueur:", postData.NombreJoueur)
-  console.info("nbParticipants:", xJoueurs.nbParticipants)
-  console.info("MaitreDuJeu:", postData.MaitreDuJeu)
+  // console.info("postData:", postData)
+  // console.info("idUserNumber:", idUserNumber)
+  // console.info("postData.PartieId:", postData.PartieId)
+  // console.info("NombreJoueur:", postData.NombreJoueur)
+  // console.info("nbParticipants:", xJoueurs.nbParticipants)
+  // console.info("MaitreDuJeu:", postData.MaitreDuJeu)
 
   return (
     <div className="displayPlayers-container">

@@ -90,8 +90,10 @@ const edit = (req, res) => {
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404)
+        console.info("404", res.sendStatus(404))
       } else {
         res.sendStatus(204)
+        console.info("la modification de profil à fonctionnée")
       }
     })
     .catch((err) => {

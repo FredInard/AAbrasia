@@ -44,6 +44,7 @@ class UtilisateursManager extends AbstractManager {
         utilisateurs.Admin,
         utilisateurs.MembreEquipe,
         utilisateurs.MembreAssociation,
+        utilisateurs.id,
       ]
     )
   }

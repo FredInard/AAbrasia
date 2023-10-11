@@ -24,18 +24,22 @@ export default function Profil() {
   const [nom, setNom] = useState(utilisateur.Nom)
   const [prenom, setPrenom] = useState(utilisateur.Prenom)
   const [pseudo, setPseudo] = useState(utilisateur.Pseudo)
-  const [mail, setMail] = useState(utilisateur.Mail)
-  const [telephone, setTelephone] = useState(utilisateur.Telephone)
-  const [pseudoDiscord, setPseudoDiscord] = useState(utilisateur.PseudoDiscord)
-  const [description, setDescription] = useState(utilisateur.Description)
+  const [mail, setMail] = useState(utilisateur.Mail || null)
+  const [telephone, setTelephone] = useState(utilisateur.Telephone || null)
+  const [pseudoDiscord, setPseudoDiscord] = useState(
+    utilisateur.PseudoDiscord || null
+  )
+  const [description, setDescription] = useState(
+    utilisateur.Description || null
+  )
   const photoProfil = utilisateur.PhotoProfil
   const [villeResidence, setVilleResidence] = useState(
-    utilisateur.VilleResidence
+    utilisateur.VilleResidence || null
   )
   const hashedPassword = utilisateur.hashedPassword
-  const admin = utilisateur.Admin
-  const membreEquipe = utilisateur.MembreEquipe
-  const membreAssociation = utilisateur.MembreAssociation
+  const admin = utilisateur.Admin || null
+  const membreEquipe = utilisateur.MembreEquipe || null
+  const membreAssociation = utilisateur.MembreAssociation || null
   const [imageUrl, setImageUrl] = useState(null)
   const idUser = Cookies.get("idUtilisateur")
   const idUserNumb = parseInt(idUser)
@@ -44,6 +48,22 @@ export default function Profil() {
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
+
+  useEffect(() => {
+    // Mettre à jour les états lorsque `utilisateur` change
+    setNom(utilisateur.Nom)
+    setPrenom(utilisateur.Prenom)
+    setPseudo(utilisateur.Pseudo)
+    setMail(utilisateur.Mail)
+    setTelephone(utilisateur.Telephone)
+    setPseudoDiscord(utilisateur.PseudoDiscord)
+    setDescription(utilisateur.Description)
+    setVilleResidence(utilisateur.VilleResidence)
+    setImageUrl(
+      `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.PhotoProfil}`
+    )
+    // N'oubliez pas de gérer d'autres états si nécessaire
+  }, [utilisateur])
 
   useEffect(() => {
     setImageUrl(
@@ -79,7 +99,6 @@ export default function Profil() {
         headers,
       })
       .then((res) => {
-        console.info("Réponse Axios (succès) :", res)
         setParties(res.data)
       })
       .catch((err) => {
@@ -93,7 +112,6 @@ export default function Profil() {
         headers,
       })
       .then((res) => {
-        console.info("Réponse Axios (succès) :", res)
         setMeneurParties(res.data)
       })
       .catch((err) => {
@@ -103,10 +121,10 @@ export default function Profil() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
+    console.info("Fonction handleSubmit appelée")
     axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs`,
+      .put(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUserNumb}`,
         {
           Nom: nom,
           Prenom: prenom,
@@ -121,12 +139,14 @@ export default function Profil() {
           Admin: admin,
           MembreEquipe: membreEquipe,
           MembreAssociation: membreAssociation,
+          id: idUserNumb,
         },
         { headers }
       )
       .then((res) => res.data)
       .catch((error) => {
         console.error("Erreur lors de la mise a jour du profil :", error)
+        // console.info("Erreur lors de la mise a jour du profil :", error)
       })
   }
 
@@ -174,9 +194,19 @@ export default function Profil() {
 
     // Appel de la fonction pour mettre à jour la photo de profil sur le serveur
     updateProfilPictureOnServer(utilisateur.id, formData)
+      .then(() => {
+        // Mise à jour de la photo de profil terminée avec succès, rafraîchissez la page
+        window.location.reload()
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la mise à jour de la photo de profil :",
+          error
+        )
+      })
   }
-  console.info(imageUrl)
-  console.info("utilisateur", utilisateur)
+
+  console.info("description", description)
   return (
     <>
       <NavBar className="NavBarHome" />
@@ -217,7 +247,10 @@ export default function Profil() {
                           <p>Nombre de Joueur : {partie.NombreJoueur}</p>
                           <p>Description : {partie.Description}</p>
                           {/* Bouton "Modifier" pour ouvrir la modal */}
-                          <button onClick={() => handleExitPartieClick(partie)}>
+                          <button
+                            className="allButtonProfil"
+                            onClick={() => handleExitPartieClick(partie)}
+                          >
                             Se retirer de la partie
                           </button>
                         </div>
@@ -239,7 +272,10 @@ export default function Profil() {
                           <p>Nombre de Joueur : {meneurPartie.NombreJoueur}</p>
                           <p>Description : {meneurPartie.Description}</p>
                           {/* Bouton "Modifier" pour ouvrir la modal */}
-                          <button onClick={() => handleEditClick(meneurPartie)}>
+                          <button
+                            className="allButtonProfil"
+                            onClick={() => handleEditClick(meneurPartie)}
+                          >
                             Modifier
                           </button>
                         </div>
@@ -254,9 +290,9 @@ export default function Profil() {
           <div className="boxModifProfil">
             <div className="bigBoxFormProfil ">
               <h1>Modifie ton profil :</h1>
-              <form2
-                className="boxFormProfil fade-in-left"
+              <form
                 onSubmit={handleSubmit}
+                className="boxFormProfil fade-in-left"
               >
                 <label className="labelChangeProfil">
                   Nom:
@@ -347,7 +383,7 @@ export default function Profil() {
                 </label>
 
                 <button type="submit">Soumettre</button>
-              </form2>
+              </form>
               <label className="boxChangePhotoProfil">
                 Photo de Profil:
                 <img

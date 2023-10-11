@@ -2,7 +2,6 @@ import axios from "axios"
 import React, { useState } from "react"
 import Cookies from "js-cookie"
 import "./CreateGame.scss"
-import orc from "../assets/pics/orc.svg"
 
 import NavBar from "../components/NavBar"
 
@@ -56,7 +55,7 @@ export default function CreateGame() {
       <NavBar className="NavBarHome" />
       <div className="createGameGlobal">
         <div className="boxPictureOrc">
-          <img src={orc} alt="portrait d'un orc" className="orcPicture" />
+          {/* <img src={orc} alt="portrait d'un orc" className="orcPicture" /> */}
         </div>
         <form
           className="createGameForm"

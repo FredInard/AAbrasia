@@ -1,13 +1,32 @@
 .createGameGlobal {
-  font-display: flex;
+  display: flex;
   height: 100vh;
   width: 100%;
+  flex-direction: column;
+  align-items: center;
 
   .boxPictureOrc {
     margin-top: 100px;
-    .orcPicture {
-      // width: auto;
-      // height: 100vh;
+    width: 50%;
+    width: 100%; /* Largeur du conteneur, ajustez selon vos besoins */
+    height: 100vh; /* Hauteur du conteneur, ajustez selon vos besoins */
+    background-image: url("../assets/pics/orc.svg"); /* URL de votre image */
+    background-size: cover; /* La propriété qui fait zoomer l'image */
+    background-position: right center; /* Centrez l'image horizontalement et verticalement */
+    -webkit-mask-image: linear-gradient(
+      to right,
+      rgb(6, 1, 39) 10%,
+      transparent 90%
+    );
+    mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
+
+    @media screen and (max-width: 441px) {
+      margin-top: 100px;
+      width: 100%; /* Largeur du conteneur, ajustez selon vos besoins */
+      height: 100vh; /* Hauteur du conteneur, ajustez selon vos besoins */
+      background-image: url("../assets/pics/orc.svg"); /* URL de votre image */
+      background-size: cover; /* La propriété qui fait zoomer l'image */
+      background-position: 80% center; /* Centrez l'image horizontalement et verticalement */
       -webkit-mask-image: linear-gradient(
         to right,
         rgb(6, 1, 39) 10%,
@@ -15,20 +34,30 @@
       );
       mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
     }
+
+    .orcPicture {
+      // width: auto;
+      // height: 100vh;
+      // -webkit-mask-image: linear-gradient(
+      //   to right,
+      //   rgb(6, 1, 39) 10%,
+      //   transparent 90%
+      // );
+      // mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
+    }
   }
 
   .createGameForm {
     position: absolute;
     top: 30px;
-    right: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px;
+    padding: 10px;
     background-color: #f0f0f04d;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
     margin-top: 200px;
     min-width: 300px;
