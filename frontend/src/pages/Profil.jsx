@@ -48,28 +48,28 @@ export default function Profil() {
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
+  const handlePictureChange = (e) => {
+    const picture = e.target.files[0]
 
-  useEffect(() => {
-    // Mettre à jour les états lorsque `utilisateur` change
-    setNom(utilisateur.Nom)
-    setPrenom(utilisateur.Prenom)
-    setPseudo(utilisateur.Pseudo)
-    setMail(utilisateur.Mail)
-    setTelephone(utilisateur.Telephone)
-    setPseudoDiscord(utilisateur.PseudoDiscord)
-    setDescription(utilisateur.Description)
-    setVilleResidence(utilisateur.VilleResidence)
-    setImageUrl(
-      `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.PhotoProfil}`
-    )
-    // N'oubliez pas de gérer d'autres états si nécessaire
-  }, [utilisateur])
+    // Créez un objet FormData pour envoyer la photo
+    const formData = new FormData()
+    formData.append("myFile", picture)
 
-  useEffect(() => {
-    setImageUrl(
-      `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.PhotoProfil}`
-    )
-  }, [utilisateur.PhotoProfil])
+    setImageUrl(URL.createObjectURL(picture))
+
+    // Appel de la fonction pour mettre à jour la photo de profil sur le serveur
+    updateProfilPictureOnServer(utilisateur.id, formData)
+      .then(() => {
+        // Mise à jour de la photo de profil terminée avec succès, rafraîchissez la page
+        window.location.reload()
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la mise à jour de la photo de profil :",
+          error
+        )
+      })
+  }
 
   const handleEditClick = (partie) => {
     setSelectedPartie(partie) // Stockez les données de la partie sélectionnée dans l'état
@@ -81,43 +81,24 @@ export default function Profil() {
     setShowModalExitPartie(true) // Ouvrez la modal
   }
 
-  useEffect(() => {
+  const handleSupresPartieClick = (partieId) => {
+    console.info("partieId", partieId)
     axios
-      .get(
-        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUserNumb}`,
-        { headers }
+      .delete(
+        `${import.meta.env.VITE_BACKEND_URL}/partie/participation/${partieId}`,
+        {
+          headers,
+        }
       )
-      .then((res) => setUtilisateur(res.data))
-      .catch((err) => {
-        console.error("Problème lors du chargement de l'utlisateur", err)
+      .then((results) => {
+        console.info("Partie supprimée avec succès !")
+        // Effectuez toute autre action nécessaire après la suppression de la partie ici
       })
-  }, [])
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/profil/${idUserNumb}`, {
-        headers,
+      .catch((error) => {
+        console.error("Erreur lors de la suppression de la partie :", error)
+        // Gérez l'erreur ici (peut-être afficher un message d'erreur à l'utilisateur)
       })
-      .then((res) => {
-        setParties(res.data)
-      })
-      .catch((err) => {
-        console.error("Problème lors du chargement des parties", err)
-      })
-  }, [showModalExitPartie])
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/meneur/${idUserNumb}`, {
-        headers,
-      })
-      .then((res) => {
-        setMeneurParties(res.data)
-      })
-      .catch((err) => {
-        console.error("Problème lors du chargement des parties", err)
-      })
-  }, [showModalModifPartie])
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -183,47 +164,66 @@ export default function Profil() {
     }
   }
 
-  const handleSupresPartieClick = (partieId) => {
-    console.info("partieId", partieId)
+  useEffect(() => {
+    // Mettre à jour les états lorsque `utilisateur` change
+    setNom(utilisateur.Nom)
+    setPrenom(utilisateur.Prenom)
+    setPseudo(utilisateur.Pseudo)
+    setMail(utilisateur.Mail)
+    setTelephone(utilisateur.Telephone)
+    setPseudoDiscord(utilisateur.PseudoDiscord)
+    setDescription(utilisateur.Description)
+    setVilleResidence(utilisateur.VilleResidence)
+    setImageUrl(
+      `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.PhotoProfil}`
+    )
+    // N'oubliez pas de gérer d'autres états si nécessaire
+  }, [utilisateur])
+
+  useEffect(() => {
+    setImageUrl(
+      `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.PhotoProfil}`
+    )
+  }, [utilisateur.PhotoProfil])
+
+  useEffect(() => {
     axios
-      .delete(
-        `${import.meta.env.VITE_BACKEND_URL}/partie/participation/${partieId}`,
-        {
-          headers,
-        }
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUserNumb}`,
+        { headers }
       )
-      .then((results) => {
-        console.info("Partie supprimée avec succès !")
-        // Effectuez toute autre action nécessaire après la suppression de la partie ici
+      .then((res) => setUtilisateur(res.data))
+      .catch((err) => {
+        console.error("Problème lors du chargement de l'utlisateur", err)
       })
-      .catch((error) => {
-        console.error("Erreur lors de la suppression de la partie :", error)
-        // Gérez l'erreur ici (peut-être afficher un message d'erreur à l'utilisateur)
+  }, [])
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/profil/${idUserNumb}`, {
+        headers,
       })
-  }
-
-  const handlePictureChange = (e) => {
-    const picture = e.target.files[0]
-
-    // Créez un objet FormData pour envoyer la photo
-    const formData = new FormData()
-    formData.append("myFile", picture)
-
-    setImageUrl(URL.createObjectURL(picture))
-
-    // Appel de la fonction pour mettre à jour la photo de profil sur le serveur
-    updateProfilPictureOnServer(utilisateur.id, formData)
-      .then(() => {
-        // Mise à jour de la photo de profil terminée avec succès, rafraîchissez la page
-        window.location.reload()
+      .then((res) => {
+        setParties(res.data)
       })
-      .catch((error) => {
-        console.error(
-          "Erreur lors de la mise à jour de la photo de profil :",
-          error
-        )
+      .catch((err) => {
+        console.error("Problème lors du chargement des parties", err)
       })
-  }
+  }, [showModalExitPartie])
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/meneur/${idUserNumb}`, {
+        headers,
+      })
+      .then((res) => {
+        setMeneurParties(res.data)
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement des parties", err)
+      })
+  }, [showModalModifPartie, handleSupresPartieClick])
+
   // console.info("meneurParties", meneurParties)
   return (
     <>

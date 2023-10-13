@@ -1,3 +1,4 @@
+const partieDeletion = require("./partieDeletion")
 const express = require("express")
 const multer = require("multer")
 
@@ -51,7 +52,24 @@ router.get("/partie/meneur/:id", PartieControllers.partieMeneurByUtilisateurId)
 router.put("/partie/:id", PartieControllers.edit)
 router.post("/partie", PartieControllers.add)
 router.delete("/partie/:id", PartieControllers.destroy)
-router.delete("/partie/participation/:id", PartieControllers.destroyeurDePartie)
+// router.delete("/partie/participation/:id", PartieControllers.destroyeurDePartie)
+
+router.delete("/partie/participation/:id", (req, res) => {
+  const id = req.params.id
+
+  // Appel de la fonction de suppression de partie
+  partieDeletion
+    .deletePartie(id)
+    .then(() => {
+      res.sendStatus(204) // La suppression a réussi
+      console.info("La suppression de la partie et des participations a réussi")
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500) // Erreur de serveur
+      console.info("Échec de la suppression de la partie et des participations")
+    })
+})
 
 router.put("/participation/:id", ParticipationControllers.edit)
 router.post("/participation", ParticipationControllers.add)

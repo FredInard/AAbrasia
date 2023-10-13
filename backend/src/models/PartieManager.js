@@ -110,43 +110,16 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
   }
 
   getDestroyeurDePartie(id) {
-    return new Promise((resolve, reject) => {
-      this.database.beginTransaction((err) => {
-        if (err) {
-          return reject(err)
-        }
-
-        // Supprime d'abord les participations
-        this.database.query(
-          "DELETE FROM participation WHERE Partie_Id = ?",
-          [id],
-          (err, results) => {
-            if (err) {
-              return this.database.rollback(() => reject(err))
-            }
-
-            // Ensuite, supprime la partie
-            this.database.query(
-              "DELETE FROM partie WHERE id = ?",
-              [id],
-              (err, results) => {
-                if (err) {
-                  return this.database.rollback(() => reject(err))
-                }
-
-                // Si tout s'est bien passé, valide la transaction
-                this.database.commit((err) => {
-                  if (err) {
-                    return this.database.rollback(() => reject(err))
-                  }
-
-                  resolve()
-                })
-              }
-            )
-          }
-        )
-      })
+    return this.database.transaction((t) => {
+      return this.database
+        .query("DELETE FROM participation WHERE Partie_Id = ?", [id], {
+          transaction: t,
+        })
+        .then(() => {
+          return this.database.query("DELETE FROM partie WHERE id = ?", [id], {
+            transaction: t,
+          })
+        })
     })
   }
 }
