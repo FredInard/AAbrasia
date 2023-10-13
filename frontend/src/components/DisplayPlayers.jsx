@@ -2,10 +2,13 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import "./DisplayPlayers.scss"
+import PlayerInfoModal from "./PlayerInfoModal"
 import { Link } from "react-router-dom"
 import SubmitButton from "./SubmitButton"
 
 export default function DisplayPlayers({ postData }) {
+  const [modalPlayerIsOpen, setModalPlayerIsOpen] = useState(false)
+  const [selectedPlayer, setSelectedPlayer] = useState(null)
   const [allPosts, setAllPosts] = useState([])
   const [xJoueurs, setXJoueurs] = useState([])
   const idUser = Cookies.get("idUtilisateur")
@@ -13,6 +16,16 @@ export default function DisplayPlayers({ postData }) {
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
+  }
+
+  const openPlayerInfoModal = (post) => {
+    setSelectedPlayer(post)
+    setModalPlayerIsOpen(true)
+  }
+
+  const closePlayerInfoModal = () => {
+    setSelectedPlayer(null)
+    setModalPlayerIsOpen(false)
   }
 
   useEffect(() => {
@@ -97,7 +110,7 @@ export default function DisplayPlayers({ postData }) {
       })
   }
 
-  // console.info("postData:", postData)
+  // console.info("allPosts:", allPosts)
   // console.info("idUserNumber:", idUserNumber)
   // console.info("postData.PartieId:", postData.PartieId)
   // console.info("NombreJoueur:", postData.NombreJoueur)
@@ -129,6 +142,7 @@ export default function DisplayPlayers({ postData }) {
               className="photoProfilDisplayPlayer"
               src={`${import.meta.env.VITE_BACKEND_URL}/${post.PhotoProfil}`}
               alt="photo de profil de l'utilisateur"
+              onClick={() => openPlayerInfoModal(post)}
             />
             <div className="post-details">
               <div className="userNameDisplayPlayer">{post.Pseudo}</div>
@@ -165,6 +179,11 @@ export default function DisplayPlayers({ postData }) {
           </p>
         )}
       </div>
+      <PlayerInfoModal
+        player={selectedPlayer}
+        isOpen={modalPlayerIsOpen}
+        onClose={closePlayerInfoModal}
+      />
     </div>
   )
 }

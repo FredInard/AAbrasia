@@ -51,6 +51,7 @@ router.get("/partie/meneur/:id", PartieControllers.partieMeneurByUtilisateurId)
 router.put("/partie/:id", PartieControllers.edit)
 router.post("/partie", PartieControllers.add)
 router.delete("/partie/:id", PartieControllers.destroy)
+router.delete("/partie/participation/:id", PartieControllers.destroyeurDePartie)
 
 router.put("/participation/:id", ParticipationControllers.edit)
 router.post("/participation", ParticipationControllers.add)

@@ -183,6 +183,25 @@ export default function Profil() {
     }
   }
 
+  const handleSupresPartieClick = (partieId) => {
+    console.info("partieId", partieId)
+    axios
+      .delete(
+        `${import.meta.env.VITE_BACKEND_URL}/partie/participation/${partieId}`,
+        {
+          headers,
+        }
+      )
+      .then((results) => {
+        console.info("Partie supprimée avec succès !")
+        // Effectuez toute autre action nécessaire après la suppression de la partie ici
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la suppression de la partie :", error)
+        // Gérez l'erreur ici (peut-être afficher un message d'erreur à l'utilisateur)
+      })
+  }
+
   const handlePictureChange = (e) => {
     const picture = e.target.files[0]
 
@@ -205,8 +224,7 @@ export default function Profil() {
         )
       })
   }
-
-  console.info("description", description)
+  // console.info("meneurParties", meneurParties)
   return (
     <>
       <NavBar className="NavBarHome" />
@@ -277,6 +295,14 @@ export default function Profil() {
                             onClick={() => handleEditClick(meneurPartie)}
                           >
                             Modifier
+                          </button>
+                          <button
+                            className="allButtonProfil"
+                            onClick={() =>
+                              handleSupresPartieClick(meneurPartie.id)
+                            }
+                          >
+                            Supprimer la partie
                           </button>
                         </div>
                       </div>

@@ -65,6 +65,40 @@ const add = (req, res) => {
     })
 }
 
+// const destroyeurDePartie = (req, res) => {
+//   models.partie
+//     .getDestroyeurDePartie(req.params.id)
+//     .then(([result]) => {
+//       if (result.affectedRows === 0) {
+//         res.sendStatus(404)
+//       } else {
+//         res.sendStatus(204)
+//       }
+//     })
+//     .catch((err) => {
+//       console.error(err)
+//       res.sendStatus(500)
+//     })
+// }
+
+const destroyeurDePartie = (req, res) => {
+  const id = req.params.id
+  console.info("id", id)
+  models.partie
+    .getDestroyeurDePartie(id)
+    .then(() => {
+      res.sendStatus(204) // La suppression a réussi
+      console.info(
+        "La suppression de la partie et des participation ont réussi"
+      )
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500) // Erreur de serveur
+      console.info("Echec de la suppression de la partie et des participation")
+    })
+}
+
 const destroy = (req, res) => {
   models.partie
     .delete(req.params.id)
@@ -155,4 +189,5 @@ module.exports = {
   partieByUtilisateurId,
   countPartieById,
   partieMeneurByUtilisateurId,
+  destroyeurDePartie,
 }

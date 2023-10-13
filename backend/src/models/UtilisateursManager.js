@@ -64,10 +64,10 @@ class UtilisateursManager extends AbstractManager {
   getDisplayPlayer(id) {
     return this.database.query(
       `
-    SELECT utilisateurs.PhotoProfil, utilisateurs.Nom, utilisateurs.Prenom, utilisateurs.Pseudo
-    FROM ${this.table}
-    JOIN participation ON utilisateurs.id = participation.Utilisateurs_Id
-    WHERE participation.Partie_Id = ?;`,
+      SELECT utilisateurs.PhotoProfil, utilisateurs.Nom, utilisateurs.Prenom, utilisateurs.Pseudo, utilisateurs.id, utilisateurs.Mail, utilisateurs.PseudoDiscord, utilisateurs.Telephone, utilisateurs.Description, utilisateurs.VilleResidence
+      FROM ${this.table}
+      JOIN participation ON utilisateurs.id = participation.Utilisateurs_Id
+      WHERE participation.Partie_Id = ?;`,
       [id]
     )
   }
