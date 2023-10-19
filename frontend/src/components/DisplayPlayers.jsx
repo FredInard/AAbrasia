@@ -19,8 +19,11 @@ export default function DisplayPlayers({ postData }) {
   }
 
   const openPlayerInfoModal = (post) => {
-    setSelectedPlayer(post)
-    setModalPlayerIsOpen(true)
+    if (tokenFromCookie) {
+      setSelectedPlayer(post)
+      setModalPlayerIsOpen(true)
+    }
+    // Vous pouvez également afficher un message à l'utilisateur ou effectuer une autre action si l'utilisateur n'est pas connecté.
   }
 
   const closePlayerInfoModal = () => {

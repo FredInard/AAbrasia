@@ -213,13 +213,7 @@ export default function Home() {
       </div>
 
       <Modal isOpen={isPostCardsOpen} onClose={() => setIsPostCardsOpen(false)}>
-        {postData && (
-          <DisplayPlayers
-            postData={postData}
-            // headers={headers}
-            // formataedSchedule={formattedSchedule}
-          />
-        )}
+        {postData && <DisplayPlayers postData={postData} />}
       </Modal>
     </>
   )

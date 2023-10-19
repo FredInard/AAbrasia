@@ -10,6 +10,7 @@ import ModalExitPartie from "../components/ModalExitPartie.jsx"
 import exit from "../assets/pics/Exist.png"
 // import king from "../assets/pics/medievalKing.svg"
 // import queen from "../assets/pics/queen.svg"
+import ModalConfirmSupresPartie from "../components/ModalConfirmSupresPartie.jsx"
 
 import "./Profil.scss"
 
@@ -163,6 +164,17 @@ export default function Profil() {
       throw error
     }
   }
+  // État pour ouvrir/fermer la fenêtre modale de confirmation
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false)
+  // État pour stocker l'ID de la partie à supprimer
+  const [selectedPartieIdToDelete, setSelectedPartieIdToDelete] = useState(null)
+
+  const handleDeleteClick = (partieId) => {
+    setSelectedPartieIdToDelete(partieId)
+    setIsConfirmationModalOpen(true)
+  }
+
+  // console.info("selectedPartieIdToDelete", selectedPartieIdToDelete)
 
   useEffect(() => {
     // Mettre à jour les états lorsque `utilisateur` change
@@ -296,11 +308,18 @@ export default function Profil() {
                           >
                             Modifier
                           </button>
-                          <button
+                          {/* <button
                             className="allButtonProfil"
                             onClick={() =>
                               handleSupresPartieClick(meneurPartie.id)
                             }
+                          >
+                            Supprimer la partie
+                          </button> */}
+
+                          <button
+                            className="allButtonProfil"
+                            onClick={() => handleDeleteClick(meneurPartie.id)}
                           >
                             Supprimer la partie
                           </button>
@@ -316,6 +335,10 @@ export default function Profil() {
           <div className="boxModifProfil">
             <div className="bigBoxFormProfil ">
               <h1>Modifie ton profil :</h1>
+              <p>
+                Attention, les informations ci dessous serons visible des autres
+                utilisateurs
+              </p>
               <form
                 onSubmit={handleSubmit}
                 className="boxFormProfil fade-in-left"
@@ -408,7 +431,7 @@ export default function Profil() {
                   />
                 </label>
 
-                <button type="submit">Soumettre</button>
+                <button type="submitChangeProfil">Soumettre</button>
               </form>
               <label className="boxChangePhotoProfil">
                 Photo de Profil:
@@ -458,6 +481,12 @@ export default function Profil() {
           partie={selectedPartie}
         />
       )}
+
+      <ModalConfirmSupresPartie
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        selectedPartieIdToDelete={selectedPartieIdToDelete}
+      />
     </>
   )
 }
