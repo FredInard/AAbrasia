@@ -11,10 +11,12 @@ import exit from "../assets/pics/Exist.png"
 // import king from "../assets/pics/medievalKing.svg"
 // import queen from "../assets/pics/queen.svg"
 import ModalConfirmSupresPartie from "../components/ModalConfirmSupresPartie.jsx"
+import ChangePassword from "../components/ChangePassword.jsx"
 
 import "./Profil.scss"
 
 export default function Profil() {
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
   const [showModalModifPartie, setShowModalModifPartie] = useState(false)
   const [showModalExitPartie, setShowModalExitPartie] = useState(false)
   const [showBoxListeParties, setShowBoxListeParties] = useState(true)
@@ -175,6 +177,16 @@ export default function Profil() {
   }
 
   // console.info("selectedPartieIdToDelete", selectedPartieIdToDelete)
+
+  // Fonction pour ouvrir la modal "ChangePassword"
+  const openChangePasswordModal = () => {
+    setShowChangePasswordModal(true)
+  }
+
+  // Fonction pour fermer la modal "ChangePassword"
+  const closeChangePasswordModal = () => {
+    setShowChangePasswordModal(false)
+  }
 
   useEffect(() => {
     // Mettre à jour les états lorsque `utilisateur` change
@@ -433,6 +445,13 @@ export default function Profil() {
 
                 <button type="submitChangeProfil">Soumettre</button>
               </form>
+              <button
+                className="openChangePasswordButton"
+                onClick={openChangePasswordModal}
+              >
+                Changer le mot de passe
+              </button>
+
               <label className="boxChangePhotoProfil">
                 Photo de Profil:
                 <img
@@ -487,6 +506,13 @@ export default function Profil() {
         onClose={() => setIsConfirmationModalOpen(false)}
         selectedPartieIdToDelete={selectedPartieIdToDelete}
       />
+
+      {showChangePasswordModal && (
+        <ChangePassword
+          isOpen={showChangePasswordModal}
+          onClose={closeChangePasswordModal}
+        />
+      )}
     </>
   )
 }

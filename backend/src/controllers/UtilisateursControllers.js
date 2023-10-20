@@ -1,6 +1,8 @@
 const models = require("../models")
 const fs = require("fs")
 const sharp = require("sharp")
+// const argon2 = require("argon2")
+// const { hashingOptions } = require("../auth")
 
 const browse = (req, res) => {
   models.utilisateurs
@@ -209,6 +211,44 @@ const readPartieByUtilisateurId = (req, res) => {
     })
 }
 
+// const changerMotDePasse = async (req, res) => {
+//   const { id } = req.params
+//   const { ancienMotDePasse, nouveauMotDePasse } = req.body
+
+//   // Récupérez l'utilisateur depuis la base de données
+//   const utilisateur = await db.Utilisateur.findByPk(id)
+
+//   if (!utilisateur) {
+//     return res.sendStatus(404)
+//   }
+
+//   try {
+//     // Vérifiez l'ancien mot de passe
+//     const isMotDePasseValide = await argon2.verify(
+//       utilisateur.hashedPassword,
+//       ancienMotDePasse
+//     )
+//     if (!isMotDePasseValide) {
+//       return res.sendStatus(401) // Mot de passe incorrect
+//     }
+
+//     // Hash du nouveau mot de passe
+//     const hashedNouveauMotDePasse = await argon2.hash(
+//       nouveauMotDePasse,
+//       hashingOptions
+//     )
+
+//     // Mettez à jour le mot de passe dans la base de données
+//     utilisateur.hashedPassword = hashedNouveauMotDePasse
+//     await utilisateur.save()
+
+//     res.sendStatus(204) // Mot de passe mis à jour avec succès
+//   } catch (err) {
+//     console.error(err)
+//     res.sendStatus(500) // Erreur serveur
+//   }
+// }
+
 module.exports = {
   browse,
   add,
@@ -221,4 +261,5 @@ module.exports = {
   updateProfilPicture,
   readPartieByUtilisateurId,
   browsePseudo,
+  // changerMotDePasse,
 }

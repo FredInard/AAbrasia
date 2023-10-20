@@ -36,6 +36,11 @@ router.get("/participation", ParticipationControllers.browse)
 router.use(verifyToken)
 
 router.put(
+  "/utilisateurs/changerMotDePasse/:id",
+  UtilisateursControllers.changerMotDePasse,
+  hashPassword
+)
+router.put(
   "/utilisateurs/:id/upload",
   upload.single("myFile"),
   UtilisateursControllers.updateProfilPicture
