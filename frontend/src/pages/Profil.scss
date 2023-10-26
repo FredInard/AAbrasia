@@ -96,6 +96,21 @@
   .boxModifProfil {
     display: flex;
 
+    .openChangePasswordButton {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 50px;
+      height: 50px;
+      width: 150px;
+      cursor: pointer;
+      /* Styles normaux */
+    }
+
+    .openChangePasswordButton:hover {
+      background-color: cadetblue;
+      color: #f0f0f0;
+    }
+
     .bigBoxFormProfil {
       width: 50%;
       display: flex;
@@ -144,6 +159,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        cursor: pointer;
       }
     }
     .boxPictureRight {

@@ -3,7 +3,12 @@ const express = require("express")
 const multer = require("multer")
 
 const router = express.Router()
-const { hashPassword, verifyPassword, verifyToken } = require("./auth.js")
+const {
+  hashPassword,
+  verifyPassword,
+  verifyPassword2,
+  verifyToken,
+} = require("./auth.js")
 
 const upload = multer({ dest: "public/assets/tmp" })
 const ParticipationControllers = require("./controllers/ParticipationControllers")
@@ -35,10 +40,16 @@ router.get("/participation", ParticipationControllers.browse)
 
 router.use(verifyToken)
 
+router.post(
+  "/verifPW",
+  UtilisateursControllers.verifyUtilisateur,
+  verifyPassword2
+)
+
 router.put(
   "/utilisateurs/changerMotDePasse/:id",
-  UtilisateursControllers.changerMotDePasse,
-  hashPassword
+  hashPassword,
+  UtilisateursControllers.changerMotDePasse
 )
 router.put(
   "/utilisateurs/:id/upload",

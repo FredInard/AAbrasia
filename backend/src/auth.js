@@ -9,13 +9,14 @@ const hashingOptions = {
 }
 
 const hashPassword = (req, res, next) => {
+  console.info("password", req.body.password)
   argon2
 
     .hash(req.body.password, hashingOptions)
 
     .then((hashedPassword) => {
       req.body.hashedPassword = hashedPassword
-
+      console.info("hashedPassword", hashedPassword)
       delete req.body.password
 
       next()
@@ -44,6 +45,22 @@ const verifyPassword = (req, res) => {
       }
     })
 
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
+const verifyPassword2 = (req, res) => {
+  argon2
+    .verify(req.utilisateur.hashedPassword, req.body.hashedPassword)
+    .then((isVerified) => {
+      if (isVerified) {
+        res.send(true)
+      } else {
+        res.send(false)
+      }
+    })
     .catch((err) => {
       console.error(err)
       res.sendStatus(500)
@@ -87,4 +104,5 @@ module.exports = {
   verifyPassword,
   verifyToken,
   hashingOptions,
+  verifyPassword2,
 }

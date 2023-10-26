@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Cookies from "js-cookie"
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import Toggle from "../components/Toggle.jsx"
 import NavBar from "../components/NavBar"
 import ModificationPartieModal from "../components/ModificationPartieModal.jsx" // Importez la modal
 import ModalExitPartie from "../components/ModalExitPartie.jsx"
 import exit from "../assets/pics/Exist.png"
-// import king from "../assets/pics/medievalKing.svg"
-// import queen from "../assets/pics/queen.svg"
 import ModalConfirmSupresPartie from "../components/ModalConfirmSupresPartie.jsx"
 import ChangePassword from "../components/ChangePassword.jsx"
 
@@ -106,6 +106,7 @@ export default function Profil() {
   const handleSubmit = (e) => {
     e.preventDefault()
     console.info("Fonction handleSubmit appelée")
+
     axios
       .put(
         `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUserNumb}`,
@@ -127,10 +128,14 @@ export default function Profil() {
         },
         { headers }
       )
-      .then((res) => res.data)
+      .then((res) => {
+        toast.success("Profil modifié avec succès !")
+      })
       .catch((error) => {
-        console.error("Erreur lors de la mise a jour du profil :", error)
-        // console.info("Erreur lors de la mise a jour du profil :", error)
+        console.error("Erreur lors de la mise à jour du profil :", error)
+        toast.error(
+          "Une erreur s'est produite lors de la mise à jour du profil."
+        )
       })
   }
 
@@ -451,7 +456,6 @@ export default function Profil() {
               >
                 Changer le mot de passe
               </button>
-
               <label className="boxChangePhotoProfil">
                 Photo de Profil:
                 <img
@@ -511,8 +515,10 @@ export default function Profil() {
         <ChangePassword
           isOpen={showChangePasswordModal}
           onClose={closeChangePasswordModal}
+          onPasswordChangeSuccess={closeChangePasswordModal}
         />
       )}
+      <ToastContainer />
     </>
   )
 }

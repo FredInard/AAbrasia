@@ -44,10 +44,7 @@ export default function CreateGame() {
       .then((res) => {
         console.info("Partie en cours !")
         if (res.status === 200 || res.status === 201) {
-          console.info("Partie créée avec succès !")
-          console.info("Avant toast.success")
           toast.success("Partie créée avec succès !")
-          console.info("Apres toast.success")
         }
         document.getElementById("createGameForm").reset()
       })
