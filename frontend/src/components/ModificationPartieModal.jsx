@@ -117,11 +117,15 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
               onChange={(e) => setTypeDeJeux(e.target.value)}
             />
           </label>
-          <button type="button" onClick={handleSaveChanges}>
-            <h3> Enregistrer</h3>
+          <button
+            className="buttonModifParfie"
+            type="button"
+            onClick={handleSaveChanges}
+          >
+            Enregistrer
           </button>
-          <button type="button" onClick={onClose}>
-            <h3>Annuler</h3>
+          <button className="buttonModifParfie" type="button" onClick={onClose}>
+            Annuler
           </button>
         </form>
       </div>

@@ -2,10 +2,13 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import "./DisplayPlayers.scss"
+import PlayerInfoModal from "./PlayerInfoModal"
 import { Link } from "react-router-dom"
 import SubmitButton from "./SubmitButton"
 
 export default function DisplayPlayers({ postData }) {
+  const [modalPlayerIsOpen, setModalPlayerIsOpen] = useState(false)
+  const [selectedPlayer, setSelectedPlayer] = useState(null)
   const [allPosts, setAllPosts] = useState([])
   const [xJoueurs, setXJoueurs] = useState([])
   const idUser = Cookies.get("idUtilisateur")
@@ -15,7 +18,21 @@ export default function DisplayPlayers({ postData }) {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
 
+  const openPlayerInfoModal = (post) => {
+    if (tokenFromCookie) {
+      setSelectedPlayer(post)
+      setModalPlayerIsOpen(true)
+    }
+    // Vous pouvez également afficher un message à l'utilisateur ou effectuer une autre action si l'utilisateur n'est pas connecté.
+  }
+
+  const closePlayerInfoModal = () => {
+    setSelectedPlayer(null)
+    setModalPlayerIsOpen(false)
+  }
+
   useEffect(() => {
+    console.info("l'axios pour allPosts en cours")
     axios
       .get(
         `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/displayPlayers/${
@@ -23,12 +40,17 @@ export default function DisplayPlayers({ postData }) {
         }`,
         { headers }
       )
-      .then((res) => setAllPosts(res.data))
+      .then(
+        (res) => setAllPosts(res.data),
+        console.info("l'axios pour allPosts a correctement fonctionné")
+      )
+
       .catch((error) => {
         console.error(
           "Une erreur s'est produite lors de la récupération des sujets.",
           error
         )
+        console.info("l'axios pour allPosts n'a pas fonctionné")
         // Gérez l'erreur ici (peut-être un message à l'utilisateur)
       })
   }, [xJoueurs])
@@ -96,12 +118,13 @@ export default function DisplayPlayers({ postData }) {
         )
       })
   }
-
   console.info("postData:", postData)
-  console.info("idUserNumber:", idUserNumber)
-  console.info("NombreJoueur:", postData.NombreJoueur)
-  console.info("nbParticipants:", xJoueurs.nbParticipants)
-  console.info("MaitreDuJeu:", postData.MaitreDuJeu)
+  console.info("allPosts:", allPosts)
+  // console.info("idUserNumber:", idUserNumber)
+  // console.info("postData.PartieId:", postData.PartieId)
+  // console.info("NombreJoueur:", postData.NombreJoueur)
+  // console.info("nbParticipants:", xJoueurs.nbParticipants)
+  // console.info("MaitreDuJeu:", postData.MaitreDuJeu)
 
   return (
     <div className="displayPlayers-container">
@@ -122,18 +145,23 @@ export default function DisplayPlayers({ postData }) {
         <h2>Participants :</h2>
       </div>
       <div className="mapParticipants">
-        {allPosts.map((post) => (
-          <div className="postCardDisplayPlayer" key={post.id}>
-            <img
-              className="photoProfilDisplayPlayer"
-              src={`${import.meta.env.VITE_BACKEND_URL}/${post.PhotoProfil}`}
-              alt="photo de profil de l'utilisateur"
-            />
-            <div className="post-details">
-              <div className="userNameDisplayPlayer">{post.Pseudo}</div>
+        {allPosts.length > 0 ? (
+          allPosts.map((post) => (
+            <div className="postCardDisplayPlayer" key={post.id}>
+              <img
+                className="photoProfilDisplayPlayer"
+                src={`${import.meta.env.VITE_BACKEND_URL}/${post.PhotoProfil}`}
+                alt="photo de profil de l'utilisateur"
+                onClick={() => openPlayerInfoModal(post)}
+              />
+              <div className="post-details">
+                <div className="userNameDisplayPlayer">{post.Pseudo}</div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>Chargement en cours...</p>
+        )}
       </div>
       <div className="mapPlacesDisponibles">
         <h2>Places disponibles :</h2>
@@ -164,6 +192,11 @@ export default function DisplayPlayers({ postData }) {
           </p>
         )}
       </div>
+      <PlayerInfoModal
+        player={selectedPlayer}
+        isOpen={modalPlayerIsOpen}
+        onClose={closePlayerInfoModal}
+      />
     </div>
   )
 }

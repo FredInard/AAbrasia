@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Cookies from "js-cookie"
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import Toggle from "../components/Toggle.jsx"
 import NavBar from "../components/NavBar"
 import ModificationPartieModal from "../components/ModificationPartieModal.jsx" // Importez la modal
 import ModalExitPartie from "../components/ModalExitPartie.jsx"
 import exit from "../assets/pics/Exist.png"
-import king from "../assets/pics/medievalKing.svg"
-import queen from "../assets/pics/queen.svg"
+import ModalConfirmSupresPartie from "../components/ModalConfirmSupresPartie.jsx"
+import ChangePassword from "../components/ChangePassword.jsx"
 
 import "./Profil.scss"
 
 export default function Profil() {
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
   const [showModalModifPartie, setShowModalModifPartie] = useState(false)
   const [showModalExitPartie, setShowModalExitPartie] = useState(false)
   const [showBoxListeParties, setShowBoxListeParties] = useState(true)
@@ -24,18 +27,22 @@ export default function Profil() {
   const [nom, setNom] = useState(utilisateur.Nom)
   const [prenom, setPrenom] = useState(utilisateur.Prenom)
   const [pseudo, setPseudo] = useState(utilisateur.Pseudo)
-  const [mail, setMail] = useState(utilisateur.Mail)
-  const [telephone, setTelephone] = useState(utilisateur.Telephone)
-  const [pseudoDiscord, setPseudoDiscord] = useState(utilisateur.PseudoDiscord)
-  const [description, setDescription] = useState(utilisateur.Description)
+  const [mail, setMail] = useState(utilisateur.Mail || null)
+  const [telephone, setTelephone] = useState(utilisateur.Telephone || null)
+  const [pseudoDiscord, setPseudoDiscord] = useState(
+    utilisateur.PseudoDiscord || null
+  )
+  const [description, setDescription] = useState(
+    utilisateur.Description || null
+  )
   const photoProfil = utilisateur.PhotoProfil
   const [villeResidence, setVilleResidence] = useState(
-    utilisateur.VilleResidence
+    utilisateur.VilleResidence || null
   )
   const hashedPassword = utilisateur.hashedPassword
-  const admin = utilisateur.Admin
-  const membreEquipe = utilisateur.MembreEquipe
-  const membreAssociation = utilisateur.MembreAssociation
+  const admin = utilisateur.Admin || null
+  const membreEquipe = utilisateur.MembreEquipe || null
+  const membreAssociation = utilisateur.MembreAssociation || null
   const [imageUrl, setImageUrl] = useState(null)
   const idUser = Cookies.get("idUtilisateur")
   const idUserNumb = parseInt(idUser)
@@ -44,12 +51,28 @@ export default function Profil() {
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
+  const handlePictureChange = (e) => {
+    const picture = e.target.files[0]
 
-  useEffect(() => {
-    setImageUrl(
-      `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.PhotoProfil}`
-    )
-  }, [utilisateur.PhotoProfil])
+    // Créez un objet FormData pour envoyer la photo
+    const formData = new FormData()
+    formData.append("myFile", picture)
+
+    setImageUrl(URL.createObjectURL(picture))
+
+    // Appel de la fonction pour mettre à jour la photo de profil sur le serveur
+    updateProfilPictureOnServer(utilisateur.id, formData)
+      .then(() => {
+        // Mise à jour de la photo de profil terminée avec succès, rafraîchissez la page
+        window.location.reload()
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la mise à jour de la photo de profil :",
+          error
+        )
+      })
+  }
 
   const handleEditClick = (partie) => {
     setSelectedPartie(partie) // Stockez les données de la partie sélectionnée dans l'état
@@ -61,52 +84,32 @@ export default function Profil() {
     setShowModalExitPartie(true) // Ouvrez la modal
   }
 
-  useEffect(() => {
+  const handleSupresPartieClick = (partieId) => {
+    console.info("partieId", partieId)
     axios
-      .get(
-        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUserNumb}`,
-        { headers }
+      .delete(
+        `${import.meta.env.VITE_BACKEND_URL}/partie/participation/${partieId}`,
+        {
+          headers,
+        }
       )
-      .then((res) => setUtilisateur(res.data))
-      .catch((err) => {
-        console.error("Problème lors du chargement de l'utlisateur", err)
+      .then((results) => {
+        console.info("Partie supprimée avec succès !")
+        // Effectuez toute autre action nécessaire après la suppression de la partie ici
       })
-  }, [])
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/profil/${idUserNumb}`, {
-        headers,
+      .catch((error) => {
+        console.error("Erreur lors de la suppression de la partie :", error)
+        // Gérez l'erreur ici (peut-être afficher un message d'erreur à l'utilisateur)
       })
-      .then((res) => {
-        console.info("Réponse Axios (succès) :", res)
-        setParties(res.data)
-      })
-      .catch((err) => {
-        console.error("Problème lors du chargement des parties", err)
-      })
-  }, [showModalExitPartie])
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/meneur/${idUserNumb}`, {
-        headers,
-      })
-      .then((res) => {
-        console.info("Réponse Axios (succès) :", res)
-        setMeneurParties(res.data)
-      })
-      .catch((err) => {
-        console.error("Problème lors du chargement des parties", err)
-      })
-  }, [showModalModifPartie])
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.info("Fonction handleSubmit appelée")
 
     axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs`,
+      .put(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUserNumb}`,
         {
           Nom: nom,
           Prenom: prenom,
@@ -121,12 +124,18 @@ export default function Profil() {
           Admin: admin,
           MembreEquipe: membreEquipe,
           MembreAssociation: membreAssociation,
+          id: idUserNumb,
         },
         { headers }
       )
-      .then((res) => res.data)
+      .then((res) => {
+        toast.success("Profil modifié avec succès !")
+      })
       .catch((error) => {
-        console.error("Erreur lors de la mise a jour du profil :", error)
+        console.error("Erreur lors de la mise à jour du profil :", error)
+        toast.error(
+          "Une erreur s'est produite lors de la mise à jour du profil."
+        )
       })
   }
 
@@ -162,21 +171,89 @@ export default function Profil() {
       throw error
     }
   }
+  // État pour ouvrir/fermer la fenêtre modale de confirmation
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false)
+  // État pour stocker l'ID de la partie à supprimer
+  const [selectedPartieIdToDelete, setSelectedPartieIdToDelete] = useState(null)
 
-  const handlePictureChange = (e) => {
-    const picture = e.target.files[0]
-
-    // Créez un objet FormData pour envoyer la photo
-    const formData = new FormData()
-    formData.append("myFile", picture)
-
-    setImageUrl(URL.createObjectURL(picture))
-
-    // Appel de la fonction pour mettre à jour la photo de profil sur le serveur
-    updateProfilPictureOnServer(utilisateur.id, formData)
+  const handleDeleteClick = (partieId) => {
+    setSelectedPartieIdToDelete(partieId)
+    setIsConfirmationModalOpen(true)
   }
-  console.info(imageUrl)
-  console.info("utilisateur", utilisateur)
+
+  // console.info("selectedPartieIdToDelete", selectedPartieIdToDelete)
+
+  // Fonction pour ouvrir la modal "ChangePassword"
+  const openChangePasswordModal = () => {
+    setShowChangePasswordModal(true)
+  }
+
+  // Fonction pour fermer la modal "ChangePassword"
+  const closeChangePasswordModal = () => {
+    setShowChangePasswordModal(false)
+  }
+
+  useEffect(() => {
+    // Mettre à jour les états lorsque `utilisateur` change
+    setNom(utilisateur.Nom)
+    setPrenom(utilisateur.Prenom)
+    setPseudo(utilisateur.Pseudo)
+    setMail(utilisateur.Mail)
+    setTelephone(utilisateur.Telephone)
+    setPseudoDiscord(utilisateur.PseudoDiscord)
+    setDescription(utilisateur.Description)
+    setVilleResidence(utilisateur.VilleResidence)
+    setImageUrl(
+      `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.PhotoProfil}`
+    )
+    // N'oubliez pas de gérer d'autres états si nécessaire
+  }, [utilisateur])
+
+  useEffect(() => {
+    setImageUrl(
+      `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.PhotoProfil}`
+    )
+  }, [utilisateur.PhotoProfil])
+
+  useEffect(() => {
+    axios
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUserNumb}`,
+        { headers }
+      )
+      .then((res) => setUtilisateur(res.data))
+      .catch((err) => {
+        console.error("Problème lors du chargement de l'utlisateur", err)
+      })
+  }, [])
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/profil/${idUserNumb}`, {
+        headers,
+      })
+      .then((res) => {
+        setParties(res.data)
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement des parties", err)
+      })
+  }, [showModalExitPartie])
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/meneur/${idUserNumb}`, {
+        headers,
+      })
+      .then((res) => {
+        setMeneurParties(res.data)
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement des parties", err)
+      })
+  }, [showModalModifPartie, handleSupresPartieClick])
+
+  // console.info("meneurParties", meneurParties)
   return (
     <>
       <NavBar className="NavBarHome" />
@@ -187,8 +264,9 @@ export default function Profil() {
           onClick={handleLogout}
           alt="logo exit"
         />
+        <p>Déconexion</p>
       </div>
-      <h1> Bienvenue {utilisateur.Pseudo}</h1>
+      <h1 className="bienvenurName"> Bienvenue {utilisateur.Pseudo}</h1>
       <div className="bouttonSwitch">
         <p> Tableau de bord des parties</p>
         <Toggle onClick={() => setShowBoxListeParties(!showBoxListeParties)} />
@@ -196,143 +274,173 @@ export default function Profil() {
       </div>
       <div className="globalBoxProfil">
         {showBoxListeParties === true ? (
-          <div className="boxListeParties">
+          <div className="boxListeParties ">
             <div className="boxPictureLeft fade-in-left">
-              <img className="kingPicture" src={king} alt="image d'un roi" />
+              {/* <img className="kingPicture" src={king} alt="image d'un roi" /> */}
             </div>
-            <div className="boxListeGame fade-in-right">
-              {parties && (
-                <div className="boxCardsResumPartie">
-                  <h2>Mes parties :</h2>
-                  {parties.map((partie) => (
-                    <div key={partie.id}>
-                      <div className="cardResumPartie">
-                        <h2>{partie.Titre}</h2>
-                        <p>Type : {partie.TypeDeJeux}</p>
-                        <p>Date : {partie.Date}</p>
-                        <p>Lieu : {partie.Lieu}</p>
-                        <p>Nombre de Joueur : {partie.NombreJoueur}</p>
-                        <p>Description : {partie.Description}</p>
-                        {/* Bouton "Modifier" pour ouvrir la modal */}
-                        <button onClick={() => handleExitPartieClick(partie)}>
-                          Se retirer de la partie
-                        </button>
+            <div className="boxListeGame">
+              <h1>Tableau de bord de tes parties :</h1>
+              <div className="boxResumeParties fade-in-right">
+                {parties && (
+                  <div className="boxCardsResumPartie">
+                    <h2>Mes parties :</h2>
+                    {parties.map((partie) => (
+                      <div key={partie.id}>
+                        <div className="cardResumPartie">
+                          <h2>{partie.Titre}</h2>
+                          <p>Type : {partie.TypeDeJeux}</p>
+                          <p>Date : {partie.Date}</p>
+                          <p>Lieu : {partie.Lieu}</p>
+                          <p>Nombre de Joueur : {partie.NombreJoueur}</p>
+                          <p>Description : {partie.Description}</p>
+                          {/* Bouton "Modifier" pour ouvrir la modal */}
+                          <button
+                            className="allButtonProfil"
+                            onClick={() => handleExitPartieClick(partie)}
+                          >
+                            Se retirer de la partie
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
 
-              {meneurParties && (
-                <div className="boxCardsResumPartieMeneur">
-                  <h2>Mes parties en tant que meneur :</h2>
-                  {meneurParties.map((meneurPartie) => (
-                    <div key={meneurPartie.id}>
-                      <div className="cardResumMeneurParties">
-                        <h2>{meneurPartie.Titre}</h2>
-                        <p>Type : {meneurPartie.TypeDeJeux}</p>
-                        <p>Date : {meneurPartie.Date}</p>
-                        <p>Lieu : {meneurPartie.Lieu}</p>
-                        <p>Nombre de Joueur : {meneurPartie.NombreJoueur}</p>
-                        <p>Description : {meneurPartie.Description}</p>
-                        {/* Bouton "Modifier" pour ouvrir la modal */}
-                        <button onClick={() => handleEditClick(meneurPartie)}>
-                          Modifier
-                        </button>
+                {meneurParties && (
+                  <div className="boxCardsResumPartieMeneur">
+                    <h2>Mes parties en tant que meneur :</h2>
+                    {meneurParties.map((meneurPartie) => (
+                      <div key={meneurPartie.id}>
+                        <div className="cardResumMeneurParties">
+                          <h2>{meneurPartie.Titre}</h2>
+                          <p>Type : {meneurPartie.TypeDeJeux}</p>
+                          <p>Date : {meneurPartie.Date}</p>
+                          <p>Lieu : {meneurPartie.Lieu}</p>
+                          <p>Nombre de Joueur : {meneurPartie.NombreJoueur}</p>
+                          <p>Description : {meneurPartie.Description}</p>
+                          {/* Bouton "Modifier" pour ouvrir la modal */}
+                          <button
+                            className="allButtonProfil"
+                            onClick={() => handleEditClick(meneurPartie)}
+                          >
+                            Modifier
+                          </button>
+                          {/* <button
+                            className="allButtonProfil"
+                            onClick={() =>
+                              handleSupresPartieClick(meneurPartie.id)
+                            }
+                          >
+                            Supprimer la partie
+                          </button> */}
+
+                          <button
+                            className="allButtonProfil"
+                            onClick={() => handleDeleteClick(meneurPartie.id)}
+                          >
+                            Supprimer la partie
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ) : (
           <div className="boxModifProfil">
-            <div className="boxFormProfil">
+            <div className="bigBoxFormProfil ">
+              <h1>Modifie ton profil :</h1>
+              <p>
+                Attention, les informations ci dessous serons visible des autres
+                utilisateurs
+              </p>
               <form
-                className="boxFormProfil fade-in-left"
                 onSubmit={handleSubmit}
+                className="boxFormProfil fade-in-left"
               >
-                <label>
+                <label className="labelChangeProfil">
                   Nom:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Nom}
                     value={nom}
                     onChange={(e) => setNom(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Prénom:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Prenom}
                     value={prenom}
                     onChange={(e) => setPrenom(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Pseudo:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Pseudo}
                     value={pseudo}
                     onChange={(e) => setPseudo(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Mail:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Mail}
                     value={mail}
                     onChange={(e) => setMail(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Téléphone:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Telephone}
                     value={telephone}
                     onChange={(e) => setTelephone(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Pseudo Discord:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.PseudoDiscord}
                     value={pseudoDiscord}
                     onChange={(e) => setPseudoDiscord(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Description:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.Description}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </label>
-                <br />
 
-                <label>
+                <label className="labelChangeProfil">
                   Ville de Résidence:
                   <input
+                    className="imputChangeProfil"
                     type="text"
                     placeholder={utilisateur.VilleResidence}
                     value={villeResidence}
@@ -340,9 +448,15 @@ export default function Profil() {
                   />
                 </label>
 
-                <button type="submit">Soumettre</button>
+                <button type="submitChangeProfil">Soumettre</button>
               </form>
-              <label>
+              <button
+                className="openChangePasswordButton"
+                onClick={openChangePasswordModal}
+              >
+                Changer le mot de passe
+              </button>
+              <label className="boxChangePhotoProfil">
                 Photo de Profil:
                 <img
                   src={imageUrl}
@@ -352,25 +466,18 @@ export default function Profil() {
                 <input
                   type="file"
                   id="buttonPicture"
-                  // placeholder="clic et insert ta photo"
-                  // value={photoProfil}
-                  // value={photoProfil}
                   accept="image/*"
                   onChange={handlePictureChange}
-                  // onChange={(e) => {
-                  //   handlePictureChange(e)
-                  // }}
-                  // onChange={(e) => setPhotoProfil(e.target.value)}
                 />
               </label>
               <br />
             </div>
-            <div className="boxPictureRight">
-              <img
-                className="queenPicture fade-in-right"
+            <div className="boxPictureRight fade-in-right">
+              {/* <img
+                className="queenPicture "
                 src={queen}
                 alt="image d'un reine"
-              />
+              /> */}
             </div>
           </div>
         )}
@@ -397,6 +504,21 @@ export default function Profil() {
           partie={selectedPartie}
         />
       )}
+
+      <ModalConfirmSupresPartie
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        selectedPartieIdToDelete={selectedPartieIdToDelete}
+      />
+
+      {showChangePasswordModal && (
+        <ChangePassword
+          isOpen={showChangePasswordModal}
+          onClose={closeChangePasswordModal}
+          onPasswordChangeSuccess={closeChangePasswordModal}
+        />
+      )}
+      <ToastContainer />
     </>
   )
 }

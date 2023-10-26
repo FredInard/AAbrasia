@@ -15,7 +15,7 @@
   }
 
   .modalModificationPartie-content {
-    background-color: #fff;
+    background-color: #ffffff83;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -34,6 +34,10 @@
     }
 
     form {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      flex-direction: column;
       label {
         display: block;
         margin-bottom: 10px;
@@ -50,18 +54,42 @@
         font-size: 14px;
       }
 
-      button {
-        background-color: #007bff;
+      .buttonModifParfie {
+        background-color: rgb(6, 1, 39);
         color: #fff;
         border: none;
+        margin: 10px;
         padding: 10px 20px;
-        border-radius: 5px;
+        border-radius: 50px;
         cursor: pointer;
         font-size: 16px;
         margin-right: 10px;
-
+        &:hover {
+          background-color: rgb(9, 101, 20);
+          border: solid 1px rgb(6, 1, 39);
+          color: rgb(6, 1, 39);
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
         &:last-child {
-          margin-right: 0;
+          background-color: rgb(6, 1, 39);
+          color: #fff;
+          border: none;
+          margin: 10px;
+          padding: 10px 20px;
+          border-radius: 50px;
+          cursor: pointer;
+          font-size: 16px;
+          margin-right: 10px;
+          &:hover {
+            background-color: rgb(148, 5, 5);
+            border: solid 1px rgb(39, 24, 1);
+            color: rgb(6, 1, 39);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+          }
+        }
+
+        .texteInButton {
+          color: #fff;
         }
       }
     }

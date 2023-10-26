@@ -108,6 +108,20 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
       [id]
     )
   }
+
+  getDestroyeurDePartie(id) {
+    return this.database.transaction((t) => {
+      return this.database
+        .query("DELETE FROM participation WHERE Partie_Id = ?", [id], {
+          transaction: t,
+        })
+        .then(() => {
+          return this.database.query("DELETE FROM partie WHERE id = ?", [id], {
+            transaction: t,
+          })
+        })
+    })
+  }
 }
 
 module.exports = PartieManager

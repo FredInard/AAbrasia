@@ -1,8 +1,10 @@
 import axios from "axios"
 import React, { useState } from "react"
 import Cookies from "js-cookie"
+import { toast, ToastContainer } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
 import "./CreateGame.scss"
-import orc from "../assets/pics/orc.svg"
 
 import NavBar from "../components/NavBar"
 
@@ -26,7 +28,7 @@ export default function CreateGame() {
     e.preventDefault()
     axios
       .post(
-        "http://localhost:4242/partie",
+        `${import.meta.env.VITE_BACKEND_URL}/partie`,
         {
           Titre: rpgName,
           Date: date,
@@ -40,23 +42,24 @@ export default function CreateGame() {
         { headers }
       )
       .then((res) => {
-        if (res.status === 200) {
-          console.info("Partie créée avec succès !")
+        console.info("Partie en cours !")
+        if (res.status === 200 || res.status === 201) {
+          toast.success("Partie créée avec succès !")
         }
         document.getElementById("createGameForm").reset()
-        // document.getElementById("createGameSelecter").selectedIndex = 0
       })
       .catch((error) => {
         console.error("Erreur lors de la création de la partie :", error)
+        console.info("Erreur lors de la création de la partie")
       })
   }
-
+  console.info("coucou")
   return (
     <>
       <NavBar className="NavBarHome" />
       <div className="createGameGlobal">
         <div className="boxPictureOrc">
-          <img src={orc} alt="portrait d'un orc" className="orcPicture" />
+          {/* <img src={orc} alt="portrait d'un orc" className="orcPicture" /> */}
         </div>
         <form
           className="createGameForm"
@@ -101,6 +104,7 @@ export default function CreateGame() {
             <button type="submit">Créer ma partie</button>
           </div>
         </form>
+        <ToastContainer /> {/* Ajoutez le composant ToastContainer ici */}
       </div>
     </>
   )
