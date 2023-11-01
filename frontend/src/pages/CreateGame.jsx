@@ -53,7 +53,7 @@ export default function CreateGame() {
         console.info("Erreur lors de la création de la partie")
       })
   }
-  console.info("coucou")
+
   return (
     <>
       <NavBar className="NavBarHome" />
@@ -73,14 +73,8 @@ export default function CreateGame() {
               onChange={(e) => setRpgName(e.target.value)}
             />
 
-            <input
-              type="datetime-local"
-              onChange={(e) => setDate(e.target.value)}
-            />
-            <input
-              type="time-local"
-              onChange={(e) => setHour(e.target.value)}
-            />
+            <input type="date" onChange={(e) => setDate(e.target.value)} />
+            <input type="time" onChange={(e) => setHour(e.target.value)} />
             <input
               type="text"
               placeholder="Lieu"

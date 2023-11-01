@@ -18,6 +18,7 @@ function NavBar() {
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
+  const isAdmin = Cookies.get("adminUtilisateur") === "1"
 
   useEffect(() => {
     axios
@@ -120,6 +121,11 @@ function NavBar() {
               <RouterLink className="menuItem menuItem-2" to="/Association">
                 L'Association
               </RouterLink>
+              {isAdmin && (
+                <RouterLink className="menuItem menuItem-2" to="/admin">
+                  AdminPage
+                </RouterLink>
+              )}
               <RouterLink className="menuItem menuItem-2" to="/profil">
                 <img
                   className="photoProfilUserNavBar"
@@ -189,6 +195,11 @@ function NavBar() {
                 <br />
                 <p>Profil</p>
               </RouterLink>
+              {isAdmin && (
+                <RouterLink className="buttonNavBar nav-item" to="/admin">
+                  AdminPage
+                </RouterLink>
+              )}
             </>
           ) : null}
         </div>

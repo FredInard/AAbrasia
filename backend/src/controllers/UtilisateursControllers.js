@@ -211,42 +211,6 @@ const readPartieByUtilisateurId = (req, res) => {
     })
 }
 
-// const changerMotDePasse = async (req, res) => {
-//   const { id } = req.params
-//   const { ancienMotDePasse, nouveauMotDePasse } = req.body
-
-//   try {
-//     // Récupérez l'utilisateur depuis la base de données
-//     const utilisateur = await models.utilisateurs.find(id)
-
-//     if (!utilisateur) {
-//       return res.sendStatus(404)
-//     }
-
-//     // Vérifiez l'ancien mot de passe
-//     const isMotDePasseValide = await argon2.verify(
-//       utilisateur.password, // Remplacez par le champ de mot de passe de votre modèle
-//       ancienMotDePasse
-//     )
-
-//     if (!isMotDePasseValide) {
-//       return res.sendStatus(401) // Mot de passe incorrect
-//     }
-
-//     // Hash du nouveau mot de passe
-//     const hashedNouveauMotDePasse = await argon2.hash(nouveauMotDePasse)
-
-//     // Mettez à jour le mot de passe dans la base de données
-//     utilisateur.password = hashedNouveauMotDePasse // Remplacez par le champ de mot de passe de votre modèle
-//     await utilisateur.save()
-
-//     res.sendStatus(204) // Mot de passe mis à jour avec succès
-//   } catch (err) {
-//     console.error(err)
-//     res.sendStatus(500) // Erreur serveur
-//   }
-// }
-
 const changerMotDePasse = async (req, res) => {
   const { id } = req.params
   const { hashedPassword } = req.body

@@ -3,8 +3,12 @@ import { Link, useNavigate } from "react-router-dom"
 import "./AuthForm.scss"
 import axios from "axios"
 import Cookies from "js-cookie"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 function AuthForm() {
+  toast.configure()
+  const [confirmationMotDePasse, setConfirmationMotDePasse] = useState([])
   const [isSignIn, setIsSignIn] = useState(true)
   const [nomInscription, setNomInscription] = useState([])
   const [prenomInscription, setPrenomInscription] = useState([])
@@ -18,8 +22,45 @@ function AuthForm() {
   const imageParDefaut = "assets/images/profilPictures/portraitOfMerchant.png"
   console.info("imageParDefaut", imageParDefaut)
 
+  const isValidPassword = (password) => {
+    // Vérifier la longueur du mot de passe (8 caractères minimum)
+    if (password.length < 8) {
+      return false
+    }
+
+    // Vérifier s'il y a au moins 1 chiffre
+    if (!/\d/.test(password)) {
+      return false
+    }
+
+    // Vérifier s'il y a au moins 1 caractère spécial (par exemple, !@#$%^&*)
+    if (!/[!@#$%^&*]/.test(password)) {
+      return false
+    }
+
+    // Vérifier s'il y a au moins 1 majuscule
+    if (!/[A-Z]/.test(password)) {
+      return false
+    }
+
+    return true
+  }
+
   const handleSubmit = () => {
     // Effectuer d'abord une requête GET pour vérifier si l'utilisateur existe déjà
+    if (!isValidPassword(motDePasseInscription)) {
+      toast.error("Le mot de passe ne remplit pas les conditions requises.")
+      return
+    }
+    if (motDePasseInscription !== confirmationMotDePasse) {
+      toast.error(
+        "Le mot de passe et la confirmation du mot de passe ne correspondent pas."
+      )
+      console.info(
+        "Le mot de passe et la confirmation du mot de passe ne correspondent pas."
+      )
+      return
+    }
     axios
       .get(
         `${
@@ -135,7 +176,8 @@ function AuthForm() {
       })
   }
 
-  console.info("pseudoInscription", pseudoInscription)
+  console.info("motDePasseInscription", motDePasseInscription)
+  console.info("confirmationMotDePasse", confirmationMotDePasse)
 
   return (
     <>
@@ -176,21 +218,6 @@ function AuthForm() {
                   onClick={handleLogin}
                 />
               </Link>
-              {/* <p className="social-text">Or Sign in with social platforms</p>
-            <div className="social-media">
-              <a href="#" className="social-icon">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-google"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-linkedin-in"></i>
-              </a>
-            </div> */}
             </form>
             <form
               action="#"
@@ -242,27 +269,26 @@ function AuthForm() {
                   onChange={(e) => setMotDePasseInscription(e.target.value)}
                 />
               </div>
+              <div className="input-field">
+                <i className="fas fa-lock"></i>
+                <input
+                  type="password"
+                  placeholder="Confirmez le mot de passe"
+                  value={confirmationMotDePasse}
+                  onChange={(e) => setConfirmationMotDePasse(e.target.value)}
+                />
+              </div>
+
               <input
                 type="submit"
                 className="btn"
                 value="S'inscrire"
                 onClick={handleSubmit}
               />
-              {/* <p className="social-text">Or Sign up with social platforms</p>
-            <div className="social-media">
-              <a href="#" className="social-icon">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-google"></i>
-              </a>
-              <a href="#" className="social-icon">
-                <i className="fab fa-linkedin-in"></i>
-              </a>
-            </div> */}
+              <p className="mdpExplication">
+                mot de passe 8 caractère minimum avec une majuscule, un chifre
+                et un caractère spécial
+              </p>
             </form>
           </div>
         </div>

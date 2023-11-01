@@ -1,0 +1,295 @@
+import React, { useEffect, useState } from "react"
+import axios from "axios"
+
+function JoueursComponent() {
+  const [joueurs, setJoueurs] = useState([])
+  const [editingPlayer, setEditingPlayer] = useState(null)
+
+  const handleEditPlayer = (player) => {
+    setEditingPlayer(player)
+  }
+
+  const handleUpdatePlayer = (player) => {
+    // Effectuez une requête PUT pour mettre à jour les données du joueur
+    axios
+      .put(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${player.id}`,
+        player
+      )
+      .then((response) => {
+        // Mettez à jour l'état local avec les nouvelles données
+        // et désactivez le mode d'édition
+        setJoueurs((prevJoueurs) =>
+          prevJoueurs.map((p) => (p.id === player.id ? player : p))
+        )
+        setEditingPlayer(null)
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la mise à jour du joueur :", error)
+      })
+  }
+
+  useEffect(() => {
+    // Effectuez une requête GET pour obtenir la liste des joueurs depuis votre API
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`)
+      .then((response) => {
+        setJoueurs(response.data)
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des joueurs :", error)
+      })
+  }, [])
+
+  return (
+    <div>
+      <h1>Liste des Joueurs</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Pseudo</th>
+            <th>Mail</th>
+            <th>Admin</th>
+            <th>MembreEquipe</th>
+            <th>MembreAssociation</th>
+            <th>hashedPassword</th>
+            <th>VilleResidence</th>
+            <th>PhotoProfil</th>
+            <th>Description</th>
+            <th>PseudoDiscord</th>
+            <th>Telephone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {joueurs.map((player) => (
+            <tr key={player.id}>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.Nom}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        Nom: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.Nom
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.Prenom}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        Prenom: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.Prenom
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.Pseudo}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        Pseudo: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.Pseudo
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.Mail}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        Mail: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.Mail
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.Admin}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        Admin: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.Admin
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.MembreEquipe}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        MembreEquipe: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.MembreEquipe
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.MembreAssociation}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        MembreAssociation: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.MembreAssociation
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.hashedPassword}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        hashedPassword: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.hashedPassword
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.VilleResidence}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        VilleResidence: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.VilleResidence
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.PhotoProfil}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        PhotoProfil: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.PhotoProfil
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.Description}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        Description: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.Description
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.PseudoDiscord}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        PseudoDiscord: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.PseudoDiscord
+                )}
+              </td>
+              <td>
+                {editingPlayer?.id === player.id ? (
+                  <input
+                    type="text"
+                    value={editingPlayer.Telephone}
+                    onChange={(e) =>
+                      setEditingPlayer({
+                        ...editingPlayer,
+                        Telephone: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  player.Telephone
+                )}
+              </td>
+              <td>
+                <button onClick={() => handleEditPlayer(player)}>
+                  Modifier
+                </button>
+                {editingPlayer?.id === player.id && (
+                  <button onClick={() => handleUpdatePlayer(editingPlayer)}>
+                    Valider
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+export default JoueursComponent
