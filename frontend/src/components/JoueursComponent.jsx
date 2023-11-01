@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
+import "./JoueursComponent.scss"
 
 function JoueursComponent() {
   const [joueurs, setJoueurs] = useState([])
@@ -42,31 +43,31 @@ function JoueursComponent() {
   }, [])
 
   return (
-    <div>
+    <div className="globalDivTableau">
       <h1>Liste des Joueurs</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Pseudo</th>
-            <th>Mail</th>
-            <th>Admin</th>
-            <th>MembreEquipe</th>
-            <th>MembreAssociation</th>
-            <th>hashedPassword</th>
-            <th>VilleResidence</th>
-            <th>PhotoProfil</th>
-            <th>Description</th>
-            <th>PseudoDiscord</th>
-            <th>Telephone</th>
-            <th>Actions</th>
+      <table className="globalDivTable">
+        <thead className="ligneDesTitres">
+          <tr className="classTh">
+            <th className="classTh">Nom</th>
+            <th className="classTh">Prénom</th>
+            <th className="classTh">Pseudo</th>
+            <th className="classTh">Mail</th>
+            <th className="classTh">Admin</th>
+            <th className="classTh">M.Equipe</th>
+            <th className="classTh">M.Asso</th>
+            <th className="classTh">hashedPassword</th>
+            <th className="classTh">Ville</th>
+            <th className="classTh">PhotoProfil</th>
+            <th className="classTh">Description</th>
+            <th className="classTh">Discord</th>
+            <th className="classTh">Telephone</th>
+            <th className="classTh">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="classTbody">
           {joueurs.map((player) => (
-            <tr key={player.id}>
-              <td>
+            <tr className="classTh" key={player.id}>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -82,7 +83,7 @@ function JoueursComponent() {
                   player.Nom
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -98,7 +99,7 @@ function JoueursComponent() {
                   player.Prenom
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -114,7 +115,7 @@ function JoueursComponent() {
                   player.Pseudo
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -130,7 +131,7 @@ function JoueursComponent() {
                   player.Mail
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -146,7 +147,7 @@ function JoueursComponent() {
                   player.Admin
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -162,7 +163,7 @@ function JoueursComponent() {
                   player.MembreEquipe
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -178,7 +179,7 @@ function JoueursComponent() {
                   player.MembreAssociation
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -194,7 +195,7 @@ function JoueursComponent() {
                   player.hashedPassword
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -210,7 +211,7 @@ function JoueursComponent() {
                   player.VilleResidence
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -226,7 +227,7 @@ function JoueursComponent() {
                   player.PhotoProfil
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -242,7 +243,7 @@ function JoueursComponent() {
                   player.Description
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -258,7 +259,7 @@ function JoueursComponent() {
                   player.PseudoDiscord
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input
                     type="text"
@@ -274,7 +275,7 @@ function JoueursComponent() {
                   player.Telephone
                 )}
               </td>
-              <td>
+              <td className="celluleTd">
                 <button onClick={() => handleEditPlayer(player)}>
                   Modifier
                 </button>

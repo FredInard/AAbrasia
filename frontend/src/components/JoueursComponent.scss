@@ -1,0 +1,71 @@
+/* Style pour le tableau */
+.globalDivTableau {
+  width: 100%;
+}
+
+/* Style pour la table */
+.globalDivTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+classTr
+
+  /* Style pour les titres de colonnes */
+  th {
+  background-color: #f2f2f2;
+  color: navy;
+  text-align: left;
+  padding: 8px;
+  max-width: 200px; /* Largeur maximale des cellules */
+  white-space: normal; /* Permet le passage à la ligne */
+  word-wrap: break-word; /* Permet de casser les mots longs */
+  border: 1px solid #ddd;
+}
+
+/* Style pour les cellules de données */
+.celluleTd {
+  text-align: left;
+  padding: 8px;
+  max-width: 200px;
+  white-space: normal;
+  word-wrap: break-word;
+  border: 1px solid #ddd;
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+/* Style pour les boutons Modifier et Valider */
+button {
+  margin: 5px;
+  padding: 5px 10px;
+}
+
+/* Style pour le texte des boutons */
+button:hover {
+  background-color: #f2f2f2;
+}
+
+// .globalDivTableau{
+//     .globalDivTable{
+//         border: 1px solid #ddd;
+//         .ligneDesTitres{
+//             border: solid white;
+//             .classTh{
+//                 border: 1px solid #ddd;
+//                 .classTh{
+
+//                 }
+//             }
+//         }
+//         .classTbody{
+//             .classTh{
+//                 .celluleTd{
+//                     border: 1px solid #ddd;
+//                     height: 50px;
+//                     width: 150px;
+//                 }
+//             }
+//         }
+//     }
+// }
