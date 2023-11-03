@@ -52,10 +52,13 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
   return (
     <div className={`modalModificationPartie ${isOpen ? "open" : ""}`}>
       <div className="modalModificationPartie-content">
-        <h2>Souhaites-tu vraiment te retirer de l'aventure ? </h2>
+        <h2 className="">Souhaites-tu vraiment te retirer de l'aventure ? </h2>
 
         <button type="buttonExitPartie" onClick={handleSaveChanges}>
-          <h3> Oui, malheureusement...</h3>
+          <h3 className="modalModificationPartieH3">
+            {" "}
+            Oui, malheureusement...
+          </h3>
         </button>
         <button type="buttonExitPartieNo" onClick={onClose}>
           <h3>Annuler</h3>

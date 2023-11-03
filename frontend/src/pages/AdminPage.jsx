@@ -16,7 +16,7 @@ function AdminPage() {
     <>
       <NavBar className="NavBarHome" />
       <div className="globalDivAdminPage">
-        <h1>Page d'administration</h1>
+        <h1 className="adminPageH1">Page d'administration</h1>
         <div className="admin-buttons">
           <button onClick={() => handleTabClick("joueurs")}>Joueurs</button>
           <button onClick={() => handleTabClick("parties")}>Parties</button>

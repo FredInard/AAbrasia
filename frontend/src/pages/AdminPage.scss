@@ -3,13 +3,14 @@
 // Styles pour la page d'administration
 
 .globalDivAdminPage {
-  margin: 20px;
   padding: 20px;
   margin-top: 150px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  height: 100%;
+  width: 100%;
 
-  h1 {
+  .adminPageH1 {
     font-size: 24px;
     margin-bottom: 20px;
   }

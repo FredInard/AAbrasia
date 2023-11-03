@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
+import Cookies from "js-cookie"
 
 function ParticipationsComponent() {
   const [participations, setParticipations] = useState([])
   const [editingParticipation, setEditingParticipation] = useState(null)
-
+  const tokenFromCookie = Cookies.get("authToken")
+  const headers = {
+    Authorization: `Bearer ${tokenFromCookie}`,
+  }
   useEffect(() => {
     // Chargez les données des participations depuis votre API ou source de données ici
-    axios.get("/votre-endpoint-api-participations").then((response) => {
-      setParticipations(response.data)
-    })
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/participation`, { headers })
+      .then((response) => {
+        setParticipations(response.data)
+      })
   }, [])
 
   const handleEditParticipation = (participation) => {
@@ -20,8 +26,11 @@ function ParticipationsComponent() {
     // Envoyez une requête PUT pour mettre à jour la participation dans votre API
     axios
       .put(
-        `/votre-endpoint-api-participations/${updatedParticipation.id}`,
-        updatedParticipation
+        `${import.meta.env.VITE_BACKEND_URL}/participation/${
+          updatedParticipation.id
+        }`,
+        updatedParticipation,
+        { headers }
       )
       .then((response) => {
         setEditingParticipation(null) // Arrêtez l'édition après la mise à jour

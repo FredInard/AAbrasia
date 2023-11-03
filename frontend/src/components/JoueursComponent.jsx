@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import "./JoueursComponent.scss"
+import Cookies from "js-cookie"
 
 function JoueursComponent() {
   const [joueurs, setJoueurs] = useState([])
   const [editingPlayer, setEditingPlayer] = useState(null)
-
+  const tokenFromCookie = Cookies.get("authToken")
+  const headers = {
+    Authorization: `Bearer ${tokenFromCookie}`,
+  }
   const handleEditPlayer = (player) => {
     setEditingPlayer(player)
   }
@@ -15,7 +19,8 @@ function JoueursComponent() {
     axios
       .put(
         `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${player.id}`,
-        player
+        player,
+        { headers }
       )
       .then((response) => {
         // Mettez à jour l'état local avec les nouvelles données
@@ -33,7 +38,7 @@ function JoueursComponent() {
   useEffect(() => {
     // Effectuez une requête GET pour obtenir la liste des joueurs depuis votre API
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`, { headers })
       .then((response) => {
         setJoueurs(response.data)
       })
@@ -44,7 +49,7 @@ function JoueursComponent() {
 
   return (
     <div className="globalDivTableau">
-      <h1>Liste des Joueurs</h1>
+      <h1 className="joueursComponentH1">Liste des Joueurs</h1>
       <table className="globalDivTable">
         <thead className="ligneDesTitres">
           <tr className="classTh">
