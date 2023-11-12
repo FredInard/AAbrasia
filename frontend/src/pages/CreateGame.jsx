@@ -98,7 +98,7 @@ export default function CreateGame() {
             <button type="submit">Créer ma partie</button>
           </div>
         </form>
-        <ToastContainer /> {/* Ajoutez le composant ToastContainer ici */}
+        <ToastContainer />
       </div>
     </>
   )

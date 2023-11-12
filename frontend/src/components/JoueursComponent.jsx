@@ -10,12 +10,12 @@ function JoueursComponent() {
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
+
   const handleEditPlayer = (player) => {
     setEditingPlayer(player)
   }
 
   const handleUpdatePlayer = (player) => {
-    // Effectuez une requête PUT pour mettre à jour les données du joueur
     axios
       .put(
         `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${player.id}`,
@@ -23,8 +23,6 @@ function JoueursComponent() {
         { headers }
       )
       .then((response) => {
-        // Mettez à jour l'état local avec les nouvelles données
-        // et désactivez le mode d'édition
         setJoueurs((prevJoueurs) =>
           prevJoueurs.map((p) => (p.id === player.id ? player : p))
         )
@@ -36,7 +34,6 @@ function JoueursComponent() {
   }
 
   useEffect(() => {
-    // Effectuez une requête GET pour obtenir la liste des joueurs depuis votre API
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`, { headers })
       .then((response) => {
@@ -53,6 +50,7 @@ function JoueursComponent() {
       <table className="globalDivTable">
         <thead className="ligneDesTitres">
           <tr className="classTh">
+            <th className="classTh">ID</th>
             <th className="classTh">Nom</th>
             <th className="classTh">Prénom</th>
             <th className="classTh">Pseudo</th>
@@ -72,6 +70,7 @@ function JoueursComponent() {
         <tbody className="classTbody">
           {joueurs.map((player) => (
             <tr className="classTh" key={player.id}>
+              <td className="celluleTd">{player.id}</td>
               <td className="celluleTd">
                 {editingPlayer?.id === player.id ? (
                   <input

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
+import "./PartiesComponent.scss"
 
 function PartiesComponent() {
   const [parties, setParties] = useState([])
@@ -30,7 +31,6 @@ function PartiesComponent() {
     // Convertissez la date et formatez-la correctement
     const date = new Date(updatedParty.Date)
     const formattedDate = date.toISOString().slice(0, 19).replace("T", " ")
-    console.info("editingParty before update", editingParty)
 
     // Envoyez une requête PUT pour mettre à jour la partie dans votre API
     axios
@@ -41,25 +41,39 @@ function PartiesComponent() {
           headers,
         }
       )
-
       .then((response) => {
         setEditingParty(null)
         // Gérez la réponse ou mettez à jour l'état si nécessaire
       })
       .catch((error) => {
         console.error("Erreur lors de la mise à jour de la partie :", error)
-        console.info("editingParty after put", editingParty)
       })
   }
 
-  console.info("editingParty", editingParty)
-  // console.info("MaitreDuJeu", editingParty.MaitreDuJeu)
+  const handleDeleteParty = (partyId) => {
+    // Envoyez une requête DELETE pour supprimer la partie dans votre API
+    axios
+      .delete(`${import.meta.env.VITE_BACKEND_URL}/partie/${partyId}`, {
+        headers,
+      })
+      .then((response) => {
+        // Mettez à jour la liste des parties après la suppression
+        setParties((prevParties) =>
+          prevParties.filter((party) => party.id !== partyId)
+        )
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la suppression de la partie :", error)
+      })
+  }
+
   return (
-    <div>
-      <h1>Liste des Parties</h1>
-      <table>
-        <thead>
+    <div className="parties-container">
+      <h1 className="parties-heading">Liste des Parties</h1>
+      <table className="parties-table">
+        <thead className="parties-table-head">
           <tr>
+            <th>ID</th>
             <th>Titre</th>
             <th>Date</th>
             <th>Heure</th>
@@ -71,10 +85,11 @@ function PartiesComponent() {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="parties-table-body">
           {parties.map((party) => (
-            <tr key={party.id}>
-              <td>
+            <tr key={party.id} className="parties-table-row">
+              <td className="parties-table-data">{party.id}</td>
+              <td className="parties-table-data">
                 {editingParty?.id === party.id ? (
                   <input
                     type="text"
@@ -90,10 +105,55 @@ function PartiesComponent() {
                   party.Titre
                 )}
               </td>
-              <td>{party.Date}</td>
-              <td>{party.Heure}</td>
-              <td>{party.Lieu}</td>
-              <td>
+              <td className="parties-table-data">
+                {editingParty?.id === party.id ? (
+                  <input
+                    type="date"
+                    value={editingParty.Date}
+                    onChange={(e) =>
+                      setEditingParty({
+                        ...editingParty,
+                        Date: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  new Date(party.Date).toLocaleDateString("fr-FR")
+                )}
+              </td>
+              <td className="parties-table-data">
+                {editingParty?.id === party.id ? (
+                  <input
+                    type="time"
+                    value={editingParty.Heure}
+                    onChange={(e) =>
+                      setEditingParty({
+                        ...editingParty,
+                        Heure: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  party.Heure
+                )}
+              </td>
+              <td className="parties-table-data">
+                {editingParty?.id === party.id ? (
+                  <input
+                    type="text"
+                    value={editingParty.Lieu}
+                    onChange={(e) =>
+                      setEditingParty({
+                        ...editingParty,
+                        Lieu: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  party.Lieu
+                )}
+              </td>
+              <td className="parties-table-data">
                 {editingParty?.id === party.id ? (
                   <input
                     type="number"
@@ -110,7 +170,7 @@ function PartiesComponent() {
                   party.MaitreDuJeu
                 )}
               </td>
-              <td>
+              <td className="parties-table-data">
                 {editingParty?.id === party.id ? (
                   <input
                     type="text"
@@ -126,10 +186,10 @@ function PartiesComponent() {
                   party.Description
                 )}
               </td>
-              <td>
+              <td className="parties-table-data">
                 {editingParty?.id === party.id ? (
                   <input
-                    type="text"
+                    type="number"
                     value={editingParty.NombreJoueur}
                     onChange={(e) =>
                       setEditingParty({
@@ -142,7 +202,7 @@ function PartiesComponent() {
                   party.NombreJoueur
                 )}
               </td>
-              <td>
+              <td className="parties-table-data">
                 {editingParty?.id === party.id ? (
                   <input
                     type="text"
@@ -158,8 +218,11 @@ function PartiesComponent() {
                   party.TypeDeJeux
                 )}
               </td>
-              <td>
+              <td className="parties-table-data">
                 <button onClick={() => handleEditParty(party)}>Modifier</button>
+                <button onClick={() => handleDeleteParty(party.id)}>
+                  Supprimer
+                </button>
                 {editingParty?.id === party.id && (
                   <button onClick={() => handleUpdateParty(editingParty)}>
                     Valider

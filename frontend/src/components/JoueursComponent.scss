@@ -26,7 +26,7 @@
         padding: 10px;
         text-align: center;
         border: 1px solid #444;
-        white-space: nowrap;
+        // white-space: nowrap;
       }
     }
 
@@ -40,11 +40,13 @@
           border: 1px solid #ccc;
           max-width: 100px;
           max-height: 200px;
-          white-space: nowrap; // Évitez le renvoi automatique du texte
-          overflow-x: hidden; // Masquez le contenu dépassant la largeur
-          text-overflow: ellipsis; // Affichez "..." pour le texte dépassant la largeur
-          // white-space: normal; // Permet le passage à la ligne
-          // word-wrap: break-word; // Permet de casser les mots longs
+          // white-space: nowrap; // Évitez le renvoi automatique du texte
+          overflow-y: hidden; // Masquez le contenu dépassant la largeur
+          overflow-x: hidden;
+          overflow: auto;
+          // text-overflow: ellipsis; // Affichez "..." pour le texte dépassant la largeur
+          white-space: normal; // Permet le passage à la ligne
+          word-wrap: break-word; // Permet de casser les mots longs
 
           input[type="text"] {
             width: 100%;

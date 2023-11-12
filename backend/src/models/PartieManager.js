@@ -29,7 +29,7 @@ class PartieManager extends AbstractManager {
         partie.Date,
         partie.Heure,
         partie.Lieu,
-        partie.IdMaitreDuJeu,
+        partie.MaitreDuJeu,
         partie.Description,
         partie.NombreJoueur,
         partie.TypeDeJeux,

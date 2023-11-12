@@ -43,7 +43,7 @@ function ParticipationsComponent() {
         )
       })
   }
-
+  console.info("participations", participations)
   return (
     <div>
       <h1>Liste des Participations</h1>
