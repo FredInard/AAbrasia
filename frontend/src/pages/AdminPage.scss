@@ -1,0 +1,53 @@
+// AdminPage.scss
+
+// Styles pour la page d'administration
+
+.globalDivAdminPage {
+  padding: 20px;
+  margin-top: 150px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+
+  .adminPageH1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .admin-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+
+  .admin-content {
+    margin-top: 20px;
+
+    // Styles pour les onglets actifs
+    .joueurs {
+      display: block;
+    }
+
+    .parties {
+      display: none;
+    }
+
+    .participations {
+      display: none;
+    }
+  }
+}
