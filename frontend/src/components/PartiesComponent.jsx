@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import "./PartiesComponent.scss"
+import poubel from "../assets/pics/poubel.png"
 
 function PartiesComponent() {
   const [parties, setParties] = useState([])
@@ -18,7 +19,7 @@ function PartiesComponent() {
       .then((response) => {
         setParties(response.data)
       })
-  }, [])
+  }, [{ setParties }])
 
   const handleEditParty = (party) => {
     setEditingParty({
@@ -53,9 +54,12 @@ function PartiesComponent() {
   const handleDeleteParty = (partyId) => {
     // Envoyez une requête DELETE pour supprimer la partie dans votre API
     axios
-      .delete(`${import.meta.env.VITE_BACKEND_URL}/partie/${partyId}`, {
-        headers,
-      })
+      .delete(
+        `${import.meta.env.VITE_BACKEND_URL}/partie/participation/${partyId}`,
+        {
+          headers,
+        }
+      )
       .then((response) => {
         // Mettez à jour la liste des parties après la suppression
         setParties((prevParties) =>
@@ -220,8 +224,16 @@ function PartiesComponent() {
               </td>
               <td className="parties-table-data">
                 <button onClick={() => handleEditParty(party)}>Modifier</button>
-                <button onClick={() => handleDeleteParty(party.id)}>
-                  Supprimer
+                <button
+                  onClick={() => handleDeleteParty(party.id)}
+                  className="buttonParties-table-data"
+                >
+                  {/* Supprimer */}
+                  <img
+                    src={poubel}
+                    alt="poubel"
+                    className="poubelPartiesComponent"
+                  />
                 </button>
                 {editingParty?.id === party.id && (
                   <button onClick={() => handleUpdateParty(editingParty)}>

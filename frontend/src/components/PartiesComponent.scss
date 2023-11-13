@@ -29,6 +29,16 @@
   padding: 0.5rem;
   border: 1px solid #ddd;
   text-align: left;
+
+  .buttonParties-table-data {
+    background: none;
+    margin-top: 30px;
+    .poubelPartiesComponent {
+      cursor: pointer;
+      width: 50px;
+      height: 55px;
+    }
+  }
 }
 
 .parties-table-data input {

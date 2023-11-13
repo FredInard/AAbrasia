@@ -1,7 +1,10 @@
+// importations (à compléter selon vos besoins)
+
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import "./JoueursComponent.scss"
 import Cookies from "js-cookie"
+import poubelleIcon from "../assets/pics/poubel.png"
 
 function JoueursComponent() {
   const [joueurs, setJoueurs] = useState([])
@@ -30,6 +33,21 @@ function JoueursComponent() {
       })
       .catch((error) => {
         console.error("Erreur lors de la mise à jour du joueur :", error)
+      })
+  }
+
+  const handleDeletePlayer = (playerId) => {
+    axios
+      .delete(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${playerId}`, {
+        headers,
+      })
+      .then((response) => {
+        setJoueurs((prevJoueurs) =>
+          prevJoueurs.filter((p) => p.id !== playerId)
+        )
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la suppression du joueur :", error)
       })
   }
 
@@ -288,6 +306,16 @@ function JoueursComponent() {
                     Valider
                   </button>
                 )}
+                <button
+                  onClick={() => handleDeletePlayer(player.id)}
+                  className="buttonJoueursComponent"
+                >
+                  <img
+                    src={poubelleIcon}
+                    alt="Supprimer"
+                    className="poubelJoueursComponent"
+                  />
+                </button>
               </td>
             </tr>
           ))}

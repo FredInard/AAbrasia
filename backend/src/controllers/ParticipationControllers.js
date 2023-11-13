@@ -46,7 +46,7 @@ const read = (req, res) => {
 
 const edit = (req, res) => {
   const participation = req.body
-
+  console.info("participation", participation)
   // TODO validations (length, format...)
 
   participation.id = parseInt(req.params.id, 10)
