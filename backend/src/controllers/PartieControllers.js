@@ -1,6 +1,6 @@
 const models = require("../models")
 const DOMPurify = require("dompurify")
-// const { validationResult } = require('express-validator');
+const { validationResult, body } = require("express-validator")
 
 const browse = (req, res) => {
   models.partie
@@ -54,23 +54,70 @@ const edit = (req, res) => {
     })
 }
 
-const add = (req, res) => {
-  const partie = req.body
-  // TODO validations (length, format...)
+// const add = (req, res) => {
+//   const partie = req.body
+//   // TODO validations (length, format...)
 
-  // Nettoyer la description avant de l'insérer
-  partie.Description = DOMPurify.sanitize(partie.Description)
+//   // Nettoyer la description avant de l'insérer
+//   partie.Description = DOMPurify.sanitize(partie.Description)
 
-  models.partie
-    .insert(partie)
-    .then(([result]) => {
-      res.location(`/partie/${result.insertId}`).sendStatus(201)
-    })
-    .catch((err) => {
-      console.error(err)
-      res.sendStatus(500)
-    })
-}
+//   models.partie
+//     .insert(partie)
+//     .then(([result]) => {
+//       res.location(`/partie/${result.insertId}`).sendStatus(201)
+//     })
+//     .catch((err) => {
+//       console.error(err)
+//       res.sendStatus(500)
+//     })
+// }
+
+const add = [
+  // Ajoutez les validations ici en utilisant express-validator
+  body("Titre")
+    .isLength({ max: 50 })
+    .withMessage("Le titre ne peut pas dépasser 50 caractères"),
+  body("Lieu")
+    .isLength({ max: 50 })
+    .withMessage("Le lieu ne peut pas dépasser 50 caractères"),
+  body("TypeDeJeux")
+    .isLength({ max: 50 })
+    .withMessage("Le type de jeux ne peut pas dépasser 50 caractères"),
+  body("Date")
+    .isISO8601()
+    .toDate()
+    .withMessage("La date doit être au format ISO8601"),
+  body("Description")
+    .optional() // Si la description n'est pas obligatoire
+    .isString()
+    .withMessage("La description doit être une chaîne de caractères"),
+  // ... Ajoutez d'autres validations selon vos besoins
+
+  (req, res) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const partie = req.body
+
+    if (partie.Description) {
+      // Nettoyer la description avant de l'insérer
+      partie.Description = DOMPurify.sanitize(partie.Description)
+    }
+
+    models.partie
+      .insert(partie)
+      .then(([result]) => {
+        res.location(`/partie/${result.insertId}`).sendStatus(201)
+      })
+      .catch((err) => {
+        console.error(err)
+        res.sendStatus(500)
+      })
+  },
+]
 
 // const destroyeurDePartie = (req, res) => {
 //   models.partie
