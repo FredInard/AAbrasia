@@ -2,6 +2,7 @@ import axios from "axios"
 import React, { useState } from "react"
 import Cookies from "js-cookie"
 import { toast, ToastContainer } from "react-toastify"
+import he from "he"
 
 import "react-toastify/dist/ReactToastify.css"
 import "./CreateGame.scss"
@@ -26,17 +27,22 @@ export default function CreateGame() {
 
   const handleCreateGame = (e) => {
     e.preventDefault()
+    // Encodage de la description avec he.encode
+    const encodedDesc = he.encode(desc)
+    const encodedRpgName = he.encode(rpgName)
+    const encodedTypeOfGame = he.encode(typeOfGame)
+    const encodedPlace = he.encode(place)
     axios
       .post(
         `${import.meta.env.VITE_BACKEND_URL}/partie`,
         {
-          Titre: rpgName,
+          Titre: encodedRpgName,
           Date: date,
           Heure: hour,
-          Lieu: place,
+          Lieu: encodedPlace,
           MaitreDuJeu: idUser,
-          Description: desc,
-          TypeDeJeux: typeOfGame,
+          Description: encodedDesc,
+          TypeDeJeux: encodedTypeOfGame,
           NombreJoueur: playersCapacity,
         },
         { headers }

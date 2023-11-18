@@ -1,5 +1,4 @@
 const models = require("../models")
-const DOMPurify = require("dompurify")
 const { validationResult, body } = require("express-validator")
 
 const browse = (req, res) => {
@@ -36,8 +35,6 @@ const edit = (req, res) => {
   // TODO validations (length, format...)
 
   partie.id = parseInt(req.params.id, 10)
-  // Nettoyer la description avant de mettre à jour
-  partie.description = DOMPurify.sanitize(partie.description)
 
   models.partie
     .update(partie)
@@ -53,24 +50,6 @@ const edit = (req, res) => {
       res.sendStatus(500)
     })
 }
-
-// const add = (req, res) => {
-//   const partie = req.body
-//   // TODO validations (length, format...)
-
-//   // Nettoyer la description avant de l'insérer
-//   partie.Description = DOMPurify.sanitize(partie.Description)
-
-//   models.partie
-//     .insert(partie)
-//     .then(([result]) => {
-//       res.location(`/partie/${result.insertId}`).sendStatus(201)
-//     })
-//     .catch((err) => {
-//       console.error(err)
-//       res.sendStatus(500)
-//     })
-// }
 
 const add = [
   // Ajoutez les validations ici en utilisant express-validator
@@ -101,11 +80,6 @@ const add = [
     }
 
     const partie = req.body
-
-    if (partie.Description) {
-      // Nettoyer la description avant de l'insérer
-      partie.Description = DOMPurify.sanitize(partie.Description)
-    }
 
     models.partie
       .insert(partie)
