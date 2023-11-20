@@ -20,7 +20,6 @@ function App() {
   const isAuthenticated = Cookies.get("authToken") !== undefined
   const isAdmin = Cookies.get("adminUtilisateur") === "1"
 
-  console.info("isAdmin", isAdmin)
   return (
     <Router>
       <Routes>

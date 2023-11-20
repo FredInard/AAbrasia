@@ -42,9 +42,6 @@ models.partie.setDatabase(pool)
 models.utilisateurs = new UtilisateursManager()
 models.utilisateurs.setDatabase(pool)
 
-// bonus: use a proxy to personalize error message,
-// when asking for a non existing model
-
 const handler = {
   get(obj, prop) {
     if (prop in obj) {

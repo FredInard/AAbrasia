@@ -1,7 +1,6 @@
 const models = require("../models")
 const fs = require("fs")
 const sharp = require("sharp")
-const DOMPurify = require("dompurify")
 
 const browse = (req, res) => {
   models.utilisateurs
@@ -19,8 +18,6 @@ const add = (req, res) => {
   const utilisateurs = req.body
 
   // TODO validations (length, format...)
-
-  utilisateurs.Description = DOMPurify.sanitize(utilisateurs.Description)
 
   models.utilisateurs
     .insert(utilisateurs)
@@ -87,7 +84,6 @@ const edit = (req, res) => {
   // TODO validations (length, format...)
 
   utilisateurs.id = parseInt(req.params.id, 10)
-  utilisateurs.Description = DOMPurify.sanitize(utilisateurs.Description)
 
   models.utilisateurs
     .update(utilisateurs)
@@ -216,11 +212,10 @@ const readPartieByUtilisateurId = (req, res) => {
 }
 
 const changerMotDePasse = async (req, res) => {
-  const { id } = req.params
-  const { hashedPassword } = req.body
-
-  console.info("hashedPassword", hashedPassword)
-  console.info("id passé en back pour le changement de PW", id)
+  // const { id } = req.params
+  // const { hashedPassword } = req.body
+  // console.info("hashedPassword", hashedPassword)
+  // console.info("id passé en back pour le changement de PW", id)
 
   const utilisateurs = req.body
   console.info("utilisateurs de edit", utilisateurs)

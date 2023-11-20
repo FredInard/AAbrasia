@@ -198,11 +198,13 @@ function AuthForm() {
           Cookies.set("authToken", token, { expires: 0.5, sameSite: "strict" })
           Cookies.set("Pseudo", res.data.utilisateur.Pseudo, {
             sameSite: "strict",
+            // httpOnly: true,
           })
           Cookies.set(
             "loggedInUtilisateur",
             JSON.stringify(res.data.utilisateur),
             {
+              // httpOnly: true,
               sameSite: "strict",
             }
           )
@@ -211,6 +213,7 @@ function AuthForm() {
             JSON.stringify(res.data.utilisateur.id),
             {
               sameSite: "strict",
+              // httpOnly: true,
             }
           )
           Cookies.set(
@@ -218,6 +221,7 @@ function AuthForm() {
             JSON.stringify(res.data.utilisateur.PhotoProfil),
             {
               sameSite: "strict",
+              // httpOnly: true,
             }
           )
           Cookies.set(
@@ -225,6 +229,7 @@ function AuthForm() {
             JSON.stringify(res.data.utilisateur.Admin),
             {
               sameSite: "strict",
+              // httpOnly: true,
             }
           )
           clearLoginAttempts()
@@ -239,9 +244,6 @@ function AuthForm() {
         handleLoginAttempt()
       })
   }
-
-  console.info("motDePasseInscription", motDePasseInscription)
-  console.info("confirmationMotDePasse", confirmationMotDePasse)
 
   return (
     <>
