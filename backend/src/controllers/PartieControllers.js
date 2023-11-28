@@ -162,12 +162,8 @@ const partieMeneurByUtilisateurId = (req, res) => {
     .findpartieMeneurByUtilisateurId(req.params.id)
 
     .then(([result]) => {
-      if (result[0] == null) {
-        console.info("result 404", result)
-        res.sendStatus(404)
-      } else {
-        res.json(result)
-      }
+      // console.info("result succes findpartieMeneurByUtilisateurId", result)
+      res.json(result)
     })
     .catch((err) => {
       console.error(err)

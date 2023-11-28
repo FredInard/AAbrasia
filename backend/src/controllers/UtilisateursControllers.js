@@ -127,7 +127,7 @@ const displayPlayer = (req, res) => {
     .catch((err) => {
       console.error(err)
       res.sendStatus(500)
-      console.info("l'axios coté back pour displayPlayer n'a pas fonctionné")
+      // console.info("l'axios coté back pour displayPlayer n'a pas fonctionné")
     })
 }
 
