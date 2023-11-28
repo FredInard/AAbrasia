@@ -1,4 +1,5 @@
 const models = require("../models")
+const { validationResult, body } = require("express-validator")
 
 const browse = (req, res) => {
   models.partie
@@ -50,36 +51,47 @@ const edit = (req, res) => {
     })
 }
 
-const add = (req, res) => {
-  const partie = req.body
-  // TODO validations (length, format...)
+const add = [
+  // Ajoutez les validations ici en utilisant express-validator
+  body("Titre")
+    .isLength({ max: 50 })
+    .withMessage("Le titre ne peut pas dépasser 50 caractères"),
+  body("Lieu")
+    .isLength({ max: 50 })
+    .withMessage("Le lieu ne peut pas dépasser 50 caractères"),
+  body("TypeDeJeux")
+    .isLength({ max: 50 })
+    .withMessage("Le type de jeux ne peut pas dépasser 50 caractères"),
+  body("Date")
+    .isISO8601()
+    .toDate()
+    .withMessage("La date doit être au format ISO8601"),
+  body("Description")
+    .optional() // Si la description n'est pas obligatoire
+    .isString()
+    .withMessage("La description doit être une chaîne de caractères"),
+  // ... Ajoutez d'autres validations selon vos besoins
 
-  models.partie
-    .insert(partie)
-    .then(([result]) => {
-      res.location(`/partie/${result.insertId}`).sendStatus(201)
-    })
-    .catch((err) => {
-      console.error(err)
-      res.sendStatus(500)
-    })
-}
+  (req, res) => {
+    const errors = validationResult(req)
 
-// const destroyeurDePartie = (req, res) => {
-//   models.partie
-//     .getDestroyeurDePartie(req.params.id)
-//     .then(([result]) => {
-//       if (result.affectedRows === 0) {
-//         res.sendStatus(404)
-//       } else {
-//         res.sendStatus(204)
-//       }
-//     })
-//     .catch((err) => {
-//       console.error(err)
-//       res.sendStatus(500)
-//     })
-// }
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const partie = req.body
+
+    models.partie
+      .insert(partie)
+      .then(([result]) => {
+        res.location(`/partie/${result.insertId}`).sendStatus(201)
+      })
+      .catch((err) => {
+        console.error(err)
+        res.sendStatus(500)
+      })
+  },
+]
 
 const destroyeurDePartie = (req, res) => {
   const id = req.params.id
@@ -150,12 +162,8 @@ const partieMeneurByUtilisateurId = (req, res) => {
     .findpartieMeneurByUtilisateurId(req.params.id)
 
     .then(([result]) => {
-      if (result[0] == null) {
-        console.info("result 404", result)
-        res.sendStatus(404)
-      } else {
-        res.json(result)
-      }
+      // console.info("result succes findpartieMeneurByUtilisateurId", result)
+      res.json(result)
     })
     .catch((err) => {
       console.error(err)

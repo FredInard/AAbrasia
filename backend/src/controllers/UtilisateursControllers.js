@@ -127,7 +127,7 @@ const displayPlayer = (req, res) => {
     .catch((err) => {
       console.error(err)
       res.sendStatus(500)
-      console.info("l'axios coté back pour displayPlayer n'a pas fonctionné")
+      // console.info("l'axios coté back pour displayPlayer n'a pas fonctionné")
     })
 }
 
@@ -212,11 +212,10 @@ const readPartieByUtilisateurId = (req, res) => {
 }
 
 const changerMotDePasse = async (req, res) => {
-  const { id } = req.params
-  const { hashedPassword } = req.body
-
-  console.info("hashedPassword", hashedPassword)
-  console.info("id passé en back pour le changement de PW", id)
+  // const { id } = req.params
+  // const { hashedPassword } = req.body
+  // console.info("hashedPassword", hashedPassword)
+  // console.info("id passé en back pour le changement de PW", id)
 
   const utilisateurs = req.body
   console.info("utilisateurs de edit", utilisateurs)

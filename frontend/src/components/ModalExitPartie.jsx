@@ -5,7 +5,7 @@ import "./ModalExitPartie.scss"
 function ModificationPartieModal({ isOpen, onClose, partie }) {
   const idUser = Cookies.get("idUtilisateur")
   const idDuUser = parseInt(idUser)
-  const idMaitreDuJeu = partie.MaitreDuJeu
+  // const idMaitreDuJeu = partie.MaitreDuJeu
   const idExitPartie = partie.PartieId
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
@@ -38,16 +38,14 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
       })
   }
 
-  console.info(
-    "partie :",
-    partie.PartieId,
-    "idUser : ",
-    idDuUser,
-    "idExitPartie :",
-    idExitPartie,
-    "idMaitreDuJeu : ",
-    idMaitreDuJeu
-  )
+  // console.info(
+  //   "partie :",
+  //   partie.PartieId,
+  //   "idUser : ",
+  //   idDuUser,
+  //   "idExitPartie :",
+  //   idExitPartie
+  // )
 
   return (
     <div className={`modalModificationPartie ${isOpen ? "open" : ""}`}>

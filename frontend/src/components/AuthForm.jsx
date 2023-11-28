@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import "./AuthForm.scss"
 import axios from "axios"
@@ -6,22 +6,27 @@ import Cookies from "js-cookie"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
+const MAX_LOGIN_ATTEMPTS = 5 // Nombre maximum de tentatives autorisées
+const LOCKOUT_DURATION = 300000 // Durée de verrouillage en millisecondes (par exemple, 5 minutes)
+
 function AuthForm() {
   toast.configure()
-  const [confirmationMotDePasse, setConfirmationMotDePasse] = useState([])
+  const [confirmationMotDePasse, setConfirmationMotDePasse] = useState("")
   const [isSignIn, setIsSignIn] = useState(true)
-  const [nomInscription, setNomInscription] = useState([])
-  const [prenomInscription, setPrenomInscription] = useState([])
-  const [pseudoInscription, setPseudoInscription] = useState([])
-  const [mailInscription, setMailInscription] = useState([])
-  const [motDePasseInscription, setMotDePasseInscription] = useState([])
-  const [signInPseudo, setSignInPseudo] = useState()
-  const [signInPassword, setSignInPassword] = useState()
+  const [nomInscription, setNomInscription] = useState("")
+  const [prenomInscription, setPrenomInscription] = useState("")
+  const [pseudoInscription, setPseudoInscription] = useState("")
+  const [mailInscription, setMailInscription] = useState("")
+  const [motDePasseInscription, setMotDePasseInscription] = useState("")
+  const [signInPseudo, setSignInPseudo] = useState("")
+  const [signInPassword, setSignInPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const imageParDefaut = "assets/images/profilPictures/portraitOfMerchant.png"
   console.info("imageParDefaut", imageParDefaut)
-
+  const [loginAttempts, setLoginAttempts] = useState([])
+  const [isUserLocked, setIsUserLocked] = useState(false)
+  const lockoutTimerRef = useRef(null)
   const isValidPassword = (password) => {
     // Vérifier la longueur du mot de passe (8 caractères minimum)
     if (password.length < 8) {
@@ -44,6 +49,62 @@ function AuthForm() {
     }
 
     return true
+  }
+
+  // Fonction pour gérer la tentative de connexion
+  const handleLoginAttempt = () => {
+    // Vérifier si l'utilisateur est actuellement verrouillé
+    if (isUserLocked) {
+      const remainingLockoutTime =
+        LOCKOUT_DURATION -
+        (Date.now() - loginAttempts[loginAttempts.length - 1])
+      toast.error(
+        `Your account is temporarily locked. Please try again in ${Math.ceil(
+          remainingLockoutTime / 1000
+        )} seconds.`
+      )
+      return
+    }
+
+    // Authentification normale ici...
+    // Si l'authentification échoue, incrémenter le compteur de tentatives
+    setLoginAttempts([...loginAttempts, Date.now()])
+
+    // Si le nombre de tentatives dépasse le seuil, verrouiller l'utilisateur
+    if (loginAttempts.length >= MAX_LOGIN_ATTEMPTS) {
+      lockoutUser()
+      return
+    }
+
+    // Authentification réussie...
+    clearLoginAttempts()
+    // Continuer avec le reste de la logique de connexion
+  }
+
+  // Fonction pour verrouiller temporairement un utilisateur
+  const lockoutUser = () => {
+    setIsUserLocked(true)
+
+    // Mettre en place un timer pour réinitialiser le verrouillage après LOCKOUT_DURATION
+    lockoutTimerRef.current = setTimeout(() => {
+      clearLockout()
+    }, LOCKOUT_DURATION)
+
+    toast.error(
+      "Too many unsuccessful attempts. Your account is temporarily locked."
+    )
+  }
+
+  // Fonction pour réinitialiser le statut de verrouillage
+  const clearLockout = () => {
+    setIsUserLocked(false)
+    setLoginAttempts([])
+    clearTimeout(lockoutTimerRef.current)
+  }
+
+  // Fonction pour effacer le compteur de tentatives après une connexion réussie
+  const clearLoginAttempts = () => {
+    setLoginAttempts([])
   }
 
   const handleSubmit = () => {
@@ -137,11 +198,13 @@ function AuthForm() {
           Cookies.set("authToken", token, { expires: 0.5, sameSite: "strict" })
           Cookies.set("Pseudo", res.data.utilisateur.Pseudo, {
             sameSite: "strict",
+            // httpOnly: true,
           })
           Cookies.set(
             "loggedInUtilisateur",
             JSON.stringify(res.data.utilisateur),
             {
+              // httpOnly: true,
               sameSite: "strict",
             }
           )
@@ -150,6 +213,7 @@ function AuthForm() {
             JSON.stringify(res.data.utilisateur.id),
             {
               sameSite: "strict",
+              // httpOnly: true,
             }
           )
           Cookies.set(
@@ -157,6 +221,7 @@ function AuthForm() {
             JSON.stringify(res.data.utilisateur.PhotoProfil),
             {
               sameSite: "strict",
+              // httpOnly: true,
             }
           )
           Cookies.set(
@@ -164,20 +229,21 @@ function AuthForm() {
             JSON.stringify(res.data.utilisateur.Admin),
             {
               sameSite: "strict",
+              // httpOnly: true,
             }
           )
-          setSignInPseudo()
-          setSignInPassword()
+          clearLoginAttempts()
+          setSignInPseudo("")
+          setSignInPassword("")
           navigate("/")
         }
       })
       .catch((error) => {
         console.error("Erreur lors de la connexion :", error)
+        // Gérer la tentative de connexion infructueuse
+        handleLoginAttempt()
       })
   }
-
-  console.info("motDePasseInscription", motDePasseInscription)
-  console.info("confirmationMotDePasse", confirmationMotDePasse)
 
   return (
     <>

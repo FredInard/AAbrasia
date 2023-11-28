@@ -76,6 +76,7 @@ export default function Profil() {
 
   const handleEditClick = (partie) => {
     setSelectedPartie(partie) // Stockez les données de la partie sélectionnée dans l'état
+    console.info("partie quand tu clic pour modifier", partie)
     setShowModalModifPartie(true) // Ouvrez la modal
   }
 
@@ -249,9 +250,9 @@ export default function Profil() {
         setMeneurParties(res.data)
       })
       .catch((err) => {
-        console.error("Problème lors du chargement des parties", err)
+        console.error("Problème lors du chargement des parties meneurs", err)
       })
-  }, [showModalModifPartie, handleSupresPartieClick])
+  }, [showModalModifPartie, handleSupresPartieClick, ModificationPartieModal])
 
   // console.info("meneurParties", meneurParties)
   return (

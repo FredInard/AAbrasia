@@ -26,7 +26,7 @@ function ModificationPartieModal({ isOpen, onClose, partie }) {
           Date: date,
           Heure: heure,
           Lieu: lieu,
-          IdMaitreDuJeu: idMaitreDuJeu,
+          MaitreDuJeu: idMaitreDuJeu,
           Description: description,
           NombreJoueur: nombreJoueur,
           TypeDeJeux: typeDeJeux,

@@ -7,7 +7,7 @@ class ParticipationManager extends AbstractManager {
 
   insert(participation) {
     return this.database.query(
-      `insert into participation (Utilisateurs_Id, Partie_Id, Partie_IdMaitreDuJeu) VALUES (?, ?, ?)`,
+      `insert into ${this.table} (Utilisateurs_Id, Partie_Id, Partie_IdMaitreDuJeu) VALUES (?, ?, ?)`,
       [
         participation.Utilisateurs_Id,
         participation.Partie_Id,
@@ -23,7 +23,7 @@ class ParticipationManager extends AbstractManager {
         participation.Utilisateurs_Id,
         participation.Partie_Id,
         participation.Partie_IdMaitreDuJeu,
-        participation.id, // Assurez-vous que l'identifiant (ID) est bien présent ici.
+        participation.id,
       ]
     )
   }

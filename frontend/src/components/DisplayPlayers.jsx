@@ -32,7 +32,6 @@ export default function DisplayPlayers({ postData }) {
   }
 
   useEffect(() => {
-    console.info("l'axios pour allPosts en cours")
     axios
       .get(
         `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/displayPlayers/${
@@ -41,8 +40,8 @@ export default function DisplayPlayers({ postData }) {
         { headers }
       )
       .then(
-        (res) => setAllPosts(res.data),
-        console.info("l'axios pour allPosts a correctement fonctionné")
+        (res) => setAllPosts(res.data)
+        // console.info("l'axios pour allPosts a correctement fonctionné")
       )
 
       .catch((error) => {
@@ -118,8 +117,8 @@ export default function DisplayPlayers({ postData }) {
         )
       })
   }
-  console.info("postData:", postData)
-  console.info("allPosts:", allPosts)
+  // console.info("postData:", postData)
+  // console.info("allPosts:", allPosts)
   // console.info("idUserNumber:", idUserNumber)
   // console.info("postData.PartieId:", postData.PartieId)
   // console.info("NombreJoueur:", postData.NombreJoueur)

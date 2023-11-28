@@ -41,8 +41,7 @@ export default function Home() {
     setIsPostCardsOpen(true)
     setPostData(allPostData)
   }
-  console.info("postData", postData)
-  console.info("parties", parties)
+
   return (
     <>
       <NavBar className="NavBarHome" />
