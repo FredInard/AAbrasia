@@ -6,8 +6,8 @@ import Citadel from "../assets/pics/CitadelOfSisteron.svg"
 import questioningFemale from "../assets/pics/femaleWarrior.svg"
 import wizard from "../assets/pics/wizard.svg"
 import BrushDown from "../assets/pics/BrushDown.svg"
-import scene from "../assets/pics/banner.svg"
-import BrushUp from "../assets/pics/BrushUp.svg"
+// import scene from "../assets/pics/banner.svg"
+// import BrushUp from "../assets/pics/BrushUp.svg"
 import logoAiW from "../assets/pics/logoAiW.svg"
 import LogoPlayers from "../assets/pics/playerIcon.svg"
 import iconeDiscorde from "../assets/pics/iconeDiscorde.svg"
@@ -45,26 +45,26 @@ export default function Home() {
   return (
     <>
       <NavBar className="NavBarHome" />
-      <div className="containeurLogo">
-        <img
-          className="logoBaner"
-          src={logoAiW}
-          alt="logo de l association les arpenteur d abrasia"
-        />
-      </div>
 
       <div className="ContaineurBanner">
         <div className="scene">
-          <img
+          {/* <img
             src={BrushUp}
             alt="brush haut pour fondue image de scene"
             className="superpose haut"
-          />
-          <img
+          /> */}
+          <div className="containeurLogo">
+            <img
+              className="logoBaner"
+              src={logoAiW}
+              alt="logo de l association les arpenteur d abrasia"
+            />
+          </div>
+          {/* <img
             src={scene}
             alt="scene de jeux de rôle avec des personnages de type héroïc fantasy autour d'une table."
             className="scene"
-          />
+          /> */}
           <img
             src={BrushDown}
             alt="brush bas pour fondue image de scene"
