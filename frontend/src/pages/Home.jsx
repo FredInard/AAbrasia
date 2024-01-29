@@ -4,7 +4,7 @@ import Cookies from "js-cookie"
 
 import Citadel from "../assets/pics/CitadelOfSisteron.svg"
 import questioningFemale from "../assets/pics/femaleWarrior.svg"
-import wizard from "../assets/pics/wizard.svg"
+// import wizard from "../assets/pics/wizard.svg"
 import BrushDown from "../assets/pics/BrushDown.svg"
 // import scene from "../assets/pics/banner.svg"
 // import BrushUp from "../assets/pics/BrushUp.svg"
@@ -79,13 +79,6 @@ export default function Home() {
             <h2>L’association de jeux de rôle du 04</h2>
           </div>
           <div className="boxMage">
-            <div className="boxImageMage">
-              <img
-                className="imageMage"
-                src={wizard}
-                alt="image d'un magicien type Dnd"
-              />
-            </div>
             <div className="boxTextMage fade-in-right">
               <p>
                 Bienvenue, <br />
@@ -95,6 +88,13 @@ export default function Home() {
                 tout le monde est bienvenu·e, néophytes ou vétérans, pour créer
                 des moments conviviaux de rires et d’aventures !
               </p>
+            </div>
+            <div className="boxImageMage">
+              {/* <img
+                className="imageMage"
+                src={wizard}
+                alt="image d'un magicien type Dnd"
+              /> */}
             </div>
           </div>
         </div>
