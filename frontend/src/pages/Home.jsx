@@ -8,6 +8,8 @@ import questioningFemale from "../assets/pics/femaleWarrior.svg"
 import BrushDown from "../assets/pics/BrushDown.svg"
 // import scene from "../assets/pics/banner.svg"
 // import BrushUp from "../assets/pics/BrushUp.svg"
+import King from "../assets/pics/medievalKing.svg"
+import Queen from "../assets/pics/queen.svg"
 import logoAiW from "../assets/pics/logoAiW.svg"
 import LogoPlayers from "../assets/pics/playerIcon.svg"
 import iconeDiscorde from "../assets/pics/iconeDiscorde.svg"
@@ -42,11 +44,35 @@ export default function Home() {
     setPostData(allPostData)
   }
 
+  const images = [King, Queen]
+
+  const [indexVisible, setIndexVisible] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndexVisible((prevIndex) => (prevIndex + 1) % images.length)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <>
       <NavBar className="NavBarHome" />
 
       <div className="ContaineurBanner">
+        <div className="image-crossfader">
+          {images.map((src, index) => (
+            <img
+              key={index}
+              className={`image-crossfader__img ${
+                index === indexVisible ? "image-crossfader__img--visible" : ""
+              }`}
+              src={src}
+              alt={`crossfader image ${index + 1}`}
+            />
+          ))}
+        </div>
         <div className="scene">
           {/* <img
             src={BrushUp}

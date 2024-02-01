@@ -12,34 +12,50 @@
     position: absolute;
     width: 75%;
     z-index: +500; /* Augmentez la valeur de z-index pour placer l'image au-dessus de la bannière */
-    margin-top: -200px; /* Ajustez cette valeur selon votre mise en page */
+    /*margin-top: -200px;  Ajustez cette valeur selon votre mise en page */
   }
 }
 
 .ContaineurBanner {
-  /* Styles pour le conteneur principal, si nécessaire */
-  position: relative;
+  /* Styles pour le conteneur principal, si nécessaire 
+  position: relative;*/
 }
+.image-crossfader {
+  /*height: 100vh;
+  position: relative;*/
 
-.scene {
-  /*position: relative; /* Définissez le conteneur de la scène comme relatif */
-  display: flex; /* Utilisez flexbox pour centrer l'image */
-  justify-content: center; /* Centrez horizontalement l'image */
-  /*max-width: 100%; /* Définissez une largeur maximale pour l'image */
-  width: 100%;
-  height: 100%;
-  background-image: url("../assets/pics/banner.svg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  webkit-mask-image: linear-gradient(
-    to top,
-    rgb(6, 1, 39) 50%,
-    transparent 95%
-  );
-  mask-image: linear-gradient(to top, rgb(6, 1, 39) 50%, transparent 95%);
+  .image-crossfader__img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1500ms ease-in;
+    position: absolute;
+
+    &--visible {
+      opacity: 1;
+    }
+  }
 }
+/*.scene {
+  /*position: relative; /* Définissez le conteneur de la scène comme relatif */
+// display: flex; /* Utilisez flexbox pour centrer l'image */
+// justify-content: center; /* Centrez horizontalement l'image */
+/*max-width: 100%; /* Définissez une largeur maximale pour l'image */
+// width: 100%;
+// height: 100%;
+// background-image: url("../assets/pics/banner.svg");
+// background-size: cover;
+// background-position: center;
+// background-repeat: no-repeat;
+// background-attachment: fixed;
+// webkit-mask-image: linear-gradient(
+//   to top,
+//   rgb(6, 1, 39) 50%,
+//   transparent 95%
+// );
+// mask-image: linear-gradient(to top, rgb(6, 1, 39) 50%, transparent 95%);
+/*}*/
 /* Styles pour les écrans de taille moyenne à grande */
 @media only screen and (min-width: 319px) {
   .banniere {
