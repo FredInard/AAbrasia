@@ -25,6 +25,7 @@
 .image-crossfader {
   /*height: 100vh;
   position: relative;*/
+  
 
   .image-crossfader__img {
     height: 100%;
@@ -33,7 +34,8 @@
     opacity: 0;
     transition: opacity 1500ms ease-in;
     position: absolute;
-
+    // mask-image: linear-gradient(to top, rgb(6, 1, 39) 1%, transparent 95%);
+    mask-image: linear-gradient(to bottom, rgb(6, 1, 39) 10%, transparent 60%);
     &--visible {
       opacity: 1;
     }

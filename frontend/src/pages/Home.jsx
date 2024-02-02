@@ -10,6 +10,10 @@ import BrushDown from "../assets/pics/BrushDown.svg"
 // import BrushUp from "../assets/pics/BrushUp.svg"
 import King from "../assets/pics/medievalKing.svg"
 import Queen from "../assets/pics/queen.svg"
+import Merchan from "../assets/pics/portraitOfMerchant.png"
+import Elf1 from "../assets/pics/elfLikeDnD.svg"
+import Elf2 from "../assets/pics/elfLikeDnD2.jpg"
+import wizard2 from "../assets/pics/wizard2.jpg"
 import logoAiW from "../assets/pics/logoAiW.svg"
 import LogoPlayers from "../assets/pics/playerIcon.svg"
 import iconeDiscorde from "../assets/pics/iconeDiscorde.svg"
@@ -44,7 +48,7 @@ export default function Home() {
     setPostData(allPostData)
   }
 
-  const images = [King, Queen]
+  const images = [King, Queen, Merchan, Elf1, Elf2, wizard2]
 
   const [indexVisible, setIndexVisible] = useState(0)
 
