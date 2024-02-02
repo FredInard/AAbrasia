@@ -9,7 +9,7 @@
   justify-content: center;
   height: 55vw;
   .logoBaner {
-    position: absolute;
+    // position: absolute;
     width: 75%;
     z-index: +500; /* Augmentez la valeur de z-index pour placer l'image au-dessus de la bannière */
     /*margin-top: -200px;  Ajustez cette valeur selon votre mise en page */
@@ -19,6 +19,8 @@
 .ContaineurBanner {
   /* Styles pour le conteneur principal, si nécessaire 
   position: relative;*/
+  display: flex;
+  flex-direction: row;
 }
 .image-crossfader {
   /*height: 100vh;
