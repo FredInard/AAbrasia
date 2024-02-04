@@ -2,15 +2,23 @@
 @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:wght@100&display=swap");
 // import scene from "../assets/pics/banner.svg"
 
+.ContaineurPrincipal {
+  /* Ajoute cette classe au conteneur principal qui englobe ContaineurBanner et containeurPresentation */
+  display: flex;
+  flex-direction: column;
+}
+
 .containeurLogo {
+  // margin-top: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 55vw;
+
   .logoBaner {
     // position: absolute;
-    width: 75%;
+    margin-top: 65vh;
+    width: 94%;
     z-index: +500; /* Augmentez la valeur de z-index pour placer l'image au-dessus de la bannière */
     /*margin-top: -200px;  Ajustez cette valeur selon votre mise en page */
   }
@@ -19,23 +27,23 @@
 .ContaineurBanner {
   /* Styles pour le conteneur principal, si nécessaire 
   position: relative;*/
+  height: 76vh;
   display: flex;
   flex-direction: row;
 }
 .image-crossfader {
   /*height: 100vh;
   position: relative;*/
-  
 
   .image-crossfader__img {
-    height: 100%;
+    height: 150%;
     width: 100%;
     object-fit: cover;
     opacity: 0;
     transition: opacity 1500ms ease-in;
     position: absolute;
     // mask-image: linear-gradient(to top, rgb(6, 1, 39) 1%, transparent 95%);
-    mask-image: linear-gradient(to bottom, rgb(6, 1, 39) 10%, transparent 60%);
+    mask-image: linear-gradient(to bottom, rgb(6, 1, 39) 5%, transparent 70%);
     &--visible {
       opacity: 1;
     }
@@ -107,7 +115,10 @@
     line-height: 1.5;
     font-size: 2.5vw;
     font-family: "Poppins", Poppins;
-    padding: 20px;
+    text-align: justify;
+    padding-left: 2em;
+    padding-right: 2em;
+    // padding: 20px;
   }
 
   .boxMage {
@@ -164,8 +175,11 @@
 
     .boxTextMage {
       font-size: 1.5em;
-      padding: 20px;
+      text-align: justify;
+      // padding: 20px;
       width: 50%;
+      margin-bottom: 50px;
+      margin-top: 20px;
     }
   }
 
