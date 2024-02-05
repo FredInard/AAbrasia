@@ -102,7 +102,7 @@ export default function Home() {
         </div>
 
         <div className="containeurPresentation">
-          <div>
+          <div className="containeurPresentationbis">
             <div className="titreh2">
               <h2>
                 Oubliez Netflix pour plongez dans l'aventure avec l'Association
