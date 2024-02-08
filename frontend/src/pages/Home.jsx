@@ -3,11 +3,12 @@ import axios from "axios"
 import Cookies from "js-cookie"
 
 import Citadel from "../assets/pics/CitadelOfSisteron.svg"
-import questioningFemale from "../assets/pics/femaleWarrior.svg"
+// import questioningFemale from "../assets/pics/femaleWarrior.svg"
 // import wizard from "../assets/pics/wizard.svg"
 // import BrushDown from "../assets/pics/BrushDown.svg"
 // import scene from "../assets/pics/banner.svg"
 // import BrushUp from "../assets/pics/BrushUp.svg"
+// import AdventurFriends from "../assets/pics/goAdventure.png"
 import King from "../assets/pics/medievalKing.svg"
 import Queen from "../assets/pics/queen.svg"
 import Merchan from "../assets/pics/portraitOfMerchant.png"
@@ -129,8 +130,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="boxWarior">
-            <div className="boxTextWarior">
+          <div className="boxPresentationJDR">
+            <div className="boxTextPresentationJDR">
               <p>
                 C’est quoi le jeux de rôle ? Le jeu de rôle est un loisir qui se
                 pratique en petits groupes (entre 3 et 6 personnes) autour d'une
@@ -141,13 +142,7 @@ export default function Home() {
                 bien l’aventure... À condition que les dés le permettent !
               </p>
             </div>
-            <div className="boximageWarior">
-              <img
-                className="imageWarior"
-                src={questioningFemale}
-                alt="image d'une guerrière type Dnd"
-              />
-            </div>
+            <div className="boxImagePresentationJDR"></div>
           </div>
           <div className="boxCitadel">
             <div className="boxImageCitadel">

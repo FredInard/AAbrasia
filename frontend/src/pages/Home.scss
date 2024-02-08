@@ -128,6 +128,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    
 
     .titreh2 {
       width: 75%;
@@ -198,55 +199,62 @@
       }
     }
 
-    .boxWarior {
-      display: flex;
-      align-items: center;
-      // margin: 20px;
-      // padding: 20px;
+    
+}
 
-      .boxTextWarior {
-        font-size: 1.5em;
-        font-family: "Poppins", Poppins;
-        padding: 20px;
-        width: 50%;
-      }
+.boxPresentationJDR {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-      .boximageWarior {
-        .imageWarior {
-          height: auto;
-          width: 50%;
-        }
-      }
-    }
 
-    .boxCitadel {
-      display: flex;
-      // flex-wrap: wrap;
-      align-items: center;
-      margin: 20px;
-      padding: 20px;
 
-      .boxTextCitadel {
-        font-size: 1.5em;
-        font-family: "Poppins", Poppins;
-        padding: 20px;
-      }
+  .boxTextPresentationJDR {
+    font-size: 1.5em;
+    font-family: "Poppins", Poppins;
+    padding: 20px;
+    width: 50%;
 
-      .boxImageCitadel {
-        .imageCitadel {
-          height: auto;
-          width: 500px;
-        }
-      }
-    }
-    .boxTextCitadelBis {
-      align-items: center;
-      margin: 20px;
-      font-size: 1.5em;
-      font-family: "Poppins", Poppins;
-      padding: 20px;
+  }
+
+  .boxImagePresentationJDR {
+      width: 100%;
+      height: 500px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-image: url(../assets/pics/goAdventure.png);
+  }
+}
+
+.boxCitadel {
+  display: flex;
+  // flex-wrap: wrap;
+  align-items: center;
+  margin: 20px;
+  padding: 20px;
+
+  .boxTextCitadel {
+    font-size: 1.5em;
+    font-family: "Poppins", Poppins;
+    padding: 20px;
+  }
+
+  .boxImageCitadel {
+    .imageCitadel {
+      height: auto;
+      width: 500px;
     }
   }
+}
+.boxTextCitadelBis {
+  align-items: center;
+  margin: 20px;
+  font-size: 1.5em;
+  font-family: "Poppins", Poppins;
+  padding: 20px;
+}
 }
 
 // @media (max-width: 399px) {
