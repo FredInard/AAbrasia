@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 
-import Citadel from "../assets/pics/CitadelOfSisteron.svg"
+// import Citadel from "../assets/pics/CitadelOfSisteron.svg"
 // import questioningFemale from "../assets/pics/femaleWarrior.svg"
 // import wizard from "../assets/pics/wizard.svg"
 // import BrushDown from "../assets/pics/BrushDown.svg"
@@ -78,11 +78,6 @@ export default function Home() {
           ))}
         </div>
         <div className="scene">
-          {/* <img
-            src={BrushUp}
-            alt="brush haut pour fondue image de scene"
-            className="superpose haut"
-          /> */}
           <div className="containeurLogo">
             <img
               className="logoBaner"
@@ -90,16 +85,6 @@ export default function Home() {
               alt="logo de l association les arpenteur d abrasia"
             />
           </div>
-          {/* <img
-            src={scene}
-            alt="scene de jeux de rôle avec des personnages de type héroïc fantasy autour d'une table."
-            className="scene"
-          /> */}
-          {/* <img
-            src={BrushDown}
-            alt="brush bas pour fondue image de scene"
-            className="superpose bas"
-          /> */}
         </div>
 
         <div className="containeurPresentation">
@@ -111,7 +96,7 @@ export default function Home() {
               </h2>
             </div>
             <div className="boxMage">
-              <div className="boxTextMage fade-in-right">
+              <div className="boxTextMage">
                 <p>
                   Bienvenue, <br />
                   Les Arpenteurs d’Abrasia sont une association qui organise des
@@ -121,13 +106,7 @@ export default function Home() {
                   créer des moments conviviaux de rires et d’aventures !
                 </p>
               </div>
-              <div className="boxImageMage">
-                {/* <img
-                className="imageMage"
-                src={wizard}
-                alt="image d'un magicien type Dnd"
-              /> */}
-              </div>
+              <div className="boxImageMage"></div>
             </div>
           </div>
           <div className="boxPresentationJDR">
@@ -145,13 +124,6 @@ export default function Home() {
             <div className="boxImagePresentationJDR"></div>
           </div>
           <div className="boxCitadel">
-            <div className="boxImageCitadel">
-              <img
-                className="imageCitadel"
-                src={Citadel}
-                alt="image de la citadel de Sisteron"
-              />
-            </div>
             <div className="boxTextCitadel">
               <p>
                 Présentation de l’asso L'association des Arpenteurs d'Abrasia
@@ -161,19 +133,20 @@ export default function Home() {
                 moments conviviaux et inclusifs.
               </p>
             </div>
-          </div>
-          <div className="boxTextCitadelBis">
-            <p>
-              Elle se donne pour mission de créer du lien social, d'une part en
-              créant des espaces de jeu mixtes et bienveillants pour toute
-              personne souhaitant la rejoindre, d'autre part en allant vers des
-              publics en recherche de sociabilité et/ou isolés, tels que les
-              personnes retraitées ou les adolescents. L'association entend
-              développer un volet culturel en organisant des ateliers d'écriture
-              comme un complément des activités de jeu de rôle, des groupes de
-              lecture, voire d'autres activités liées à la production de
-              l'imaginaire.
-            </p>
+            <div className="boxTextCitadelBis">
+              <p>
+                Elle se donne pour mission de créer du lien social, d'une part
+                en créant des espaces de jeu mixtes et bienveillants pour toute
+                personne souhaitant la rejoindre, d'autre part en allant vers
+                des publics en recherche de sociabilité et/ou isolés, tels que
+                les personnes retraitées ou les adolescents. L'association
+                entend développer un volet culturel en organisant des ateliers
+                d'écriture comme un complément des activités de jeu de rôle, des
+                groupes de lecture, voire d'autres activités liées à la
+                production de l'imaginaire.
+              </p>
+            </div>
+            <div className="boxImageCitadel"></div>
           </div>
         </div>
       </div>
