@@ -118,6 +118,7 @@
 
         @media only screen and (max-width: 425px) {
           font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+          width: 80%;
         }
       }
 
@@ -143,7 +144,8 @@
     .boxTextPresentationJDR {
       font-size: 2em;
       font-family: "Poppins", Poppins;
-      padding: 20px;
+      padding-top: 20px;
+      padding-bottom: 20px;
       width: 70%;
 
       @media only screen and (max-width: 1440px) {
@@ -156,6 +158,7 @@
 
       @media only screen and (max-width: 425px) {
         font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        width: 80%;
       }
     }
 
@@ -179,8 +182,9 @@
     .boxTextCitadel {
       font-size: 2em;
       font-family: "Poppins", Poppins;
-      padding: 20px;
-      width: 80%;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      width: 70%;
 
       @media only screen and (max-width: 1440px) {
         font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
@@ -192,14 +196,16 @@
 
       @media only screen and (max-width: 425px) {
         font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        width: 80%;
       }
     }
 
     .boxTextCitadelBis {
       font-size: 2em;
       font-family: "Poppins", Poppins;
-      padding: 20px;
-      width: 80%;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      width: 70%;
 
       @media only screen and (max-width: 1440px) {
         font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
@@ -211,6 +217,7 @@
 
       @media only screen and (max-width: 425px) {
         font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        width: 80%;
       }
     }
 
