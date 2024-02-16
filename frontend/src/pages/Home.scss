@@ -1,165 +1,235 @@
 @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:ital,wght@0,400;1,100&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:wght@100&display=swap");
 
-.containeurLogo {
+.ContaineurPrincipal {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 55vw;
-  .logoBaner {
-    position: absolute;
-    width: 90%;
-    z-index: +500; /* Augmentez la valeur de z-index pour placer l'image au-dessus de la bannière */
-    margin-top: 10px; /* Ajustez cette valeur selon votre mise en page */
+
+  .image-crossfader {
+    /*height: 100vh;
+    position: relative;*/
+
+    .image-crossfader__img {
+      height: 150%;
+      width: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1500ms ease-in;
+      position: absolute;
+      // mask-image: linear-gradient(to top, rgb(6, 1, 39) 1%, transparent 95%);
+      mask-image: linear-gradient(to bottom, rgb(6, 1, 39) 0%, transparent 60%);
+      &--visible {
+        opacity: 1;
+      }
+    }
   }
-}
 
-.ContaineurBanner {
-  /* Styles pour le conteneur principal, si nécessaire */
-  position: relative;
-}
+  .containeurLogo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-.scene {
-  position: relative; /* Définissez le conteneur de la scène comme relatif */
-  display: flex; /* Utilisez flexbox pour centrer l'image */
-  justify-content: center; /* Centrez horizontalement l'image */
-  max-width: 100%; /* Définissez une largeur maximale pour l'image */
-}
+    .logoBaner {
+      margin-top: 10vh;
+      width: 75%;
+      z-index: +500; /* Augmentez la valeur de z-index pour placer l'image au-dessus de la bannière */
 
-.superpose {
-  position: absolute; /* Définissez les images "Brush" comme absolues */
-  width: 100%; /* Ajustez la largeur au besoin */
-  height: auto; /* Ajustez la hauteur au besoin */
-}
+      @media only screen and (min-width: 481px) {
+        margin-top: 20vh; /* Ajustez la valeur pour les écrans plus larges */
+      }
 
-.superpose.haut {
-  top: -10px; /* Positionnez l'image "BrushUp" en haut du conteneur */
-  z-index: +1;
-}
+      @media only screen and (min-width: 769px) {
+        margin-top: 10vh; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
+      @media only screen and (min-width: 1243px) {
+        margin-top: -5vh; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
 
-.superpose.bas {
-  bottom: 0; /* Positionnez l'image "BrushDown" en bas du conteneur */
-}
+      @media only screen and (min-width: 2000px) {
+        margin-top: -7vh; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
 
-.fade-in-right {
-  -webkit-animation: fade-in-right 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
-    both;
-  animation: fade-in-right 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+      @media only screen and (min-width: 2560px) {
+        margin-top: -7vh; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
+    }
+  }
 }
 
 .containeurPresentation {
-  .titreh2 {
-    text-align: center;
-    margin-top: 0;
-    line-height: 1.5;
-    font-size: 3vw;
-    font-family: "Poppins", Poppins;
-    padding: 20px;
-  }
-
-  .boxMage {
+  .containeurPresentationbis {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    margin: 20px;
-    padding: 20px;
 
-    .boxImageMage {
-      .imageMage {
-        height: auto;
-        width: 100%;
-      }
-    }
-    .boxImageMage fade-in-right {
-      .imageMage {
-        height: auto;
-        width: 10vw;
-      }
-
-      @-webkit-keyframes fade-in-right {
-        0% {
-          -webkit-transform: translateX(50px);
-          transform: translateX(50px);
-          opacity: 0;
-        }
-        100% {
-          -webkit-transform: translateX(0);
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-      @keyframes fade-in-right {
-        0% {
-          -webkit-transform: translateX(50px);
-          transform: translateX(50px);
-          opacity: 0;
-        }
-        100% {
-          -webkit-transform: translateX(0);
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-    }
-
-    .boxTextMage {
-      font-size: 1.5em;
-      padding: 20px;
-    }
-  }
-
-  .boxWarior {
-    display: flex;
-    align-items: center;
-    margin: 20px;
-    padding: 20px;
-
-    .boxTextWarior {
-      font-size: 1.5em;
+    .titreh2 {
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-top: 0px;
+      line-height: 1.5;
+      font-size: 1rem;
       font-family: "Poppins", Poppins;
-      padding: 20px;
+      // text-align: justify;
+      z-index: 10;
+      // padding-left: 2em;
+      // padding-right: 2em;
+      // padding: 20px;
+
+      @media only screen and (min-width: 1024px) {
+        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        margin-top: 0px;
+      }
+
+      @media only screen and (min-width: 1144px) {
+        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        margin-top: 0px;
+      }
+
+      @media only screen and (min-width: 2560px) {
+        font-size: 3rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        margin-top: -150px;
+      }
     }
 
-    .boximageWarior {
-      .imageWarior {
-        height: auto;
-        width: 100%;
+    .boxMage {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      .boxTextMage {
+        font-size: 2em;
+        text-align: justify;
+        // padding: 20px;
+        width: 70%;
+        margin-bottom: 50px;
+        margin-top: 20px;
+
+        @media only screen and (max-width: 1440px) {
+          font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        }
+
+        @media only screen and (max-width: 768px) {
+          font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        }
+
+        @media only screen and (max-width: 425px) {
+          font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+          width: 80%;
+        }
       }
+
+      .boxImageMage {
+        width: 100%;
+        height: 500px;
+        // border: solid red;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-image: url(../assets/pics/wizard.svg);
+      }
+    }
+  }
+
+  .boxPresentationJDR {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: justify;
+
+    .boxTextPresentationJDR {
+      font-size: 2em;
+      font-family: "Poppins", Poppins;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      width: 70%;
+
+      @media only screen and (max-width: 1440px) {
+        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
+
+      @media only screen and (max-width: 768px) {
+        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
+
+      @media only screen and (max-width: 425px) {
+        font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        width: 80%;
+      }
+    }
+
+    .boxImagePresentationJDR {
+      width: 100%;
+      height: 500px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-image: url(../assets/pics/goAdventure.png);
     }
   }
 
   .boxCitadel {
     display: flex;
-    // flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
-    margin: 20px;
-    padding: 20px;
+    text-align: justify;
 
     .boxTextCitadel {
-      font-size: 1.5em;
+      font-size: 2em;
       font-family: "Poppins", Poppins;
-      padding: 20px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      width: 70%;
+
+      @media only screen and (max-width: 1440px) {
+        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
+
+      @media only screen and (max-width: 768px) {
+        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
+
+      @media only screen and (max-width: 425px) {
+        font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        width: 80%;
+      }
+    }
+
+    .boxTextCitadelBis {
+      font-size: 2em;
+      font-family: "Poppins", Poppins;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      width: 70%;
+
+      @media only screen and (max-width: 1440px) {
+        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
+
+      @media only screen and (max-width: 768px) {
+        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
+      }
+
+      @media only screen and (max-width: 425px) {
+        font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        width: 80%;
+      }
     }
 
     .boxImageCitadel {
-      .imageCitadel {
-        height: auto;
-        width: 500px;
-      }
+      width: 100%;
+      height: 500px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-image: url(../assets/pics/CitadelOfSisteron.svg);
     }
-  }
-  .boxTextCitadelBis {
-    align-items: center;
-    margin: 20px;
-    font-size: 1.5em;
-    font-family: "Poppins", Poppins;
-    padding: 20px;
-  }
-}
-
-@media (max-width: 399px) {
-  .containeurLogo .titleBaner {
-    font-size: 5em;
   }
 }
 
@@ -279,347 +349,4 @@
   border: solid 2px white;
   border-radius: 10px;
   margin-bottom: 20px; /* Ajoutez la marge en bas pour créer un espace entre les post-cards */
-}
-
-@media (max-width: 1024px) {
-  .containeurPresentation {
-    .titreh2 {
-      text-align: center;
-      margin-top: 0;
-      line-height: 1.5;
-      font-size: 1.5em;
-      font-family: "Poppins", Poppins;
-      padding: 5px;
-    }
-
-    .boxTextCitadelBis {
-      align-items: center;
-      margin: 5px;
-      font-size: 1em;
-      font-family: "Poppins", Poppins;
-      padding: 5px;
-    }
-    .boxCitadel {
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      margin: 5px;
-      padding: 5px;
-
-      .boxTextCitadel {
-        font-size: 1em;
-        font-family: "Poppins", Poppins;
-        padding: 5px;
-      }
-
-      .boxImageCitadel {
-        .imageCitadel {
-          height: auto;
-          width: 100%;
-        }
-      }
-    }
-
-    .boxWarior {
-      display: flex;
-      flex-wrap: nowrap;
-      // flex-direction: column-reverse;
-      align-items: center;
-      margin: 5px;
-      padding: 5px;
-
-      .boxTextWarior {
-        font-size: 1em;
-        font-family: "Poppins", Poppins;
-        padding: 5px;
-      }
-
-      .boximageWarior {
-        .imageWarior {
-          height: auto;
-          width: 100%;
-        }
-      }
-    }
-
-    .boxMage {
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      margin: 5px;
-      padding: 5px;
-
-      .boxTextMage {
-        font-size: 1em;
-        padding: 5px;
-      }
-
-      .boxImageMage {
-        .imageMage {
-          height: auto;
-          width: 100%;
-        }
-      }
-    }
-  }
-  .agendaDesParties {
-    text-align: center;
-    margin-top: 0;
-    line-height: 1.5;
-    font-size: 3vw;
-    font-family: "Poppins", Poppins;
-
-    .titreAPartie {
-      padding: 10px;
-      font-size: 2em;
-    }
-  }
-}
-
-@media (max-width: 500px) {
-  .containeurPresentation {
-    .titreh2 {
-      text-align: center;
-      margin-top: 0;
-      line-height: 1.5;
-      font-size: 1em;
-      font-family: "Poppins", Poppins;
-      padding: 5px;
-    }
-
-    .boxTextCitadelBis {
-      align-items: center;
-      margin: 5px;
-      font-size: 1em;
-      font-family: "Poppins", Poppins;
-      padding: 5px;
-    }
-    .boxCitadel {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      margin: 5px;
-      padding: 5px;
-
-      .boxTextCitadel {
-        font-size: 1em;
-        font-family: "Poppins", Poppins;
-        padding: 5px;
-      }
-
-      .boxImageCitadel {
-        .imageCitadel {
-          height: auto;
-          width: 60%;
-        }
-      }
-    }
-
-    .boxWarior {
-      display: flex;
-      // flex-wrap: nowrap;
-      flex-direction: column-reverse;
-      align-items: center;
-      margin: 5px;
-      padding: 5px;
-
-      .boxTextWarior {
-        font-size: 1em;
-        font-family: "Poppins", Poppins;
-        padding: 5px;
-      }
-
-      .boximageWarior {
-        .imageWarior {
-          height: auto;
-          width: 60%;
-          margin-left: 130px;
-        }
-      }
-    }
-
-    .boxMage {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      margin: 5px;
-      padding: 5px;
-
-      .boxTextMage {
-        font-size: 1em;
-        padding: 5px;
-      }
-
-      .boxImageMage {
-        .imageMage {
-          height: auto;
-          width: 70%;
-        }
-      }
-    }
-  }
-  .agendaDesParties {
-    text-align: center;
-    margin-top: 0;
-    line-height: 1.5;
-    font-size: 3vw;
-    font-family: "Poppins", Poppins;
-
-    .titreAPartie {
-      padding: 10px;
-    }
-  }
-}
-
-@media (max-width: 1024px) {
-  .containeurCards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    padding: 20px;
-
-    .globalContainerCard {
-      background-color: rgba(255, 255, 255, 0.857);
-      border: 1px solid #ccc;
-      border-radius: 30px;
-      color: rgb(6, 1, 39);
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 4px rgba(250, 249, 249, 0.1);
-      width: 85%;
-      height: auto;
-      display: flex;
-      flex-wrap: wrap;
-      // justify-content: space-between;
-      // align-items: center;
-      will-change: transform;
-      transition: all 0.3s ease-in-out;
-
-      .titleContainerCard {
-        font-size: 5vw;
-        text-align: left;
-      }
-
-      .miniBoxInfo {
-        display: flex;
-        font-size: 16px;
-        margin-bottom: 16px;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-items: center;
-        width: 100%;
-
-        .allInfoItem {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          .infoItem {
-            text-align: left;
-          }
-        }
-        .maxPlayerInfoItem {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          align-items: flex-end;
-
-          .logoPlayerAndMaxPlayer {
-            // display: flex;
-            // justify-content: flex-end;
-            // align-items: center;
-            font-size: 5vw;
-            width: 100%;
-
-            .logoPlayer {
-              width: 10vw;
-              height: auto;
-            }
-          }
-        }
-      }
-    }
-
-    .globalContainerCard:hover {
-      border-color: #ffffff;
-      background-color: rgb(255, 255, 255);
-      transform: scale(1.025);
-      border: 3px solid #ffffff;
-      box-shadow: #ffffff;
-      cursor: pointer;
-    }
-
-    .boxMaxPlayerCard {
-      font-weight: bold;
-      color: #333;
-      display: flex;
-      align-items: center;
-
-      .NombreJoueur {
-        padding-right: 50px;
-        font-size: 2vw;
-      }
-
-      .playerIcon {
-        width: auto;
-        height: 100px;
-        padding-right: 30px;
-      }
-    }
-
-    .boxInfoCard {
-      color: #888;
-    }
-  }
-}
-
-.swing-in-top-fwd {
-  -webkit-animation: swing-in-top-fwd 0.5s
-    cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-  animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-}
-
-/* ----------------------------------------------
- * Generated by Animista on 2023-10-10 16:51:17
- * Licensed under FreeBSD License.
- * See http://animista.net/license for more info. 
- * w: http://animista.net, t: @cssanimista
- * ---------------------------------------------- */
-
-/**
- * ----------------------------------------
- * animation swing-in-top-fwd
- * ----------------------------------------
- */
-@-webkit-keyframes swing-in-top-fwd {
-  0% {
-    -webkit-transform: rotateX(-100deg);
-    transform: rotateX(-100deg);
-    -webkit-transform-origin: top;
-    transform-origin: top;
-    opacity: 0;
-  }
-  100% {
-    -webkit-transform: rotateX(0deg);
-    transform: rotateX(0deg);
-    -webkit-transform-origin: top;
-    transform-origin: top;
-    opacity: 1;
-  }
-}
-@keyframes swing-in-top-fwd {
-  0% {
-    -webkit-transform: rotateX(-100deg);
-    transform: rotateX(-100deg);
-    -webkit-transform-origin: top;
-    transform-origin: top;
-    opacity: 0;
-  }
-  100% {
-    -webkit-transform: rotateX(0deg);
-    transform: rotateX(0deg);
-    -webkit-transform-origin: top;
-    transform-origin: top;
-    opacity: 1;
-  }
 }
