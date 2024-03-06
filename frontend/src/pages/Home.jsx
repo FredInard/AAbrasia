@@ -24,7 +24,7 @@ import iconeMail from "../assets/pics/iconeGmail.svg"
 import "./Home.scss"
 import NavBar from "../components/NavBar"
 // import DisplayPlayers from "../components/DisplayPlayers"
-// import Modal from "../components/Modal"
+import Modal from "../components/Modal"
 
 import { Calendar, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
@@ -33,7 +33,11 @@ import "react-big-calendar/lib/css/react-big-calendar.css"
 
 export default function Home() {
   const localizer = momentLocalizer(moment)
-  const [parties, setParties] = useState([])
+  const [setParties] = useState([])
+  // const [parties, setParties] = useState([])
+  const [events, setEvents] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedPartyId, setSelectedPartyId] = useState(null)
   // const [postData, setPostData] = useState(null)
   // const [isPostCardsOpen, setIsPostCardsOpen] = useState(false)
   const tokenFromCookie = Cookies.get("authToken")
@@ -43,8 +47,19 @@ export default function Home() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/affichage`, { headers })
-      .then((res) => setParties(res.data))
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie`, { headers })
+      .then((res) => {
+        setParties(res.data)
+        setEvents(
+          res.data.map((partie) => ({
+            id: partie.id,
+            title: partie.Titre,
+            start: new Date(partie.Date),
+            end: new Date(partie.Date), // Vous pouvez ajuster cela en fonction de la logique de fin d'événement
+            allDay: false, // Mettez à true si les événements durent toute la journée
+          }))
+        )
+      })
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)
       })
@@ -164,7 +179,7 @@ export default function Home() {
           <div className="agenda">
             <Calendar
               localizer={localizer}
-              parties={parties}
+              events={events} // Utilisez la propriété "events" au lieu de "parties"
               views={["month"]}
               defaultView="month"
               culture={"fr"}
@@ -179,6 +194,11 @@ export default function Home() {
                   return `${startDate} - ${endDate}`
                 },
                 weekdayFormat: "dddd", // Format du jour de la semaine
+              }}
+              onSelectEvent={(event) => {
+                console.info("Event ID :", event.id)
+                setSelectedPartyId(event.id)
+                setIsModalOpen(true)
               }}
             />
           </div>
@@ -239,7 +259,11 @@ export default function Home() {
         <img src={iconeFacebook} alt="logo Discorde" />
         <img src={iconeMail} alt="logo Discorde" />
       </div>
-
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        partyId={selectedPartyId}
+      />
       {/* <Modal isOpen={isPostCardsOpen} onClose={() => setIsPostCardsOpen(false)}>
         {postData && <DisplayPlayers postData={postData} />}
       </Modal> */}
