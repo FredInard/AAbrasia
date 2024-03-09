@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
+import { Calendar, momentLocalizer } from "react-big-calendar"
+import moment from "moment"
+import "moment/locale/fr"
+import "react-big-calendar/lib/css/react-big-calendar.css"
 
 // import Citadel from "../assets/pics/CitadelOfSisteron.svg"
 // import questioningFemale from "../assets/pics/femaleWarrior.svg"
@@ -16,59 +20,39 @@ import Elf1 from "../assets/pics/elfLikeDnD.svg"
 import Elf2 from "../assets/pics/elfLikeDnD2.jpg"
 import wizard2 from "../assets/pics/wizard2.jpg"
 import logoAiW from "../assets/pics/logoAiW.svg"
-// import LogoPlayers from "../assets/pics/playerIcon.svg"
+import LogoPlayers from "../assets/pics/playerIcon.svg"
 import iconeDiscorde from "../assets/pics/iconeDiscorde.svg"
 import iconeFacebook from "../assets/pics/iconeFacebook2.svg"
 import iconeMail from "../assets/pics/iconeGmail.svg"
 
 import "./Home.scss"
 import NavBar from "../components/NavBar"
-// import DisplayPlayers from "../components/DisplayPlayers"
+import DisplayPlayers from "../components/DisplayPlayers"
 import Modal from "../components/Modal"
 
-import { Calendar, momentLocalizer } from "react-big-calendar"
-import moment from "moment"
-import "moment/locale/fr"
-import "react-big-calendar/lib/css/react-big-calendar.css"
-
 export default function Home() {
-  const localizer = momentLocalizer(moment)
-  const [setParties] = useState([])
-  // const [parties, setParties] = useState([])
-  const [events, setEvents] = useState([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedPartyId, setSelectedPartyId] = useState(null)
-  // const [postData, setPostData] = useState(null)
-  // const [isPostCardsOpen, setIsPostCardsOpen] = useState(false)
+  const [parties, setParties] = useState([])
+  const [postData, setPostData] = useState(null)
+  const [isPostCardsOpen, setIsPostCardsOpen] = useState(false)
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
+  const localizer = momentLocalizer(moment)
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie`, { headers })
-      .then((res) => {
-        setParties(res.data)
-        setEvents(
-          res.data.map((partie) => ({
-            id: partie.id,
-            title: partie.Titre,
-            start: new Date(partie.Date),
-            end: new Date(partie.Date), // Vous pouvez ajuster cela en fonction de la logique de fin d'événement
-            allDay: false, // Mettez à true si les événements durent toute la journée
-          }))
-        )
-      })
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/affichage`, { headers })
+      .then((res) => setParties(res.data))
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)
       })
   }, [])
 
-  // const handlePostClick = (allPostData) => {
-  //   setIsPostCardsOpen(true)
-  //   setPostData(allPostData)
-  // }
+  const handlePostClick = (allPostData) => {
+    setIsPostCardsOpen(true)
+    setPostData(allPostData)
+  }
 
   const images = [King, Queen, Merchan, Elf1, Elf2, wizard2]
 
@@ -175,36 +159,30 @@ export default function Home() {
         <div className="titreAPartie">
           <h2>Agenda des parties</h2>
         </div>
-        {
-          <div className="agenda">
-            <Calendar
-              localizer={localizer}
-              events={events} // Utilisez la propriété "events" au lieu de "parties"
-              views={["month"]}
-              defaultView="month"
-              culture={"fr"}
-              startAccessor="start"
-              endAccessor="end"
-              formats={{
-                dayFormat: "ddd DD/MM",
-                dayHeaderFormat: "ddd",
-                dayRangeHeaderFormat: ({ start, end }) => {
-                  const startDate = moment(start).format("MMM DD")
-                  const endDate = moment(end).format("MMM DD")
-                  return `${startDate} - ${endDate}`
-                },
-                weekdayFormat: "dddd", // Format du jour de la semaine
-              }}
-              onSelectEvent={(event) => {
-                console.info("Event ID :", event.id)
-                setSelectedPartyId(event.id)
-                setIsModalOpen(true)
-              }}
-            />
-          </div>
-        }
 
-        {/* {!isPostCardsOpen && (
+        <div className="agenda">
+          <Calendar
+            localizer={localizer}
+            events={parties} // Utilisez la propriété "events" au lieu de "parties"
+            views={["month"]}
+            defaultView="month"
+            culture={"fr"}
+            startAccessor="start"
+            endAccessor="end"
+            formats={{
+              dayFormat: "ddd DD/MM",
+              dayHeaderFormat: "ddd",
+              dayRangeHeaderFormat: ({ start, end }) => {
+                const startDate = moment(start).format("MMM DD")
+                const endDate = moment(end).format("MMM DD")
+                return `${startDate} - ${endDate}`
+              },
+              weekdayFormat: "dddd", // Format du jour de la semaine
+            }}
+          />
+        </div>
+
+        {!isPostCardsOpen && (
           <div className="containeurCards">
             {parties.map((partie) => (
               <div
@@ -224,7 +202,7 @@ export default function Home() {
                     <div className="infoItem">Type : {partie.TypeDeJeux}</div>
                     {/* <button onClick={() => handlePostClick(partie)}>
                       Voir les détails
-                    </button> 
+                    </button> */}
                   </div>
                   <div className="maxPlayerInfoItem">
                     <div className="logoPlayerAndMaxPlayer">
@@ -240,7 +218,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-        )} */}
+        )}
       </div>
       <div className="boxLienAsso">
         <h2>Nos amis</h2>
@@ -259,14 +237,10 @@ export default function Home() {
         <img src={iconeFacebook} alt="logo Discorde" />
         <img src={iconeMail} alt="logo Discorde" />
       </div>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        partyId={selectedPartyId}
-      />
-      {/* <Modal isOpen={isPostCardsOpen} onClose={() => setIsPostCardsOpen(false)}>
+
+      <Modal isOpen={isPostCardsOpen} onClose={() => setIsPostCardsOpen(false)}>
         {postData && <DisplayPlayers postData={postData} />}
-      </Modal> */}
+      </Modal>
     </>
   )
 }
