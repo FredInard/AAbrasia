@@ -32,6 +32,7 @@ import Modal from "../components/Modal"
 
 export default function Home() {
   const [parties, setParties] = useState([])
+  const [setSelectedDate] = useState(null)
   const [postData, setPostData] = useState(null)
   const [isPostCardsOpen, setIsPostCardsOpen] = useState(false)
   const tokenFromCookie = Cookies.get("authToken")
@@ -58,6 +59,11 @@ export default function Home() {
 
   const [indexVisible, setIndexVisible] = useState(0)
 
+  const CALENDAR_FORMATS = {
+    dayFormat: "ddd DD/MM",
+    // ... (autres formats)
+  }
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIndexVisible((prevIndex) => (prevIndex + 1) % images.length)
@@ -65,6 +71,12 @@ export default function Home() {
 
     return () => clearInterval(interval)
   }, [])
+
+  const handleDateClick = (selectedDate) => {
+    setSelectedDate(selectedDate) // Mettre à jour l'état avec la date sélectionnée
+    // Autres actions à effectuer lors de la sélection de la date
+    console.info("Date sélectionnée :", selectedDate)
+  }
 
   return (
     <>
@@ -163,22 +175,20 @@ export default function Home() {
         <div className="agenda">
           <Calendar
             localizer={localizer}
-            events={parties} // Utilisez la propriété "events" au lieu de "parties"
+            events={parties}
             views={["month"]}
             defaultView="month"
             culture={"fr"}
             startAccessor="start"
             endAccessor="end"
-            formats={{
-              dayFormat: "ddd DD/MM",
-              dayHeaderFormat: "ddd",
-              dayRangeHeaderFormat: ({ start, end }) => {
-                const startDate = moment(start).format("MMM DD")
-                const endDate = moment(end).format("MMM DD")
-                return `${startDate} - ${endDate}`
-              },
-              weekdayFormat: "dddd", // Format du jour de la semaine
+            formats={CALENDAR_FORMATS}
+            onSelectSlot={(slotInfo) => {
+              // Mettre à jour l'état avec la date de début de la plage sélectionnée
+              setSelectedDate(slotInfo.start)
+              console.info("Date sélectionnée :", slotInfo.start)
+              // Autres actions à effectuer lors de la sélection de la date
             }}
+            onClick={handleDateClick}
           />
         </div>
 
@@ -201,8 +211,8 @@ export default function Home() {
                     </div>
                     <div className="infoItem">Type : {partie.TypeDeJeux}</div>
                     {/* <button onClick={() => handlePostClick(partie)}>
-                      Voir les détails
-                    </button> */}
+                        Voir les détails
+                      </button> */}
                   </div>
                   <div className="maxPlayerInfoItem">
                     <div className="logoPlayerAndMaxPlayer">
