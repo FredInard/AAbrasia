@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
-import { Calendar, momentLocalizer } from "react-big-calendar"
-import moment from "moment"
 import "moment/locale/fr"
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
@@ -29,17 +27,24 @@ import "./Home.scss"
 import NavBar from "../components/NavBar"
 import DisplayPlayers from "../components/DisplayPlayers"
 import Modal from "../components/Modal"
+import Calendar from "../components/Calendar"
 
 export default function Home() {
   const [parties, setParties] = useState([])
-  const [setSelectedDate] = useState(null)
+  const [indexVisible, setIndexVisible] = useState(0)
+  const images = [King, Queen, Merchan, Elf1, Elf2, wizard2]
   const [postData, setPostData] = useState(null)
   const [isPostCardsOpen, setIsPostCardsOpen] = useState(false)
+  const [selectedDate] = useState(null) // ajouter [selectedDate, setSelectedDate]
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
-  const localizer = momentLocalizer(moment)
+
+  const handlePostClick = (allPostData) => {
+    setIsPostCardsOpen(true)
+    setPostData(allPostData)
+  }
 
   useEffect(() => {
     axios
@@ -50,20 +55,6 @@ export default function Home() {
       })
   }, [])
 
-  const handlePostClick = (allPostData) => {
-    setIsPostCardsOpen(true)
-    setPostData(allPostData)
-  }
-
-  const images = [King, Queen, Merchan, Elf1, Elf2, wizard2]
-
-  const [indexVisible, setIndexVisible] = useState(0)
-
-  const CALENDAR_FORMATS = {
-    dayFormat: "ddd DD/MM",
-    // ... (autres formats)
-  }
-
   useEffect(() => {
     const interval = setInterval(() => {
       setIndexVisible((prevIndex) => (prevIndex + 1) % images.length)
@@ -72,10 +63,16 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  const handleDateClick = (selectedDate) => {
-    setSelectedDate(selectedDate) // Mettre à jour l'état avec la date sélectionnée
-    // Autres actions à effectuer lors de la sélection de la date
-    console.info("Date sélectionnée :", selectedDate)
+  // Fonction pour filtrer les parties en fonction de la date sélectionnée
+  const filteredParties = parties.filter((partie) => {
+    if (!selectedDate) return true // Si aucune date sélectionnée, toutes les parties sont affichées
+    const partieDate = new Date(partie.Date) // Supposons que la date est stockée dans le format approprié
+    return partieDate.toDateString() === selectedDate.toDateString() // Comparaison de la date
+  }, console.info("selectedDate", selectedDate))
+
+  const handleDateSelect = (date) => {
+    // Utiliser la date sélectionnée dans le composant Home
+    console.info("Date sélectionnée dans Home:", date)
   }
 
   return (
@@ -173,28 +170,12 @@ export default function Home() {
         </div>
 
         <div className="agenda">
-          <Calendar
-            localizer={localizer}
-            events={parties}
-            views={["month"]}
-            defaultView="month"
-            culture={"fr"}
-            startAccessor="start"
-            endAccessor="end"
-            formats={CALENDAR_FORMATS}
-            onSelectSlot={(slotInfo) => {
-              // Mettre à jour l'état avec la date de début de la plage sélectionnée
-              setSelectedDate(slotInfo.start)
-              console.info("Date sélectionnée :", slotInfo.start)
-              // Autres actions à effectuer lors de la sélection de la date
-            }}
-            onClick={handleDateClick}
-          />
+          <Calendar onDateSelect={handleDateSelect} />
         </div>
 
         {!isPostCardsOpen && (
           <div className="containeurCards">
-            {parties.map((partie) => (
+            {filteredParties.map((partie) => (
               <div
                 key={partie.id}
                 className="globalContainerCard"

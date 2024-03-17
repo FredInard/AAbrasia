@@ -1,0 +1,110 @@
+// Définissez ici les variables ou les mixins si nécessaire
+
+.calendar-container {
+  height: auto;
+  width: 50%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4);
+  padding: 20px 20px;
+  justify-content: center;
+}
+
+.calendar-week {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  padding-inline-start: 0px;
+}
+
+.current-day {
+  background-color: lightblue; // Par exemple, utilisez la couleur de votre choix
+  color: white; // Couleur du texte pour la date actuelle
+}
+
+.calendar-week-day {
+  max-width: 57.1px;
+  width: 100%;
+  text-align: center;
+  color: #525659;
+}
+
+.calendar-days {
+  margin-top: 30px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(
+    7,
+    1fr
+  ); // 7 colonnes pour les jours de la semaine
+  gap: 20px;
+  padding-inline-start: 0px;
+}
+
+.calendar-day {
+  text-align: center;
+  color: #525659;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.calendar-month-arrow-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar-month-year-container {
+  padding: 10px;
+  color: #525659;
+  cursor: pointer;
+}
+
+.calendar-arrow-container {
+  margin-top: -5px;
+}
+
+.calendar-left-arrow,
+.calendar-right-arrow {
+  height: 30px;
+  width: 30px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #525659;
+}
+
+.calendar-today-button {
+  margin-top: -10px;
+  border-radius: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #525659;
+  padding: 5px 10px;
+}
+
+.calendar-today-button {
+  height: 27px;
+  margin-right: 10px;
+  background-color: #ec7625;
+  color: white;
+}
+
+.calendar-months,
+.calendar-years {
+  flex: 1;
+  border-radius: 10px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  color: #525659;
+  font-size: 15px;
+}
+
+.calendar-day-active {
+  background-color: #ec7625;
+  color: white;
+  border-radius: 50%;
+}

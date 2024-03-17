@@ -6,6 +6,18 @@
   background-color: #3498db; /* Exemple : couleur de fond */
   color: #ffffff; /* Exemple : couleur du texte */
 }
+
+.dayContener {
+  cursor: pointer; /* Permet de montrer que l'élément est cliquable */
+  padding: 5px;
+  border: 1px solid #ccc;
+  /* Ajoutez d'autres styles CSS selon vos besoins */
+}
+
+.dayContener:hover {
+  background-color: #f0f0f0; /* Changement de couleur au survol */
+}
+
 .ContaineurPrincipal {
   display: flex;
   flex-direction: column;
@@ -254,6 +266,7 @@
   }
 
   .agenda {
+    display: flex;
     justify-content: center;
     height: 500px;
     width: 65%;
