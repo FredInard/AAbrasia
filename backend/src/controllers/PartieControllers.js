@@ -139,6 +139,18 @@ const affichageInfoPartie = (req, res) => {
     })
 }
 
+const affichageInfoPartieDate = (req, res) => {
+  models.partie
+    .getAffichageInfoPartieDate(req.params.date)
+    .then(([rows]) => {
+      res.send(rows)
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
 const partieByUtilisateurId = (req, res) => {
   models.partie
     .findpartieByUtilisateurId(req.params.id)
@@ -198,4 +210,5 @@ module.exports = {
   countPartieById,
   partieMeneurByUtilisateurId,
   destroyeurDePartie,
+  affichageInfoPartieDate,
 }

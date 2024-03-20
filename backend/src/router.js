@@ -33,6 +33,7 @@ router.get("/utilisateurs/profil/:id", UtilisateursControllers.read2)
 
 router.get("/partie", PartieControllers.browse)
 router.get("/partie/affichage", PartieControllers.affichageInfoPartie)
+router.get("/partie/affichage/:date", PartieControllers.affichageInfoPartieDate)
 router.get("/partie/:id", PartieControllers.read)
 router.get("/partie/count/:id", PartieControllers.countPartieById)
 

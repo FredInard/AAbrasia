@@ -54,9 +54,30 @@ class PartieManager extends AbstractManager {
     p.TypeDeJeux
 FROM partie p
 JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
-
-
     `)
+  }
+
+  getAffichageInfoPartieDate(date) {
+    return this.database.query(
+      `
+    SELECT
+    p.id AS PartieId,
+    p.Titre,
+    DATE_FORMAT(p.Date, '%Y-%m-%d') AS Date,
+    TIME_FORMAT(p.Heure, '%H:%i') AS Heure,
+    p.Lieu,
+    p.MaitreDuJeu,
+    u.Pseudo AS PseudoMaitreDuJeu,
+    u.PhotoProfil AS PhotoProfilMaitreDuJeu,
+    p.Description,
+    p.NombreJoueur,
+    p.TypeDeJeux
+FROM partie p
+JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
+WHERE participation.Utilisateurs_Id = ?;
+    `,
+      [date]
+    )
   }
 
   findpartieByUtilisateurId(id) {
@@ -74,7 +95,7 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
       TypeDeJeux
     FROM ${this.table}
     JOIN participation ON partie.id = participation.Partie_Id
-    WHERE participation.Utilisateurs_Id = ?;
+    WHERE partie.Date = ?;
     `,
       [id]
     )
