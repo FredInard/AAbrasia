@@ -5,8 +5,11 @@ export default function Calendar({ onDateSelect }) {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [calendarDays, setCalendarDays] = useState([])
-  const [selectedDate, setSelectedDate] = useState(null)
-  console.info("selectedDate", selectedDate)
+  const [selectedDateCalendar, setselectedDateCalendar] = useState(null)
+  console.info(
+    "selectedDateCalendar in Calendar component",
+    selectedDateCalendar
+  )
   useEffect(() => {
     generateCalendarDays(selectedYear, selectedMonth)
   }, [selectedMonth, selectedYear])
@@ -65,9 +68,15 @@ export default function Calendar({ onDateSelect }) {
   }
 
   const handleDateClick = (date) => {
-    console.info("date", date)
-    setSelectedDate(date.toISOString().split("T")[0]) // Formater la date au format "YYYY-MM-DD"
-    onDateSelect(date.toISOString().split("T")[0])
+    if (date instanceof Date) {
+      // Vérification si date est une instance de Date
+      const adjustedDate = new Date(
+        date.getTime() - date.getTimezoneOffset() * 60000
+      ) // Ajuster la date pour le fuseau horaire local
+      console.info("date du handleDateClick de Calendar coponet", adjustedDate)
+      setselectedDateCalendar(adjustedDate.toISOString().split("T")[0]) // Formater la date au format "YYYY-MM-DD"
+      onDateSelect(adjustedDate) // Passer la date ajustée
+    }
   }
 
   return (

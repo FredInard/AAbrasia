@@ -67,12 +67,15 @@ export default function Home() {
   const filteredParties = parties.filter((partie) => {
     if (!selectedDate) return true // Si aucune date sélectionnée, toutes les parties sont affichées
     const partieDate = new Date(partie.Date) // Supposons que la date est stockée dans le format approprié
-    return partieDate.toDateString() === selectedDate.toDateString() // Comparaison de la date
-  }, console.info("selectedDate", selectedDate))
+    const selectedDateOnly = new Date(selectedDate)
+    selectedDateOnly.setHours(0, 0, 0, 0) // Définir l'heure à 00:00:00 pour ignorer l'heure dans la comparaison
+    return partieDate.getTime() === selectedDateOnly.getTime() // Comparaison des dates
+  })
 
   const handleDateSelect = (date) => {
-    // Utiliser la date sélectionnée dans le composant Home
-    console.info("Date sélectionnée dans Home:", date)
+    // Formater la date sélectionnée dans le composant Home
+    const formattedDate = date.toISOString().split("T")[0]
+    console.info("Date sélectionnée dans Home:", formattedDate)
   }
 
   return (
