@@ -157,6 +157,7 @@ const partieByUtilisateurId = (req, res) => {
   models.partie
     .findpartieByUtilisateurId(req.params.id)
     .then(([result]) => {
+      console.info("result succes findpartieByUtilisateurId", result)
       if (result[0] == null) {
         res.sendStatus(404)
       } else {

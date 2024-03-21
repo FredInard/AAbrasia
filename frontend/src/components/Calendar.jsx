@@ -1,15 +1,32 @@
 import React, { useState, useEffect } from "react"
+import axios from "axios"
+import Cookies from "js-cookie"
 import "./Calendar.scss" // Assurez-vous que le chemin vers votre fichier CSS est correct
 
 export default function Calendar({ onDateSelect }) {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [calendarDays, setCalendarDays] = useState([])
+  const [partieExiste, setPartieExiste] = useState([])
   const [selectedDateCalendar, setselectedDateCalendar] = useState(null)
   console.info(
     "selectedDateCalendar in Calendar component",
     selectedDateCalendar
   )
+  const tokenFromCookie = Cookies.get("authToken")
+  const headers = {
+    Authorization: `Bearer ${tokenFromCookie}`,
+  }
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie`, { headers })
+      .then((res) => setPartieExiste(res.data))
+      .catch((err) => {
+        console.error("Problème lors du chargement des parties", err)
+      })
+  }, [])
+
   useEffect(() => {
     generateCalendarDays(selectedYear, selectedMonth)
   }, [selectedMonth, selectedYear])
@@ -119,13 +136,13 @@ export default function Calendar({ onDateSelect }) {
         </div>
       </div>
       <ul className="calendar-week">
-        <li>Dim</li>
         <li>Lun</li>
         <li>Mar</li>
         <li>Mer</li>
         <li>Jeu</li>
         <li>Ven</li>
         <li>Sam</li>
+        <li>Dim</li>
       </ul>
       <ul className="calendar-days">
         {calendarDays.map((dayInfo, index) => (
@@ -133,7 +150,13 @@ export default function Calendar({ onDateSelect }) {
             key={index}
             className={
               dayInfo.day
-                ? "calendar-day" + (dayInfo.isToday ? " current-day" : "")
+                ? "calendar-day" +
+                  (dayInfo.isToday ? " current-day" : "") +
+                  (partieExiste.includes(
+                    dayInfo.date.toISOString().split("T")[0]
+                  )
+                    ? " has-event"
+                    : "")
                 : "calendar-day empty"
             }
             onClick={() => handleDateClick(dayInfo.date)}

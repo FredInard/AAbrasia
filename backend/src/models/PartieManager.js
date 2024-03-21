@@ -58,6 +58,7 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
   }
 
   getAffichageInfoPartieDate(date) {
+    // console.info("date de PartieManager", date)
     return this.database.query(
       `
       SELECT
@@ -81,6 +82,7 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
   }
 
   findpartieByUtilisateurId(id) {
+    console.info("id", id)
     return this.database.query(
       `
       SELECT
