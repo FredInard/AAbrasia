@@ -35,7 +35,8 @@ export default function Home() {
   const images = [King, Queen, Merchan, Elf1, Elf2, wizard2]
   const [postData, setPostData] = useState(null)
   const [isPostCardsOpen, setIsPostCardsOpen] = useState(false)
-  const [selectedDate] = useState(null) // ajouter [selectedDate, setSelectedDate]
+  const [selectedDate, setSelectedDate] = useState(null) // ajouter [selectedDate, setSelectedDate]
+  console.info("selectedDate", selectedDate)
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
@@ -46,9 +47,17 @@ export default function Home() {
     setPostData(allPostData)
   }
 
+  const handleDateSelect = (date) => {
+    // Mettre à jour selectedDate avec la date sélectionnée
+    setSelectedDate(date)
+  }
+
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/affichage`, { headers })
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/partie/affichage/selectedDate`,
+        { headers }
+      )
       .then((res) => setParties(res.data))
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)
@@ -63,20 +72,11 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  // Fonction pour filtrer les parties en fonction de la date sélectionnée
-  const filteredParties = parties.filter((partie) => {
-    if (!selectedDate) return true // Si aucune date sélectionnée, toutes les parties sont affichées
-    const partieDate = new Date(partie.Date) // Supposons que la date est stockée dans le format approprié
-    const selectedDateOnly = new Date(selectedDate)
-    selectedDateOnly.setHours(0, 0, 0, 0) // Définir l'heure à 00:00:00 pour ignorer l'heure dans la comparaison
-    return partieDate.getTime() === selectedDateOnly.getTime() // Comparaison des dates
-  })
-
-  const handleDateSelect = (date) => {
-    // Formater la date sélectionnée dans le composant Home
-    const formattedDate = date.toISOString().split("T")[0]
-    console.info("Date sélectionnée dans Home:", formattedDate)
-  }
+  // const handleDateSelect = (date) => {
+  //   // Formater la date sélectionnée dans le composant Home
+  //   const formattedDate = date.toISOString().split("T")[0]
+  //   console.info("Date sélectionnée dans Home:", formattedDate)
+  // }
 
   return (
     <>
@@ -178,7 +178,7 @@ export default function Home() {
 
         {!isPostCardsOpen && (
           <div className="containeurCards">
-            {filteredParties.map((partie) => (
+            {parties.map((partie) => (
               <div
                 key={partie.id}
                 className="globalContainerCard"

@@ -140,8 +140,10 @@ const affichageInfoPartie = (req, res) => {
 }
 
 const affichageInfoPartieDate = (req, res) => {
+  const date = req.params.date
+  console.info("Date reçue dans l'endpoint affichageInfoPartieDate:", date)
   models.partie
-    .getAffichageInfoPartieDate(req.params.date)
+    .getAffichageInfoPartieDate(date)
     .then(([rows]) => {
       res.send(rows)
     })
