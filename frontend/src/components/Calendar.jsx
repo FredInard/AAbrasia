@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import "./Calendar.scss" // Assurez-vous que le chemin vers votre fichier CSS est correct
+import ArrowLeftCal from "../assets/pics/arrow-circle-left-svgrepo-com.svg"
+import ArrowRightCal from "../assets/pics/arrow-circle-right-svgrepo-com.svg"
 
 export default function Calendar({ onDateSelect }) {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
@@ -55,24 +57,35 @@ export default function Calendar({ onDateSelect }) {
 
   const generateCalendarDays = (year, month) => {
     const totalDaysInMonth = new Date(year, month + 1, 0).getDate()
-    const firstDayOfWeek = new Date(year, month, 1).getDay()
+    const firstDayOfWeek = new Date(year, month, 1).getDay() // Récupérer le premier jour de la semaine (0 pour Dimanche, 1 pour Lundi, ..., 6 pour Samedi)
     const days = []
 
     const today = new Date()
     const currentMonth = today.getMonth()
     const currentYear = today.getFullYear()
 
+    // Déterminer le jour de la semaine à partir duquel commencer (Dimanche=0, Lundi=1, ...)
+    let startDay = firstDayOfWeek - 1 // Dimanche est déjà pris en compte, nous commençons donc à samedi
+
+    // Si startDay est négatif, cela signifie que nous devons passer à la semaine précédente
+    if (startDay < 0) {
+      startDay = 6 // Samedi
+    }
+
+    // Ajouter les jours précédant le premier jour de la semaine
+    for (let i = startDay; i > 0; i--) {
+      const previousDate = new Date(year, month, 1 - i)
+      days.push({ day: null, isToday: false, date: previousDate })
+    }
+
+    // Ajouter les jours du mois
     for (let i = 1; i <= totalDaysInMonth; i++) {
       const currentDate = new Date(year, month, i)
       const isToday =
         currentDate.getDate() === today.getDate() &&
         currentDate.getMonth() === currentMonth &&
         currentDate.getFullYear() === currentYear
-      days.push({ day: i, isToday, date: currentDate }) // Ajouter la propriété 'date'
-    }
-
-    for (let i = 0; i < firstDayOfWeek; i++) {
-      days.unshift({ day: null, isToday: false, date: null }) // Ajouter la propriété 'date' avec la valeur null
+      days.push({ day: i, isToday, date: currentDate })
     }
 
     setCalendarDays(days)
@@ -127,12 +140,22 @@ export default function Calendar({ onDateSelect }) {
           <button className="calendar-today-button" onClick={goToToday}>
             Aujourd'hui
           </button>
-          <button className="calendar-left-arrow" onClick={leftArrowClick}>
-            ←
-          </button>
-          <button className="calendar-right-arrow" onClick={rightArrowClick}>
-            →
-          </button>
+          <div>
+            <img
+              src={ArrowLeftCal}
+              alt="Left arrow"
+              className="calendarLeft-arrow"
+              onClick={leftArrowClick}
+            />
+          </div>
+          <div>
+            <img
+              src={ArrowRightCal}
+              alt="Left arrow"
+              className="calendarLeft-arrow"
+              onClick={rightArrowClick}
+            />
+          </div>
         </div>
       </div>
       <ul className="calendar-week">
@@ -152,8 +175,11 @@ export default function Calendar({ onDateSelect }) {
               dayInfo.day
                 ? "calendar-day" +
                   (dayInfo.isToday ? " current-day" : "") +
-                  (partieExiste.includes(
-                    dayInfo.date.toISOString().split("T")[0]
+                  (dayInfo.date &&
+                  partieExiste.find(
+                    (partie) =>
+                      partie.Date.split("T")[0] ===
+                      dayInfo.date.toISOString().split("T")[0]
                   )
                     ? " has-event"
                     : "")

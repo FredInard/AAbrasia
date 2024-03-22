@@ -82,7 +82,7 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
   }
 
   findpartieByUtilisateurId(id) {
-    console.info("id", id)
+    console.info("id dans PartieManager", id)
     return this.database.query(
       `
       SELECT
@@ -97,7 +97,7 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
       TypeDeJeux
     FROM ${this.table}
     JOIN participation ON partie.id = participation.Partie_Id
-    WHERE partie.Date = ?;
+    WHERE Utilisateurs_Id = ?;
     `,
       [id]
     )

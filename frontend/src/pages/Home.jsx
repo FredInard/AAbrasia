@@ -193,20 +193,27 @@ export default function Home() {
                   className="globalContainerCard"
                   onClick={() => handlePostClick(partie)}
                 >
-                  <div className="titleContainerCard">{partie.Titre}</div>
                   <div className="miniBoxInfo">
                     <div className="allInfoItem">
-                      <div className="infoItem">Date : {partie.Date}</div>
+                      {/* <div className="infoItem">Date : {partie.Date}</div>
                       <div className="infoItem">Heure : {partie.Heure}</div>
-                      <div className="infoItem">Lieu : {partie.Lieu}</div>
-                      <div className="infoItem">
-                        Maitre du jeu : {partie.PseudoMaitreDuJeu}
+                      <div className="infoItem">Lieu : {partie.Lieu}</div> */}
+                      <div className="allInfoItem">
+                        <img
+                          src={`${import.meta.env.VITE_BACKEND_URL}/${
+                            partie.PhotoProfilMaitreDuJeu
+                          }`}
+                          alt="Photo du Maître du Jeu"
+                          className="maitre-du-jeu-photo"
+                        />
                       </div>
-                      <div className="infoItem">Type : {partie.TypeDeJeux}</div>
+                      <div className="infoItem">{partie.PseudoMaitreDuJeu}</div>
+                      {/* <div className="infoItem">Type : {partie.TypeDeJeux}</div> */}
                       {/* <button onClick={() => handlePostClick(partie)}>
-                  Voir les détails
-                </button> */}
+                        Voir les détails
+                          </button> */}
                     </div>
+                    <div className="titleContainerCard">{partie.Titre}</div>
                     <div className="maxPlayerInfoItem">
                       <div className="logoPlayerAndMaxPlayer">
                         <img

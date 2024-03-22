@@ -1,243 +1,121 @@
-// // Définissez ici les variables ou les mixins si nécessaire
-
-// .calendar-container {
-//   height: auto;
-//   width: 50%;
-//   background-color: white;
-//   border-radius: 10px;
-//   box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4);
-//   padding: 20px 20px;
-//   justify-content: center;
-// }
-
-// .calendar-week {
-//   display: flex;
-//   list-style: none;
-//   align-items: center;
-//   padding-inline-start: 0px;
-//   color: #ec7625;
-// }
-
-// .current-day {
-//   background-color: lightblue; // Par exemple, utilisez la couleur de votre choix
-//   color: white; // Couleur du texte pour la date actuelle
-// }
-
-// .calendar-week-day {
-//   max-width: 57.1px;
-//   width: 100%;
-//   text-align: center;
-//   color: #525659;
-// }
-
-// .calendar-days {
-//   margin-top: 30px;
-//   list-style: none;
-//   display: grid;
-//   grid-template-columns: repeat(
-//     7,
-//     1fr
-//   ); // 7 colonnes pour les jours de la semaine
-//   gap: 20px;
-//   padding-inline-start: 0px;
-// }
-
-// .calendar-day {
-//   text-align: center;
-//   color: #525659;
-//   padding: 10px;
-//   cursor: pointer;
-// }
-// .calendar-day.has-event::after {
-//   content: "";
-//   display: block;
-//   width: 6px;
-//   height: 6px;
-//   background-color: orange;
-//   border-radius: 50%;
-//   position: absolute;
-//   bottom: -3px; /* Ajustez la position verticale du point selon vos préférences */
-//   left: 50%; /* Ajustez la position horizontale du point selon vos préférences */
-//   transform: translateX(-50%);
-// }
-// .calendar-month-arrow-container {
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-// }
-
-// .calendar-month-year-container {
-//   padding: 10px;
-//   color: #525659;
-//   cursor: pointer;
-// }
-
-// .calendar-arrow-container {
-//   margin-top: -5px;
-// }
-
-// .calendar-left-arrow,
-// .calendar-right-arrow {
-//   height: 30px;
-//   width: 30px;
-//   border: none;
-//   border-radius: 50%;
-//   cursor: pointer;
-//   color: #525659;
-// }
-
-// .calendar-today-button {
-//   margin-top: -10px;
-//   border-radius: 10px;
-//   border: none;
-//   border-radius: 10px;
-//   cursor: pointer;
-//   color: #525659;
-//   padding: 5px 10px;
-// }
-
-// .calendar-today-button {
-//   height: 27px;
-//   margin-right: 10px;
-//   background-color: #ec7625;
-//   color: white;
-// }
-
-// .calendar-months,
-// .calendar-years {
-//   flex: 1;
-//   border-radius: 10px;
-//   height: 30px;
-//   border: none;
-//   cursor: pointer;
-//   outline: none;
-//   color: #525659;
-//   font-size: 15px;
-// }
-
-// .calendar-day-active {
-//   background-color: #ec7625;
-//   color: white;
-//   border-radius: 50%;
-// }
-/* Définissez ici les variables ou les mixins si nécessaire */
-
 .calendar-container {
-  height: auto;
-  width: 50%;
-  background-color: white;
+  width: 90%; /* Utilisation de pourcentage pour la largeur */
+  max-width: 800px; /* Ajout d'une largeur maximale pour éviter que le calendrier ne devienne trop large sur les grands écrans */
+  margin: 0 auto; /* Centrage horizontale */
+  background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4);
-  padding: 20px;
-  justify-content: center;
-}
-
-.calendar-week {
-  display: flex;
-  list-style: none;
-  align-items: center;
-  padding-inline-start: 0;
-  color: #ec7625;
-}
-
-.current-day {
-  background-color: lightblue; /* Utilisez la couleur de votre choix */
-  color: white; /* Couleur du texte pour la date actuelle */
-}
-
-.calendar-week-day {
-  max-width: 57.1px;
-  width: 100%;
-  text-align: center;
-  color: #525659;
-}
-
-.calendar-days {
-  margin-top: 30px;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(
-    7,
-    1fr
-  ); /* 7 colonnes pour les jours de la semaine */
-  gap: 20px;
-  padding-inline-start: 0;
-}
-
-.calendar-day {
-  text-align: center;
-  color: #525659;
-  padding: 10px;
-  cursor: pointer;
-  position: relative; /* Ajout de position relative pour les éléments enfants positionnés absolument */
-}
-
-.calendar-day.has-event::after {
-  content: "";
-  display: block;
-  width: 6px;
-  height: 6px;
-  background-color: orange;
-  border-radius: 50%;
-  position: absolute;
-  bottom: -3px; /* Ajustez la position verticale du point selon vos préférences */
-  left: 50%; /* Ajustez la position horizontale du point selon vos préférences */
-  transform: translateX(-50%);
+  padding: 5px;
 }
 
 .calendar-month-arrow-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap; /* Permettre le retour à la ligne des éléments sur les petits écrans */
 }
 
-.calendar-month-year-container {
-  padding: 10px;
-  color: #525659;
-  cursor: pointer;
-}
-
+.calendar-month-year-container,
 .calendar-arrow-container {
-  margin-top: -5px;
+  flex: 1;
+  margin: 10px; /* Espacement entre les éléments */
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
 }
-
-.calendar-left-arrow,
-.calendar-right-arrow {
-  height: 30px;
-  width: 30px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  color: #525659;
-}
-
-.calendar-today-button {
-  margin-top: -10px;
-  border-radius: 10px;
-  cursor: pointer;
-  color: white;
-  padding: 5px 10px;
-  background-color: #ec7625;
-}
-
-.calendar-today-button:hover {
-  background-color: #ff9933;
-}
-
 .calendar-months,
 .calendar-years {
-  flex: 1;
   border-radius: 10px;
-  height: 30px;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  color: #525659;
-  font-size: 15px;
+  background-color: gainsboro;
+  margin: 10px;
 }
 
-.calendar-day-active {
-  background-color: #ec7625;
-  color: white;
+.calendarLeft-arrow {
+  width: 50px;
+  height: 50px;
+}
+.calendar-right-arrow {
+  height: 5vw; /* Utilisation des unités de vue minimale pour la taille */
+  width: 5vw;
+  font-size: 3vw; /* Taille du texte proportionnelle */
   border-radius: 50%;
+  margin: 10px;
+}
+.calendar-today-button {
+  height: 35px;
+  width: 135px;
+  font-size: 20px; /* Taille du texte proportionnelle */
+  background-color: #ec7625;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.calendar-week {
+  display: flex;
+  list-style: none;
+  padding-inline-start: 0;
+  color: #ec7625;
+  justify-content: space-around;
+  flex-wrap: wrap; /* Permettre le retour à la ligne sur les petits écrans */
+}
+
+.calendar-week li {
+  max-width: 14%; /* Définir une largeur maximale pour les jours de la semaine */
+  text-align: center;
+}
+
+.calendar-days {
+  margin-top: 2px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(
+    7,
+    1fr
+  ); /* 7 colonnes pour les jours de la semaine */
+  gap: 5px;
+  padding-inline-start: 0;
+}
+
+.calendar-day {
+  text-align: center;
+  color: #525659;
+  padding: 3vw; /* Utilisation de unités de vue minimale pour le rembourrage */
+  cursor: pointer;
+  position: relative;
+
+  // // Media Query pour ajuster la grille sur les écrans de petite taille
+  // @media screen and (max-width: 768px) {
+  //   padding: 3vw; /* Réduire le nombre de colonnes à 5 pour les petits écrans */
+  // }
+
+  // // Media Query pour ajuster la grille sur les écrans de très petite taille
+  // @media screen and (max-width: 480px) {
+  //   padding: 3vw; /* Réduire le nombre de colonnes à 3 pour les très petits écrans */
+  // }
+}
+
+.calendar-day.has-event::before {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: orange;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Ajouter des Media Queries pour des ajustements spécifiques */
+@media screen and (max-width: 600px) {
+  .calendar-container {
+    width: 100%; /* Utilisation de la largeur de 100% sur les petits écrans */
+    max-width: none; /* Supprimer la largeur maximale pour les petits écrans */
+  }
+
+  .calendar-month-year-container,
+  .calendar-arrow-container {
+    margin: 5px; /* Réduire l'espacement entre les éléments sur les petits écrans */
+  }
 }
