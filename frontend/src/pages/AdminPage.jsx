@@ -17,6 +17,10 @@ function AdminPage() {
       <NavBar className="NavBarHome" />
       <div className="globalDivAdminPage">
         <h1 className="adminPageH1">Page d'administration</h1>
+        <p>
+          Ne pas oublier de hasher les mots de passe en cas de modification et
+          d'utiliser surle sit : https://argon2.online/
+        </p>
         <div className="admin-buttons">
           <button onClick={() => handleTabClick("joueurs")}>Joueurs</button>
           <button onClick={() => handleTabClick("parties")}>Parties</button>

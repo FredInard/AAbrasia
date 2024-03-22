@@ -79,19 +79,19 @@
 .calendar-day {
   text-align: center;
   color: #525659;
-  padding: 3vw; /* Utilisation de unités de vue minimale pour le rembourrage */
+  padding: 1vw; /* Utilisation de unités de vue minimale pour le rembourrage */
   cursor: pointer;
   position: relative;
 
-  // // Media Query pour ajuster la grille sur les écrans de petite taille
-  // @media screen and (max-width: 768px) {
-  //   padding: 3vw; /* Réduire le nombre de colonnes à 5 pour les petits écrans */
-  // }
+  // Media Query pour ajuster la grille sur les écrans de petite taille
+  @media screen and (max-width: 768px) {
+    padding: 2vw; /* Réduire le nombre de colonnes à 5 pour les petits écrans */
+  }
 
-  // // Media Query pour ajuster la grille sur les écrans de très petite taille
-  // @media screen and (max-width: 480px) {
-  //   padding: 3vw; /* Réduire le nombre de colonnes à 3 pour les très petits écrans */
-  // }
+  // Media Query pour ajuster la grille sur les écrans de très petite taille
+  @media screen and (max-width: 480px) {
+    padding: 2.5vw; /* Réduire le nombre de colonnes à 3 pour les très petits écrans */
+  }
 }
 
 .calendar-day.has-event::before {

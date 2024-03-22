@@ -19,6 +19,8 @@
     display: flex;
     justify-content: center;
     gap: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap;
 
     button {
       background-color: #007bff;
