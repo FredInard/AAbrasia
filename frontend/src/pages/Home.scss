@@ -294,11 +294,12 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1px;
+  gap: 10px;
   padding-top: 10px;
+  margin-top: 20px;
   width: 100%;
   max-width: 1000px;
-  min-width: 380px;
+  // min-width: 380px;
 
   .globalContainerCard {
     // background-color: rgba(20, 184, 197, 1);
@@ -320,22 +321,25 @@
     width: 80%;
 
     .titleContainerCard {
-      font-size: clamp(1rem, 0.3043rem + 3.4783vw, 3rem)
+      font-size: clamp(1rem, 0.3043rem + 3.4783vw, 2rem);
+      align-items: center;
     }
 
     .miniBoxInfo {
       display: flex;
-      font-size: 16px;
-      flex-direction: row;
-      flex-wrap: nowrap;
+      // font-size: 16px;
+      // flex-direction: row;
+      // flex-wrap: nowrap;
       align-items: center;
       width: 100%;
       justify-content: space-between;
+      // gap: 25px;
 
       .allInfoItem {
         display: flex;
         flex-direction: column;
         font-size: clamp(1rem, 0.3043rem + 3.4783vw, 1.5rem);
+        align-items: center;
 
         .infoItem {
           text-align: left;
