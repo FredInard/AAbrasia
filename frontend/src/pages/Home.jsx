@@ -46,6 +46,7 @@ export default function Home() {
   const handlePostClick = (allPostData) => {
     setIsPostCardsOpen(true)
     setPostData(allPostData)
+    // console.info("allPostDataHome", allPostData)
   }
 
   const handleDateSelect = (date) => {

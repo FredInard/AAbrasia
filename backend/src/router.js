@@ -28,6 +28,7 @@ router.get(
   "/utilisateurs/displayPlayers/:id",
   UtilisateursControllers.displayPlayer
 )
+router.get("/utilisateurs/displayMJ/:id", UtilisateursControllers.displayMJ)
 router.get("/utilisateurs/:id", UtilisateursControllers.read)
 router.get("/utilisateurs/profil/:id", UtilisateursControllers.read2)
 
