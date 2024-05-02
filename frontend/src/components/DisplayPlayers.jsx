@@ -151,10 +151,10 @@ export default function DisplayPlayers({ postData }) {
     }
   }
 
-  // console.info("postData:", postData)
+  console.info("postData:", postData)
   // console.info("postData.MaitreDuJeu:", postData.MaitreDuJeu)
   // console.info("allPosts:", allPosts)
-  console.info("MJData:", MJData)
+  // console.info("MJData:", MJData)
   // console.info("idUserNumber:", idUserNumber)
   // console.info("postData.PartieId:", postData.PartieId)
   // console.info("NombreJoueur:", postData.NombreJoueur)
@@ -207,18 +207,33 @@ export default function DisplayPlayers({ postData }) {
               Il reste {postData.NombreJoueur - xJoueurs.nbParticipants}{" "}
               place(s), inscris-toi !
             </p>
-            {!idUserNumber && (
-              <Link className=" " to="/Inscription">
-                <button className="buttonJoinAdventure">Inscris-toi</button>
-              </Link>
-            )}
-            {idUserNumber && idUserNumber !== postData.MaitreDuJeu && (
-              <div className="buttonJoinAdventure" onClick={handleSuscribeGame}>
-                <SubmitButton />
-              </div>
-            )}
-            {idUserNumber === postData.MaitreDuJeu && (
-              <p>Vous ne pouvez pas vous inscrire à votre propre partie.</p>
+            {!idUserNumber ? (
+              new Date(postData.Date) > new Date() ? (
+                <Link className=" " to="/Inscription">
+                  <button className="buttonJoinAdventure">Inscris-toi</button>
+                </Link>
+              ) : (
+                <p>Désolé, l'événement est passé.</p>
+              )
+            ) : (
+              <>
+                {new Date(postData.Date) > new Date() &&
+                  idUserNumber !== postData.MaitreDuJeu && (
+                    <div
+                      className="buttonJoinAdventure"
+                      onClick={handleSuscribeGame}
+                    >
+                      <SubmitButton />
+                    </div>
+                  )}
+                {idUserNumber === postData.MaitreDuJeu && (
+                  <p>Vous ne pouvez pas vous inscrire à votre propre partie.</p>
+                )}
+                {new Date(postData.Date) <= new Date() &&
+                  idUserNumber !== postData.MaitreDuJeu && (
+                    <p>Désolé, l'événement est passé.</p>
+                  )}
+              </>
             )}
           </>
         ) : (
@@ -228,6 +243,7 @@ export default function DisplayPlayers({ postData }) {
           </p>
         )}
       </div>
+
       <PlayerInfoModal
         player={selectedPlayer}
         isOpen={modalPlayerIsOpen}
