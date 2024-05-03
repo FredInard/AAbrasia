@@ -243,6 +243,8 @@ function AuthForm() {
         console.error("Erreur lors de la connexion :", error)
         // Gérer la tentative de connexion infructueuse
         handleLoginAttempt()
+        // Afficher un toast avec un message d'erreur
+        toast.error("Pseudo ou mot de passe incorrect.")
       })
   }
 
