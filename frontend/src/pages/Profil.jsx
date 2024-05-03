@@ -253,7 +253,7 @@ export default function Profil() {
         console.error("Problème lors du chargement des parties meneurs", err)
       })
   }, [showModalModifPartie, handleSupresPartieClick, ModificationPartieModal])
-
+  // console.info("partie", parties)
   // console.info("meneurParties", meneurParties)
   return (
     <>
