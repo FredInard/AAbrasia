@@ -66,6 +66,12 @@ export default function CreateGame() {
       <div className="createGameGlobal">
         <div className="boxPictureOrc">
           {/* <img src={orc} alt="portrait d'un orc" className="orcPicture" /> */}
+          <h1> Créer ton aventure : </h1>
+          <p>
+            Oyé Oyé talentueux maitre du jeux, cette espace t'es dédier afin que
+            tu puisse créer tes parties. Elles serons visible de tous alors
+            soigne ton écriture et recrute des joueurs pour une aventure épique.
+          </p>
         </div>
         <form
           className="createGameForm"

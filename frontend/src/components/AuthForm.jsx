@@ -5,6 +5,7 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import NavBar from "../components/NavBar"
 
 const MAX_LOGIN_ATTEMPTS = 5 // Nombre maximum de tentatives autorisées
 const LOCKOUT_DURATION = 300000 // Durée de verrouillage en millisecondes (par exemple, 5 minutes)
@@ -242,11 +243,14 @@ function AuthForm() {
         console.error("Erreur lors de la connexion :", error)
         // Gérer la tentative de connexion infructueuse
         handleLoginAttempt()
+        // Afficher un toast avec un message d'erreur
+        toast.error("Pseudo ou mot de passe incorrect.")
       })
   }
 
   return (
     <>
+      <NavBar className="NavBarHome" />
       <div
         className={`container ${isSignIn ? "sign-in-mode" : "sign-up-mode"}`}
       >

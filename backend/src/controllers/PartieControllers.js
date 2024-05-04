@@ -139,10 +139,25 @@ const affichageInfoPartie = (req, res) => {
     })
 }
 
+const affichageInfoPartieDate = (req, res) => {
+  const date = req.params.date
+  console.info("Date reçue dans l'endpoint affichageInfoPartieDate:", date)
+  models.partie
+    .getAffichageInfoPartieDate(date)
+    .then(([rows]) => {
+      res.send(rows)
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
 const partieByUtilisateurId = (req, res) => {
   models.partie
     .findpartieByUtilisateurId(req.params.id)
     .then(([result]) => {
+      console.info("result succes findpartieByUtilisateurId", result)
       if (result[0] == null) {
         res.sendStatus(404)
       } else {
@@ -198,4 +213,5 @@ module.exports = {
   countPartieById,
   partieMeneurByUtilisateurId,
   destroyeurDePartie,
+  affichageInfoPartieDate,
 }

@@ -130,6 +130,18 @@ const displayPlayer = (req, res) => {
       // console.info("l'axios coté back pour displayPlayer n'a pas fonctionné")
     })
 }
+const displayMJ = (req, res) => {
+  models.utilisateurs
+    .getDisplayMJ(req.params.id)
+    .then(([rows]) => {
+      res.send(rows)
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+      // console.info("l'axios coté back pour displayMJ n'a pas fonctionné")
+    })
+}
 
 const verifyUtilisateur = (req, res, next) => {
   models.utilisateurs
@@ -248,6 +260,7 @@ module.exports = {
   edit,
   destroy,
   displayPlayer,
+  displayMJ,
   verifyUtilisateur,
   updateProfilPicture,
   readPartieByUtilisateurId,

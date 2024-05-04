@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
+import "moment/locale/fr"
+import "react-big-calendar/lib/css/react-big-calendar.css"
 
 // import Citadel from "../assets/pics/CitadelOfSisteron.svg"
 // import questioningFemale from "../assets/pics/femaleWarrior.svg"
@@ -25,33 +27,53 @@ import "./Home.scss"
 import NavBar from "../components/NavBar"
 import DisplayPlayers from "../components/DisplayPlayers"
 import Modal from "../components/Modal"
+import Calendar from "../components/Calendar"
 
 export default function Home() {
   const [parties, setParties] = useState([])
+  // console.info("parties de Home", parties)
+  const [indexVisible, setIndexVisible] = useState(0)
+  const images = [King, Queen, Merchan, Elf1, Elf2, wizard2]
   const [postData, setPostData] = useState(null)
   const [isPostCardsOpen, setIsPostCardsOpen] = useState(false)
+  const [selectedDate, setSelectedDate] = useState(null) // ajouter [selectedDate, setSelectedDate]
+  // console.info("selectedDate", selectedDate)
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/affichage`, { headers })
-      .then((res) => setParties(res.data))
-      .catch((err) => {
-        console.error("Problème lors du chargement des parties", err)
-      })
-  }, [])
-
   const handlePostClick = (allPostData) => {
     setIsPostCardsOpen(true)
     setPostData(allPostData)
+    // console.info("allPostDataHome", allPostData)
   }
 
-  const images = [King, Queen, Merchan, Elf1, Elf2, wizard2]
+  const handleDateSelect = (date) => {
+    // Mettre à jour selectedDate avec la date sélectionnée
+    const formattedDate = date.toISOString().split("T")[0]
+    setSelectedDate(formattedDate)
+  }
 
-  const [indexVisible, setIndexVisible] = useState(0)
+  useEffect(() => {
+    if (selectedDate) {
+      // console.info("selectedDate de l'axios", selectedDate)  Affiche la valeur de selectedDate avant la requête axios
+      axios
+        .get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/partie/affichage/${selectedDate}`,
+          { headers }
+        )
+        .then((res) => {
+          // console.info("Réponse de l'API :", res.data) // Affiche la réponse de l'API
+          setParties(res.data) // Met à jour les parties avec les données de la réponse de l'API
+        })
+        .catch((err) => {
+          console.error("Problème lors du chargement des parties", err)
+        })
+    }
+  }, [selectedDate])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -155,41 +177,58 @@ export default function Home() {
           <h2>Agenda des parties</h2>
         </div>
 
+        <div className="agenda">
+          <Calendar onDateSelect={handleDateSelect} />
+        </div>
+
         {!isPostCardsOpen && (
           <div className="containeurCards">
-            {parties.map((partie) => (
-              <div
-                key={partie.id}
-                className="globalContainerCard"
-                onClick={() => handlePostClick(partie)}
-              >
-                <div className="titleContainerCard">{partie.Titre}</div>
-                <div className="miniBoxInfo">
-                  <div className="allInfoItem">
-                    <div className="infoItem">Date : {partie.Date}</div>
-                    <div className="infoItem">Heure : {partie.Heure}</div>
-                    <div className="infoItem">Lieu : {partie.Lieu}</div>
-                    <div className="infoItem">
-                      Maitre du jeu : {partie.PseudoMaitreDuJeu}
+            {parties.length === 0 ? (
+              <div className="no-events-message">
+                Désolé, il n'y a pas encore de partie programmée.
+              </div>
+            ) : (
+              parties.map((partie) => (
+                <div
+                  key={partie.id}
+                  className="globalContainerCard"
+                  onClick={() => handlePostClick(partie)}
+                >
+                  <div className="miniBoxInfo">
+                    <div className="allInfoItem">
+                      {/* <div className="infoItem">Date : {partie.Date}</div>
+                      <div className="infoItem">Heure : {partie.Heure}</div>
+                      <div className="infoItem">Lieu : {partie.Lieu}</div> */}
+                      <div className="allInfoItem">
+                        <img
+                          src={`${import.meta.env.VITE_BACKEND_URL}/${
+                            partie.PhotoProfilMaitreDuJeu
+                          }`}
+                          alt="Photo du Maître du Jeu"
+                          className="maitre-du-jeu-photo"
+                        />
+                      </div>
+                      <div className="infoItem">{partie.PseudoMaitreDuJeu}</div>
+                      {/* <div className="infoItem">Type : {partie.TypeDeJeux}</div> */}
+                      {/* <button onClick={() => handlePostClick(partie)}>
+                        Voir les détails
+                          </button> */}
                     </div>
-                    <div className="infoItem">Type : {partie.TypeDeJeux}</div>
-                    {/* <button onClick={() => handlePostClick(partie)}>
-                      Voir les détails
-                    </button> */}
-                  </div>
-                  <div className="maxPlayerInfoItem">
-                    <div className="logoPlayerAndMaxPlayer">
-                      <img
-                        className="logoPlayer"
-                        src={LogoPlayers}
-                        alt="logo d'un joueur"
-                      />
-                      X{partie.NombreJoueur}
+                    <div className="titleContainerCard">{partie.Titre}</div>
+                    <div className="maxPlayerInfoItem">
+                      <div className="logoPlayerAndMaxPlayer">
+                        <img
+                          className="logoPlayer"
+                          src={LogoPlayers}
+                          alt="logo d'un joueur"
+                        />
+                        X{partie.NombreJoueur}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         )}
       </div>

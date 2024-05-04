@@ -28,11 +28,13 @@ router.get(
   "/utilisateurs/displayPlayers/:id",
   UtilisateursControllers.displayPlayer
 )
+router.get("/utilisateurs/displayMJ/:id", UtilisateursControllers.displayMJ)
 router.get("/utilisateurs/:id", UtilisateursControllers.read)
 router.get("/utilisateurs/profil/:id", UtilisateursControllers.read2)
 
 router.get("/partie", PartieControllers.browse)
 router.get("/partie/affichage", PartieControllers.affichageInfoPartie)
+router.get("/partie/affichage/:date", PartieControllers.affichageInfoPartieDate)
 router.get("/partie/:id", PartieControllers.read)
 router.get("/partie/count/:id", PartieControllers.countPartieById)
 

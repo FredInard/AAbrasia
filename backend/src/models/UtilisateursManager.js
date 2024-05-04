@@ -72,6 +72,17 @@ class UtilisateursManager extends AbstractManager {
     )
   }
 
+  getDisplayMJ(id) {
+    return this.database.query(
+      `
+      SELECT utilisateurs.PhotoProfil, utilisateurs.Nom, utilisateurs.Prenom, utilisateurs.Pseudo, utilisateurs.id, utilisateurs.Mail, utilisateurs.PseudoDiscord, utilisateurs.Telephone, utilisateurs.Description, utilisateurs.VilleResidence
+      FROM ${this.table}
+      JOIN partie ON utilisateurs.id = partie.MaitreDujeu
+      WHERE partie.id = ?;`,
+      [id]
+    )
+  }
+
   getUserByPseudoWithPassword(Pseudo) {
     return this.database.query(
       `select id, Pseudo, PhotoProfil, Admin, hashedPassword from ${this.table} where Pseudo = ?`,
