@@ -14,8 +14,8 @@ export default function AffichageParties() {
   const [showModalModifPartie, setShowModalModifPartie] = useState(false)
   const [showModalExitPartie, setShowModalExitPartie] = useState(false)
 
-  const [parties, setParties] = useState()
-  const [meneurParties, setMeneurParties] = useState()
+  const [parties, setParties] = useState([])
+  const [meneurParties, setMeneurParties] = useState([])
   const [selectedPartie, setSelectedPartie] = useState(null)
   const idUser = Cookies.get("idUtilisateur")
   const idUserNumb = parseInt(idUser)
@@ -23,6 +23,11 @@ export default function AffichageParties() {
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
+  }
+
+  // Fonction pour filtrer les parties selon les critères donnés
+  const filterParties = (parties) => {
+    return parties.filter((partie) => new Date(partie.Date) > new Date())
   }
 
   const handleEditClick = (partie) => {
@@ -65,7 +70,7 @@ export default function AffichageParties() {
         headers,
       })
       .then((res) => {
-        setParties(res.data)
+        setParties(filterParties(res.data))
       })
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)
@@ -78,7 +83,7 @@ export default function AffichageParties() {
         headers,
       })
       .then((res) => {
-        setMeneurParties(res.data)
+        setMeneurParties(filterParties(res.data))
       })
       .catch((err) => {
         console.error("Problème lors du chargement des parties meneurs", err)
@@ -93,7 +98,47 @@ export default function AffichageParties() {
           <div className="boxListeGame">
             <h1>Tableau de bord de tes parties :</h1>
             <div className="boxResumeParties fade-in-right">
-              {parties && (
+              <div className="buttonContainer">
+                <button
+                  onClick={() => setParties(filterParties)}
+                  className="filterButton"
+                >
+                  Affichage partie joueur
+                </button>
+                <button
+                  onClick={() => setMeneurParties(filterParties)}
+                  className="filterButton"
+                >
+                  Affichage partie MJ
+                </button>
+                <button
+                  onClick={() => {
+                    axios
+                      .get(
+                        `${
+                          import.meta.env.VITE_BACKEND_URL
+                        }/partie/passes/${idUserNumb}`,
+                        {
+                          headers,
+                        }
+                      )
+                      .then((res) => {
+                        setParties(res.data)
+                        setMeneurParties([])
+                      })
+                      .catch((err) => {
+                        console.error(
+                          "Problème lors du chargement des parties passées",
+                          err
+                        )
+                      })
+                  }}
+                  className="filterButton"
+                >
+                  Affichage partie passées
+                </button>
+              </div>
+              {parties.length > 0 && (
                 <div className="boxCardsResumPartie">
                   <h2>Mes parties :</h2>
                   {parties.map((partie) => (
@@ -117,7 +162,7 @@ export default function AffichageParties() {
                 </div>
               )}
 
-              {meneurParties && (
+              {meneurParties.length > 0 && (
                 <div className="boxCardsResumPartieMeneur">
                   <h2>Mes parties en tant que meneur :</h2>
                   {meneurParties.map((meneurPartie) => (
@@ -149,7 +194,6 @@ export default function AffichageParties() {
             </div>
           </div>
         </div>
-        )
         {selectedPartie && (
           <ModificationPartieModal
             isOpen={showModalModifPartie}
