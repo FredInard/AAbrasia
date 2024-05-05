@@ -3,8 +3,8 @@ import Cookies from "js-cookie"
 import "react-toastify/dist/ReactToastify.css"
 import Toggle from "../components/Toggle.jsx"
 import NavBar from "../components/NavBar"
-import ModificationProfil from "../components/ModificationProfil copy.jsx"
-import AffichageParties from "../components/AffichageParties.jsx"
+import ModificationProfil from "../components/DataPourProfil/ModificationProfil copy.jsx"
+import AffichageParties from "../components/DataPartiesPourProfil/AffichageParties.jsx"
 import "./Profil.scss"
 
 export default function Profil() {

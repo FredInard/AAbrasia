@@ -107,17 +107,22 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
     return this.database.query(
       `
       SELECT 
-        id, 
-        Titre,
-        DATE_FORMAT(Date, '%Y-%m-%d') AS Date,
-        TIME_FORMAT(Heure, '%H:%i') AS Heure,
-        Lieu,
-        MaitreDuJeu,
-        Description,
-        NombreJoueur,
-        TypeDeJeux
-      FROM ${this.table}
-      WHERE MaitreDuJeu = ?;`,
+    p.id, 
+    p.Titre,
+    DATE_FORMAT(p.Date, '%Y-%m-%d') AS Date,
+    TIME_FORMAT(p.Heure, '%H:%i') AS Heure,
+    p.Lieu,
+    p.MaitreDuJeu,
+    p.Description,
+    p.NombreJoueur,
+    p.TypeDeJeux,
+    u.Pseudo AS PseudoParticipant,
+    u.PhotoProfil AS PhotoProfilParticipant
+FROM partie AS p
+INNER JOIN participation AS par ON p.id = par.Partie_Id
+INNER JOIN Utilisateurs AS u ON par.Utilisateurs_Id = u.id
+WHERE p.MaitreDuJeu = ?;
+`,
       [id]
     )
   }

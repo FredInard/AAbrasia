@@ -4,7 +4,7 @@ import Cookies from "js-cookie"
 import { toast, ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-import ChangePassword from "../components/ChangePassword.jsx"
+import ChangePassword from "./ChangePassword.jsx"
 
 import "./ModificationProfil.scss"
 

@@ -202,6 +202,11 @@ function NavBar() {
                 <br />
                 <p>Profil</p>
               </RouterLink>
+              {isAdmin && (
+                <RouterLink className="menuItem menuItem-2" to="/admin">
+                  AdminPage
+                </RouterLink>
+              )}
               <button className="buttonNavBar nav-item" onClick={handleLogout}>
                 Déconnexion
               </button>
