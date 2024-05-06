@@ -107,21 +107,23 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
     return this.database.query(
       `
       SELECT 
-    p.id, 
-    p.Titre,
-    DATE_FORMAT(p.Date, '%Y-%m-%d') AS Date,
-    TIME_FORMAT(p.Heure, '%H:%i') AS Heure,
-    p.Lieu,
-    p.MaitreDuJeu,
-    p.Description,
-    p.NombreJoueur,
-    p.TypeDeJeux,
-    u.Pseudo AS PseudoParticipant,
-    u.PhotoProfil AS PhotoProfilParticipant
-FROM partie AS p
-INNER JOIN participation AS par ON p.id = par.Partie_Id
-INNER JOIN Utilisateurs AS u ON par.Utilisateurs_Id = u.id
-WHERE p.MaitreDuJeu = ?;
+      p.id, 
+      p.Titre,
+      DATE_FORMAT(p.Date, '%Y-%m-%d') AS Date,
+      TIME_FORMAT(p.Heure, '%H:%i') AS Heure,
+      p.Lieu,
+      p.MaitreDuJeu,
+      p.Description,
+      p.NombreJoueur,
+      p.TypeDeJeux,
+      GROUP_CONCAT(u.Pseudo) AS PseudosParticipants,
+      GROUP_CONCAT(u.PhotoProfil) AS PhotosProfilsParticipants
+  FROM partie AS p
+  INNER JOIN participation AS par ON p.id = par.Partie_Id
+  INNER JOIN Utilisateurs AS u ON par.Utilisateurs_Id = u.id
+  WHERE p.MaitreDuJeu = ?
+  GROUP BY p.id, p.Titre, p.Date, p.Heure, p.Lieu, p.MaitreDuJeu, p.Description, p.NombreJoueur, p.TypeDeJeux;
+  
 `,
       [id]
     )

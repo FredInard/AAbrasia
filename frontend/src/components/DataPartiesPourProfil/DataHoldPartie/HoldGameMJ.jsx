@@ -11,7 +11,7 @@ export default function HoldGameMJ() {
 
   const idUser = Cookies.get("idUtilisateur")
   const idUserNumb = parseInt(idUser)
-
+  const [allParticipants, setAllParticipants] = useState({})
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
@@ -28,7 +28,37 @@ export default function HoldGameMJ() {
         headers,
       })
       .then((res) => {
-        setMeneurParties(filterParties(res.data))
+        const parties = filterParties(res.data)
+        setMeneurParties(parties)
+
+        // Récupérer les participants pour chaque partie
+        const participantsPromises = parties.map((partie) => {
+          return axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/displayPlayers/${
+              partie.id
+            }`,
+            { headers }
+          )
+        })
+
+        Promise.all(participantsPromises)
+          .then((responses) => {
+            const participantsData = responses.map((response, index) => ({
+              partieId: parties[index].id,
+              participants: response.data,
+            }))
+            const participantsMap = {}
+            participantsData.forEach(({ partieId, participants }) => {
+              participantsMap[partieId] = participants
+            })
+            setAllParticipants(participantsMap)
+          })
+          .catch((error) => {
+            console.error(
+              "Une erreur s'est produite lors de la récupération des participants.",
+              error
+            )
+          })
       })
       .catch((err) => {
         console.error("Problème lors du chargement des parties meneurs", err)
@@ -49,6 +79,33 @@ export default function HoldGameMJ() {
                 <p>Lieu : {meneurPartie.Lieu}</p>
                 <p>Nombre de Joueur : {meneurPartie.NombreJoueur}</p>
                 <p>Description : {meneurPartie.Description}</p>
+                <p>Liste des participants:</p>
+                <div className="mapParticipants">
+                  {allParticipants[meneurPartie.id] &&
+                  allParticipants[meneurPartie.id].length > 0 ? (
+                    allParticipants[meneurPartie.id].map((participant) => (
+                      <div
+                        className="mapPhotoProfileParticipant"
+                        key={participant.id}
+                      >
+                        <img
+                          className="photoProfileParticipant"
+                          src={`${import.meta.env.VITE_BACKEND_URL}/${
+                            participant.PhotoProfil
+                          }`}
+                          alt="photo de profil de l'utilisateur"
+                        />
+                        <div className="mapPseudoParticipant">
+                          <div className="pseudoParticipant">
+                            {participant.Pseudo}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>Chargement en cours...</p>
+                  )}
+                </div>
               </div>
             </div>
           ))}

@@ -12,12 +12,11 @@ import "./MeneurParties.scss"
 export default function MeneurParties() {
   const [showModalModifPartie, setShowModalModifPartie] = useState(false)
   const [showModalExitPartie, setShowModalExitPartie] = useState(false)
-
   const [meneurParties, setMeneurParties] = useState([])
   const [selectedPartie, setSelectedPartie] = useState(null)
   const idUser = Cookies.get("idUtilisateur")
   const idUserNumb = parseInt(idUser)
-  const [allPosts, setAllPosts] = useState([])
+  const [allParticipants, setAllParticipants] = useState({})
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
@@ -63,38 +62,42 @@ export default function MeneurParties() {
         headers,
       })
       .then((res) => {
-        setMeneurParties(filterParties(res.data))
+        const parties = filterParties(res.data)
+        setMeneurParties(parties)
+
+        // Récupérer les participants pour chaque partie
+        const participantsPromises = parties.map((partie) => {
+          return axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/displayPlayers/${
+              partie.id
+            }`,
+            { headers }
+          )
+        })
+
+        Promise.all(participantsPromises)
+          .then((responses) => {
+            const participantsData = responses.map((response, index) => ({
+              partieId: parties[index].id,
+              participants: response.data,
+            }))
+            const participantsMap = {}
+            participantsData.forEach(({ partieId, participants }) => {
+              participantsMap[partieId] = participants
+            })
+            setAllParticipants(participantsMap)
+          })
+          .catch((error) => {
+            console.error(
+              "Une erreur s'est produite lors de la récupération des participants.",
+              error
+            )
+          })
       })
       .catch((err) => {
         console.error("Problème lors du chargement des parties meneurs", err)
       })
   }, [showModalModifPartie, handleSupresPartieClick])
-
-  useEffect(() => {
-    // Boucle sur les parties pour récupérer les participants pour chaque partie
-    meneurParties.forEach((partie) => {
-      axios
-        .get(
-          `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/displayPlayers/${
-            partie.id
-          }`,
-          { headers }
-        )
-        .then((res) => {
-          // Mettre à jour les participants pour la partie correspondante
-          setAllPosts((prevState) => ({
-            ...prevState,
-            [partie.id]: res.data,
-          }))
-        })
-        .catch((error) => {
-          console.error(
-            "Une erreur s'est produite lors de la récupération des participants.",
-            error
-          )
-        })
-    })
-  }, [meneurParties])
 
   return (
     <>
@@ -112,32 +115,23 @@ export default function MeneurParties() {
                 <p>Description : {meneurPartie.Description}</p>
                 <p>Liste des participants:</p>
                 <div className="mapParticipants">
-                  {allPosts[meneurPartie.id] &&
-                  allPosts[meneurPartie.id].length > 0 ? (
-                    Array.from(
-                      allPosts[meneurPartie.id]
-                        .reduce((uniqueParticipants, post) => {
-                          if (!uniqueParticipants.has(post.id)) {
-                            uniqueParticipants.set(post.id, post)
-                          }
-                          return uniqueParticipants
-                        }, new Map())
-                        .values()
-                    ).map((uniquePost) => (
+                  {allParticipants[meneurPartie.id] &&
+                  allParticipants[meneurPartie.id].length > 0 ? (
+                    allParticipants[meneurPartie.id].map((participant) => (
                       <div
                         className="mapPhotoProfileParticipant"
-                        key={uniquePost.id}
+                        key={participant.id}
                       >
                         <img
                           className="photoProfileParticipant"
                           src={`${import.meta.env.VITE_BACKEND_URL}/${
-                            uniquePost.PhotoProfil
+                            participant.PhotoProfil
                           }`}
                           alt="photo de profil de l'utilisateur"
                         />
                         <div className="mapPseudoParticipant">
                           <div className="pseudoParticipant">
-                            {uniquePost.Pseudo}
+                            {participant.Pseudo}
                           </div>
                         </div>
                       </div>

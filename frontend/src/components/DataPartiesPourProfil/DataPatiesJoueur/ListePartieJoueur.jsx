@@ -18,7 +18,7 @@ export default function ListePartieJoueur() {
   const [selectedPartie, setSelectedPartie] = useState(null)
   const idUser = Cookies.get("idUtilisateur")
   const idUserNumb = parseInt(idUser)
-
+  console.info("parties", parties)
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
