@@ -18,7 +18,7 @@ export default function ListePartieJoueur() {
   const [selectedPartie, setSelectedPartie] = useState(null)
   const idUser = Cookies.get("idUtilisateur")
   const idUserNumb = parseInt(idUser)
-  console.info("parties", parties)
+
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
@@ -56,7 +56,7 @@ export default function ListePartieJoueur() {
         <div className="boxCardsResumPartie">
           <h2>Mes parties :</h2>
           {parties.map((partie) => (
-            <div key={partie.id}>
+            <div key={partie.PartieId}>
               <div className="cardResumPartie">
                 <h2>{partie.Titre}</h2>
                 <p>Type : {partie.TypeDeJeux}</p>
@@ -64,6 +64,20 @@ export default function ListePartieJoueur() {
                 <p>Lieu : {partie.Lieu}</p>
                 <p>Nombre de Joueur : {partie.NombreJoueur}</p>
                 <p>Description : {partie.Description}</p>
+                <p>Maître du Jeu : {partie.MJPseudo}</p>
+                <img
+                  className="photoProfileMJ"
+                  src={`${import.meta.env.VITE_BACKEND_URL}/${
+                    partie.MJPhotoProfil
+                  }`}
+                  alt={`Photo de profil de ${partie.MJPseudo}`}
+                />
+                <p>Liste des joueurs :</p>
+                {partie.Joueurs.split(",").map((id) => (
+                  <div key={id}>
+                    {/* Ici vous pouvez afficher les informations sur chaque joueur */}
+                  </div>
+                ))}
                 <button
                   className="allButtonProfil"
                   onClick={() => handleExitPartieClick(partie)}

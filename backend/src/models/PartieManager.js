@@ -87,17 +87,23 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
       `
       SELECT
       partie.id AS PartieId,
-      Titre,
+      partie.Titre,
       DATE_FORMAT(partie.Date, '%Y-%m-%d') AS Date,
-      TIME_FORMAT(partie.Heure, '%H:%i'),
-      Lieu,
-      MaitreDuJeu,
-      Description,
-      NombreJoueur,
-      TypeDeJeux
-    FROM ${this.table}
+      TIME_FORMAT(partie.Heure, '%H:%i') AS Heure,
+      partie.Lieu,
+      partie.Description,
+      partie.NombreJoueur,
+      partie.TypeDeJeux,
+      utilisateurs.Pseudo AS MJPseudo,
+      utilisateurs.PhotoProfil AS MJPhotoProfil,
+      GROUP_CONCAT(participation.Utilisateurs_Id) AS Joueurs
+    FROM partie
     JOIN participation ON partie.id = participation.Partie_Id
-    WHERE Utilisateurs_Id = ?;
+    JOIN utilisateurs ON partie.MaitreDuJeu = utilisateurs.id
+    WHERE participation.Utilisateurs_Id = ?
+    GROUP BY partie.id;
+    
+  
     `,
       [id]
     )
