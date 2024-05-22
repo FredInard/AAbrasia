@@ -1,32 +1,41 @@
-.cookie-consent {
+.cookie-banner {
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 20px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  color: #fff;
+  text-align: center;
+  padding: 2em;
+  border-radius: 10px;
+  z-index: 1001; /* supérieur à l'overlay */
+  width: 80%;
+  max-width: 500px;
 }
 
-.cookie-consent p {
-  margin: 0;
-  flex: 1;
-}
-
-.cookie-consent button {
-  margin-left: 10px;
-  padding: 10px 20px;
+.cookie-banner button {
+  margin-top: 1em;
+  padding: 0.5em 1em;
+  background-color: #fff;
+  color: #000;
   border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
-.cookie-consent button:hover {
-  background-color: #0056b3;
+.cookie-banner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000; /* juste en dessous de la bannière */
+  pointer-events: none; /* Empêche l'interaction avec l'overlay */
+}
+
+.no-interaction {
+  pointer-events: none; /* Désactive toutes les interactions sur le contenu */
+  user-select: none; /* Empêche la sélection de texte */
 }

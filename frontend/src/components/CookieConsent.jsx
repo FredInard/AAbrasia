@@ -1,39 +1,39 @@
+// src/components/CookieConsent.jsx
 import React, { useState, useEffect } from "react"
-import "./CookieConsent.css"
+import "./CookieConsent.scss"
 
 const CookieConsent = () => {
-  const [cookieConsent, setCookieConsent] = useState(null)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    // Vérifie si le consentement est déjà stocké dans le localStorage
     const consent = localStorage.getItem("cookieConsent")
-    setCookieConsent(consent)
+    if (!consent) {
+      setIsVisible(true)
+      document.body.classList.add("no-interaction") // Désactive les interactions
+    }
   }, [])
 
-  const handleAcceptCookies = () => {
-    setCookieConsent("true")
-    localStorage.setItem("cookieConsent", "true") // Stocke le consentement dans le localStorage
+  const handleAccept = () => {
+    localStorage.setItem("cookieConsent", "true")
+    setIsVisible(false)
+    document.body.classList.remove("no-interaction") // Réactive les interactions
   }
 
-  const handleDeclineCookies = () => {
-    setCookieConsent("false")
-    localStorage.setItem("cookieConsent", "false") // Stocke le refus dans le localStorage
-  }
-
-  if (cookieConsent === null) {
-    return (
-      <div className="cookie-consent">
-        <p>
-          Nous utilisons des cookies pour améliorer votre expérience.
-          Acceptez-vous ?
-        </p>
-        <button onClick={handleAcceptCookies}>Accepter</button>
-        <button onClick={handleDeclineCookies}>Refuser</button>
-      </div>
+  return (
+    isVisible && (
+      <>
+        <div className="cookie-banner-overlay" />
+        <div className="cookie-banner">
+          <p>
+            Nous utilisons des cookies pour améliorer votre expérience. En
+            continuant à naviguer sur ce site, vous acceptez notre utilisation
+            des cookies.
+          </p>
+          <button onClick={handleAccept}>Accepter</button>
+        </div>
+      </>
     )
-  }
-
-  return null // Si le consentement est déjà donné ou refusé, ne rien afficher
+  )
 }
 
 export default CookieConsent
