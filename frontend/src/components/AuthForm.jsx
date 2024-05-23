@@ -12,6 +12,8 @@ const LOCKOUT_DURATION = 300000 // Durée de verrouillage en millisecondes (par 
 
 function AuthForm() {
   toast.configure()
+  const [cookieConsent, setCookieConsent] = useState(false)
+  const [cguAccepted, setCguAccepted] = useState(false)
   const [confirmationMotDePasse, setConfirmationMotDePasse] = useState("")
   const [isSignIn, setIsSignIn] = useState(true)
   const [nomInscription, setNomInscription] = useState("")
@@ -108,8 +110,9 @@ function AuthForm() {
     setLoginAttempts([])
   }
 
-  const handleSubmit = () => {
-    // Effectuer d'abord une requête GET pour vérifier si l'utilisateur existe déjà
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
     if (!isValidPassword(motDePasseInscription)) {
       toast.error("Le mot de passe ne remplit pas les conditions requises.")
       return
@@ -118,11 +121,17 @@ function AuthForm() {
       toast.error(
         "Le mot de passe et la confirmation du mot de passe ne correspondent pas."
       )
-      console.info(
-        "Le mot de passe et la confirmation du mot de passe ne correspondent pas."
-      )
       return
     }
+    if (!cookieConsent || !cguAccepted) {
+      toast.error("Vous devez accepter les CGU et l'utilisation des cookies.")
+      return
+    }
+
+    console.info("cookieConsent:", cookieConsent)
+    console.info("cguAccepted:", cguAccepted)
+    console.info("consentDate:", new Date().toISOString())
+
     axios
       .get(
         `${
@@ -130,18 +139,12 @@ function AuthForm() {
         }/utilisateurs/pseudo/${pseudoInscription}`
       )
       .then((res) => {
-        console.info("Réponse de la requête GET :", res.data)
         if (res.data.isPseudoExist === true) {
-          console.info("res.data.isPseudoExist", res.data.isPseudoExist)
-          // Un utilisateur avec le même pseudo ou la même adresse e-mail existe déjà
           setErrorMessage(
             "Le pseudo est déjà pris ou l'utilisateur existe déjà."
           )
           setIsModalOpen(true)
-          console.error("L'utilisateur existe déjà.")
         } else {
-          // Aucun utilisateur avec le même pseudo ou la même adresse e-mail n'existe
-          // Vous pouvez maintenant effectuer la requête POST pour ajouter l'utilisateur
           axios
             .post(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`, {
               Nom: nomInscription,
@@ -150,13 +153,21 @@ function AuthForm() {
               Mail: mailInscription,
               password: motDePasseInscription,
               PhotoProfil: imageParDefaut,
+              cookieConsent: 1, // Assurez-vous que ces valeurs sont 1
+              cguAccepted: 1, // Assurez-vous que ces valeurs sont 1
+              consentDate: new Date().toISOString(), // Formater correctement la date
             })
             .then((res) => {
               console.info("Insertion réussie :", res.data)
-              // Gérer la réponse de la requête POST ici
+              console.info("cookieConsent :", cookieConsent)
+              console.info("cguAccepted :", cguAccepted)
+              console.info("consentDate :", new Date().toISOString()) // Gérer la réponse de la requête POST ici
             })
             .catch((error) => {
               console.error("Erreur lors de l'inscription :", error)
+              console.info("Erreur cookieConsent :", cookieConsent)
+              console.info("Erreur cguAccepted :", cguAccepted)
+              console.info("Erreur consentDate :", new Date().toISOString())
             })
         }
       })
@@ -347,6 +358,21 @@ function AuthForm() {
                   value={confirmationMotDePasse}
                   onChange={(e) => setConfirmationMotDePasse(e.target.value)}
                 />
+              </div>
+
+              <div className="input-field">
+                <input
+                  type="checkbox"
+                  checked={cookieConsent && cguAccepted}
+                  onChange={(e) => {
+                    setCookieConsent(e.target.checked)
+                    setCguAccepted(e.target.checked)
+                  }}
+                />
+                {/* <label>
+                  J'accepte les conditions générales d'utilisation et
+                  l'utilisation des cookies.
+                </label> */}
               </div>
 
               <input

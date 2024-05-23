@@ -15,7 +15,7 @@ class UtilisateursManager extends AbstractManager {
 
   insert(utilisateurs) {
     return this.database.query(
-      `insert into ${this.table} (Nom,Prenom, Pseudo, Mail, hashedPassword, PhotoProfil) values (?,?,?,?,?,?)`,
+      `INSERT INTO ${this.table} (Nom, Prenom, Pseudo, Mail, hashedPassword, PhotoProfil, cookieConsent, cguAccepted, consentDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         utilisateurs.Nom,
         utilisateurs.Prenom,
@@ -23,13 +23,16 @@ class UtilisateursManager extends AbstractManager {
         utilisateurs.Mail,
         utilisateurs.hashedPassword,
         utilisateurs.PhotoProfil,
+        utilisateurs.cookieConsent,
+        utilisateurs.cguAccepted,
+        utilisateurs.consentDate,
       ]
     )
   }
 
   update(utilisateurs) {
     return this.database.query(
-      `UPDATE ${this.table} SET Nom = ?, Prenom = ?, Pseudo = ?, Mail = ?, Telephone = ?, PseudoDiscord = ?, Description = ?, PhotoProfil = ?, VilleResidence = ?, hashedPassword = ?, Admin = ?, MembreEquipe = ?, MembreAssociation = ? WHERE (id = ?)`,
+      `UPDATE ${this.table} SET Nom = ?, Prenom = ?, Pseudo = ?, Mail = ?, Telephone = ?, PseudoDiscord = ?, Description = ?, PhotoProfil = ?, VilleResidence = ?, hashedPassword = ?, Admin = ?, MembreEquipe = ?, MembreAssociation = ?, cookieConsent = ?, cguAccepted = ?, consentDate = ? WHERE id = ?`,
       [
         utilisateurs.Nom,
         utilisateurs.Prenom,
@@ -44,6 +47,9 @@ class UtilisateursManager extends AbstractManager {
         utilisateurs.Admin,
         utilisateurs.MembreEquipe,
         utilisateurs.MembreAssociation,
+        utilisateurs.cookieConsent,
+        utilisateurs.cguAccepted,
+        utilisateurs.consentDate,
         utilisateurs.id,
       ]
     )
