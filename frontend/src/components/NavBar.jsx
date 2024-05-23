@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react"
-// import { Link } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 import logoSeul from "../assets/pics/logoSeul.svg"
 import "./NavBar.scss"
 import Cookies from "js-cookie"
 import axios from "axios"
-// import { Link } from "react-scroll"
 import { Link as ScrollLink } from "react-scroll"
-import { Link as RouterLink } from "react-router-dom"
+import { Link as RouterLink, useNavigate } from "react-router-dom"
 
 function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -15,6 +14,7 @@ function NavBar() {
   const [utilisateur, setUtilisateur] = useState({})
   const idUser = Cookies.get("idUtilisateur")
   const tokenFromCookie = Cookies.get("authToken")
+  const navigate = useNavigate() // Utilisez useNavigate
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
@@ -28,7 +28,7 @@ function NavBar() {
       )
       .then((res) => setUtilisateur(res.data))
       .catch((err) => {
-        console.error("Problème lors du chargement de l'utlisateur", err)
+        console.error("Problème lors du chargement de l'utilisateur", err)
       })
   }, [])
 
@@ -55,13 +55,9 @@ function NavBar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Récupérez la position de défilement verticale
       const scrollY = window.scrollY
+      const scrollThreshold = 100
 
-      // Déterminez la limite à partir de laquelle vous souhaitez changer la couleur de fond
-      const scrollThreshold = 100 // Vous pouvez ajuster cette valeur selon vos besoins
-
-      // Si la position de défilement dépasse la limite, changez la couleur de fond
       if (scrollY > scrollThreshold) {
         setNavBackgroundColor("rgb(6, 1, 39)")
       } else {
@@ -69,14 +65,22 @@ function NavBar() {
       }
     }
 
-    // Ajoutez le gestionnaire d'événements à la fenêtre
     window.addEventListener("scroll", handleScroll)
 
-    // Assurez-vous de retirer le gestionnaire d'événements lors du démontage du composant
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
   }, [])
+
+  const handleLogout = () => {
+    Cookies.remove("authToken")
+    Cookies.remove("loggedInUtilisateur")
+    Cookies.remove("idUtilisateur")
+    Cookies.remove("photoProfilUtilisateur")
+    Cookies.remove("Pseudo")
+    Cookies.remove("adminUtilisateur")
+    navigate("/") // Utilisez navigate pour rediriger vers la page d'accueil
+  }
 
   return (
     <div
@@ -136,6 +140,9 @@ function NavBar() {
                 />
                 <p>Profil</p>
               </RouterLink>
+              <button className="buttonNavBar nav-item" onClick={handleLogout}>
+                Déconnexion
+              </button>
             </>
           ) : (
             <>
@@ -196,10 +203,13 @@ function NavBar() {
                 <p>Profil</p>
               </RouterLink>
               {isAdmin && (
-                <RouterLink className="buttonNavBar nav-item" to="/admin">
+                <RouterLink className="menuItem menuItem-2" to="/admin">
                   AdminPage
                 </RouterLink>
               )}
+              <button className="buttonNavBar nav-item" onClick={handleLogout}>
+                Déconnexion
+              </button>
             </>
           ) : null}
         </div>
@@ -207,4 +217,5 @@ function NavBar() {
     </div>
   )
 }
+
 export default NavBar

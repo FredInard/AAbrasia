@@ -87,17 +87,23 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
       `
       SELECT
       partie.id AS PartieId,
-      Titre,
+      partie.Titre,
       DATE_FORMAT(partie.Date, '%Y-%m-%d') AS Date,
-      TIME_FORMAT(partie.Heure, '%H:%i'),
-      Lieu,
-      MaitreDuJeu,
-      Description,
-      NombreJoueur,
-      TypeDeJeux
-    FROM ${this.table}
+      TIME_FORMAT(partie.Heure, '%H:%i') AS Heure,
+      partie.Lieu,
+      partie.Description,
+      partie.NombreJoueur,
+      partie.TypeDeJeux,
+      utilisateurs.Pseudo AS MJPseudo,
+      utilisateurs.PhotoProfil AS MJPhotoProfil,
+      GROUP_CONCAT(participation.Utilisateurs_Id) AS Joueurs
+    FROM partie
     JOIN participation ON partie.id = participation.Partie_Id
-    WHERE Utilisateurs_Id = ?;
+    JOIN utilisateurs ON partie.MaitreDuJeu = utilisateurs.id
+    WHERE participation.Utilisateurs_Id = ?
+    GROUP BY partie.id;
+    
+  
     `,
       [id]
     )
@@ -107,17 +113,24 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
     return this.database.query(
       `
       SELECT 
-        id, 
-        Titre,
-        DATE_FORMAT(Date, '%Y-%m-%d') AS Date,
-        TIME_FORMAT(Heure, '%H:%i') AS Heure,
-        Lieu,
-        MaitreDuJeu,
-        Description,
-        NombreJoueur,
-        TypeDeJeux
-      FROM ${this.table}
-      WHERE MaitreDuJeu = ?;`,
+      p.id, 
+      p.Titre,
+      DATE_FORMAT(p.Date, '%Y-%m-%d') AS Date,
+      TIME_FORMAT(p.Heure, '%H:%i') AS Heure,
+      p.Lieu,
+      p.MaitreDuJeu,
+      p.Description,
+      p.NombreJoueur,
+      p.TypeDeJeux,
+      GROUP_CONCAT(u.Pseudo) AS PseudosParticipants,
+      GROUP_CONCAT(u.PhotoProfil) AS PhotosProfilsParticipants
+  FROM partie AS p
+  INNER JOIN participation AS par ON p.id = par.Partie_Id
+  INNER JOIN Utilisateurs AS u ON par.Utilisateurs_Id = u.id
+  WHERE p.MaitreDuJeu = ?
+  GROUP BY p.id, p.Titre, p.Date, p.Heure, p.Lieu, p.MaitreDuJeu, p.Description, p.NombreJoueur, p.TypeDeJeux;
+  
+`,
       [id]
     )
   }

@@ -66,6 +66,8 @@ router.get(
 )
 router.get("/partie/profil/:id", PartieControllers.partieByUtilisateurId)
 router.get("/partie/meneur/:id", PartieControllers.partieMeneurByUtilisateurId)
+// router.get("partie/holdGamePlayer/:id", PartieControllers.holdGamePlayer)
+// router.get("partie/HoldGameMJ/:id", PartieControllers.HoldGameMJ)
 
 router.put("/partie/:id", PartieControllers.edit)
 router.post("/partie", PartieControllers.add)

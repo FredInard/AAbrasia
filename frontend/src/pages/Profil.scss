@@ -37,6 +37,7 @@
 
 .bienvenurName {
   margin-left: 10px;
+  margin-top: 100px;
 }
 
 .bouttonSwitch {
@@ -54,8 +55,10 @@
 .globalBoxProfil {
   .boxListeParties {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     .boxPictureLeft {
-      width: 50%;
+      position: absolute;
       width: 100%; /* Largeur du conteneur, ajustez selon vos besoins */
       height: 100vh; /* Hauteur du conteneur, ajustez selon vos besoins */
       background-image: url("../assets/pics/medievalKing.svg"); /* URL de votre image */
