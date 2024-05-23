@@ -22,6 +22,9 @@
 }
 
 .signin-signup {
+  background-color: rgb(6 1 39 / 50%);
+  border-radius: 10px;
+  width: 80%;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -54,6 +57,10 @@ form.sign-in-form {
   z-index: 2;
 }
 
+mdpExplication{
+  margin: 10px;
+}
+
 .title {
   font-size: 2.2rem;
   color: #444;
@@ -65,7 +72,7 @@ form.sign-in-form {
   width: 100%;
   background-color: #f0f0f0;
   margin: 10px 0;
-  height: 55px;
+  height: 35px;
   border-radius: 55px;
   display: grid;
   grid-template-columns: 15% 85%;
@@ -131,7 +138,7 @@ form.sign-in-form {
   background-color: #5995fd;
   border: none;
   outline: none;
-  height: 49px;
+  height: 35px;
   border-radius: 49px;
   color: #fff;
   text-transform: uppercase;
