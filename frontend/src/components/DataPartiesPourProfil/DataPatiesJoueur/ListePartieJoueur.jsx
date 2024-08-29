@@ -104,7 +104,7 @@ export default function ListePartieJoueur() {
                   joueursParPartie[partie.PartieId].map((joueur) => (
                     <div key={joueur.id}>
                       <img
-                        className="photoProfileJoueur"
+                        className="photoProfileMJ"
                         src={`${import.meta.env.VITE_BACKEND_URL}/${
                           joueur.PhotoProfil
                         }`}
