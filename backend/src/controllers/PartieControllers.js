@@ -171,6 +171,26 @@ const partieByUtilisateurId = (req, res) => {
     })
 }
 
+const joueursByPartieId = (req, res) => {
+  const id = req.params.id
+  console.info("id joueursByPartieId :", id)
+  models.partie
+    .findJoueursByPartieId(id)
+    .then(([result]) => {
+      console.info("result succes findjoueursByPartieId", result)
+      if (result[0] == null) {
+        res.sendStatus(404)
+      } else {
+        // res.send(result[0])
+        res.json(result)
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+
 const partieMeneurByUtilisateurId = (req, res) => {
   models.partie
 
@@ -214,4 +234,5 @@ module.exports = {
   partieMeneurByUtilisateurId,
   destroyeurDePartie,
   affichageInfoPartieDate,
+  joueursByPartieId,
 }

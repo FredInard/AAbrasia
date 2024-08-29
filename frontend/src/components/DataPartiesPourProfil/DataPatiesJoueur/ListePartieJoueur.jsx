@@ -15,6 +15,7 @@ export default function ListePartieJoueur() {
   const [showModalExitPartie, setShowModalExitPartie] = useState(false)
 
   const [parties, setParties] = useState([])
+  const [joueursParPartie, setJoueursParPartie] = useState({})
   const [selectedPartie, setSelectedPartie] = useState(null)
   const idUser = Cookies.get("idUtilisateur")
   const idUserNumb = parseInt(idUser)
@@ -35,6 +36,9 @@ export default function ListePartieJoueur() {
   }
 
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false)
+  console.info("parties:", parties)
+  console.info("selectedPartie:", selectedPartie)
+  console.info("idUserNumb:", idUserNumb)
 
   useEffect(() => {
     axios
@@ -42,7 +46,30 @@ export default function ListePartieJoueur() {
         headers,
       })
       .then((res) => {
-        setParties(filterParties(res.data))
+        console.info("Réponse de l'API:", res.data)
+        const filteredParties = filterParties(res.data)
+        setParties(filteredParties)
+        // Pour chaque partie, récupérer les joueurs associés
+        filteredParties.forEach((partie) => {
+          axios
+            .get(
+              `${import.meta.env.VITE_BACKEND_URL}/partie/joueurs/${
+                partie.PartieId
+              }`,
+              {
+                headers,
+              }
+            )
+            .then((res) => {
+              setJoueursParPartie((prev) => ({
+                ...prev,
+                [partie.PartieId]: res.data,
+              }))
+            })
+            .catch((err) => {
+              console.error("Problème lors du chargement des Joueurs", err)
+            })
+        })
       })
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)
@@ -73,11 +100,19 @@ export default function ListePartieJoueur() {
                   alt={`Photo de profil de ${partie.MJPseudo}`}
                 />
                 <p>Liste des joueurs :</p>
-                {partie.Joueurs.split(",").map((id) => (
-                  <div key={id}>
-                    {/* Ici vous pouvez afficher les informations sur chaque joueur */}
-                  </div>
-                ))}
+                {joueursParPartie[partie.PartieId] &&
+                  joueursParPartie[partie.PartieId].map((joueur) => (
+                    <div key={joueur.id}>
+                      <img
+                        className="photoProfileJoueur"
+                        src={`${import.meta.env.VITE_BACKEND_URL}/${
+                          joueur.PhotoProfil
+                        }`}
+                        alt={`Photo de profil de ${joueur.Pseudo}`}
+                      />
+                      <p>{joueur.Pseudo}</p>
+                    </div>
+                  ))}
                 <button
                   className="allButtonProfil"
                   onClick={() => handleExitPartieClick(partie)}

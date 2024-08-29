@@ -65,7 +65,9 @@ router.get(
   UtilisateursControllers.readPartieByUtilisateurId
 )
 router.get("/partie/profil/:id", PartieControllers.partieByUtilisateurId)
+router.get("/partie/joueurs/:id", PartieControllers.joueursByPartieId)
 router.get("/partie/meneur/:id", PartieControllers.partieMeneurByUtilisateurId)
+
 // router.get("partie/holdGamePlayer/:id", PartieControllers.holdGamePlayer)
 // router.get("partie/HoldGameMJ/:id", PartieControllers.HoldGameMJ)
 

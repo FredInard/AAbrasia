@@ -158,6 +158,22 @@ JOIN utilisateurs u ON p.MaitreDuJeu = u.id;
         })
     })
   }
+
+  findJoueursByPartieId(id) {
+    return this.database.query(
+      `
+      SELECT
+    u.id,
+    u.Pseudo,
+    u.PhotoProfil
+FROM utilisateurs u
+JOIN participation pa ON u.id = pa.Utilisateurs_Id
+WHERE pa.Partie_Id = ?;
+  
+`,
+      [id]
+    )
+  }
 }
 
 module.exports = PartieManager
