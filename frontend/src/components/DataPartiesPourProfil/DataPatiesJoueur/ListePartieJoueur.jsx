@@ -100,19 +100,21 @@ export default function ListePartieJoueur() {
                   alt={`Photo de profil de ${partie.MJPseudo}`}
                 />
                 <p>Liste des joueurs :</p>
-                {joueursParPartie[partie.PartieId] &&
-                  joueursParPartie[partie.PartieId].map((joueur) => (
-                    <div key={joueur.id}>
-                      <img
-                        className="photoProfileMJ"
-                        src={`${import.meta.env.VITE_BACKEND_URL}/${
-                          joueur.PhotoProfil
-                        }`}
-                        alt={`Photo de profil de ${joueur.Pseudo}`}
-                      />
-                      <p>{joueur.Pseudo}</p>
-                    </div>
-                  ))}
+                <div className="joueursPartieUser">
+                  {joueursParPartie[partie.PartieId] &&
+                    joueursParPartie[partie.PartieId].map((joueur) => (
+                      <div className="joueursPartieUser" key={joueur.id}>
+                        <img
+                          className="photoProfileMJ"
+                          src={`${import.meta.env.VITE_BACKEND_URL}/${
+                            joueur.PhotoProfil
+                          }`}
+                          alt={`Photo de profil de ${joueur.Pseudo}`}
+                        />
+                        <p>{joueur.Pseudo}</p>
+                      </div>
+                    ))}
+                </div>
                 <button
                   className="allButtonProfil"
                   onClick={() => handleExitPartieClick(partie)}

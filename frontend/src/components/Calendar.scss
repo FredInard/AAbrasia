@@ -119,3 +119,9 @@
     margin: 5px; /* Réduire l'espacement entre les éléments sur les petits écrans */
   }
 }
+
+.calendar-day.current-day {
+  background-color: #09188683; /* Couleur de fond pour le jour actuel */
+  color: #ffffff; /* Couleur du texte pour le contraste */
+  border-radius: 5px; /* Arrondir les coins pour un effet visuel */
+}
