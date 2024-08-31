@@ -10,7 +10,7 @@ export default function Calendar({ onDateSelect }) {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [calendarDays, setCalendarDays] = useState([])
   const [partieExiste, setPartieExiste] = useState([])
-  const [selectedDateCalendar, setselectedDateCalendar] = useState(null)
+  const [selectedDateCalendar, setselectedDateCalendar] = useState(new Date())
   console.info(
     "selectedDateCalendar in Calendar component",
     selectedDateCalendar
