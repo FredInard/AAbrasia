@@ -197,7 +197,7 @@ const partieMeneurByUtilisateurId = (req, res) => {
     .findpartieMeneurByUtilisateurId(req.params.id)
 
     .then(([result]) => {
-      // console.info("result succes findpartieMeneurByUtilisateurId", result)
+      console.info("result succes findpartieMeneurByUtilisateurId", result)
       res.json(result)
     })
     .catch((err) => {

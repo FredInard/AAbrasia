@@ -21,6 +21,7 @@ export default function HoldGameMJ() {
   const filterParties = (parties) => {
     return parties.filter((partie) => new Date(partie.Date) < new Date())
   }
+  console.info("meneurParties de HoldGameMJ", meneurParties)
 
   useEffect(() => {
     axios
@@ -103,7 +104,9 @@ export default function HoldGameMJ() {
                       </div>
                     ))
                   ) : (
-                    <p>Chargement en cours...</p>
+                    <p>
+                      Oups... Cette partie n'a pas eu lieu par manque de joueurs
+                    </p>
                   )}
                 </div>
               </div>
