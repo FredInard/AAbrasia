@@ -119,10 +119,10 @@
       flex-direction: column;
 
       .boxTextMage {
-        font-size: 2em;
+        font-size: 1.5em;
         text-align: justify;
         // padding: 20px;
-        width: 70%;
+        width: 50%;
         margin-bottom: 50px;
         margin-top: 20px;
 
@@ -160,11 +160,11 @@
     text-align: justify;
 
     .boxTextPresentationJDR {
-      font-size: 2em;
+      font-size: 1.5em;
       font-family: "Poppins", Poppins;
       padding-top: 20px;
       padding-bottom: 20px;
-      width: 70%;
+      width: 50%;
 
       @media only screen and (max-width: 1440px) {
         font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
@@ -198,11 +198,11 @@
     text-align: justify;
 
     .boxTextCitadel {
-      font-size: 2em;
+      font-size: 1.5em;
       font-family: "Poppins", Poppins;
       padding-top: 20px;
       padding-bottom: 20px;
-      width: 70%;
+      width: 50%;
 
       @media only screen and (max-width: 1440px) {
         font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
@@ -219,11 +219,11 @@
     }
 
     .boxTextCitadelBis {
-      font-size: 2em;
+      font-size: 1.5em;
       font-family: "Poppins", Poppins;
       padding-top: 20px;
       padding-bottom: 20px;
-      width: 70%;
+      width: 50%;
 
       @media only screen and (max-width: 1440px) {
         font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
@@ -404,4 +404,69 @@
   border: solid 2px white;
   border-radius: 10px;
   margin-bottom: 20px; /* Ajoutez la marge en bas pour créer un espace entre les post-cards */
+}
+
+.boxLienAsso {
+  background-color: none; // Fond blanc pour correspondre aux sections principales
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Ombre pour donner de la profondeur
+  margin: 30px auto; // Espacement autour de la boîte
+  max-width: 800px; // Limite de largeur pour un bon centrage
+  border: 2px solid #ec7625; // Bordure pour correspondre à votre palette de couleurs principale
+
+  .asso-title {
+    color: #ffffff; // Couleur d'accent principale du site
+    font-family: 'Poppins', serif; // Police médiévale pour rester dans le thème
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    text-align: center; // Centrage des titres
+    border-top: 1px solid #ec7625;  //Ligne de séparation pour le style
+    padding-bottom: 10px;
+  }
+
+  .asso-text {
+    color: #333; // Couleur de texte foncée pour un bon contraste
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.8;
+    margin: 15px 0;
+    text-align: justify; // Justification pour un alignement propre du texte
+    font-size: 1em; // Taille de police standard
+  }
+
+  .asso-link {
+    color: #ffffff; // Utilisation de la couleur d'accent pour les liens
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.8;
+    margin: 10px 0;
+    text-align: center;
+    cursor: pointer; // Pour indiquer que c'est cliquable
+    text-decoration: none; // Supprime le soulignement par défaut
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+
+    &:hover {
+      color: #c6500b; // Couleur légèrement plus foncée au survol
+      text-decoration: underline; // Apparition du soulignement au survol
+    }
+  }
+
+  .asso-icons {
+    display: flex;
+    justify-content: center; // Centrer les icônes
+    margin-top: 20px;
+  }
+
+  .asso-icon {
+    display: inline-block;
+    margin: 0 10px;
+    width: 35px; // Taille standard des icônes
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1); // Léger zoom au survol
+      filter: brightness(1.2); // Effet de brillance au survol
+    }
+  }
 }

@@ -233,21 +233,27 @@ export default function Home() {
         )}
       </div>
       <div className="boxLienAsso">
-        <h2>Nos amis</h2>
-        <p>Liens vers d’autres assos du 04</p>
-        L’espace de jeu
-        <p></p>Lien vers la page de l’ECE de Malijai
-        <h2>Partenaires</h2>
-        <p>
+        <h2 className="asso-title">Nos amis</h2>
+        <p className="asso-text">Liens vers d’autres assos du 04</p>
+        <p className="asso-link">L’espace de jeu</p>
+        <p className="asso-link">Lien vers la page de l’ECE de Malijai</p>
+
+        <h2 className="asso-title">Partenaires</h2>
+        <p className="asso-text">
           Lien vers les sites du Théâtre Durance, Librairie, Médiathèque, etc...
         </p>
-        <h2>Abrasia</h2>
-        <p>Lien vers le site worldanvil d’Abrasia</p>
-        <h2>Payer sa cotisation sur HelloAsso</h2>
-        <h2>Nous rejoindre sur :</h2>
-        <img src={iconeDiscorde} alt="logo Discorde" />
-        <img src={iconeFacebook} alt="logo Discorde" />
-        <img src={iconeMail} alt="logo Discorde" />
+
+        <h2 className="asso-title">Abrasia</h2>
+        <p className="asso-text">Lien vers le site worldanvil d’Abrasia</p>
+
+        <h2 className="asso-title">Payer sa cotisation sur HelloAsso</h2>
+
+        <h2 className="asso-title">Nous rejoindre sur :</h2>
+        <div className="asso-icons">
+          <img className="asso-icon" src={iconeDiscorde} alt="logo Discorde" />
+          <img className="asso-icon" src={iconeFacebook} alt="logo Facebook" />
+          <img className="asso-icon" src={iconeMail} alt="logo Mail" />
+        </div>
       </div>
 
       <Modal isOpen={isPostCardsOpen} onClose={() => setIsPostCardsOpen(false)}>
