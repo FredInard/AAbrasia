@@ -125,3 +125,8 @@
   color: #ffffff; /* Couleur du texte pour le contraste */
   border-radius: 5px; /* Arrondir les coins pour un effet visuel */
 }
+
+.calendar-day.selected-day {
+  border: 2px solid #ec7625; /* Couleur du cadre autour de la date sélectionnée */
+  border-radius: 5px; /* Arrondir les coins pour correspondre au design */
+}

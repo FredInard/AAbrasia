@@ -8,6 +8,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px; /* Ajoute un espace autour de la modale */
+  box-sizing: border-box; /* Inclure le padding dans les dimensions */
+}
+
+.modal-content {
+  background: #fff;
+  width: 80%; /* Modale plus petite */
+  max-width: 400px; /* Largeur maximale fixe */
+  height: auto; /* Hauteur automatique */
+  max-height: 70%; /* Hauteur maximale pour la modale */
+  padding: 20px; /* Espacement interne */
+  border-radius: 8px; /* Coins arrondis pour un design moderne */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre pour un effet visuel */
+  overflow-y: auto; /* Activer le défilement vertical si le contenu dépasse */
 }
 
 .modal {
@@ -30,10 +44,10 @@
 
 .modal .open {
   position: fixed;
-  top: 0;
+  top: 0px;
   left: 0;
   width: 60%;
-  height: 100%;
+  //height: 100%;
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;

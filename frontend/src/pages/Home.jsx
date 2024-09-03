@@ -22,6 +22,7 @@ import LogoPlayers from "../assets/pics/playerIcon.svg"
 import iconeDiscorde from "../assets/pics/iconeDiscorde.svg"
 import iconeFacebook from "../assets/pics/iconeFacebook2.svg"
 import iconeMail from "../assets/pics/iconeGmail.svg"
+import money from "../assets/pics/money.svg"
 
 import "./Home.scss"
 import NavBar from "../components/NavBar"
@@ -247,12 +248,41 @@ export default function Home() {
         <p className="asso-text">Lien vers le site worldanvil d’Abrasia</p>
 
         <h2 className="asso-title">Payer sa cotisation sur HelloAsso</h2>
+        <a
+          href="https://www.helloasso.com/associations/les-arpenteurs-d-abrasia?fbclid=IwY2xjawFEWLlleHRuA2FlbQIxMAABHait9_wq4lhp7Y2ZoZGRFWrMemDm6paRiVnYohPT62gLwqWAN2zr4rfOyw_aem_FXdM4wj8V7aQdQtP3vu-LQ"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img className="asso-icon" src={money} alt="logo billet vert " />
+        </a>
 
         <h2 className="asso-title">Nous rejoindre sur :</h2>
         <div className="asso-icons">
-          <img className="asso-icon" src={iconeDiscorde} alt="logo Discorde" />
-          <img className="asso-icon" src={iconeFacebook} alt="logo Facebook" />
-          <img className="asso-icon" src={iconeMail} alt="logo Mail" />
+          <a
+            href="https://discord.gg/Vv3Fa4DwYK"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              className="asso-icon"
+              src={iconeDiscorde}
+              alt="logo Discorde"
+            />
+          </a>
+          <a
+            href="https://www.facebook.com/arpenteurs.abrasia"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              className="asso-icon"
+              src={iconeFacebook}
+              alt="logo Facebook"
+            />
+          </a>
+          <a href="mailto:arpenteurs.jdr@gmail.com">
+            <img className="asso-icon" src={iconeMail} alt="logo Mail" />
+          </a>
         </div>
       </div>
 

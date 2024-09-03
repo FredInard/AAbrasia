@@ -143,11 +143,28 @@ export default function DisplayPlayers({ postData }) {
   }
 
   const handleMasterProfileClick = () => {
-    // Vérifiez d'abord si le maître du jeu est défini
+    // Vérifier si l'utilisateur est connecté
+    if (!tokenFromCookie) {
+      console.warn(
+        "Vous devez être connecté pour voir le profil du maître du jeu."
+      )
+      return // Arrêter l'exécution si l'utilisateur n'est pas connecté
+    }
+
+    // Vérifier si les données du maître du jeu sont disponibles
     if (postData.MaitreDuJeu) {
-      // Ouvrez le modal en passant le joueur maître du jeu
-      setSelectedPlayer(MJData.find((post) => post.id === postData.MaitreDuJeu))
-      setModalPlayerIsOpen(true)
+      // Ouvrir le modal en passant le joueur maître du jeu
+      const masterPlayer = MJData.find(
+        (post) => post.id === postData.MaitreDuJeu
+      )
+      if (masterPlayer) {
+        setSelectedPlayer(masterPlayer)
+        setModalPlayerIsOpen(true)
+      } else {
+        console.warn("Le maître du jeu n'a pas été trouvé dans les données.")
+      }
+    } else {
+      console.warn("Aucun maître du jeu défini pour cette partie.")
     }
   }
 
