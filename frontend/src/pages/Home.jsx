@@ -1,16 +1,16 @@
+// Importation des dépendances
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
-import "moment/locale/fr"
-import "react-big-calendar/lib/css/react-big-calendar.css"
 
-// import Citadel from "../assets/pics/CitadelOfSisteron.svg"
-// import questioningFemale from "../assets/pics/femaleWarrior.svg"
-// import wizard from "../assets/pics/wizard.svg"
-// import BrushDown from "../assets/pics/BrushDown.svg"
-// import scene from "../assets/pics/banner.svg"
-// import BrushUp from "../assets/pics/BrushUp.svg"
-// import AdventurFriends from "../assets/pics/goAdventure.png"
+// Importation des composants
+import NavBar from "../components/NavBar"
+import DisplayPlayers from "../components/DisplayPlayers"
+import Modal from "../components/Modal"
+import CalendarComponent from "../components/CalendarComponent" // Importation du nouveau composant Calendar
+
+// Importation des styles et des images
+import "./Home.scss"
 import King from "../assets/pics/medievalKing.svg"
 import Queen from "../assets/pics/queen.svg"
 import Merchan from "../assets/pics/portraitOfMerchant.png"
@@ -24,59 +24,55 @@ import iconeFacebook from "../assets/pics/iconeFacebook2.svg"
 import iconeMail from "../assets/pics/iconeGmail.svg"
 import money from "../assets/pics/money.svg"
 
-import "./Home.scss"
-import NavBar from "../components/NavBar"
-import DisplayPlayers from "../components/DisplayPlayers"
-import Modal from "../components/Modal"
-import Calendar from "../components/Calendar"
-
 export default function Home() {
-  const [parties, setParties] = useState([])
-  // console.info("parties de Home", parties)
+  // États pour gérer les données
+  const [parties, setParties] = useState([]) // Liste des parties (événements)
+  const [selectedDate, setSelectedDate] = useState(null) // Date sélectionnée par l'utilisateur
+  const [isPostCardsOpen, setIsPostCardsOpen] = useState(false) // État du modal d'affichage des détails
+  const [postData, setPostData] = useState(null) // Données de la partie sélectionnée
+
+  // États pour la gestion de l'animation d'images
   const [indexVisible, setIndexVisible] = useState(0)
   const images = [King, Queen, Merchan, Elf1, Elf2, wizard2]
-  const [postData, setPostData] = useState(null)
-  const [isPostCardsOpen, setIsPostCardsOpen] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(null) // ajouter [selectedDate, setSelectedDate]
-  // console.info("selectedDate", selectedDate)
+
+  // Récupération du token d'authentification depuis les cookies
   const tokenFromCookie = Cookies.get("authToken")
   const headers = {
     Authorization: `Bearer ${tokenFromCookie}`,
   }
 
-  const handlePostClick = (allPostData) => {
-    setIsPostCardsOpen(true)
-    setPostData(allPostData)
-    // console.info("allPostDataHome", allPostData)
+  // Fonction pour gérer le clic sur une date dans le calendrier
+  const handleDateClick = (date) => {
+    setSelectedDate(date)
   }
 
-  const handleDateSelect = (date) => {
-    // Mettre à jour selectedDate avec la date sélectionnée
-    const formattedDate = date.toISOString().split("T")[0]
-    setSelectedDate(formattedDate)
+  // Fonction pour charger les événements (parties) depuis l'API
+  const fetchEvents = () => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/affichage`, { headers })
+      .then((res) => {
+        // Transformation des données pour FullCalendar
+        const events = res.data.map((partie) => ({
+          id: partie.id,
+          title: partie.Titre,
+          start: partie.Date, // Assure-toi que partie.Date est au format ISO 8601
+          extendedProps: {
+            // Propriétés supplémentaires
+            partieData: partie, // On stocke toutes les données de la partie pour un accès facile
+          },
+        }))
+        setParties(events)
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement des parties", err)
+      })
   }
 
+  // useEffect pour charger les événements à l'initialisation du composant
   useEffect(() => {
-    if (selectedDate) {
-      // console.info("selectedDate de l'axios", selectedDate)  Affiche la valeur de selectedDate avant la requête axios
-      axios
-        .get(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/partie/affichage/${selectedDate}`,
-          { headers }
-        )
-        .then((res) => {
-          // console.info("Réponse de l'API :", res.data) // Affiche la réponse de l'API
-          setParties(res.data) // Met à jour les parties avec les données de la réponse de l'API
-        })
-        .catch((err) => {
-          console.error("Problème lors du chargement des parties", err)
-        })
-    }
-  }, [selectedDate])
+    fetchEvents()
 
-  useEffect(() => {
+    // Gestion de l'animation des images
     const interval = setInterval(() => {
       setIndexVisible((prevIndex) => (prevIndex + 1) % images.length)
     }, 5000)
@@ -84,10 +80,17 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
+  // Fonction pour gérer le clic sur une carte d'événement
+  const handlePostClick = (partie) => {
+    setIsPostCardsOpen(true)
+    setPostData(partie)
+  }
+
   return (
     <>
       <NavBar className="NavBarHome" />
       <div className="ContaineurPrincipal">
+        {/* Animation d'images */}
         <div className="image-crossfader">
           {images.map((src, index) => (
             <img
@@ -105,17 +108,18 @@ export default function Home() {
             <img
               className="logoBaner"
               src={logoAiW}
-              alt="logo de l association les arpenteur d abrasia"
+              alt="logo de l'association les Arpenteurs d'Abrasia"
             />
           </div>
         </div>
 
+        {/* Contenu de présentation */}
         <div className="containeurPresentation">
           <div className="containeurPresentationbis">
             <div className="titreh2">
               <h2>
-                Oubliez Netflix pour plongez dans l'aventure avec l'Association
-                de jeux de role des Arpenteurs d'Abrasia
+                Oubliez Netflix pour plonger dans l'aventure avec l'Association
+                de jeux de rôle des Arpenteurs d'Abrasia
               </h2>
             </div>
             <div className="boxMage">
@@ -135,7 +139,7 @@ export default function Home() {
           <div className="boxPresentationJDR">
             <div className="boxTextPresentationJDR">
               <p>
-                C’est quoi le jeux de rôle ? Le jeu de rôle est un loisir qui se
+                C’est quoi le jeu de rôle ? Le jeu de rôle est un loisir qui se
                 pratique en petits groupes (entre 3 et 6 personnes) autour d'une
                 table. Une personne prend le rôle de meneuse de jeu et raconte
                 une histoire dans laquelle chacune des personnes attablées
@@ -149,7 +153,7 @@ export default function Home() {
           <div className="boxCitadel">
             <div className="boxTextCitadel">
               <p>
-                Présentation de l’asso L'association des Arpenteurs d'Abrasia
+                Présentation de l’asso : L'association des Arpenteurs d'Abrasia
                 (AA) a une double vocation ludique et culturelle. Elle a pour
                 objet de réunir des joueurs et joueuses de façon régulière
                 autour de tables de jeu de rôle (jdr) afin de partager des
@@ -173,49 +177,62 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Section Agenda */}
       <div className="agendaDesParties" id="agenda">
         <div className="titreAPartie">
           <h2>Agenda des parties</h2>
         </div>
 
         <div className="agenda">
-          <Calendar onDateSelect={handleDateSelect} />
+          {/* Intégration du composant Calendar */}
+          <CalendarComponent onDateClick={handleDateClick} events={parties} />
         </div>
 
-        {!isPostCardsOpen && (
+        {/* Affichage des parties pour la date sélectionnée */}
+        {!isPostCardsOpen && selectedDate && (
           <div className="containeurCards">
-            {parties.length === 0 ? (
+            {parties.filter((event) => {
+              // Filtre les événements pour la date sélectionnée
+              const eventDate = new Date(event.start).toDateString()
+              const selected = new Date(selectedDate).toDateString()
+              return eventDate === selected
+            }).length === 0 ? (
               <div className="no-events-message">
-                Désolé, il n'y a pas encore de partie programmée.
+                Désolé, il n'y a pas encore de partie programmée pour cette
+                date.
               </div>
             ) : (
-              parties.map((partie) => (
-                <div
-                  key={partie.id}
-                  className="globalContainerCard"
-                  onClick={() => handlePostClick(partie)}
-                >
-                  <div className="miniBoxInfo">
-                    <div className="allInfoItem">
-                      {/* <div className="infoItem">Date : {partie.Date}</div>
-                      <div className="infoItem">Heure : {partie.Heure}</div>
-                      <div className="infoItem">Lieu : {partie.Lieu}</div> */}
+              parties
+                .filter((event) => {
+                  const eventDate = new Date(event.start).toDateString()
+                  const selected = new Date(selectedDate).toDateString()
+                  return eventDate === selected
+                })
+                .map((event) => (
+                  <div
+                    key={event.id}
+                    className="globalContainerCard"
+                    onClick={() =>
+                      handlePostClick(event.extendedProps.partieData)
+                    }
+                  >
+                    <div className="miniBoxInfo">
                       <div className="allInfoItem">
                         <img
                           src={`${import.meta.env.VITE_BACKEND_URL}/${
-                            partie.PhotoProfilMaitreDuJeu
+                            event.extendedProps.partieData
+                              .PhotoProfilMaitreDuJeu
                           }`}
                           alt="Photo du Maître du Jeu"
                           className="maitre-du-jeu-photo"
                         />
                       </div>
-                      <div className="infoItem">{partie.PseudoMaitreDuJeu}</div>
-                      {/* <div className="infoItem">Type : {partie.TypeDeJeux}</div> */}
-                      {/* <button onClick={() => handlePostClick(partie)}>
-                        Voir les détails
-                          </button> */}
+                      <div className="infoItem">
+                        {event.extendedProps.partieData.PseudoMaitreDuJeu}
+                      </div>
                     </div>
-                    <div className="titleContainerCard">{partie.Titre}</div>
+                    <div className="titleContainerCard">{event.title}</div>
                     <div className="maxPlayerInfoItem">
                       <div className="logoPlayerAndMaxPlayer">
                         <img
@@ -223,16 +240,17 @@ export default function Home() {
                           src={LogoPlayers}
                           alt="logo d'un joueur"
                         />
-                        X{partie.NombreJoueur}
+                        X{event.extendedProps.partieData.NombreJoueur}
                       </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))
             )}
           </div>
         )}
       </div>
+
+      {/* Section des liens et partenaires */}
       <div className="boxLienAsso">
         <h2 className="asso-title">Nos amis</h2>
         <p className="asso-text">Liens vers d’autres assos du 04</p>
@@ -249,7 +267,7 @@ export default function Home() {
 
         <h2 className="asso-title">Payer sa cotisation sur HelloAsso</h2>
         <a
-          href="https://www.helloasso.com/associations/les-arpenteurs-d-abrasia?fbclid=IwY2xjawFEWLlleHRuA2FlbQIxMAABHait9_wq4lhp7Y2ZoZGRFWrMemDm6paRiVnYohPT62gLwqWAN2zr4rfOyw_aem_FXdM4wj8V7aQdQtP3vu-LQ"
+          href="https://www.helloasso.com/associations/les-arpenteurs-d-abrasia"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -286,6 +304,7 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Modal pour afficher les détails d'une partie */}
       <Modal isOpen={isPostCardsOpen} onClose={() => setIsPostCardsOpen(false)}>
         {postData && <DisplayPlayers postData={postData} />}
       </Modal>

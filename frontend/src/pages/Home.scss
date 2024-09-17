@@ -311,7 +311,7 @@
     margin-bottom: 16px;
     box-shadow: 0 2px 4px rgba(250, 249, 249, 0.1);
     width: 30%;
-    height: auto;
+    height: 120px;
     display: flex;
     flex-wrap: wrap;
     // justify-content: space-between;
@@ -359,11 +359,11 @@
           // justify-content: flex-end;
           // align-items: center;
           font-size: 2vw;
-          width: 100%;
+          width: 50%;
 
           .logoPlayer {
-            width: 5vw;
-            height: auto;
+            width: 2vw;
+            height: 2vw;
           }
         }
       }
