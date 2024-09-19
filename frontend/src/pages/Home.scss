@@ -80,37 +80,18 @@
     flex-direction: column;
     align-items: center;
 
-    .titreh2 {
-      font-size: clamp(1rem, 0.3043rem + 3.4783vw, 3rem);
-      width: 75%;
+    .titre1 {
+      font-size: clamp(0.5rem, 0.2043rem + 3.4783vw, 2rem);
+      width: 56%;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       margin-top: 0px;
       line-height: 1.5;
-      // font-size: 1rem;
       font-family: "Poppins", Poppins;
-      // text-align: justify;
       z-index: 10;
-      // padding-left: 2em;
-      // padding-right: 2em;
-      // padding: 20px;
-
-      // @media only screen and (min-width: 1024px) {
-      //   font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      //   margin-top: 0px;
-      // }
-
-      // @media only screen and (min-width: 1144px) {
-      //   font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      //   margin-top: 0px;
-      // }
-
-      // @media only screen and (min-width: 2560px) {
-      //   font-size: 3rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      //   margin-top: -150px;
-      // }
+      margin-bottom: 50px;
     }
 
     .boxMage {
@@ -137,6 +118,11 @@
         @media only screen and (max-width: 425px) {
           font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
           width: 80%;
+        }
+
+        .paragraphe1 {
+          margin-bottom: 20px;
+          font-size: 1.2rem;
         }
       }
 
@@ -178,6 +164,17 @@
         font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
         width: 80%;
       }
+      .titre2 {
+        font-size: clamp(0.5rem, 0.2043rem + 3.4783vw, 2rem);
+        width: 60%;
+        margin-top: 30px;
+        font-family: "Poppins", Poppins;
+        margin-bottom: 30px;
+      }
+      .paragraphe1 {
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+      }
     }
 
     .boxImagePresentationJDR {
@@ -197,15 +194,27 @@
     align-items: center;
     text-align: justify;
 
+    .titre2 {
+      font-size: clamp(0.5rem, 0.2043rem + 3.4783vw, 2rem);
+      width: 60%;
+      margin-top: 30px;
+      font-family: "Poppins", Poppins;
+      margin-bottom: 30px;
+    }
+
+    .paragraphe1 {
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
     .boxTextCitadel {
-      font-size: 1.5em;
+      font-size: 0.9em;
       font-family: "Poppins", Poppins;
       padding-top: 20px;
       padding-bottom: 20px;
       width: 50%;
 
       @media only screen and (max-width: 1440px) {
-        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
       }
 
       @media only screen and (max-width: 768px) {
@@ -226,7 +235,7 @@
       width: 50%;
 
       @media only screen and (max-width: 1440px) {
-        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
       }
 
       @media only screen and (max-width: 768px) {

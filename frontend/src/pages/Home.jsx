@@ -116,7 +116,7 @@ export default function Home() {
         {/* Contenu de présentation */}
         <div className="containeurPresentation">
           <div className="containeurPresentationbis">
-            <div className="titreh2">
+            <div className="titre1">
               <h2>
                 Oubliez Netflix pour plonger dans l'aventure avec l'Association
                 de jeux de rôle des Arpenteurs d'Abrasia
@@ -124,7 +124,7 @@ export default function Home() {
             </div>
             <div className="boxMage">
               <div className="boxTextMage">
-                <p>
+                <p className="paragraphe1">
                   Bienvenue, <br />
                   Les Arpenteurs d’Abrasia sont une association qui organise des
                   parties de jeu de rôle sur table. Nous jouons principalement
@@ -138,26 +138,29 @@ export default function Home() {
           </div>
           <div className="boxPresentationJDR">
             <div className="boxTextPresentationJDR">
-              <p>
-                C’est quoi le jeu de rôle ? Le jeu de rôle est un loisir qui se
-                pratique en petits groupes (entre 3 et 6 personnes) autour d'une
-                table. Une personne prend le rôle de meneuse de jeu et raconte
-                une histoire dans laquelle chacune des personnes attablées
-                incarne un personnage. Le but est d’imaginer et mettre en place
-                collectivement des solutions pour déjouer les pièges et mener à
-                bien l’aventure... À condition que les dés le permettent !
+              <h2 className="titre2">C’est quoi le jeu de rôle ?</h2>
+
+              <p className="paragraphe1">
+                Le jeu de rôle est un loisir qui se pratique en petits groupes
+                (entre 3 et 6 personnes) autour d'une table. Une personne prend
+                le rôle de meneuse de jeu et raconte une histoire dans laquelle
+                chacune des personnes attablées incarne un personnage. Le but
+                est d’imaginer et mettre en place collectivement des solutions
+                pour déjouer les pièges et mener à bien l’aventure... À
+                condition que les dés le permettent !
               </p>
             </div>
             <div className="boxImagePresentationJDR"></div>
           </div>
           <div className="boxCitadel">
             <div className="boxTextCitadel">
-              <p>
-                Présentation de l’asso : L'association des Arpenteurs d'Abrasia
-                (AA) a une double vocation ludique et culturelle. Elle a pour
-                objet de réunir des joueurs et joueuses de façon régulière
-                autour de tables de jeu de rôle (jdr) afin de partager des
-                moments conviviaux et inclusifs.
+              <h2 className="titre2">Présentation de l’asso :</h2>
+              <p className="paragraphe1">
+                L'association des Arpenteurs d'Abrasia (AA) a une double
+                vocation ludique et culturelle. Elle a pour objet de réunir des
+                joueurs et joueuses de façon régulière autour de tables de jeu
+                de rôle (jdr) afin de partager des moments conviviaux et
+                inclusifs.
               </p>
             </div>
             <div className="boxTextCitadelBis">
