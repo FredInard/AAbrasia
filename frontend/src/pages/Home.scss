@@ -1,40 +1,45 @@
 @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:ital,wght@0,400;1,100&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:wght@100&display=swap");
-.custom-event {
-  /* Ajoutez vos styles personnalisés ici */
-  border-radius: 50%; /* Exemple : forme de cercle */
-  background-color: #3498db; /* Exemple : couleur de fond */
-  color: #ffffff; /* Exemple : couleur du texte */
+
+/* Variables pour les couleurs et les polices */
+$primary-color: #ec7625;
+$secondary-color: #ffffff;
+$accent-color: #c6500b;
+$font-primary: "Poppins", sans-serif;
+$font-secondary: "MedievalSharp", serif;
+
+/* Mixins pour les médias queries */
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == small {
+    @media only screen and (max-width: 425px) {
+      @content;
+    }
+  } @else if $breakpoint == medium {
+    @media only screen and (max-width: 768px) {
+      @content;
+    }
+  } @else if $breakpoint == large {
+    @media only screen and (max-width: 1440px) {
+      @content;
+    }
+  }
 }
 
-.dayContener {
-  cursor: pointer; /* Permet de montrer que l'élément est cliquable */
-  padding: 5px;
-  border: 1px solid #ccc;
-  /* Ajoutez d'autres styles CSS selon vos besoins */
-}
-
-.dayContener:hover {
-  background-color: #f0f0f0; /* Changement de couleur au survol */
-}
-
+/* Conteneur principal */
 .ContaineurPrincipal {
   display: flex;
   flex-direction: column;
 
   .image-crossfader {
-    /*height: 100vh;
-    position: relative;*/
-
     .image-crossfader__img {
       height: 150%;
       width: 100%;
       object-fit: cover;
-      opacity: 0%;
-      transition: opacity 1500ms ease-in;
+      opacity: 0;
+      transition: opacity 1.5s ease-in;
       position: absolute;
-      // mask-image: linear-gradient(to top, rgb(6, 1, 39) 1%, transparent 95%);
       mask-image: linear-gradient(to bottom, rgb(6, 1, 39) 0%, transparent 60%);
+
       &--visible {
         opacity: 1;
       }
@@ -50,30 +55,32 @@
     .logoBaner {
       margin-top: 10vh;
       width: 75%;
-      z-index: +500; /* Augmentez la valeur de z-index pour placer l'image au-dessus de la bannière */
+      z-index: 500; /* Positionne l'image au-dessus de la bannière */
 
       @media only screen and (min-width: 481px) {
-        margin-top: 20vh; /* Ajustez la valeur pour les écrans plus larges */
+        margin-top: 20vh;
       }
 
       @media only screen and (min-width: 769px) {
-        margin-top: 10vh; /* Ajustez la valeur pour les écrans encore plus larges */
+        margin-top: 10vh;
       }
+
       @media only screen and (min-width: 1243px) {
-        margin-top: -5vh; /* Ajustez la valeur pour les écrans encore plus larges */
+        margin-top: -5vh;
       }
 
       @media only screen and (min-width: 2000px) {
-        margin-top: -7vh; /* Ajustez la valeur pour les écrans encore plus larges */
+        margin-top: -7vh;
       }
 
       @media only screen and (min-width: 2560px) {
-        margin-top: -7vh; /* Ajustez la valeur pour les écrans encore plus larges */
+        margin-top: -7vh;
       }
     }
   }
 }
 
+/* Contenu de présentation */
 .containeurPresentation {
   .containeurPresentationbis {
     display: flex;
@@ -81,42 +88,36 @@
     align-items: center;
 
     .titre1 {
-      font-size: clamp(0.5rem, 0.2043rem + 3.4783vw, 2rem);
+      font-size: clamp(1rem, 0.5rem + 3vw, 2rem);
       width: 56%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       text-align: center;
-      margin-top: 0px;
+      margin: 0 0 50px;
       line-height: 1.5;
-      font-family: "Poppins", Poppins;
+      font-family: $font-primary;
       z-index: 10;
-      margin-bottom: 50px;
     }
 
     .boxMage {
       display: flex;
-      align-items: center;
       flex-direction: column;
+      align-items: center;
 
       .boxTextMage {
-        font-size: 1.5em;
+        font-size: 1.5rem;
         text-align: justify;
-        // padding: 20px;
         width: 50%;
-        margin-bottom: 50px;
-        margin-top: 20px;
+        margin: 20px 0 50px;
 
-        @media only screen and (max-width: 1440px) {
-          font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        @include respond-to(large) {
+          font-size: 1.5rem;
         }
 
-        @media only screen and (max-width: 768px) {
-          font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        @include respond-to(medium) {
+          font-size: 1.2rem;
         }
 
-        @media only screen and (max-width: 425px) {
-          font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+        @include respond-to(small) {
+          font-size: 1rem;
           width: 80%;
         }
 
@@ -129,125 +130,53 @@
       .boxImageMage {
         width: 100%;
         height: 500px;
-        // border: solid red;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-image: url(../assets/pics/wizard.svg);
+        background: url(../assets/pics/wizard.svg) center/cover no-repeat fixed;
       }
     }
   }
 
-  .boxPresentationJDR {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: justify;
-
-    .boxTextPresentationJDR {
-      font-size: 1.5em;
-      font-family: "Poppins", Poppins;
-      padding-top: 20px;
-      padding-bottom: 20px;
-      width: 50%;
-
-      @media only screen and (max-width: 1440px) {
-        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 768px) {
-        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 425px) {
-        font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
-        width: 80%;
-      }
-      .titre2 {
-        font-size: clamp(0.5rem, 0.2043rem + 3.4783vw, 2rem);
-        width: 60%;
-        margin-top: 30px;
-        font-family: "Poppins", Poppins;
-        margin-bottom: 30px;
-      }
-      .paragraphe1 {
-        margin-bottom: 20px;
-        font-size: 1.2rem;
-      }
-    }
-
-    .boxImagePresentationJDR {
-      width: 100%;
-      height: 500px;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-image: url(../assets/pics/goAdventure.png);
-    }
-  }
-
+  .boxPresentationJDR,
   .boxCitadel {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: justify;
 
-    .titre2 {
-      font-size: clamp(0.5rem, 0.2043rem + 3.4783vw, 2rem);
-      width: 60%;
-      margin-top: 30px;
-      font-family: "Poppins", Poppins;
-      margin-bottom: 30px;
-    }
-
-    .paragraphe1 {
-      margin-bottom: 20px;
-      font-size: 1.2rem;
-    }
-    .boxTextCitadel {
-      font-size: 0.9em;
-      font-family: "Poppins", Poppins;
-      padding-top: 20px;
-      padding-bottom: 20px;
-      width: 50%;
-
-      @media only screen and (max-width: 1440px) {
-        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 768px) {
-        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 425px) {
-        font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
-        width: 80%;
-      }
-    }
-
+    .boxTextPresentationJDR,
+    .boxTextCitadel,
     .boxTextCitadelBis {
-      font-size: 1.5em;
-      font-family: "Poppins", Poppins;
-      padding-top: 20px;
-      padding-bottom: 20px;
+      font-size: 1.5rem;
+      font-family: $font-primary;
+      padding: 20px 0;
       width: 50%;
 
-      @media only screen and (max-width: 1440px) {
-        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
+      @include respond-to(large) {
+        font-size: 1.2rem;
       }
 
-      @media only screen and (max-width: 768px) {
-        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
+      @include respond-to(medium) {
+        font-size: 1.2rem;
       }
 
-      @media only screen and (max-width: 425px) {
-        font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
+      @include respond-to(small) {
+        font-size: 1rem;
         width: 80%;
+      }
+
+      .titre2 {
+        font-size: clamp(1rem, 0.5rem + 3vw, 2rem);
+        width: 60%;
+        margin: 30px 0;
+        font-family: $font-primary;
+      }
+
+      .paragraphe1 {
+        margin-bottom: 20px;
+        font-size: 1.2rem;
       }
     }
 
+    .boxImagePresentationJDR,
     .boxImageCitadel {
       width: 100%;
       height: 500px;
@@ -255,227 +184,111 @@
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
+    }
+
+    .boxImagePresentationJDR {
+      background-image: url(../assets/pics/goAdventure.png);
+    }
+
+    .boxImageCitadel {
       background-image: url(../assets/pics/CitadelOfSisteron.png);
     }
   }
 }
 
+/* Section Agenda */
 .agendaDesParties {
-  // margin-top: 0;
-  // line-height: 1.5;
-  // font-size: 3vw;
-  // font-family: "Poppins", Poppins;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin: 20px 0;
 
   .titreAPartie {
-    font-size: clamp(1rem, 0.3043rem + 3.4783vw, 3rem);
+    font-size: clamp(1rem, 0.5rem + 3vw, 3rem);
     padding: 10px;
   }
 
   .agenda {
     display: flex;
     justify-content: center;
-    height: 90%;
     width: 65%;
-    @media only screen and (max-width: 1440px) {
-      width: 90%; /* Ajustez la valeur pour les écrans encore plus larges */
+    height: 90%;
+
+    @include respond-to(large) {
+      width: 90%;
       height: 80%;
     }
 
-    @media only screen and (max-width: 768px) {
-      width: 90%; /* Ajustez la valeur pour les écrans encore plus larges */
+    @include respond-to(medium) {
+      width: 90%;
       height: 60%;
     }
 
-    @media only screen and (max-width: 425px) {
-      height: 400px; /* Ajustez la valeur pour les écrans encore plus larges */
+    @include respond-to(small) {
       width: 95%;
+      height: 400px;
     }
   }
 }
 
-.containeurCards {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding-top: 10px;
-  margin-top: 20px;
-  width: 100%;
-  max-width: 1000px;
-  // min-width: 380px;
-
-  .globalContainerCard {
-    // background-color: rgba(20, 184, 197, 1);
-    background-color: rgba(255, 255, 255, 0.657);
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    color: rgb(6, 1, 39);
-    padding: 16px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 4px rgba(250, 249, 249, 0.1);
-    width: 30%;
-    height: 120px;
-    display: flex;
-    flex-wrap: wrap;
-    // justify-content: space-between;
-    // align-items: center;
-    will-change: transform;
-    transition: all 0.3s ease-in-out;
-    width: 80%;
-
-    .titleContainerCard {
-      font-size: clamp(1rem, 0.3043rem + 3.4783vw, 2rem);
-      align-items: center;
-    }
-
-    .miniBoxInfo {
-      display: flex;
-      // font-size: 16px;
-      // flex-direction: row;
-      // flex-wrap: nowrap;
-      align-items: center;
-      width: 100%;
-      justify-content: space-between;
-      // gap: 25px;
-
-      .allInfoItem {
-        display: flex;
-        flex-direction: column;
-        font-size: clamp(1rem, 0.3043rem + 3.4783vw, 1.5rem);
-        align-items: center;
-
-        .infoItem {
-          text-align: left;
-        }
-        .maitre-du-jeu-photo {
-          height: 50px;
-          border-radius: 50%;
-        }
-      }
-      .maxPlayerInfoItem {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-
-        .logoPlayerAndMaxPlayer {
-          // display: flex;
-          // justify-content: flex-end;
-          // align-items: center;
-          font-size: 2vw;
-          width: 50%;
-
-          .logoPlayer {
-            width: 2vw;
-            height: 2vw;
-          }
-        }
-      }
-    }
-  }
-
-  .globalContainerCard:hover {
-    border-color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.857);
-    transform: scale(1.025);
-    border: 2px solid #ccc;
-    cursor: pointer;
-  }
-
-  .boxMaxPlayerCard {
-    font-weight: bold;
-    color: #333;
-    display: flex;
-    align-items: center;
-
-    .NombreJoueur {
-      padding-right: 50px;
-      font-size: 2vw;
-    }
-
-    .playerIcon {
-      width: auto;
-      height: 100px;
-      padding-right: 30px;
-    }
-  }
-
-  .boxInfoCard {
-    color: #888;
-  }
-}
-.displayPlayers-container .post-card {
-  border: solid 2px white;
-  border-radius: 10px;
-  margin-bottom: 20px; /* Ajoutez la marge en bas pour créer un espace entre les post-cards */
-}
-
+/* Section des liens et partenaires */
 .boxLienAsso {
-  background-color: none; // Fond blanc pour correspondre aux sections principales
+  background-color: transparent;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Ombre pour donner de la profondeur
-  margin: 30px auto; // Espacement autour de la boîte
-  max-width: 800px; // Limite de largeur pour un bon centrage
-  border: 2px solid #ec7625; // Bordure pour correspondre à votre palette de couleurs principale
+  margin: 30px auto;
+  max-width: 800px;
+  border: 2px solid $primary-color;
 
   .asso-title {
-    color: #ffffff; // Couleur d'accent principale du site
-    font-family: "Poppins", serif; // Police médiévale pour rester dans le thème
-    font-size: 1.8em;
+    color: $secondary-color;
+    font-family: $font-secondary;
+    font-size: 1.8rem;
     margin-bottom: 15px;
-    text-align: center; // Centrage des titres
-    border-top: 1px solid #ec7625; //Ligne de séparation pour le style
+    text-align: center;
+    border-top: 1px solid $primary-color;
     padding-bottom: 10px;
   }
 
-  .asso-text {
-    color: #333; // Couleur de texte foncée pour un bon contraste
-    font-family: "Poppins", sans-serif;
+  .asso-text,
+  .asso-link {
+    color: #333;
+    font-family: $font-primary;
     line-height: 1.8;
     margin: 15px 0;
-    text-align: justify; // Justification pour un alignement propre du texte
-    font-size: 1em; // Taille de police standard
+    text-align: justify;
+    font-size: 1rem;
   }
 
   .asso-link {
-    color: #ffffff; // Utilisation de la couleur d'accent pour les liens
-    font-family: "Poppins", sans-serif;
-    line-height: 1.8;
-    margin: 10px 0;
+    color: $secondary-color;
     text-align: center;
-    cursor: pointer; // Pour indiquer que c'est cliquable
-    text-decoration: none; // Supprime le soulignement par défaut
+    cursor: pointer;
+    text-decoration: none;
     transition: color 0.3s ease, text-decoration 0.3s ease;
 
     &:hover {
-      color: #c6500b; // Couleur légèrement plus foncée au survol
-      text-decoration: underline; // Apparition du soulignement au survol
+      color: $accent-color;
+      text-decoration: underline;
     }
   }
 
   .asso-icons {
     display: flex;
-    justify-content: center; // Centrer les icônes
+    justify-content: center;
     margin-top: 20px;
-  }
 
-  .asso-icon {
-    display: inline-block;
-    margin: 0 10px;
-    width: 35px; // Taille standard des icônes
-    height: auto;
-    cursor: pointer;
-    transition: transform 0.3s ease, filter 0.3s ease;
+    .asso-icon {
+      margin: 0 10px;
+      width: 35px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.3s ease, filter 0.3s ease;
 
-    &:hover {
-      transform: scale(1.1); // Léger zoom au survol
-      filter: brightness(1.2); // Effet de brillance au survol
+      &:hover {
+        transform: scale(1.1);
+        filter: brightness(1.2);
+      }
     }
   }
 }

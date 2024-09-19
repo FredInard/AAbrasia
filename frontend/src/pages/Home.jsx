@@ -1,5 +1,5 @@
 // Importation des dépendances
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 
@@ -7,7 +7,9 @@ import Cookies from "js-cookie"
 import NavBar from "../components/NavBar"
 import DisplayPlayers from "../components/DisplayPlayers"
 import Modal from "../components/Modal"
-import CalendarComponent from "../components/CalendarComponent" // Importation du nouveau composant Calendar
+import CalendarComponent from "../components/CalendarComponent" // Importation du composant Calendar
+import ImageCrossfader from "../components/ImageCrossfader" // Nouveau composant pour l'animation d'images
+import PartiesList from "../components/PartiesList" // Nouveau composant pour la liste des parties
 
 // Importation des styles et des images
 import "./Home.scss"
@@ -18,21 +20,19 @@ import Elf1 from "../assets/pics/elfLikeDnD.svg"
 import Elf2 from "../assets/pics/elfLikeDnD2.jpg"
 import wizard2 from "../assets/pics/wizard2.jpg"
 import logoAiW from "../assets/pics/logoAiW.svg"
-import LogoPlayers from "../assets/pics/playerIcon.svg"
 import iconeDiscorde from "../assets/pics/iconeDiscorde.svg"
 import iconeFacebook from "../assets/pics/iconeFacebook2.svg"
 import iconeMail from "../assets/pics/iconeGmail.svg"
 import money from "../assets/pics/money.svg"
 
 export default function Home() {
-  // États pour gérer les données
+  // États pour gérer les données des parties
   const [parties, setParties] = useState([]) // Liste des parties (événements)
   const [selectedDate, setSelectedDate] = useState(null) // Date sélectionnée par l'utilisateur
-  const [isPostCardsOpen, setIsPostCardsOpen] = useState(false) // État du modal d'affichage des détails
+  const [isPostCardsOpen, setIsPostCardsOpen] = useState(false) // État du modal pour afficher les détails d'une partie
   const [postData, setPostData] = useState(null) // Données de la partie sélectionnée
 
-  // États pour la gestion de l'animation d'images
-  const [indexVisible, setIndexVisible] = useState(0)
+  // Images pour l'animation d'images
   const images = [King, Queen, Merchan, Elf1, Elf2, wizard2]
 
   // Récupération du token d'authentification depuis les cookies
@@ -47,38 +47,32 @@ export default function Home() {
   }
 
   // Fonction pour charger les événements (parties) depuis l'API
-  const fetchEvents = () => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie/affichage`, { headers })
-      .then((res) => {
-        // Transformation des données pour FullCalendar
-        const events = res.data.map((partie) => ({
-          id: partie.id,
-          title: partie.Titre,
-          start: partie.Date, // Assure-toi que partie.Date est au format ISO 8601
-          extendedProps: {
-            // Propriétés supplémentaires
-            partieData: partie, // On stocke toutes les données de la partie pour un accès facile
-          },
-        }))
-        setParties(events)
-      })
-      .catch((err) => {
-        console.error("Problème lors du chargement des parties", err)
-      })
-  }
+  const fetchEvents = useCallback(async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/partie/affichage`,
+        { headers }
+      )
+      // Transformation des données pour le calendrier
+      const events = res.data.map((partie) => ({
+        id: partie.id,
+        title: partie.Titre,
+        start: partie.Date, // Assurez-vous que partie.Date est au format ISO 8601
+        extendedProps: {
+          // Propriétés supplémentaires
+          partieData: partie, // On stocke toutes les données de la partie pour un accès facile
+        },
+      }))
+      setParties(events)
+    } catch (err) {
+      console.error("Problème lors du chargement des parties", err)
+    }
+  }, [headers])
 
-  // useEffect pour charger les événements à l'initialisation du composant
+  // Chargement des événements à l'initialisation du composant
   useEffect(() => {
     fetchEvents()
-
-    // Gestion de l'animation des images
-    const interval = setInterval(() => {
-      setIndexVisible((prevIndex) => (prevIndex + 1) % images.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [])
+  }, [fetchEvents])
 
   // Fonction pour gérer le clic sur une carte d'événement
   const handlePostClick = (partie) => {
@@ -88,21 +82,15 @@ export default function Home() {
 
   return (
     <>
+      {/* Barre de navigation */}
       <NavBar className="NavBarHome" />
+
+      {/* Conteneur principal */}
       <div className="ContaineurPrincipal">
         {/* Animation d'images */}
-        <div className="image-crossfader">
-          {images.map((src, index) => (
-            <img
-              key={index}
-              className={`image-crossfader__img ${
-                index === indexVisible ? "image-crossfader__img--visible" : ""
-              }`}
-              src={src}
-              alt={`crossfader image ${index + 1}`}
-            />
-          ))}
-        </div>
+        <ImageCrossfader images={images} />
+
+        {/* Section du logo */}
         <div className="scene">
           <div className="containeurLogo">
             <img
@@ -194,62 +182,11 @@ export default function Home() {
 
         {/* Affichage des parties pour la date sélectionnée */}
         {!isPostCardsOpen && selectedDate && (
-          <div className="containeurCards">
-            {parties.filter((event) => {
-              // Filtre les événements pour la date sélectionnée
-              const eventDate = new Date(event.start).toDateString()
-              const selected = new Date(selectedDate).toDateString()
-              return eventDate === selected
-            }).length === 0 ? (
-              <div className="no-events-message">
-                Désolé, il n'y a pas encore de partie programmée pour cette
-                date.
-              </div>
-            ) : (
-              parties
-                .filter((event) => {
-                  const eventDate = new Date(event.start).toDateString()
-                  const selected = new Date(selectedDate).toDateString()
-                  return eventDate === selected
-                })
-                .map((event) => (
-                  <div
-                    key={event.id}
-                    className="globalContainerCard"
-                    onClick={() =>
-                      handlePostClick(event.extendedProps.partieData)
-                    }
-                  >
-                    <div className="miniBoxInfo">
-                      <div className="allInfoItem">
-                        <img
-                          src={`${import.meta.env.VITE_BACKEND_URL}/${
-                            event.extendedProps.partieData
-                              .PhotoProfilMaitreDuJeu
-                          }`}
-                          alt="Photo du Maître du Jeu"
-                          className="maitre-du-jeu-photo"
-                        />
-                      </div>
-                      <div className="infoItem">
-                        {event.extendedProps.partieData.PseudoMaitreDuJeu}
-                      </div>
-                    </div>
-                    <div className="titleContainerCard">{event.title}</div>
-                    <div className="maxPlayerInfoItem">
-                      <div className="logoPlayerAndMaxPlayer">
-                        <img
-                          className="logoPlayer"
-                          src={LogoPlayers}
-                          alt="logo d'un joueur"
-                        />
-                        X{event.extendedProps.partieData.NombreJoueur}
-                      </div>
-                    </div>
-                  </div>
-                ))
-            )}
-          </div>
+          <PartiesList
+            parties={parties}
+            selectedDate={selectedDate}
+            onPostClick={handlePostClick}
+          />
         )}
       </div>
 

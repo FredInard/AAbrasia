@@ -1,0 +1,131 @@
+/* Import des polices ou variables si nécessaire */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+/* Variables pour les couleurs et polices */
+$primary-color: #ec7625;
+$secondary-color: #ffffff;
+$accent-color: #c6500b;
+$text-color: rgb(6, 1, 39);
+$font-family: "Poppins", sans-serif;
+
+/* Mixins pour la responsivité */
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == small {
+    @media only screen and (max-width: 425px) {
+      @content;
+    }
+  } @else if $breakpoint == medium {
+    @media only screen and (max-width: 768px) {
+      @content;
+    }
+  } @else if $breakpoint == large {
+    @media only screen and (max-width: 1024px) {
+      @content;
+    }
+  }
+}
+
+/* Conteneur des cartes */
+.containeurCards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 20px;
+
+  /* Carte individuelle */
+  .globalContainerCard {
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    color: $text-color;
+    padding: 16px;
+    min-width: 350px;
+    width: calc(33.333% - 40px); // Trois cartes par ligne avec l'espace
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    /* Effet au survol */
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Ajustements responsifs */
+    @include respond-to(medium) {
+      width: calc(50% - 30px); // Deux cartes par ligne
+    }
+
+    @include respond-to(small) {
+      width: calc(100% - 40px); // Une carte par ligne
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Section de gauche : Maître du Jeu */
+    .leftSection {
+      display: flex;
+      align-items: center;
+
+      .maitre-du-jeu-photo {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+      }
+
+      .infoItem {
+        font-size: 1rem;
+        font-weight: 600;
+        font-family: $font-family;
+      }
+    }
+
+    /* Section centrale : Titre de la partie */
+    .centerSection {
+      flex-grow: 1;
+      text-align: center;
+
+      .titleContainerCard {
+        font-size: 1.2rem;
+        font-weight: 600;
+        font-family: $font-family;
+        margin: 0 10px;
+      }
+    }
+
+    /* Section de droite : Nombre de joueurs */
+    .rightSection {
+      display: flex;
+      align-items: center;
+
+      .logoPlayerAndMaxPlayer {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        font-family: $font-family;
+
+        .logoPlayer {
+          width: 30px;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
+
+/* Message lorsqu'il n'y a pas d'événements */
+.no-events-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: $text-color;
+  margin-top: 20px;
+  font-family: $font-family;
+}
