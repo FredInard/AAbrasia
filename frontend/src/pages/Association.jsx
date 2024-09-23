@@ -2,7 +2,7 @@
 // import axios from "axios"
 // import Cookies from "js-cookie"
 
-import NavBar from "../components/NavBar"
+import NavBar from "../components/NavBar/NavBar"
 
 export default function Association() {
   return (

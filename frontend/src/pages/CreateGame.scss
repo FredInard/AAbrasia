@@ -1,90 +1,53 @@
-.createGameGlobal {
-  display: flex;
-  height: 100vh;
+.creer-partie-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input,
+textarea,
+select {
   width: 100%;
-  flex-direction: column;
-  align-items: center;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-  .boxPictureOrc {
-    margin-top: 100px;
-    width: 50%;
-    width: 100%; /* Largeur du conteneur, ajustez selon vos besoins */
-    height: 100vh; /* Hauteur du conteneur, ajustez selon vos besoins */
-    background-image: url("../assets/pics/orc.svg"); /* URL de votre image */
-    background-size: cover; /* La propriété qui fait zoomer l'image */
-    background-position: right center; /* Centrez l'image horizontalement et verticalement */
-    -webkit-mask-image: linear-gradient(
-      to right,
-      rgb(6, 1, 39) 10%,
-      transparent 90%
-    );
-    mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
+textarea {
+  resize: vertical;
+}
 
-    @media screen and (max-width: 441px) {
-      margin-top: 100px;
-      width: 100%; /* Largeur du conteneur, ajustez selon vos besoins */
-      height: 100vh; /* Hauteur du conteneur, ajustez selon vos besoins */
-      background-image: url("../assets/pics/orc.svg"); /* URL de votre image */
-      background-size: cover; /* La propriété qui fait zoomer l'image */
-      background-position: 80% center; /* Centrez l'image horizontalement et verticalement */
-      -webkit-mask-image: linear-gradient(
-        to right,
-        rgb(6, 1, 39) 10%,
-        transparent 90%
-      );
-      mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
-    }
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #ffbb52;
+  color: #fff;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-    .orcPicture {
-      // width: auto;
-      // height: 100vh;
-      // -webkit-mask-image: linear-gradient(
-      //   to right,
-      //   rgb(6, 1, 39) 10%,
-      //   transparent 90%
-      // );
-      // mask-image: linear-gradient(to right, rgb(6, 1, 39) 10%, transparent 90%);
-    }
-  }
-
-  .createGameForm {
-    position: absolute;
-    top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    background-color: #f0f0f04d;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 200px;
-    min-width: 300px;
-
-    input {
-      margin: 10px;
-      padding: 10px;
-      width: 95%;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 18px;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: #010a13;
-      }
-    }
-  }
+.btn-submit:hover {
+  background-color: #ffa733;
 }

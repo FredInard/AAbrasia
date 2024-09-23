@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import "./Calendar.scss" // Assurez-vous que le chemin vers votre fichier CSS est correct
-import ArrowLeftCal from "../assets/pics/arrow-circle-left-svgrepo-com.svg"
-import ArrowRightCal from "../assets/pics/arrow-circle-right-svgrepo-com.svg"
+import ArrowLeftCal from "../../assets/pics/arrow-circle-left-svgrepo-com.svg"
+import ArrowRightCal from "../../assets/pics/arrow-circle-right-svgrepo-com.svg"
 
 export default function Calendar({ onDateSelect }) {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())

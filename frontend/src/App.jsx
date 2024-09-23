@@ -1,5 +1,4 @@
-import "./App.css"
-
+import "./App.scss"
 import React from "react"
 import {
   BrowserRouter as Router,
@@ -8,43 +7,22 @@ import {
   Navigate,
 } from "react-router-dom"
 import Home from "./pages/Home"
-import Inscription from "./pages/Inscription"
 import CreateGame from "./pages/CreateGame"
-import Creations from "./pages/Creations"
-import Association from "./pages/Association"
-import Profil from "./pages/Profil"
-import AdminPage from "./pages/AdminPage"
-import Cookies from "js-cookie"
+import About from "./pages/Association"
+// import Cookies from "js-cookie"
 
 function App() {
-  const isAuthenticated = Cookies.get("authToken") !== undefined
-  const isAdmin = Cookies.get("adminUtilisateur") === "1"
+  // const isAuthenticated = Cookies.get("authToken") !== undefined
+  // const isAdmin = Cookies.get("adminUtilisateur") === "1"
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Inscription" element={<Inscription />} />
-        <Route
-          path="/create-game"
-          element={
-            isAuthenticated ? <CreateGame /> : <Navigate to="/Inscription" />
-          }
-        />
-        <Route path="/creations" element={<Creations />} />
-        <Route path="/association" element={<Association />} />
-        <Route
-          path="/profil"
-          element={
-            isAuthenticated ? <Profil /> : <Navigate to="/Inscription" />
-          }
-        />
-        {isAdmin && (
-          <Route
-            path="/admin"
-            element={isAdmin ? <AdminPage /> : <Navigate to="/" />}
-          />
-        )}
+        <Route path="/creer-partie" element={<CreateGame />} />
+        <Route path="/association" element={<About />} />
+        <Route path="*" element={<Navigate to="/" />} />{" "}
+        {/* Redirection si la route est incorrecte */}
       </Routes>
     </Router>
   )

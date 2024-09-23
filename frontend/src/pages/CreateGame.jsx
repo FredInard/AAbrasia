@@ -1,117 +1,155 @@
-import axios from "axios"
 import React, { useState } from "react"
-import Cookies from "js-cookie"
-import { toast, ToastContainer } from "react-toastify"
-import he from "he"
+import axios from "axios" // Si tu utilises axios pour les requêtes API
+import "./CreateGame.scss" // N'oublie pas d'ajouter un fichier de style si besoin
+import NavBar from "../components/NavBar/NavBar"
 
-import "react-toastify/dist/ReactToastify.css"
-import "./CreateGame.scss"
-
-import NavBar from "../components/NavBar"
-
-export default function CreateGame() {
-  const [rpgName, setRpgName] = useState("")
-  const [typeOfGame, setTypeOfGame] = useState("")
+const CreateGame = () => {
+  // État pour gérer les champs du formulaire
+  const [titre, setTitre] = useState("")
+  const [description, setDescription] = useState("")
   const [date, setDate] = useState("")
-  const [hour, setHour] = useState("")
-  const [place, setPlace] = useState("")
-  const [playersCapacity, setPlayersCapacity] = useState("")
-  const [desc, setDesc] = useState("")
+  const [nbMaxJoueurs, setNbMaxJoueurs] = useState(4) // Par défaut 4 joueurs
+  const [niveauDifficulte, setNiveauDifficulte] = useState("moyen")
+  const [lieu, setLieu] = useState("")
+  const [dureeEstimee, setDureeEstimee] = useState("")
 
-  const tokenFromCookie = Cookies.get("authToken")
-  const idUser = Cookies.get("idUtilisateur")
+  // Gestion de la soumission du formulaire
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    try {
+      // Construction des données à envoyer à l'API
+      const newPartie = {
+        titre,
+        description,
+        date,
+        nb_max_joueurs: nbMaxJoueurs,
+        niveau_difficulte: niveauDifficulte,
+        lieu,
+        duree_estimee: dureeEstimee,
+      }
 
-  const headers = {
-    Authorization: `Bearer ${tokenFromCookie}`,
-  }
-
-  const handleCreateGame = (e) => {
-    e.preventDefault()
-    // Encodage de la description avec he.encode
-    const encodedDesc = he.encode(desc)
-    const encodedRpgName = he.encode(rpgName)
-    const encodedTypeOfGame = he.encode(typeOfGame)
-    const encodedPlace = he.encode(place)
-    axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/partie`,
-        {
-          Titre: encodedRpgName,
-          Date: date,
-          Heure: hour,
-          Lieu: encodedPlace,
-          MaitreDuJeu: idUser,
-          Description: encodedDesc,
-          TypeDeJeux: encodedTypeOfGame,
-          NombreJoueur: playersCapacity,
-        },
-        { headers }
-      )
-      .then((res) => {
-        console.info("Partie en cours !")
-        if (res.status === 200 || res.status === 201) {
-          toast.success("Partie créée avec succès !")
-        }
-        document.getElementById("createGameForm").reset()
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la création de la partie :", error)
-        console.info("Erreur lors de la création de la partie")
-      })
+      // Requête POST à l'API pour créer une partie
+      const response = await axios.post("/api/partie", newPartie) // Mets ici l'URL de ton API
+      if (response.status === 201) {
+        alert("La partie a été créée avec succès !")
+        // Réinitialisation du formulaire après succès
+        setTitre("")
+        setDescription("")
+        setDate("")
+        setNbMaxJoueurs(4)
+        setNiveauDifficulte("moyen")
+        setLieu("")
+        setDureeEstimee("")
+      }
+    } catch (error) {
+      console.error("Erreur lors de la création de la partie :", error)
+      alert("Une erreur est survenue lors de la création de la partie.")
+    }
   }
 
   return (
     <>
-      <NavBar className="NavBarHome" />
-      <div className="createGameGlobal">
-        <div className="boxPictureOrc">
-          {/* <img src={orc} alt="portrait d'un orc" className="orcPicture" /> */}
-          <h1> Créer ton aventure : </h1>
-          <p>
-            Oyé Oyé talentueux maitre du jeux, cette espace t'es dédier afin que
-            tu puisse créer tes parties. Elles serons visible de tous alors
-            soigne ton écriture et recrute des joueurs pour une aventure épique.
-          </p>
-        </div>
-        <form
-          className="createGameForm"
-          id="createGameForm"
-          onSubmit={handleCreateGame}
-        >
-          <div className="createGameInputs">
-            <input
-              type="text"
-              placeholder="Nom de ton aventure"
-              onChange={(e) => setRpgName(e.target.value)}
-            />
+      <NavBar />
 
-            <input type="date" onChange={(e) => setDate(e.target.value)} />
-            <input type="time" onChange={(e) => setHour(e.target.value)} />
+      <div className="creer-partie-container">
+        <h1>Créer une nouvelle partie</h1>
+        <form onSubmit={handleSubmit}>
+          {/* Titre */}
+          <div className="form-group">
+            <label htmlFor="titre">Titre de la partie</label>
             <input
               type="text"
-              placeholder="Lieu"
-              onChange={(e) => setPlace(e.target.value)}
+              id="titre"
+              value={titre}
+              onChange={(e) => setTitre(e.target.value)}
+              required
             />
-            <input
-              type="text"
-              placeholder="Capacité max"
-              onChange={(e) => setPlayersCapacity(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="type de jeux"
-              onChange={(e) => setTypeOfGame(e.target.value)}
-            />
-            <input
-              type="textDescriptionOrc"
-              placeholder="description"
-              onChange={(e) => setDesc(e.target.value)}
-            />
-            <button type="submit">Créer ma partie</button>
           </div>
+
+          {/* Description */}
+          <div className="form-group">
+            <label htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Date */}
+          <div className="form-group">
+            <label htmlFor="date">Date de la partie</label>
+            <input
+              type="datetime-local"
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Nombre maximum de joueurs */}
+          <div className="form-group">
+            <label htmlFor="nbMaxJoueurs">Nombre maximum de joueurs</label>
+            <input
+              type="number"
+              id="nbMaxJoueurs"
+              value={nbMaxJoueurs}
+              min="1"
+              onChange={(e) => setNbMaxJoueurs(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Niveau de difficulté */}
+          <div className="form-group">
+            <label htmlFor="niveauDifficulte">Niveau de difficulté</label>
+            <select
+              id="niveauDifficulte"
+              value={niveauDifficulte}
+              onChange={(e) => setNiveauDifficulte(e.target.value)}
+              required
+            >
+              <option value="facile">Facile</option>
+              <option value="moyen">Moyen</option>
+              <option value="difficile">Difficile</option>
+            </select>
+          </div>
+
+          {/* Lieu */}
+          <div className="form-group">
+            <label htmlFor="lieu">Lieu</label>
+            <input
+              type="text"
+              id="lieu"
+              value={lieu}
+              onChange={(e) => setLieu(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Durée estimée */}
+          <div className="form-group">
+            <label htmlFor="dureeEstimee">Durée estimée (en heures)</label>
+            <input
+              type="number"
+              id="dureeEstimee"
+              value={dureeEstimee}
+              min="1"
+              onChange={(e) => setDureeEstimee(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Bouton de soumission */}
+          <button type="submit" className="btn-submit">
+            Créer la partie
+          </button>
         </form>
-        <ToastContainer />
       </div>
     </>
   )
 }
+
+export default CreateGame

@@ -1,472 +1,150 @@
-@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:ital,wght@0,400;1,100&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&family=Poppins:wght@100&display=swap");
-.custom-event {
-  /* Ajoutez vos styles personnalisés ici */
-  border-radius: 50%; /* Exemple : forme de cercle */
-  background-color: #3498db; /* Exemple : couleur de fond */
-  color: #ffffff; /* Exemple : couleur du texte */
-}
+// Home.scss
 
-.dayContener {
-  cursor: pointer; /* Permet de montrer que l'élément est cliquable */
-  padding: 5px;
-  border: 1px solid #ccc;
-  /* Ajoutez d'autres styles CSS selon vos besoins */
-}
+// Variables pour les polices
+$font-primary: "Poppins", sans-serif;
+$font-secondary: "system-ui", cursive; // Utilisée pour les titres
 
-.dayContener:hover {
-  background-color: #f0f0f0; /* Changement de couleur au survol */
-}
+// Styles globaux pour le composant Home
+.home {
+  // Envelopper tout le contenu dans une classe 'home' pour une meilleure spécificité
+  padding: 10%;
 
-.ContaineurPrincipal {
-  display: flex;
-  flex-direction: column;
-
-  .image-crossfader {
-    /*height: 100vh;
-    position: relative;*/
-
-    .image-crossfader__img {
-      height: 150%;
-      width: 100%;
-      object-fit: cover;
-      opacity: 0%;
-      transition: opacity 1500ms ease-in;
-      position: absolute;
-      // mask-image: linear-gradient(to top, rgb(6, 1, 39) 1%, transparent 95%);
-      mask-image: linear-gradient(to bottom, rgb(6, 1, 39) 0%, transparent 60%);
-      &--visible {
-        opacity: 1;
-      }
-    }
-  }
-
-  .containeurLogo {
+  // Style pour l'introduction
+  .intro {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 2rem;
+    background-color: var(--background-color); // Utilisation de la variable
+    border: solid red;
 
-    .logoBaner {
-      margin-top: 10vh;
-      width: 75%;
-      z-index: +500; /* Augmentez la valeur de z-index pour placer l'image au-dessus de la bannière */
-
-      @media only screen and (min-width: 481px) {
-        margin-top: 20vh; /* Ajustez la valeur pour les écrans plus larges */
-      }
-
-      @media only screen and (min-width: 769px) {
-        margin-top: 10vh; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-      @media only screen and (min-width: 1243px) {
-        margin-top: -5vh; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (min-width: 2000px) {
-        margin-top: -7vh; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (min-width: 2560px) {
-        margin-top: -7vh; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-    }
-  }
-}
-
-.containeurPresentation {
-  .containeurPresentationbis {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .titreh2 {
-      font-size: clamp(1rem, 0.3043rem + 3.4783vw, 3rem);
-      width: 75%;
-      display: flex;
+    // Responsivité pour les écrans mobiles
+    @media (max-width: 768px) {
       flex-direction: column;
-      align-items: center;
       text-align: center;
-      margin-top: 0px;
-      line-height: 1.5;
-      // font-size: 1rem;
-      font-family: "Poppins", Poppins;
-      // text-align: justify;
-      z-index: 10;
-      // padding-left: 2em;
-      // padding-right: 2em;
-      // padding: 20px;
-
-      // @media only screen and (min-width: 1024px) {
-      //   font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      //   margin-top: 0px;
-      // }
-
-      // @media only screen and (min-width: 1144px) {
-      //   font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      //   margin-top: 0px;
-      // }
-
-      // @media only screen and (min-width: 2560px) {
-      //   font-size: 3rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      //   margin-top: -150px;
-      // }
     }
 
-    .boxMage {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
+    // Première partie de l'intro (texte)
+    .intro1 {
+      flex: 1;
+      margin-right: 1rem;
+      border: solid red;
 
-      .boxTextMage {
-        font-size: 1.5em;
-        text-align: justify;
-        // padding: 20px;
-        width: 50%;
-        margin-bottom: 50px;
-        margin-top: 20px;
-
-        @media only screen and (max-width: 1440px) {
-          font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
-        }
-
-        @media only screen and (max-width: 768px) {
-          font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
-        }
-
-        @media only screen and (max-width: 425px) {
-          font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
-          width: 80%;
-        }
+      h1 {
+        font-family: $font-secondary;
+        font-size: 2.5rem;
+        color: var(--text-color); // Utilisation de la variable
+        margin-bottom: 1rem;
       }
 
-      .boxImageMage {
-        width: 100%;
-        height: 500px;
-        // border: solid red;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-image: url(../assets/pics/wizard.svg);
+      p {
+        font-family: $font-primary;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        color: var(--text-color); // Utilisation de la variable
+      }
+    }
+
+    // Deuxième partie de l'intro (image)
+    .intro2 {
+      flex: 1;
+      margin-left: 1rem;
+
+      img {
+        max-width: 70%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 10px 10px 15px 0px var(--accent-color);
       }
     }
   }
 
-  .boxPresentationJDR {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: justify;
-
-    .boxTextPresentationJDR {
-      font-size: 1.5em;
-      font-family: "Poppins", Poppins;
-      padding-top: 20px;
-      padding-bottom: 20px;
-      width: 50%;
-
-      @media only screen and (max-width: 1440px) {
-        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 768px) {
-        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 425px) {
-        font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
-        width: 80%;
-      }
-    }
-
-    .boxImagePresentationJDR {
-      width: 100%;
-      height: 500px;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-image: url(../assets/pics/goAdventure.png);
-    }
-  }
-
-  .boxCitadel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: justify;
-
-    .boxTextCitadel {
-      font-size: 1.5em;
-      font-family: "Poppins", Poppins;
-      padding-top: 20px;
-      padding-bottom: 20px;
-      width: 50%;
-
-      @media only screen and (max-width: 1440px) {
-        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 768px) {
-        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 425px) {
-        font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
-        width: 80%;
-      }
-    }
-
-    .boxTextCitadelBis {
-      font-size: 1.5em;
-      font-family: "Poppins", Poppins;
-      padding-top: 20px;
-      padding-bottom: 20px;
-      width: 50%;
-
-      @media only screen and (max-width: 1440px) {
-        font-size: 1.5rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 768px) {
-        font-size: 1.2rem; /* Ajustez la valeur pour les écrans encore plus larges */
-      }
-
-      @media only screen and (max-width: 425px) {
-        font-size: 1rem; /* Ajustez la valeur pour les écrans encore plus larges */
-        width: 80%;
-      }
-    }
-
-    .boxImageCitadel {
-      width: 100%;
-      height: 500px;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-image: url(../assets/pics/CitadelOfSisteron.png);
-    }
-  }
-}
-
-.agendaDesParties {
-  // margin-top: 0;
-  // line-height: 1.5;
-  // font-size: 3vw;
-  // font-family: "Poppins", Poppins;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-  margin-top: 20px;
-
-  .titreAPartie {
-    font-size: clamp(1rem, 0.3043rem + 3.4783vw, 3rem);
-    padding: 10px;
-  }
-
-  .agenda {
+  // Style pour le bouton d'appel à l'action (CTA)
+  .cta {
     display: flex;
     justify-content: center;
-    height: 90%;
-    width: 65%;
-    @media only screen and (max-width: 1440px) {
-      width: 90%; /* Ajustez la valeur pour les écrans encore plus larges */
-      height: 80%;
-    }
+    margin: 2rem 0;
 
-    @media only screen and (max-width: 768px) {
-      width: 90%; /* Ajustez la valeur pour les écrans encore plus larges */
-      height: 60%;
-    }
+    button {
+      padding: 1rem 2rem;
+      background-color: var(--accent-color); // Utilisation de la variable
+      color: var(--text-color); // Utilisation de la variable
+      border: none;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
 
-    @media only screen and (max-width: 425px) {
-      height: 400px; /* Ajustez la valeur pour les écrans encore plus larges */
-      width: 95%;
-    }
-  }
-}
-
-.containeurCards {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding-top: 10px;
-  margin-top: 20px;
-  width: 100%;
-  max-width: 1000px;
-  // min-width: 380px;
-
-  .globalContainerCard {
-    // background-color: rgba(20, 184, 197, 1);
-    background-color: rgba(255, 255, 255, 0.657);
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    color: rgb(6, 1, 39);
-    padding: 16px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 4px rgba(250, 249, 249, 0.1);
-    width: 30%;
-    height: auto;
-    display: flex;
-    flex-wrap: wrap;
-    // justify-content: space-between;
-    // align-items: center;
-    will-change: transform;
-    transition: all 0.3s ease-in-out;
-    width: 80%;
-
-    .titleContainerCard {
-      font-size: clamp(1rem, 0.3043rem + 3.4783vw, 2rem);
-      align-items: center;
-    }
-
-    .miniBoxInfo {
-      display: flex;
-      // font-size: 16px;
-      // flex-direction: row;
-      // flex-wrap: nowrap;
-      align-items: center;
-      width: 100%;
-      justify-content: space-between;
-      // gap: 25px;
-
-      .allInfoItem {
-        display: flex;
-        flex-direction: column;
-        font-size: clamp(1rem, 0.3043rem + 3.4783vw, 1.5rem);
-        align-items: center;
-
-        .infoItem {
-          text-align: left;
-        }
-        .maitre-du-jeu-photo {
-          height: 50px;
-          border-radius: 50%;
-        }
-      }
-      .maxPlayerInfoItem {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-
-        .logoPlayerAndMaxPlayer {
-          // display: flex;
-          // justify-content: flex-end;
-          // align-items: center;
-          font-size: 2vw;
-          width: 100%;
-
-          .logoPlayer {
-            width: 5vw;
-            height: auto;
-          }
-        }
+      &:hover {
+        background-color: var(--accent-color), 10%;
       }
     }
   }
 
-  .globalContainerCard:hover {
-    border-color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.857);
-    transform: scale(1.025);
-    border: 2px solid #ccc;
-    cursor: pointer;
-  }
+  // Style pour les sections d'information
+  .info1 {
+    padding: 2rem;
+    background-color: var(--background-color); // Utilisation de la variable
+    color: var(--text-color); // Utilisation de la variable
+    margin-bottom: 1rem;
 
-  .boxMaxPlayerCard {
-    font-weight: bold;
-    color: #333;
-    display: flex;
-    align-items: center;
-
-    .NombreJoueur {
-      padding-right: 50px;
-      font-size: 2vw;
+    h2 {
+      font-family: $font-secondary;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-color); // Utilisation de la variable
     }
 
-    .playerIcon {
-      width: auto;
-      height: 100px;
-      padding-right: 30px;
+    p {
+      font-family: $font-primary;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-color); // Utilisation de la variable
     }
-  }
 
-  .boxInfoCard {
-    color: #888;
-  }
-}
-.displayPlayers-container .post-card {
-  border: solid 2px white;
-  border-radius: 10px;
-  margin-bottom: 20px; /* Ajoutez la marge en bas pour créer un espace entre les post-cards */
-}
+    // Style pour le bouton à l'intérieur de .info1 (s'il y en a un)
+    button {
+      margin-top: 1rem;
+      padding: 0.8rem 1.5rem;
+      background-color: var(--accent-color); // Utilisation de la variable
+      color: var(--text-color); // Utilisation de la variable
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
 
-.boxLienAsso {
-  background-color: none; // Fond blanc pour correspondre aux sections principales
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Ombre pour donner de la profondeur
-  margin: 30px auto; // Espacement autour de la boîte
-  max-width: 800px; // Limite de largeur pour un bon centrage
-  border: 2px solid #ec7625; // Bordure pour correspondre à votre palette de couleurs principale
-
-  .asso-title {
-    color: #ffffff; // Couleur d'accent principale du site
-    font-family: "Poppins", serif; // Police médiévale pour rester dans le thème
-    font-size: 1.8em;
-    margin-bottom: 15px;
-    text-align: center; // Centrage des titres
-    border-top: 1px solid #ec7625; //Ligne de séparation pour le style
-    padding-bottom: 10px;
-  }
-
-  .asso-text {
-    color: #333; // Couleur de texte foncée pour un bon contraste
-    font-family: "Poppins", sans-serif;
-    line-height: 1.8;
-    margin: 15px 0;
-    text-align: justify; // Justification pour un alignement propre du texte
-    font-size: 1em; // Taille de police standard
-  }
-
-  .asso-link {
-    color: #ffffff; // Utilisation de la couleur d'accent pour les liens
-    font-family: "Poppins", sans-serif;
-    line-height: 1.8;
-    margin: 10px 0;
-    text-align: center;
-    cursor: pointer; // Pour indiquer que c'est cliquable
-    text-decoration: none; // Supprime le soulignement par défaut
-    transition: color 0.3s ease, text-decoration 0.3s ease;
-
-    &:hover {
-      color: #c6500b; // Couleur légèrement plus foncée au survol
-      text-decoration: underline; // Apparition du soulignement au survol
+      &:hover {
+        background-color: var(--accent-color), 10%;
+      }
     }
   }
 
-  .asso-icons {
-    display: flex;
-    justify-content: center; // Centrer les icônes
-    margin-top: 20px;
+  // Styles pour les titres globaux (si nécessaire)
+  h1,
+  h2,
+  h3 {
+    font-family: $font-secondary;
+    color: var(--text-color); // Utilisation de la variable
   }
 
-  .asso-icon {
-    display: inline-block;
-    margin: 0 10px;
-    width: 35px; // Taille standard des icônes
-    height: auto;
-    cursor: pointer;
-    transition: transform 0.3s ease, filter 0.3s ease;
+  // Styles pour les paragraphes globaux (si nécessaire)
+  p {
+    font-family: $font-primary;
+    color: var(--text-color); // Utilisation de la variable
+  }
 
-    &:hover {
-      transform: scale(1.1); // Léger zoom au survol
-      filter: brightness(1.2); // Effet de brillance au survol
-    }
+  // Styles pour les boutons globaux (si nécessaire)
+  button {
+    font-family: $font-primary;
+  }
+
+  // Positionnement du ToggleTheme (si besoin)
+  .toggle-theme {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 }
