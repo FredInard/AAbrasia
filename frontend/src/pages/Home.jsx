@@ -5,6 +5,7 @@ import Calendar from "../components/schedule/Calendar"
 import NavBar from "../components/NavBar/NavBar"
 import Image1 from "../assets/newA1.1.webp"
 import Carrousel from "../components/Carrousel/Carrousel"
+import Footer from "../components/Footer/Footer"
 
 const images = [
   "https://via.placeholder.com/800x400/FFBB52/FFFFFF?text=Slide+1",
@@ -99,7 +100,7 @@ export default function Home() {
         </div>
 
         {/* Footer - À implémenter plus tard */}
-        {/* <footer /> */}
+        <Footer />
       </div>
     </div>
   )
