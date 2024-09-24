@@ -52,6 +52,7 @@ body {
   --background-color: $color-light-background;
   --text-color: $color-light-text;
   --accent-color: #ffbb52; // Couleur d'accentuation pour le mode clair
+  --icon-filter: none; // Pas de filtre en mode clair
 }
 
 // Classe pour le mode sombre
@@ -62,6 +63,7 @@ body {
   --background-color: $color-dark-background;
   --text-color: $color-dark-text;
   --accent-color: #ffbb52; // Couleur d'accentuation pour le mode sombre
+  --icon-filter: invert(1); // Inverse les couleurs des icônes en mode sombre
 }
 
 // Appliquer les variables CSS au body

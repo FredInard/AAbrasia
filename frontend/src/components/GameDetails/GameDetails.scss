@@ -1,0 +1,138 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  position: relative;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.game-title {
+  text-align: right;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.game-master-info {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+
+  .game-master-photo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+
+  .game-master-pseudo {
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
+.game-description {
+  margin-top: 20px;
+
+  h3 {
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+}
+
+.game-details {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+
+  .game-info-item {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+
+    svg {
+      margin-right: 5px;
+    }
+  }
+}
+
+.participants {
+  display: flex;
+  gap: 10px;
+
+  .participant {
+    text-align: center;
+
+    .participant-photo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.extra-info {
+  margin-top: 20px;
+  font-size: 16px;
+
+  p {
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 15px;
+  }
+
+  .game-details {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .participants {
+    flex-wrap: wrap;
+  }
+}

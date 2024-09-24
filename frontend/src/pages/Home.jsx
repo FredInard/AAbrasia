@@ -3,9 +3,14 @@ import "./Home.scss"
 
 import Calendar from "../components/schedule/Calendar"
 import NavBar from "../components/NavBar/NavBar"
-import Image1 from "../assets/newA1.1.webp"
+import Image1 from "../assets/pics/Jdrenfants.webp"
 import Carrousel from "../components/Carrousel/Carrousel"
 import Footer from "../components/Footer/Footer"
+
+import iconeDiscorde from "../assets/pics/discord.svg"
+import iconeFacebook from "../assets/pics/facebook.svg"
+import iconeMail from "../assets/pics/mail.svg"
+import give from "../assets/pics/give.svg"
 
 const images = [
   "https://via.placeholder.com/800x400/FFBB52/FFFFFF?text=Slide+1",
@@ -18,11 +23,10 @@ export default function Home() {
     <div>
       <NavBar className="NavBarHome" />
 
-      {/* Introduction Section */}
-
       <div className="home">
-        <div className="intro">
-          <div className="intro1">
+        {/* Section d'introduction */}
+        <section className="section-intro">
+          <div className="intro-text">
             <h1>
               Plongez dans l'aventure avec l'Association de jeux de rôle des
               Arpenteurs d'Abrasia
@@ -36,18 +40,21 @@ export default function Home() {
               moments conviviaux de rires et d’aventures !
             </p>
           </div>
-          <div className="intro2">
+          <div className="intro-image">
             <img src={Image1} alt="Jeux de rôle" />
           </div>
-        </div>
+        </section>
 
-        {/* Button to Discover Association */}
+        {/* Bouton pour découvrir l'association */}
         <div className="cta">
           <button>Découvrir l'asso</button>
         </div>
+
+        {/* Carrousel */}
         <Carrousel images={images} interval={4000} />
-        {/* Section: C'est quoi le jeu de rôle ? */}
-        <div className="info1">
+
+        {/* Section : C'est quoi le jeu de rôle ? */}
+        <section className="section-what-is-jdr">
           <h2>C’est quoi le jeu de rôle ?</h2>
           <p>
             Le jeu de rôle est un loisir qui se pratique en petits groupes
@@ -58,10 +65,10 @@ export default function Home() {
             pièges et mener à bien l’aventure... À condition que les dés le
             permettent !
           </p>
-        </div>
+        </section>
 
-        {/* Association Section */}
-        <div className="info1">
+        {/* Section : Notre association */}
+        <section className="section-our-association">
           <h2>Notre association</h2>
           <p>
             L'association des Arpenteurs d'Abrasia (AA) a une double vocation
@@ -73,33 +80,156 @@ export default function Home() {
             souhaitant la rejoindre, d'autre part en allant vers des publics en
             recherche de sociabilité et/ou isolés.
           </p>
-        </div>
+        </section>
 
-        {/* Agenda Section */}
-        <div className="info1">
+        {/* Section : Notre Agenda */}
+        <section className="section-agenda">
           <h2>Notre Agenda</h2>
           <p>Rejoins une de nos parties ou viens découvrir l'association.</p>
           <Calendar />
-        </div>
+        </section>
 
-        {/* Team Section */}
-        <div className="info1">
-          <h2>Team</h2>
+        {/* Section : Team */}
+        <section className="section-team">
+          <h2>Notre Équipe</h2>
           <p>Voici la team de l'association</p>
           <button>Découvrir toute la team</button>
-        </div>
+        </section>
 
-        {/* Contact Section */}
-        <div className="info1">
+        {/* Section : Nous contacter */}
+        <section className="section-contact">
           <h2>Nous contacter</h2>
           <p>
             Pour nous contacter, rien de plus simple : clique sur le média de
             ton choix
           </p>
-          <button>Nous contacter</button>
-        </div>
 
-        {/* Footer - À implémenter plus tard */}
+          <div className="contact-links">
+            {/* Nos amis */}
+            <div className="contact-section">
+              <h3>Nos amis</h3>
+              <p>Liens vers d’autres associations du 04 :</p>
+              <ul>
+                <li>
+                  <a
+                    href="http://lien-vers-espace-de-jeu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    L’Espace de Jeu
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="http://lien-vers-ece-malijai"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    ECE de Malijai
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Partenaires */}
+            <div className="contact-section">
+              <h3>Partenaires</h3>
+              <p>Liens vers les sites de nos partenaires :</p>
+              <ul>
+                <li>
+                  <a
+                    href="http://lien-vers-theatre-durance"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Théâtre Durance
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="http://lien-vers-librairie"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Librairie [Nom]
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="http://lien-vers-mediatheque"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Médiathèque [Nom]
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Abrasia */}
+            <div className="contact-section">
+              <h3>Abrasia</h3>
+              <p>Découvrez l'univers d'Abrasia sur World Anvil :</p>
+              <a
+                href="http://lien-vers-worldanvil-abrasia"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Lien vers Abrasia
+              </a>
+            </div>
+
+            {/* Payer sa cotisation */}
+            <div className="contact-section">
+              <h3>Payer sa cotisation sur HelloAsso</h3>
+              <a
+                href="https://www.helloasso.com/associations/les-arpenteurs-d-abrasia"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img className="contact-icon" src={give} alt="Logo HelloAsso" />
+              </a>
+            </div>
+
+            {/* Nous rejoindre sur */}
+            <div className="contact-section">
+              <h3>Nous rejoindre sur :</h3>
+              <div className="social-icons">
+                <a
+                  href="https://discord.gg/Vv3Fa4DwYK"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="contact-icon"
+                    src={iconeDiscorde}
+                    alt="Logo Discord"
+                  />
+                </a>
+                <a
+                  href="https://www.facebook.com/arpenteurs.abrasia"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="contact-icon"
+                    src={iconeFacebook}
+                    alt="Logo Facebook"
+                  />
+                </a>
+                <a href="mailto:arpenteurs.jdr@gmail.com">
+                  <img
+                    className="contact-icon"
+                    src={iconeMail}
+                    alt="Logo Email"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
         <Footer />
       </div>
     </div>

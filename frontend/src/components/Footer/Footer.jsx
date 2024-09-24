@@ -27,7 +27,7 @@ const Footer = () => {
         </div>
 
         {/* Réseaux sociaux */}
-        <div className="footer-social">
+        {/* <div className="footer-social">
           <a
             href="https://facebook.com"
             target="_blank"
@@ -49,12 +49,16 @@ const Footer = () => {
           >
             <i className="fab fa-instagram"></i>
           </a>
-        </div>
+        </div> */}
       </div>
 
       {/* Copyright */}
       <div className="footer-bottom">
-        <p>&copy; 2024 Association de jeux de rôle. Tous droits réservés.</p>
+        <p>
+          &copy; 2024 Association de jeux de rôle Les Arpenteurs d'Abrasia. Tous
+          droits réservés.
+        </p>
+        <a href="/Cgu">Conditions Générales d'Utilisation (CGU)</a>
       </div>
     </footer>
   )

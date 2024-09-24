@@ -1,7 +1,7 @@
 import React from "react"
 import { NavLink } from "react-router-dom" // Utilisation de NavLink pour la navigation
 import "./NavBar.scss"
-import logo from "../../assets/pics/logoAiW.svg"
+import logo from "../../assets/pics/logoArpenteurBlanc.svg"
 import ToggleTheme from "../ToggleTheme/ToggleTheme"
 
 const NavBar = () => {
@@ -15,7 +15,10 @@ const NavBar = () => {
       <ToggleTheme />
       <ul className="navbar-links">
         <li>
-          <NavLink to="/" activeClassName="active">
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? "active" : undefined)}
+          >
             Accueil
           </NavLink>
         </li>
@@ -36,7 +39,9 @@ const NavBar = () => {
         </li>
       </ul>
       <div className="navbar-cta">
-        <button className="btn-cta">Se connecter</button>
+        <NavLink to="/login" className="btn-cta">
+          Se connecter
+        </NavLink>
       </div>
     </nav>
   )

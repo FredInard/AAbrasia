@@ -1,70 +1,122 @@
-.footer {
-  background-color: #111;
-  color: #fff;
-  padding: 20px 0;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+// Footer.scss
 
+// == Importation des variables globales (si nécessaire) ==
+// Si tu utilises un fichier de variables globales pour les couleurs et les polices, importe-le ici.
+// @import 'variables.scss';
+
+// == Définition des variables SCSS pour les polices ==
+$font-primary: "Poppins", sans-serif;
+$font-secondary: "system-ui", cursive;
+
+// == Couleur d'accentuation ==
+$accent-color: #ffbb52;
+
+// == Styles pour le Footer ==
+.footer {
+  background-color: var(--background-color); // Fond adapté au thème
+  color: var(--text-color); // Texte adapté au thème
+  padding: 2rem 0; // Espacement en haut et en bas
+
+  // Conteneur principal du contenu du footer
   .footer-content {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap; // Pour une meilleure réactivité sur mobile
+    justify-content: space-around;
     align-items: center;
-    max-width: 1000px;
-    width: 100%;
-    padding: 20px;
+    max-width: 1200px; // Largeur maximale pour centrer le contenu
+    margin: 0 auto; // Centrer horizontalement le contenu
+    padding: 0 5%; // Espacement latéral
 
-    @media (max-width: 768px) {
-      flex-direction: column;
-      text-align: center;
-    }
+    // Liens de navigation
+    .footer-links {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
 
-    /* Liens de navigation */
-    .footer-links ul {
-      list-style-type: none;
-      padding: 0;
-    }
+        li {
+          margin-right: 1.5rem;
 
-    .footer-links li {
-      display: inline;
-      margin: 0 15px;
+          a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-family: $font-primary;
+            font-size: 1rem;
+            transition: color 0.3s ease;
 
-      a {
-        text-decoration: none;
-        color: #fff;
-        font-weight: bold;
-        transition: color 0.3s ease;
-
-        &:hover {
-          color: #ffbb52;
+            &:hover {
+              color: var(--accent-color); // Couleur d'accentuation au survol
+            }
+          }
         }
       }
     }
 
-    /* Réseaux sociaux */
-    .footer-social a {
-      margin: 0 10px;
-      color: #fff;
-      font-size: 20px;
-      transition: color 0.3s ease;
+    // Icônes des réseaux sociaux
+    .footer-social {
+      display: flex;
+      align-items: center;
 
-      &:hover {
-        color: #ffbb52;
+      a {
+        margin-left: 1rem;
+        color: var(--text-color);
+        font-size: 1.5rem; // Taille des icônes
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--accent-color);
+        }
+
+        // Icônes (assurez-vous d'importer la bibliothèque d'icônes utilisée)
+        i {
+          display: inline-block;
+        }
       }
     }
   }
 
-  /* Bas du footer */
+  // Section du bas du footer
   .footer-bottom {
-    border-top: 1px solid #444;
-    padding-top: 10px;
-    width: 100%;
     text-align: center;
+    margin-top: 2rem;
 
     p {
-      margin: 0;
-      font-size: 14px;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: var(--accent-color);
+      }
+    }
+  }
+}
+
+// == Média Queries pour la réactivité ==
+@media (max-width: 768px) {
+  .footer {
+    .footer-content {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .footer-links {
+        ul {
+          flex-direction: column;
+
+          li {
+            margin-right: 0;
+            margin-bottom: 0.5rem;
+          }
+        }
+      }
     }
   }
 }

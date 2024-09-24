@@ -1,203 +1,108 @@
-// .navBarDesktopContainer {
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   z-index: 1; /* Une valeur élevée pour s'assurer qu'elle est au-dessus de tout le contenu */
-//   background-color: transparent;
-//   z-index: 1000;
+// == Définition des variables SCSS pour les polices ==
+$font-primary: "Poppins", sans-serif;
+$font-secondary: "system-ui", cursive;
 
-//   display: flex;
-//   // border: solid;
-//   justify-content: space-between;
-//   align-items: center;
-
-//   .boxlogoNavBar {
-//     width: 100px;
-//     height: 100px;
-//     .logoNavBar {
-//       width: 100px;
-//       height: 100px;
-//     }
-//   }
-
-//   .mainButtonsNavBar {
-//     display: flex;
-//     // border: solid;
-//     align-items: center;
-//     justify-content: flex-end;
-
-//     .buttonNavBar {
-//       // margin: 30px;
-//       position: relative;
-//       color: #fff;
-//       font-size: 1.5vw;
-//       // font-weight: 400;
-//       line-height: 25px;
-//       letter-spacing: -0.13px;
-//       text-decoration: none;
-//       margin-left: 1.2rem;
-//       margin-right: 2.2rem;
-//       transition: all 0.5s ease;
-//       will-change: transform;
-//     }
-//     .nav-item:hover {
-//       color: rgb(168, 239, 255, 0.9);
-//       transform: scale(1.3);
-//     }
-
-//     .nav-item::after {
-//       content: "";
-//       position: absolute;
-//       bottom: -0.3rem;
-//       left: 50%;
-//       width: 0;
-//       height: 0.15rem;
-//       transform: translateX(-50%);
-//       background-color: rgb(168, 239, 255, 0.9);
-//       transition: all 0.5s ease;
-//     }
-
-//     .nav-item:hover::after {
-//       width: 90%;
-//     }
-
-//     .boxPhotoProfil {
-//       width: 125px;
-//       height: 100px;
-//       display: flex;
-//       align-items: center;
-//       justify-content: center;
-
-//       .photoProfilNB {
-//         border-radius: 100%;
-//         border: solid 1px white;
-//         width: 60%;
-//       }
-//     }
-
-//     .boxBouttonExit {
-//       display: flex;
-//       margin-top: 100px;
-//       width: 98%;
-//       flex-direction: column;
-//       align-items: center;
-//       margin-left: 15px;
-
-//       .buttonExit {
-//         border: solid 1px rgb(255, 255, 255);
-//         border-radius: 50%;
-//         width: 5%;
-//         will-change: transform;
-//         transition: all 0.3s ease-in;
-//         cursor: pointer;
-
-//         &:hover {
-//           border: solid 3px rgb(255, 255, 255);
-//           transform: scale(1.2);
-//         }
-
-//         @media screen and (max-width: 850px) {
-//           width: 80px;
-//         }
-//       }
-//     }
-//   }
-// }
-
-// /* Styles pour le menu hamburger */
-// @media (max-width: 768px) {
-//   .navBarDesktopContainer {
-//     .mainButtonsNavBar {
-//       display: none; /* Masquez les boutons de navigation par défaut */
-//     }
-
-//     .menuButton {
-//       display: block; /* Affichez le bouton du menu hamburger */
-//       background-color: transparent;
-//       border: none;
-//       cursor: pointer;
-//       font-size: 24px;
-//       padding: 10px;
-//       color: white;
-//     }
-
-//     .menuItems {
-//       position: absolute;
-//       width: 100%;
-//       height: 90vh;
-//       top: 100px;
-//       right: 0;
-//       background-color: rgba(6, 1, 39, 0.898);
-//       // box-shadow: 0px 4px 6px rgba(255, 252, 252, 0.1);
-//       z-index: 1;
-//       font-size: 2em;
-//       padding: 10px;
-//       display: flex;
-//       flex-direction: column; /* Affichez les éléments du menu en colonne */
-//       align-items: flex-end; /* Alignez-les à droite */
-//     }
-
-//     .menuItem {
-//       margin: 5px;
-//       text-align: right; /* Alignez le texte à droite */
-//       text-decoration: none;
-//       color: #333;
-//       font-weight: bold;
-//       padding: 5px;
-//       color: white;
-
-//       .photoProfilUserNavBar {
-//         border-radius: 50px;
-//         width: 15%;
-//       }
-//     }
-//   }
-// }
+// == Styles pour la barre de navigation ==
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #111;
-  color: #fff;
-}
+  justify-content: space-between;
+  background-color: var(--background-color); // Utilisation de la variable CSS
+  padding: 1rem 2rem;
 
-.navbar-logo img {
-  height: 50px;
-}
+  // Logo de la navbar
+  &-logo {
+    img {
+      width: 150px;
+      height: auto;
+    }
+  }
 
-.navbar-links {
-  display: flex;
-  list-style-type: none;
-}
+  // Liens de navigation
+  &-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
 
-.navbar-links li {
-  margin: 0 15px;
-}
+    li {
+      margin-left: 1.5rem;
 
-.navbar-links a {
-  text-decoration: none;
-  color: #fff;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
+      a {
+        text-decoration: none;
+        color: var(--text-color); // Utilisation de la variable CSS
+        font-family: $font-primary;
+        font-size: 1rem;
+        transition: color 0.3s ease;
 
-.navbar-links a:hover {
-  color: #ffbb52; /* Couleur au survol */
-}
+        &:hover {
+          color: var(--accent-color); // Utilisation de la variable CSS
+        }
 
-.navbar-cta .btn-cta {
-  padding: 10px 20px;
-  background-color: #ffbb52;
-  border: none;
-  color: #111;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
+        &.active {
+          font-weight: bold;
+          border-bottom: 2px solid var(--accent-color); // Indicateur de lien actif
+        }
+      }
+    }
+  }
 
-.navbar-cta .btn-cta:hover {
-  background-color: #ffa733;
+  // Toggle pour le thème
+  .toggle-theme {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+
+    // Styles spécifiques pour le toggle
+    label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .toggle-checkbox {
+        display: none;
+      }
+
+      .toggle-slot {
+        position: relative;
+        width: 50px;
+        height: 25px;
+        background-color: var(--accent-color);
+        border-radius: 12.5px;
+        margin-left: 0.5rem;
+        transition: background-color 0.3s ease;
+
+        .sun-icon-wrapper,
+        .moon-icon-wrapper {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          color: var(--background-color);
+        }
+
+        .sun-icon-wrapper {
+          left: 5px;
+        }
+
+        .moon-icon-wrapper {
+          right: 5px;
+        }
+
+        .toggle-button {
+          position: absolute;
+          top: 2.5px;
+          left: 2.5px;
+          width: 20px;
+          height: 20px;
+          background-color: var(--background-color);
+          border-radius: 50%;
+          transition: transform 0.3s ease;
+        }
+      }
+
+      // Changement de position du bouton quand le toggle est activé
+      .toggle-checkbox:checked + .toggle-slot .toggle-button {
+        transform: translateX(25px);
+      }
+    }
+  }
 }
