@@ -1,73 +1,28 @@
-// Définition des variables SCSS pour les polices
-$font-primary: "Poppins", ui-sans-serif, system-ui, -apple-system,
-  BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-  sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-  "Noto Color Emoji";
+// App.scss
 
-$font-secondary: "system-ui", cursive;
+@import './styles/variables.scss';
 
-// Définition des variables de couleur pour le mode clair
-$color-light-background: #ffffff; // Blanc
-$color-light-text: #000000; // Noir
-$color-elements: #ffbb52;
-$accent-color: #ffbb52;
-
-// Définition des variables de couleur pour le mode sombre
-$color-dark-background: #060127; // Couleur sombre
-$color-dark-text: #ffffff; // Blanc
-
-// Mixins pour le mode clair et sombre
-@mixin light-mode {
-  background-color: $color-light-background;
-  color: $color-light-text;
+// == Définition des thèmes avec les mixins ==
+.light-mode {
+  @include light-theme;
 }
 
-@mixin dark-mode {
-  background-color: $color-dark-background;
-  color: $color-dark-text;
+.dark-mode {
+  @include dark-theme;
 }
 
-// Styles globaux
+// == Réinitialisation des styles par défaut ==
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  // Application de la police principale
   font-family: $font-primary;
 }
 
-// Styles pour le corps de la page
+// == Styles globaux pour le corps de la page ==
 body {
   width: 100%;
   height: 100%;
-  // Par défaut, le mode sombre est activé
-  @include dark-mode;
-}
-
-// Classe pour le mode clair
-.light-mode {
-  @include light-mode;
-
-  // Variables CSS pour le mode clair
-  --background-color: $color-light-background;
-  --text-color: $color-light-text;
-  --accent-color: #ffbb52; // Couleur d'accentuation pour le mode clair
-  --icon-filter: none; // Pas de filtre en mode clair
-}
-
-// Classe pour le mode sombre
-.dark-mode {
-  @include dark-mode;
-
-  // Variables CSS pour le mode sombre
-  --background-color: $color-dark-background;
-  --text-color: $color-dark-text;
-  --accent-color: #ffbb52; // Couleur d'accentuation pour le mode sombre
-  --icon-filter: invert(1); // Inverse les couleurs des icônes en mode sombre
-}
-
-// Appliquer les variables CSS au body
-body {
   background-color: var(--background-color);
   color: var(--text-color);
 }

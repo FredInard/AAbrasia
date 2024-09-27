@@ -1,3 +1,5 @@
+@import '../styles/variables.scss'; 
+
 .fade-in-left {
   -webkit-animation: fade-in-left 1.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: fade-in-left 1.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;

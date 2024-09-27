@@ -1,8 +1,7 @@
 // Footer.scss
 
 // == Importation des variables globales (si nécessaire) ==
-// Si tu utilises un fichier de variables globales pour les couleurs et les polices, importe-le ici.
-// @import 'variables.scss';
+@import '../../styles/variables.scss'; 
 
 // == Définition des variables SCSS pour les polices ==
 $font-primary: "Poppins", sans-serif;
