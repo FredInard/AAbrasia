@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss'; 
+@import "../../styles/variables.scss";
 
 // == Définition des variables SCSS pour les polices ==
 $font-primary: "Poppins", sans-serif;
@@ -6,11 +6,18 @@ $font-secondary: "system-ui", cursive;
 
 // == Styles pour la barre de navigation ==
 .navbar {
+  width: 100%;
+  padding: 0.1rem 1rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background-color: var(--background-color); // Utilisation de la variable CSS
-  padding: 1rem 2rem;
+  align-items: center;
+  position: fixed; // La NavBar est fixée en haut de la page
+  top: 0; // Alignement en haut
+  left: 0; // Alignement à gauche
+  z-index: 1; // Z-index élevé pour que la NavBar reste au-dessus du contenu
+  box-shadow: var(--box-shadow); // Utilisation de la variable box-shadow
 
   // Logo de la navbar
   &-logo {

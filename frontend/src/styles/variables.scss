@@ -7,6 +7,7 @@ $font-secondary: "system-ui", cursive;
 // == Couleurs pour le mode clair ==
 $color-light-background: #ffffff;
 $color-light-text: #000000;
+$color-light-container-background: #f9f9f9; // Couleur légèrement différente du fond
 
 // == Couleurs pour le mode sombre ==
 $color-dark-background: #060127;
@@ -14,6 +15,10 @@ $color-dark-text: #ffffff;
 
 // == Couleur d'accentuation ==
 $accent-color: #ffbb52;
+
+// == Box-shadows ==
+$light-box-shadow: 0px 5px 15px #000000; // Box-shadow pour le mode clair (noir)
+$dark-box-shadow: 0px 5px 15px #e4e7ec; // Box-shadow pour le mode sombre (gris clair)
 
 // == Variables pour les boutons ==
 $button-padding: 0.75rem 1.5rem;
@@ -24,15 +29,23 @@ $button-text-color: var(--text-color); // Si nécessaire
 
 // == Mixins pour définir les variables CSS en fonction du thème ==
 @mixin light-theme {
-    --background-color: #{$color-light-background};
-    --text-color: #{$color-light-text};
-    --accent-color: #{$accent-color};
-    --border-color: #{lighten($color-light-text, 20%)};
-  }
-  
-  @mixin dark-theme {
-    --background-color: #{$color-dark-background};
-    --text-color: #{$color-dark-text};
-    --accent-color: #{$accent-color};
-    --border-color: #{lighten($color-dark-text, 20%)};
-  }
+  --background-color: #{$color-light-background};
+  --text-color: #{$color-light-text};
+  --accent-color: #{$accent-color};
+  --icon-filter: none;
+  --border-color: #{lighten($color-light-text, 20%)};
+  --container-background-color: #{$color-light-container-background};
+  --box-shadow: #{$light-box-shadow}; // Ajout du box-shadow clair
+}
+
+@mixin dark-theme {
+  --background-color: #{$color-dark-background};
+  --text-color: #{$color-dark-text};
+  --accent-color: #{$accent-color};
+  --icon-filter: invert(1);
+  --border-color: #{lighten($color-dark-text, 20%)};
+  --container-background-color: var(
+    --background-color
+  ); // Même couleur que le fond
+  --box-shadow: #{$dark-box-shadow}; // Ajout du box-shadow sombre
+}

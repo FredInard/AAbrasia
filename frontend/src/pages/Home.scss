@@ -1,5 +1,5 @@
 // == Importation des variables globales ==
-@import '../styles/variables.scss';
+@import "../styles/variables.scss";
 
 // == Variables pour les boutons ==
 $button-background: $accent-color;
@@ -8,8 +8,9 @@ $button-hover-background: darken($accent-color, 10%);
 
 // == Styles globaux pour la page home ==
 .home {
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-top: 10%;
+  padding-left: 15%;
+  padding-right: 15%;
 }
 
 // == Styles pour les boutons ==

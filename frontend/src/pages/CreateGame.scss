@@ -1,55 +1,104 @@
-@import '../styles/variables.scss'; 
+// CreateGame.scss
 
+@import "../styles/variables.scss";
+
+// == Variables supplémentaires (si nécessaire) ==
+$input-border-color: var(--border-color);
+$input-border-radius: 4px;
+$input-padding: 10px;
+$input-font-size: 16px;
+
+$btn-background-color: $accent-color;
+$btn-hover-background-color: darken($accent-color, 10%);
+$btn-text-color: var(--text-color);
+$btn-border-radius: 4px;
+$btn-padding: 12px;
+$btn-font-size: 18px;
+$btn-font-weight: bold;
+
+$container-background-color: var(--container-background-color);
+$container-padding: 20px;
+$container-border-radius: 8px;
+$container-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // Box shadow par défaut (clair)
+
+// == Styles pour le conteneur principal ==
 .creer-partie-container {
+  margin-top: 10%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: $container-padding;
+  background-color: $container-background-color;
+  border-radius: $container-border-radius;
+  box-shadow: $container-box-shadow;
+  color: var(--text-color);
+  border: none;
 }
 
-h1 {
+// Spécifique au mode sombre
+.dark-mode .creer-partie-container {
+  background-color: var(--background-color); // Même couleur que le thème sombre
+  border: 1px solid #ffffff; // Bordure solide blanche
+  box-shadow: 0px 5px 15px #e4e7ec; // Box-shadow spécifique au mode sombre
+}
+
+// == Styles pour le titre ==
+.creer-partie-container h1 {
   text-align: center;
   margin-bottom: 20px;
+  font-family: $font-secondary;
+  font-size: 2rem;
 }
 
+// == Styles pour les groupes de formulaire ==
 .form-group {
   margin-bottom: 15px;
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text-color);
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: $input-padding;
+    font-size: $input-font-size;
+    font-family: $font-primary;
+    border: 1px solid $input-border-color;
+    border-radius: $input-border-radius;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $accent-color;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
 }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-input,
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-textarea {
-  resize: vertical;
-}
-
+// == Styles pour le bouton de soumission ==
 .btn-submit {
   width: 100%;
-  padding: 12px;
-  background-color: #ffbb52;
-  color: #fff;
+  padding: $btn-padding;
+  background-color: $btn-background-color;
+  color: $btn-text-color;
   border: none;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 4px;
+  font-size: $btn-font-size;
+  font-weight: $btn-font-weight;
+  border-radius: $btn-border-radius;
   cursor: pointer;
-}
+  transition: background-color 0.3s ease, transform 0.2s;
 
-.btn-submit:hover {
-  background-color: #ffa733;
+  &:hover {
+    background-color: $btn-hover-background-color;
+    transform: translateY(-2px);
+  }
 }
