@@ -8,30 +8,37 @@ const hashingOptions = {
   parallelism: 1,
 }
 
+// Hash le mot de passe lors de l'inscription
 const hashPassword = (req, res, next) => {
-  console.info("password", req.body.password)
+  console.info("password is :", req.body.password)
   argon2
-
     .hash(req.body.password, hashingOptions)
-
     .then((hashedPassword) => {
       req.body.hashedPassword = hashedPassword
-      console.info("hashedPassword", hashedPassword)
+      console.info("hashedPassword is :", hashedPassword)
       delete req.body.password
-
       next()
     })
-
     .catch((err) => {
-      console.error(err)
-
+      console.error("Error hashing password:", err)
       res.sendStatus(500)
     })
 }
 
+// Vérifie le mot de passe lors de la connexion
 const verifyPassword = (req, res) => {
+  const hashedPassword = req.utilisateur.hashedPassword
+  const password = req.body.password
+  console.info("req verifyPassword, hashedPassword:", hashedPassword)
+  console.info("password provided:", password)
+
+  if (!hashedPassword || typeof hashedPassword !== "string") {
+    console.error("Le mot de passe haché est manquant ou invalide")
+    return res.sendStatus(500)
+  }
+
   argon2
-    .verify(req.utilisateur.hashedPassword, req.body.hashedPassword)
+    .verify(hashedPassword, password)
     .then((isVerified) => {
       if (isVerified) {
         const payload = { sub: req.utilisateur.id }
@@ -41,19 +48,28 @@ const verifyPassword = (req, res) => {
         delete req.utilisateur.hashedPassword
         res.send({ token, utilisateur: req.utilisateur })
       } else {
+        console.error("Mot de passe incorrect")
         res.sendStatus(401)
       }
     })
-
     .catch((err) => {
-      console.error(err)
+      console.error("Error during password verification:", err)
       res.sendStatus(500)
     })
 }
 
+// Vérifie le mot de passe pour d'autres opérations, comme changer de mot de passe
 const verifyPassword2 = (req, res) => {
+  const hashedPassword = req.utilisateur.hashedPassword
+  const password = req.body.password
+
+  if (!hashedPassword || typeof hashedPassword !== "string") {
+    console.error("Le mot de passe haché est manquant ou invalide")
+    return res.sendStatus(500)
+  }
+
   argon2
-    .verify(req.utilisateur.hashedPassword, req.body.hashedPassword)
+    .verify(hashedPassword, password)
     .then((isVerified) => {
       if (isVerified) {
         res.send(true)
@@ -62,11 +78,12 @@ const verifyPassword2 = (req, res) => {
       }
     })
     .catch((err) => {
-      console.error(err)
+      console.error("Error during password verification:", err)
       res.sendStatus(500)
     })
 }
 
+// Vérification du token pour les routes protégées
 const verifyToken = (req, res, next) => {
   try {
     const authorizationHeader = req.get("Authorization")
@@ -74,10 +91,6 @@ const verifyToken = (req, res, next) => {
     if (req.url.startsWith("/assets/images/profilPictures")) {
       return next()
     }
-
-    // if (req.url.startsWith("/login")) {
-    //   return next()
-    // }
 
     if (authorizationHeader == null) {
       throw new Error("Authorization header is missing")
@@ -93,8 +106,7 @@ const verifyToken = (req, res, next) => {
 
     next()
   } catch (err) {
-    console.error(err)
-
+    console.error("Error verifying token:", err)
     res.sendStatus(401)
   }
 }

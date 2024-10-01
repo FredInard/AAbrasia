@@ -1,40 +1,107 @@
-import React, { useState } from "react"
-// import axios from "axios" // Utilisé pour les requêtes API
+import React, { useState, useRef } from "react"
+import { useNavigate } from "react-router-dom"
 import "./LoginSignup.scss" // Styles associés
+import axios from "axios"
+import Cookies from "js-cookie"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 import NavBar from "../components/NavBar/NavBar"
 
+const MAX_LOGIN_ATTEMPTS = 5 // Nombre maximum de tentatives autorisées
+const LOCKOUT_DURATION = 300000 // Durée de verrouillage en millisecondes (par exemple, 5 minutes)
+
 const LoginSignup = () => {
-  const [isLogin, setIsLogin] = useState(true) // Permet de basculer entre login et signup
-  const [loginForm, setLoginForm] = useState({ email: "", password: "" })
+  toast.configure()
+  const [isLogin, setIsLogin] = useState(true) // Basculer entre login et signup
+  const [loginForm, setLoginForm] = useState({ pseudo: "", password: "" })
   const [signupForm, setSignupForm] = useState({
+    pseudo: "",
+    nom: "",
+    prenom: "",
     email: "",
     password: "",
     confirmPassword: "",
-    nom: "",
-    prenom: "",
   })
+  const [errorMessage, setErrorMessage] = useState("")
+  const [loginAttempts, setLoginAttempts] = useState([])
+  const [isUserLocked, setIsUserLocked] = useState(false)
+  const lockoutTimerRef = useRef(null)
+  const navigate = useNavigate()
 
-  // Gestion du changement des champs pour le formulaire de connexion
+  console.info(errorMessage)
+  console.info(isUserLocked)
+  console.info(setErrorMessage)
+
   const handleLoginChange = (e) => {
     const { name, value } = e.target
     setLoginForm((prevForm) => ({ ...prevForm, [name]: value }))
   }
 
-  // Gestion du changement des champs pour le formulaire d'inscription
   const handleSignupChange = (e) => {
     const { name, value } = e.target
     setSignupForm((prevForm) => ({ ...prevForm, [name]: value }))
+  }
+
+  // Fonction pour verrouiller temporairement un utilisateur
+  const lockoutUser = () => {
+    setIsUserLocked(true)
+    lockoutTimerRef.current = setTimeout(() => {
+      clearLockout()
+    }, LOCKOUT_DURATION)
+
+    toast.error(
+      "Trop de tentatives infructueuses. Compte temporairement bloqué."
+    )
+  }
+
+  // Réinitialiser le statut de verrouillage
+  const clearLockout = () => {
+    setIsUserLocked(false)
+    setLoginAttempts([])
+    clearTimeout(lockoutTimerRef.current)
+  }
+
+  // Effacer le compteur de tentatives après une connexion réussie
+  const clearLoginAttempts = () => {
+    setLoginAttempts([])
   }
 
   // Soumission du formulaire de connexion
   const handleLoginSubmit = async (e) => {
     e.preventDefault()
     try {
-      // const response = await axios.post("/api/login", loginForm) // Remplace l'URL par celle de ton backend
-      alert("Connexion réussie !")
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/login`,
+        {
+          pseudo: loginForm.pseudo,
+          password: loginForm.password,
+        }
+      )
+
+      if (response.status === 200) {
+        const token = response.data.token
+        Cookies.set("authToken", token, { expires: 0.5, sameSite: "strict" })
+        Cookies.set("Pseudo", response.data.utilisateur.Pseudo, {
+          sameSite: "strict",
+        })
+        Cookies.set(
+          "loggedInUtilisateur",
+          JSON.stringify(response.data.utilisateur),
+          {
+            sameSite: "strict",
+          }
+        )
+        navigate("/")
+        clearLoginAttempts()
+      }
     } catch (error) {
       console.error("Erreur lors de la connexion :", error)
-      alert("Erreur de connexion. Veuillez vérifier vos informations.")
+      toast.error("Pseudo ou mot de passe incorrect.")
+      setLoginAttempts([...loginAttempts, Date.now()])
+
+      if (loginAttempts.length >= MAX_LOGIN_ATTEMPTS) {
+        lockoutUser()
+      }
     }
   }
 
@@ -42,14 +109,28 @@ const LoginSignup = () => {
   const handleSignupSubmit = async (e) => {
     e.preventDefault()
     if (signupForm.password !== signupForm.confirmPassword) {
-      return alert("Les mots de passe ne correspondent pas !")
+      return toast.error("Les mots de passe ne correspondent pas.")
     }
+
     try {
-      // const response = await axios.post("/api/signup", signupForm) // Remplace l'URL par celle de ton backend
-      alert("Inscription réussie !")
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs`,
+        {
+          nom: signupForm.nom,
+          prenom: signupForm.prenom,
+          pseudo: signupForm.pseudo,
+          email: signupForm.email,
+          password: signupForm.password,
+        }
+      )
+
+      if (response.status === 201) {
+        toast.success("Inscription réussie !")
+        setIsLogin(true) // Revenir au formulaire de connexion après l'inscription
+      }
     } catch (error) {
       console.error("Erreur lors de l'inscription :", error)
-      alert("Erreur d'inscription. Veuillez réessayer.")
+      toast.error("Erreur lors de l'inscription. Veuillez réessayer.")
     }
   }
 
@@ -67,12 +148,12 @@ const LoginSignup = () => {
             <form onSubmit={handleLoginSubmit}>
               <h2>Connexion</h2>
               <div className="form-group">
-                <label htmlFor="loginEmail">Email</label>
+                <label htmlFor="loginPseudo">Pseudo</label>
                 <input
-                  type="email"
-                  id="loginEmail"
-                  name="email"
-                  value={loginForm.email}
+                  type="text"
+                  id="loginPseudo"
+                  name="pseudo"
+                  value={loginForm.pseudo}
                   onChange={handleLoginChange}
                   required
                 />
@@ -128,6 +209,17 @@ const LoginSignup = () => {
                   id="signupEmail"
                   name="email"
                   value={signupForm.email}
+                  onChange={handleSignupChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="signupPseudo">Pseudo</label>
+                <input
+                  type="text"
+                  id="signupPseudo"
+                  name="pseudo"
+                  value={signupForm.pseudo}
                   onChange={handleSignupChange}
                   required
                 />

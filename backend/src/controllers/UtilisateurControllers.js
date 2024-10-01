@@ -40,7 +40,7 @@ class UtilisateurControllers {
   // POST /utilisateurs
   static add(req, res) {
     const utilisateur = req.body
-
+    console.info("utilisateur backis :", utilisateur)
     // TODO: Validations (length, format...)
 
     models.utilisateur
@@ -98,6 +98,7 @@ class UtilisateurControllers {
   // POST /login
   static verifyUtilisateur(req, res, next) {
     const { pseudo } = req.body
+    console.info("Pseudo reçu :", pseudo)
 
     models.utilisateur
       .findByPseudoWithPassword(pseudo)

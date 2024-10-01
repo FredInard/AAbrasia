@@ -8,13 +8,13 @@ class UtilisateurManager extends AbstractManager {
   // Insérer un nouvel utilisateur
   insert(utilisateur) {
     return this.database.query(
-      `INSERT INTO ${this.table} (nom, prenom, email, pseudo, mot_de_passe, role, date_naissance, adresse, ville, telephone, bio, photo_profil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO ${this.table} (nom, prenom, email, pseudo, hashedPassword, role, date_naissance, adresse, ville, telephone, bio, photo_profil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         utilisateur.nom,
         utilisateur.prenom,
         utilisateur.email,
         utilisateur.pseudo,
-        utilisateur.mot_de_passe, // Le mot de passe doit déjà être haché
+        utilisateur.hashedPassword, // Le mot de passe doit déjà être haché
         utilisateur.role || "membre",
         utilisateur.date_naissance,
         utilisateur.adresse,
@@ -78,16 +78,16 @@ class UtilisateurManager extends AbstractManager {
   // Trouver un utilisateur par pseudo avec le mot de passe
   findByPseudoWithPassword(pseudo) {
     return this.database.query(
-      `SELECT id, pseudo, mot_de_passe, role FROM ${this.table} WHERE pseudo = ?`,
+      `SELECT id, pseudo, hashedPassword, role FROM ${this.table} WHERE pseudo = ?`,
       [pseudo]
     )
   }
 
   // Mettre à jour le mot de passe
-  updatePassword(id, motDePasse) {
+  updatePassword(id, hashedPassword) {
     return this.database.query(
-      `UPDATE ${this.table} SET mot_de_passe = ? WHERE id = ?`,
-      [motDePasse, id]
+      `UPDATE ${this.table} SET hashedPassword = ? WHERE id = ?`,
+      [hashedPassword, id]
     )
   }
 

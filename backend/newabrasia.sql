@@ -184,7 +184,7 @@ CREATE TABLE `utilisateur` (
   `prenom` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `pseudo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `mot_de_passe` varchar(255) NOT NULL,
+  `hashedPassword` varchar(255) NOT NULL,
   `role` enum('membre','admin') DEFAULT 'membre',
   `date_naissance` date DEFAULT NULL,
   `adresse` varchar(255) DEFAULT NULL,
