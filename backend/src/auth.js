@@ -8,7 +8,6 @@ const hashingOptions = {
   parallelism: 1,
 }
 
-// Hash le mot de passe lors de l'inscription
 const hashPassword = (req, res, next) => {
   console.info("password is :", req.body.password)
   argon2
@@ -20,56 +19,61 @@ const hashPassword = (req, res, next) => {
       next()
     })
     .catch((err) => {
-      console.error("Error hashing password:", err)
+      console.error(err)
       res.sendStatus(500)
     })
 }
 
-// Vérifie le mot de passe lors de la connexion
 const verifyPassword = (req, res) => {
-  const hashedPassword = req.utilisateur.hashedPassword
-  const password = req.body.password
-  console.info("req verifyPassword, hashedPassword:", hashedPassword)
-  console.info("password provided:", password)
-
-  if (!hashedPassword || typeof hashedPassword !== "string") {
-    console.error("Le mot de passe haché est manquant ou invalide")
-    return res.sendStatus(500)
-  }
+  console.info("req verifyPassword :", req.body.password)
+  console.info("req.utilisateur :", req.utilisateur)
+  console.info(
+    "req.utilisateur.hashedPassword :",
+    req.utilisateur.hashedPassword
+  )
+  console.info("req.body.password :", req.body.password)
 
   argon2
-    .verify(hashedPassword, password)
+    .verify(req.utilisateur.hashedPassword, req.body.password)
     .then((isVerified) => {
       if (isVerified) {
-        const payload = { sub: req.utilisateur.id }
+        // Créer le payload avec l'ID de l'utilisateur et son rôle
+        const payload = {
+          id: req.utilisateur.id,
+          role: req.utilisateur.role, // Ajoute l'info si l'utilisateur est admin ou membre
+        }
+
+        // Générer le token JWT avec ce payload
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
-          expiresIn: "12h",
+          expiresIn: "12h", // Durée de vie du token
         })
-        delete req.utilisateur.hashedPassword
+
+        // Supprimer le mot de passe avant d'envoyer les données de l'utilisateur
+        delete req.utilisateur.password
+
+        // Création du cookie contenant le JWT
+        res.cookie("authToken", token, {
+          httpOnly: true, // Empêche l'accès JavaScript au cookie
+          secure: process.env.NODE_ENV === "production", // Utilise HTTPS en production
+          sameSite: "Strict", // Prévient les attaques CSRF
+          maxAge: 12 * 60 * 60 * 1000, // Durée de vie : 12 heures
+        })
+
+        // Envoyer une réponse avec les informations utilisateur
         res.send({ token, utilisateur: req.utilisateur })
       } else {
-        console.error("Mot de passe incorrect")
-        res.sendStatus(401)
+        res.sendStatus(401) // Mot de passe incorrect
       }
     })
     .catch((err) => {
-      console.error("Error during password verification:", err)
+      console.error(err)
       res.sendStatus(500)
     })
 }
 
-// Vérifie le mot de passe pour d'autres opérations, comme changer de mot de passe
 const verifyPassword2 = (req, res) => {
-  const hashedPassword = req.utilisateur.hashedPassword
-  const password = req.body.password
-
-  if (!hashedPassword || typeof hashedPassword !== "string") {
-    console.error("Le mot de passe haché est manquant ou invalide")
-    return res.sendStatus(500)
-  }
-
   argon2
-    .verify(hashedPassword, password)
+    .verify(req.utilisateur.hashedPassword, req.body.hashedPassword)
     .then((isVerified) => {
       if (isVerified) {
         res.send(true)
@@ -78,12 +82,11 @@ const verifyPassword2 = (req, res) => {
       }
     })
     .catch((err) => {
-      console.error("Error during password verification:", err)
+      console.error(err)
       res.sendStatus(500)
     })
 }
 
-// Vérification du token pour les routes protégées
 const verifyToken = (req, res, next) => {
   try {
     const authorizationHeader = req.get("Authorization")
@@ -106,7 +109,7 @@ const verifyToken = (req, res, next) => {
 
     next()
   } catch (err) {
-    console.error("Error verifying token:", err)
+    console.error(err)
     res.sendStatus(401)
   }
 }

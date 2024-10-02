@@ -24,7 +24,7 @@ $dark-box-shadow: 0px 5px 15px #e4e7ec; // Box-shadow pour le mode sombre (gris 
 $button-padding: 0.75rem 1.5rem;
 $button-border-radius: 5px;
 $button-background: $accent-color;
-$button-hover-background: darken($accent-color, 10%);
+$button-hover-background: scale-color($accent-color, $lightness: -10%);
 $button-text-color: var(--text-color); // Si nécessaire
 
 // == Mixins pour définir les variables CSS en fonction du thème ==
@@ -33,7 +33,7 @@ $button-text-color: var(--text-color); // Si nécessaire
   --text-color: #{$color-light-text};
   --accent-color: #{$accent-color};
   --icon-filter: none;
-  --border-color: #{lighten($color-light-text, 20%)};
+  --border-color: #{adjust-color($color-light-text, $lightness: 20%)};
   --container-background-color: #{$color-light-container-background};
   --box-shadow: #{$light-box-shadow}; // Ajout du box-shadow clair
 }
@@ -43,7 +43,7 @@ $button-text-color: var(--text-color); // Si nécessaire
   --text-color: #{$color-dark-text};
   --accent-color: #{$accent-color};
   --icon-filter: invert(1);
-  --border-color: #{lighten($color-dark-text, 20%)};
+  --border-color: #{scale-color($color-light-text, $lightness: 20%)};
   --container-background-color: var(
     --background-color
   ); // Même couleur que le fond

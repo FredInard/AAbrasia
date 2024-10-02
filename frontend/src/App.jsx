@@ -11,6 +11,8 @@ import CreateGame from "./pages/CreateGame"
 import About from "./pages/Association"
 import LoginSignup from "./pages/LoginSignup"
 import Cgu from "./pages/Cgu"
+import Profil from "./pages/Profil"
+
 // import Cookies from "js-cookie"
 
 function App() {
@@ -24,6 +26,7 @@ function App() {
         <Route path="/creer-partie" element={<CreateGame />} />
         <Route path="/association" element={<About />} />
         <Route path="/login" element={<LoginSignup />} />
+        <Route path="/profil" element={<Profil />} />
         <Route path="/Cgu" element={<Cgu />} />
         <Route path="*" element={<Navigate to="/" />} />{" "}
         {/* Redirection si la route est incorrecte */}

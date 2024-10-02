@@ -4,7 +4,7 @@
 // == Variables pour les boutons ==
 $button-background: $accent-color;
 $button-text-color: var(--text-color);
-$button-hover-background: darken($accent-color, 10%);
+$button-hover-background: scale-color($accent-color, $lightness: -10%);
 
 // == Styles globaux pour la page home ==
 .home {

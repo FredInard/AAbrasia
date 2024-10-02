@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import "./LoginSignup.scss" // Styles associés
 import axios from "axios"
@@ -6,12 +6,14 @@ import Cookies from "js-cookie"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import NavBar from "../components/NavBar/NavBar"
+import { AuthContext } from "../services/AuthContext"
 
 const MAX_LOGIN_ATTEMPTS = 5 // Nombre maximum de tentatives autorisées
 const LOCKOUT_DURATION = 300000 // Durée de verrouillage en millisecondes (par exemple, 5 minutes)
 
 const LoginSignup = () => {
   toast.configure()
+  const { setIsLoggedIn } = useContext(AuthContext)
   const [isLogin, setIsLogin] = useState(true) // Basculer entre login et signup
   const [loginForm, setLoginForm] = useState({ pseudo: "", password: "" })
   const [signupForm, setSignupForm] = useState({
@@ -61,10 +63,10 @@ const LoginSignup = () => {
     clearTimeout(lockoutTimerRef.current)
   }
 
-  // Effacer le compteur de tentatives après une connexion réussie
+  /* Effacer le compteur de tentatives après une connexion réussie
   const clearLoginAttempts = () => {
     setLoginAttempts([])
-  }
+  } */
 
   // Soumission du formulaire de connexion
   const handleLoginSubmit = async (e) => {
@@ -75,13 +77,15 @@ const LoginSignup = () => {
         {
           pseudo: loginForm.pseudo,
           password: loginForm.password,
-        }
+        },
+        { withCredentials: true } // Important: Assure que les cookies sont envoyés avec la requête
       )
 
       if (response.status === 200) {
-        const token = response.data.token
-        Cookies.set("authToken", token, { expires: 0.5, sameSite: "strict" })
-        Cookies.set("Pseudo", response.data.utilisateur.Pseudo, {
+        // Tu peux encore sauvegarder d'autres informations utilisateur (hors token) si nécessaire
+        console.info("connexion réussi", response.data.utilisateur.pseudo)
+        toast.success("connexion réussie !")
+        Cookies.set("Pseudo", response.data.utilisateur.pseudo, {
           sameSite: "strict",
         })
         Cookies.set(
@@ -91,8 +95,10 @@ const LoginSignup = () => {
             sameSite: "strict",
           }
         )
+        // Mettre à jour l'état `isLoggedIn` dans le contexte
+        setIsLoggedIn(true)
+        // Redirige vers la page d'accueil ou une autre page
         navigate("/")
-        clearLoginAttempts()
       }
     } catch (error) {
       console.error("Erreur lors de la connexion :", error)

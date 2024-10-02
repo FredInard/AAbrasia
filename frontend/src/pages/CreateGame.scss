@@ -9,7 +9,7 @@ $input-padding: 10px;
 $input-font-size: 16px;
 
 $btn-background-color: $accent-color;
-$btn-hover-background-color: darken($accent-color, 10%);
+$btn-hover-background-color: scale-color($accent-color, $lightness: -10%);
 $btn-text-color: var(--text-color);
 $btn-border-radius: 4px;
 $btn-padding: 12px;
