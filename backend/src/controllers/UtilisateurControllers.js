@@ -97,11 +97,11 @@ class UtilisateurControllers {
 
   // POST /login
   static verifyUtilisateur(req, res, next) {
-    const { pseudo } = req.body
-    console.info("Pseudo reçu :", pseudo)
+    const { email } = req.body
+    console.info("email reçu :", email)
 
     models.utilisateur
-      .findByPseudoWithPassword(pseudo)
+      .findByEmailWithPassword(email)
       .then(([utilisateurs]) => {
         if (utilisateurs[0]) {
           req.utilisateur = utilisateurs[0]

@@ -24,6 +24,82 @@ const hashPassword = (req, res, next) => {
     })
 }
 
+// Générer un JWT avec une courte durée de vie
+const generateAccessToken = (user) => {
+  return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
+    expiresIn: "15m", // Expiration du token d'accès : 15 minutes
+  })
+}
+
+// Générer un refresh token avec une durée de vie plus longue
+const generateRefreshToken = (user) => {
+  return jwt.sign(
+    { id: user.id, role: user.role },
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+      expiresIn: "7d", // Expiration du refresh token : 7 jours
+    }
+  )
+}
+
+// Fonction de vérification et login
+const verifyPassword = (req, res) => {
+  // Vérifier le mot de passe de l'utilisateur comme dans ta fonction actuelle...
+  argon2
+    .verify(req.utilisateur.hashedPassword, req.body.password)
+    .then((isVerified) => {
+      if (isVerified) {
+        const user = req.utilisateur
+
+        // Générer le JWT (access token) et le refresh token
+        const accessToken = generateAccessToken(user)
+        const refreshToken = generateRefreshToken(user)
+
+        // Stocker le JWT dans un cookie HTTP-Only
+        res.cookie("authToken", accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production", // Utiliser HTTPS en production
+          sameSite: "Strict", // Protection contre les attaques CSRF
+          maxAge: 15 * 60 * 1000, // Durée de vie du cookie : 15 minutes
+        })
+
+        // Renvoie le refresh token dans la réponse (ou l'enregistre dans la base de données)
+        res.send({ refreshToken, user }) // Le client stockera ce refresh token
+      } else {
+        res.sendStatus(401) // Mot de passe incorrect
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+    })
+}
+// Route pour renouveler le JWT en utilisant le refresh token
+const refreshToken = (req, res) => {
+  const { token } = req.body // Le refresh token envoyé par le client
+
+  if (!token) return res.sendStatus(401) // Pas de token, accès refusé
+
+  // Vérifier le refresh token
+  jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403) // Refresh token invalide ou expiré
+
+    // Générer un nouveau JWT (access token)
+    const newAccessToken = generateAccessToken(user)
+
+    // Renouveler le JWT dans un cookie HTTP-Only
+    res.cookie("authToken", newAccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    })
+
+    res.send({ accessToken: newAccessToken })
+  })
+}
+
+/* // Fonction de vérification et login
 const verifyPassword = (req, res) => {
   console.info("req verifyPassword :", req.body.password)
   console.info("req.utilisateur :", req.utilisateur)
@@ -69,7 +145,7 @@ const verifyPassword = (req, res) => {
       console.error(err)
       res.sendStatus(500)
     })
-}
+} */
 
 const verifyPassword2 = (req, res) => {
   argon2
@@ -120,4 +196,5 @@ module.exports = {
   verifyToken,
   hashingOptions,
   verifyPassword2,
+  refreshToken,
 }

@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import "./LoginSignup.scss" // Styles associés
 import axios from "axios"
-import Cookies from "js-cookie"
+// import Cookies from "js-cookie"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import NavBar from "../components/NavBar/NavBar"
@@ -75,29 +75,20 @@ const LoginSignup = () => {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/login`,
         {
-          pseudo: loginForm.pseudo,
+          email: loginForm.email,
           password: loginForm.password,
         },
-        { withCredentials: true } // Important: Assure que les cookies sont envoyés avec la requête
+        { withCredentials: true } // Important: permet d'envoyer et recevoir les cookies HTTP-Only
       )
 
       if (response.status === 200) {
-        // Tu peux encore sauvegarder d'autres informations utilisateur (hors token) si nécessaire
-        console.info("connexion réussi", response.data.utilisateur.pseudo)
-        toast.success("connexion réussie !")
-        Cookies.set("Pseudo", response.data.utilisateur.pseudo, {
-          sameSite: "strict",
-        })
-        Cookies.set(
-          "loggedInUtilisateur",
-          JSON.stringify(response.data.utilisateur),
-          {
-            sameSite: "strict",
-          }
-        )
+        // Stocker le refresh token dans le localStorage pour les futures requêtes
+        localStorage.setItem("refreshToken", response.data.refreshToken)
+
         // Mettre à jour l'état `isLoggedIn` dans le contexte
         setIsLoggedIn(true)
-        // Redirige vers la page d'accueil ou une autre page
+
+        // Rediriger vers la page d'accueil ou une autre page
         navigate("/")
       }
     } catch (error) {
@@ -110,6 +101,49 @@ const LoginSignup = () => {
       }
     }
   }
+
+  // // Soumission du formulaire de connexion
+  // const handleLoginSubmit = async (e) => {
+  //   e.preventDefault()
+  //   try {
+  //     const response = await axios.post(
+  //       `${import.meta.env.VITE_BACKEND_URL}/login`,
+  //       {
+  //         pseudo: loginForm.pseudo,
+  //         password: loginForm.password,
+  //       },
+  //       { withCredentials: true } // Important: Assure que les cookies sont envoyés avec la requête
+  //     )
+
+  //     if (response.status === 200) {
+  //       // Tu peux encore sauvegarder d'autres informations utilisateur (hors token) si nécessaire
+  //       console.info("connexion réussi", response.data.utilisateur.pseudo)
+  //       toast.success("connexion réussie !")
+  //       Cookies.set("Pseudo", response.data.utilisateur.pseudo, {
+  //         sameSite: "strict",
+  //       })
+  //       Cookies.set(
+  //         "loggedInUtilisateur",
+  //         JSON.stringify(response.data.utilisateur),
+  //         {
+  //           sameSite: "strict",
+  //         }
+  //       )
+  //       // Mettre à jour l'état `isLoggedIn` dans le contexte
+  //       setIsLoggedIn(true)
+  //       // Redirige vers la page d'accueil ou une autre page
+  //       navigate("/")
+  //     }
+  //   } catch (error) {
+  //     console.error("Erreur lors de la connexion :", error)
+  //     toast.error("Pseudo ou mot de passe incorrect.")
+  //     setLoginAttempts([...loginAttempts, Date.now()])
+
+  //     if (loginAttempts.length >= MAX_LOGIN_ATTEMPTS) {
+  //       lockoutUser()
+  //     }
+  //   }
+  // }
 
   // Soumission du formulaire d'inscription
   const handleSignupSubmit = async (e) => {
@@ -154,12 +188,12 @@ const LoginSignup = () => {
             <form onSubmit={handleLoginSubmit}>
               <h2>Connexion</h2>
               <div className="form-group">
-                <label htmlFor="loginPseudo">Pseudo</label>
+                <label htmlFor="loginemail">email</label>
                 <input
-                  type="text"
-                  id="loginPseudo"
-                  name="pseudo"
-                  value={loginForm.pseudo}
+                  type="email"
+                  id="loginemail"
+                  name="email"
+                  value={loginForm.email}
                   onChange={handleLoginChange}
                   required
                 />

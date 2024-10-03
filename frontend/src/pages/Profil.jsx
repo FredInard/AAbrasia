@@ -1,97 +1,86 @@
 import React, { useState, useEffect, useContext } from "react"
-import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import NavBar from "../components/NavBar/NavBar"
-import ToggleSwitch from "../components/Toggle/ToggleSwitch"
-// import ModificationProfil from "../components/DataPourProfil/ModificationProfil"
-// import AffichageParties from "../components/DataPartiesPourProfil/AffichageParties"
+import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch"
 import { AuthContext } from "../services/AuthContext"
+import Cookies from "js-cookie" // Assure-toi que js-cookie est installé pour gérer les cookies
+import ModificationProfil from "../components/ModificationProfil/ModificationProfil" // Assure-toi que ce composant est bien importé
 import "./Profil.scss"
 
 export default function Profil() {
-  const [utilisateur, setUtilisateur] = useState(null)
-  const [showListeParties, setShowListeParties] = useState(true)
-  const [theme, setTheme] = useState("light-mode")
+  const [showListeParties, setShowListeParties] = useState(true) // Gestion de l'affichage
+  const [utilisateur, setUtilisateur] = useState(null) // Ajouter un état pour l'utilisateur
   const navigate = useNavigate()
-  const { isLoggedIn } = useContext(AuthContext)
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext) // Ajoute setIsLoggedIn pour gérer l'état de connexion
 
   useEffect(() => {
     // Redirection si l'utilisateur n'est pas authentifié
     if (!isLoggedIn) {
       navigate("/login")
+    } else {
+      // Charger les données de l'utilisateur ici si nécessaire
+      // Simuler un utilisateur (exemple à remplacer par une requête API)
+      const user = {
+        pseudo: "UtilisateurTest",
+        email: "test@example.com",
+        adresse: "Adresse Test",
+        telephone: "0102030405",
+        bio: "Ceci est une bio d'exemple.",
+      }
+      setUtilisateur(user)
     }
   }, [isLoggedIn, navigate])
 
-  useEffect(() => {
-    // Fonction pour récupérer les données de l'utilisateur
-    const fetchUtilisateur = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/utilisateur/profil`,
-          {
-            withCredentials: true, // Assure l'envoi des cookies
-          }
-        )
-        setUtilisateur(response.data)
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des données utilisateur :",
-          error
-        )
-      }
-    }
+  // Fonction de déconnexion
+  const handleLogout = () => {
+    // Supprimer les cookies
+    Cookies.remove("authToken") // Si ton JWT est stocké dans un cookie HTTP-Only, ça le supprimera automatiquement
+    Cookies.remove("Pseudo")
+    Cookies.remove("loggedInUtilisateur")
 
-    fetchUtilisateur()
-  }, [])
+    // Mettre à jour l'état du contexte Auth pour indiquer que l'utilisateur est déconnecté
+    setIsLoggedIn(false)
 
-  useEffect(() => {
-    document.body.className = theme
-  }, [theme])
-
-  const toggleTheme = () => {
-    setTheme(theme === "light-mode" ? "dark-mode" : "light-mode")
-  }
-
-  if (!utilisateur) {
-    // Afficher un indicateur de chargement
-    return <p>Chargement...</p>
+    // Rediriger vers la page principale (ou la page de login)
+    navigate("/")
   }
 
   return (
     <>
       <NavBar className="NavBarHome" />
-      <h1 className="bienvenueName">Bienvenue {utilisateur.pseudo}</h1>
+      <div className="pageProfil">
+        <h1 className="bienvenueName">
+          Bienvenue {utilisateur ? utilisateur.pseudo : "Chargement..."}
+        </h1>
 
-      {/* Toggle pour basculer entre l'affichage des parties et la modification du profil */}
-      <div className="boutonSwitch">
-        <p>Tableau de bord des parties</p>
-        <ToggleSwitch
-          isChecked={!showListeParties}
-          onChange={() => setShowListeParties(!showListeParties)}
-        />
-        <p>Modifier mon profil</p>
-      </div>
-
-      {/* Toggle pour changer le thème */}
-      <div className="themeToggle">
-        <p>Mode Clair</p>
-        <ToggleSwitch
-          isChecked={theme === "dark-mode"}
-          onChange={toggleTheme}
-        />
-        <p>Mode Sombre</p>
-      </div>
-
-      {/* <div className="globalBoxProfil">
-        {showListeParties ? (
-          <AffichageParties utilisateur={utilisateur} />
-        ) : (
-          <ModificationProfil
-            utilisateur={utilisateur}
-            setUtilisateur={setUtilisateur}
+        {/* Toggle pour basculer entre l'affichage des parties et la modification du profil */}
+        <div className="boutonSwitch">
+          <p>Tableau de bord des parties</p>
+          <ToggleSwitch
+            isChecked={showListeParties} // Simplifier la logique pour passer directement `showListeParties`
+            onChange={() => setShowListeParties(!showListeParties)} // Inverser la valeur au changement
           />
-        )}
-      </div> */}
+          <p>Modifier mon profil</p>
+        </div>
+
+        {/* Bouton de déconnexion */}
+        <button className="logoutButton" onClick={handleLogout}>
+          Se déconnecter
+        </button>
+
+        <div className="globalBoxProfil">
+          {showListeParties ? (
+            <p>Les parties seront affichées ici.</p>
+          ) : (
+            utilisateur && ( // Vérifie que l'utilisateur est chargé avant de rendre `ModificationProfil`
+              <ModificationProfil
+                utilisateur={utilisateur}
+                setUtilisateur={setUtilisateur}
+              />
+            )
+          )}
+        </div>
+      </div>
     </>
   )
 }

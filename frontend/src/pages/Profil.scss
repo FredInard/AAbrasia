@@ -1,7 +1,7 @@
 /* Profil.scss */
 
 /* Importation des variables et mixins */
-@import "../styles/variables"; // Assurez-vous que le chemin est correct
+@import "../styles/variables.scss"; // Assurez-vous que le chemin est correct
 
 /* Application du thème en fonction du mode (clair ou sombre) */
 body {
@@ -17,7 +17,9 @@ body.dark-mode {
   @include dark-theme;
 }
 */
-
+.pageProfil {
+  margin-top: 10%;
+}
 /* Style pour le titre de bienvenue */
 .bienvenueName {
   font-size: 2rem;
@@ -39,11 +41,6 @@ body.dark-mode {
     font-size: 1.2rem;
     color: var(--text-color);
   }
-}
-
-/* Styles pour le composant ToggleSwitch */
-.toggle-switch {
-  /* Si vous avez besoin de styles supplémentaires pour le toggle, vous pouvez les ajouter ici */
 }
 
 /* Styles pour le conteneur global du profil */
