@@ -75,17 +75,32 @@ const verifyPassword = (req, res) => {
     })
 }
 // Route pour renouveler le JWT en utilisant le refresh token
+// Route pour renouveler le JWT en utilisant le refresh token
 const refreshToken = (req, res) => {
   const { token } = req.body // Le refresh token envoyé par le client
 
-  if (!token) return res.sendStatus(401) // Pas de token, accès refusé
+  if (!token) {
+    console.error(
+      "Aucun token reçu ou token manquant dans la requête : ",
+      req.body
+    ) // Log plus détaillé sur l'état de la requête
+    return res.sendStatus(401) // Pas de token, accès refusé
+  }
+
+  console.info("Refresh token reçu : ", token) // Vérifier que le refresh token est bien reçu
 
   // Vérifier le refresh token
   jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403) // Refresh token invalide ou expiré
+    if (err) {
+      console.error("Erreur lors de la vérification du refresh token :", err) // Log en cas d'erreur de validation du refresh token
+      return res.sendStatus(403) // Refresh token invalide ou expiré
+    }
+
+    console.info("Refresh token valide, utilisateur : ", user) // Log quand le refresh token est valide
 
     // Générer un nouveau JWT (access token)
     const newAccessToken = generateAccessToken(user)
+    console.info("Nouveau access token généré : ", newAccessToken) // Log du nouveau token d'accès
 
     // Renouveler le JWT dans un cookie HTTP-Only
     res.cookie("authToken", newAccessToken, {
@@ -94,6 +109,8 @@ const refreshToken = (req, res) => {
       sameSite: "Strict",
       maxAge: 15 * 60 * 1000, // 15 minutes
     })
+
+    console.info("Access token envoyé dans le cookie HTTP-Only") // Log pour confirmer que le token est bien envoyé dans le cookie
 
     res.send({ accessToken: newAccessToken })
   })

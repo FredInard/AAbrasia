@@ -1,21 +1,19 @@
-import React, { useState, useRef, useContext } from "react"
+import React, { useState, useRef, useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import "./LoginSignup.scss" // Styles associés
+import "./LoginSignup.scss"
 import axios from "axios"
-// import Cookies from "js-cookie"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import NavBar from "../components/NavBar/NavBar"
 import { AuthContext } from "../services/AuthContext"
 
-const MAX_LOGIN_ATTEMPTS = 5 // Nombre maximum de tentatives autorisées
-const LOCKOUT_DURATION = 300000 // Durée de verrouillage en millisecondes (par exemple, 5 minutes)
+const MAX_LOGIN_ATTEMPTS = 5
+const LOCKOUT_DURATION = 300000 // 5 minutes de verrouillage
 
 const LoginSignup = () => {
-  toast.configure()
   const { setIsLoggedIn } = useContext(AuthContext)
   const [isLogin, setIsLogin] = useState(true) // Basculer entre login et signup
-  const [loginForm, setLoginForm] = useState({ pseudo: "", password: "" })
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" })
   const [signupForm, setSignupForm] = useState({
     pseudo: "",
     nom: "",
@@ -24,27 +22,13 @@ const LoginSignup = () => {
     password: "",
     confirmPassword: "",
   })
-  const [errorMessage, setErrorMessage] = useState("")
   const [loginAttempts, setLoginAttempts] = useState([])
   const [isUserLocked, setIsUserLocked] = useState(false)
   const lockoutTimerRef = useRef(null)
   const navigate = useNavigate()
+  console.info("isUserLocked :", isUserLocked)
 
-  console.info(errorMessage)
-  console.info(isUserLocked)
-  console.info(setErrorMessage)
-
-  const handleLoginChange = (e) => {
-    const { name, value } = e.target
-    setLoginForm((prevForm) => ({ ...prevForm, [name]: value }))
-  }
-
-  const handleSignupChange = (e) => {
-    const { name, value } = e.target
-    setSignupForm((prevForm) => ({ ...prevForm, [name]: value }))
-  }
-
-  // Fonction pour verrouiller temporairement un utilisateur
+  // Gestion des tentatives de connexion infructueuses
   const lockoutUser = () => {
     setIsUserLocked(true)
     lockoutTimerRef.current = setTimeout(() => {
@@ -56,17 +40,44 @@ const LoginSignup = () => {
     )
   }
 
-  // Réinitialiser le statut de verrouillage
   const clearLockout = () => {
     setIsUserLocked(false)
     setLoginAttempts([])
     clearTimeout(lockoutTimerRef.current)
   }
+  // Fonction de vérification du refresh token lors du chargement de la page
+  useEffect(() => {
+    const checkAccessToken = async () => {
+      const refreshToken = localStorage.getItem("refreshToken")
 
-  /* Effacer le compteur de tentatives après une connexion réussie
-  const clearLoginAttempts = () => {
-    setLoginAttempts([])
-  } */
+      if (refreshToken) {
+        try {
+          // Si le refresh token est présent, demander un nouveau token d'accès
+          const response = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/refresh-token`,
+            {
+              token: refreshToken,
+            }
+          )
+
+          if (response.status === 200) {
+            setIsLoggedIn(true) // Connexion réussie
+          } else {
+            setIsLoggedIn(false) // Échec, redirection vers login
+            navigate("/login")
+          }
+        } catch (error) {
+          setIsLoggedIn(false) // En cas d'erreur, redirection vers login
+          navigate("/login")
+        }
+      } else {
+        setIsLoggedIn(false) // Si pas de refresh token, redirection vers login
+        navigate("/login")
+      }
+    }
+
+    checkAccessToken()
+  }, [navigate, setIsLoggedIn])
 
   // Soumission du formulaire de connexion
   const handleLoginSubmit = async (e) => {
@@ -78,14 +89,14 @@ const LoginSignup = () => {
           email: loginForm.email,
           password: loginForm.password,
         },
-        { withCredentials: true } // Important: permet d'envoyer et recevoir les cookies HTTP-Only
+        { withCredentials: true } // Cela permet d'envoyer et de recevoir le cookie HTTP-Only
       )
 
       if (response.status === 200) {
-        // Stocker le refresh token dans le localStorage pour les futures requêtes
+        // Stocker le refresh token dans le localStorage
         localStorage.setItem("refreshToken", response.data.refreshToken)
 
-        // Mettre à jour l'état `isLoggedIn` dans le contexte
+        // Mettre à jour l'état de connexion dans le contexte
         setIsLoggedIn(true)
 
         // Rediriger vers la page d'accueil ou une autre page
@@ -93,7 +104,7 @@ const LoginSignup = () => {
       }
     } catch (error) {
       console.error("Erreur lors de la connexion :", error)
-      toast.error("Pseudo ou mot de passe incorrect.")
+      toast.error("Email ou mot de passe incorrect.")
       setLoginAttempts([...loginAttempts, Date.now()])
 
       if (loginAttempts.length >= MAX_LOGIN_ATTEMPTS) {
@@ -101,49 +112,6 @@ const LoginSignup = () => {
       }
     }
   }
-
-  // // Soumission du formulaire de connexion
-  // const handleLoginSubmit = async (e) => {
-  //   e.preventDefault()
-  //   try {
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_BACKEND_URL}/login`,
-  //       {
-  //         pseudo: loginForm.pseudo,
-  //         password: loginForm.password,
-  //       },
-  //       { withCredentials: true } // Important: Assure que les cookies sont envoyés avec la requête
-  //     )
-
-  //     if (response.status === 200) {
-  //       // Tu peux encore sauvegarder d'autres informations utilisateur (hors token) si nécessaire
-  //       console.info("connexion réussi", response.data.utilisateur.pseudo)
-  //       toast.success("connexion réussie !")
-  //       Cookies.set("Pseudo", response.data.utilisateur.pseudo, {
-  //         sameSite: "strict",
-  //       })
-  //       Cookies.set(
-  //         "loggedInUtilisateur",
-  //         JSON.stringify(response.data.utilisateur),
-  //         {
-  //           sameSite: "strict",
-  //         }
-  //       )
-  //       // Mettre à jour l'état `isLoggedIn` dans le contexte
-  //       setIsLoggedIn(true)
-  //       // Redirige vers la page d'accueil ou une autre page
-  //       navigate("/")
-  //     }
-  //   } catch (error) {
-  //     console.error("Erreur lors de la connexion :", error)
-  //     toast.error("Pseudo ou mot de passe incorrect.")
-  //     setLoginAttempts([...loginAttempts, Date.now()])
-
-  //     if (loginAttempts.length >= MAX_LOGIN_ATTEMPTS) {
-  //       lockoutUser()
-  //     }
-  //   }
-  // }
 
   // Soumission du formulaire d'inscription
   const handleSignupSubmit = async (e) => {
@@ -166,7 +134,7 @@ const LoginSignup = () => {
 
       if (response.status === 201) {
         toast.success("Inscription réussie !")
-        setIsLogin(true) // Revenir au formulaire de connexion après l'inscription
+        setIsLogin(true) // Retourner au formulaire de connexion
       }
     } catch (error) {
       console.error("Erreur lors de l'inscription :", error)
@@ -179,6 +147,52 @@ const LoginSignup = () => {
     setIsLogin(!isLogin)
   }
 
+  // Gérer les changements dans le formulaire de connexion
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target
+    setLoginForm((prevForm) => ({ ...prevForm, [name]: value }))
+  }
+
+  // Gérer les changements dans le formulaire d'inscription
+  const handleSignupChange = (e) => {
+    const { name, value } = e.target
+    setSignupForm((prevForm) => ({ ...prevForm, [name]: value }))
+  }
+
+  // Intercepteur pour gérer l'expiration du token d'accès et utiliser le refresh token
+  axios.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true // Marquer la requête pour éviter la boucle
+
+        const refreshToken = localStorage.getItem("refreshToken")
+        if (!refreshToken) {
+          window.location.href = "/login" // Si pas de refresh token, rediriger
+          return Promise.reject(error)
+        }
+
+        try {
+          const response = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/refresh-token`,
+            { token: refreshToken }
+          )
+
+          if (response.status === 200) {
+            originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`
+            return axios(originalRequest) // Relancer la requête originale
+          }
+        } catch (err) {
+          window.location.href = "/login" // Si le refresh token échoue, rediriger
+          return Promise.reject(err)
+        }
+      }
+
+      return Promise.reject(error)
+    }
+  )
+
   return (
     <>
       <NavBar />
@@ -188,7 +202,7 @@ const LoginSignup = () => {
             <form onSubmit={handleLoginSubmit}>
               <h2>Connexion</h2>
               <div className="form-group">
-                <label htmlFor="loginemail">email</label>
+                <label htmlFor="loginemail">Email</label>
                 <input
                   type="email"
                   id="loginemail"

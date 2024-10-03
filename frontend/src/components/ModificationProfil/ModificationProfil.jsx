@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
+import Cookies from "js-cookie"
 import { toast } from "react-toastify"
 import "./ModificationProfil.scss"
 
-export default function ModificationProfil({ utilisateur, setUtilisateur }) {
+export default function ModificationProfil() {
+  const [utilisateur, setUtilisateur] = useState({})
   const [formData, setFormData] = useState({
     nom: "",
     prenom: "",
@@ -14,26 +16,42 @@ export default function ModificationProfil({ utilisateur, setUtilisateur }) {
     ville: "",
     telephone: "",
     bio: "",
-    photo_profil: null, // Pour la gestion de la photo de profil
+    photo_profil: null,
   })
 
-  // Charger les données utilisateur dans le formulaire
+  const idUser = Cookies.get("idUtilisateur")
+  const idUserNumb = parseInt(idUser)
+  const tokenFromCookie = Cookies.get("authToken")
+
+  const headers = {
+    Authorization: `Bearer ${tokenFromCookie}`,
+  }
+
+  // Charger les données utilisateur depuis le backend
   useEffect(() => {
-    if (utilisateur) {
-      setFormData({
-        nom: utilisateur.nom || "",
-        prenom: utilisateur.prenom || "",
-        email: utilisateur.email || "",
-        pseudo: utilisateur.pseudo || "",
-        date_naissance: utilisateur.date_naissance || "",
-        adresse: utilisateur.adresse || "",
-        ville: utilisateur.ville || "",
-        telephone: utilisateur.telephone || "",
-        bio: utilisateur.bio || "",
-        photo_profil: null, // La photo sera gérée séparément
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUserNumb}`, {
+        headers,
       })
-    }
-  }, [utilisateur])
+      .then((res) => {
+        setUtilisateur(res.data)
+        setFormData({
+          nom: res.data.nom || "",
+          prenom: res.data.prenom || "",
+          email: res.data.email || "",
+          pseudo: res.data.pseudo || "",
+          date_naissance: res.data.date_naissance || "",
+          adresse: res.data.adresse || "",
+          ville: res.data.ville || "",
+          telephone: res.data.telephone || "",
+          bio: res.data.bio || "",
+          photo_profil: null,
+        })
+      })
+      .catch((err) => {
+        console.error("Problème lors du chargement de l'utilisateur", err)
+      })
+  }, [idUserNumb, headers])
 
   // Gérer les changements dans les champs du formulaire
   const handleChange = (e) => {
@@ -48,7 +66,7 @@ export default function ModificationProfil({ utilisateur, setUtilisateur }) {
   const handleFileChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
-      photo_profil: e.target.files[0], // Garde le fichier pour l'envoyer
+      photo_profil: e.target.files[0],
     }))
   }
 
@@ -56,7 +74,7 @@ export default function ModificationProfil({ utilisateur, setUtilisateur }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const formDataToSend = new FormData() // Utilisation de FormData pour gérer les fichiers et les autres données
+    const formDataToSend = new FormData()
     for (const key in formData) {
       formDataToSend.append(key, formData[key])
     }
@@ -68,7 +86,8 @@ export default function ModificationProfil({ utilisateur, setUtilisateur }) {
         {
           withCredentials: true,
           headers: {
-            "Content-Type": "multipart/form-data", // Nécessaire pour gérer le fichier
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${tokenFromCookie}`,
           },
         }
       )

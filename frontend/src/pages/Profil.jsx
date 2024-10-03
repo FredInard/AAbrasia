@@ -17,17 +17,6 @@ export default function Profil() {
     // Redirection si l'utilisateur n'est pas authentifié
     if (!isLoggedIn) {
       navigate("/login")
-    } else {
-      // Charger les données de l'utilisateur ici si nécessaire
-      // Simuler un utilisateur (exemple à remplacer par une requête API)
-      const user = {
-        pseudo: "UtilisateurTest",
-        email: "test@example.com",
-        adresse: "Adresse Test",
-        telephone: "0102030405",
-        bio: "Ceci est une bio d'exemple.",
-      }
-      setUtilisateur(user)
     }
   }, [isLoggedIn, navigate])
 
