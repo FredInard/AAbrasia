@@ -19,6 +19,16 @@ $font-secondary: "system-ui", cursive;
   z-index: 1; // Z-index élevé pour que la NavBar reste au-dessus du contenu
   box-shadow: var(--box-shadow); // Utilisation de la variable box-shadow
 
+  /* Exemple de style pour le bouton de déconnexion */
+  .logout-button {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+  }
+
   // Logo de la navbar
   &-logo {
     img {

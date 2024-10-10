@@ -5,12 +5,7 @@ const multer = require("multer")
 
 const router = express.Router()
 
-const {
-  hashPassword,
-  verifyPassword,
-  verifyToken,
-  refreshToken,
-} = require("./auth.js")
+const { hashPassword, verifyPassword, verifyToken } = require("./auth.js")
 
 const upload = multer({ dest: "public/assets/tmp" })
 
@@ -80,9 +75,6 @@ router.delete("/covoiturages/:id", verifyToken, CovoiturageControllers.destroy)
 // Routes pour les logs (optionnel, généralement pour les admins)
 router.get("/logs", verifyToken, LogControllers.browse)
 router.get("/logs/:id", verifyToken, LogControllers.read)
-
-// Routes pour la mmise a jour du Token
-router.post("/refresh-token", refreshToken)
 
 module.exports = router
 

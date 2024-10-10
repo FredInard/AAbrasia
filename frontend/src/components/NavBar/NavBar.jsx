@@ -1,13 +1,18 @@
 import React, { useContext } from "react"
-import { NavLink } from "react-router-dom"
-// import Cookies from "js-cookie"
+import { NavLink, useNavigate } from "react-router-dom"
+import { AuthContext } from "../../AuthContext"
 import "./NavBar.scss"
-import { AuthContext } from "../../services/AuthContext"
 import logo from "../../assets/pics/logoArpenteurBlanc.svg"
 import ToggleTheme from "../ToggleTheme/ToggleTheme"
 
 const NavBar = () => {
-  const { isLoggedIn } = useContext(AuthContext)
+  const { isLoggedIn, userRole, logout } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate("/") // Rediriger vers la page d'accueil après la déconnexion
+  }
 
   return (
     <nav className="navbar">
@@ -26,14 +31,16 @@ const NavBar = () => {
             Accueil
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            to="/creer-partie"
-            className={({ isActive }) => (isActive ? "active" : undefined)}
-          >
-            Créer partie
-          </NavLink>
-        </li>
+        {isLoggedIn && (
+          <li>
+            <NavLink
+              to="/creer-partie"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              Créer partie
+            </NavLink>
+          </li>
+        )}
         <li>
           <NavLink
             to="/association"
@@ -50,12 +57,27 @@ const NavBar = () => {
             L'équipe
           </NavLink>
         </li>
+        {userRole === "admin" && (
+          <li>
+            <NavLink
+              to="/admin"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              Administration
+            </NavLink>
+          </li>
+        )}
       </ul>
       <div className="navbar-cta">
         {isLoggedIn ? (
-          <NavLink to="/profil" className="btn-cta">
-            Mon Profil
-          </NavLink>
+          <>
+            <NavLink to="/profil" className="btn-cta">
+              Mon Profil
+            </NavLink>
+            <button onClick={handleLogout} className="btn-cta logout-button">
+              Déconnexion
+            </button>
+          </>
         ) : (
           <NavLink to="/login" className="btn-cta">
             Se connecter

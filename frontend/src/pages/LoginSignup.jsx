@@ -1,17 +1,18 @@
 import React, { useState, useRef, useContext, useEffect } from "react"
+import { AuthContext } from "../AuthContext"
 import { useNavigate } from "react-router-dom"
 import "./LoginSignup.scss"
 import axios from "axios"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import NavBar from "../components/NavBar/NavBar"
-import { AuthContext } from "../services/AuthContext"
+import jwtDecode from "jwt-decode" // Importation corrigée
 
 const MAX_LOGIN_ATTEMPTS = 5
 const LOCKOUT_DURATION = 300000 // 5 minutes de verrouillage
 
 const LoginSignup = () => {
-  const { setIsLoggedIn } = useContext(AuthContext)
+  const { setIsLoggedIn, setUserRole, setUserData } = useContext(AuthContext)
   const [isLogin, setIsLogin] = useState(true) // Basculer entre login et signup
   const [loginForm, setLoginForm] = useState({ email: "", password: "" })
   const [signupForm, setSignupForm] = useState({
@@ -26,6 +27,7 @@ const LoginSignup = () => {
   const [isUserLocked, setIsUserLocked] = useState(false)
   const lockoutTimerRef = useRef(null)
   const navigate = useNavigate()
+
   console.info("isUserLocked :", isUserLocked)
 
   // Gestion des tentatives de connexion infructueuses
@@ -45,39 +47,31 @@ const LoginSignup = () => {
     setLoginAttempts([])
     clearTimeout(lockoutTimerRef.current)
   }
-  // Fonction de vérification du refresh token lors du chargement de la page
+
+  // Vérification du token stocké dans le localStorage lors du chargement de la page
   useEffect(() => {
-    const checkAccessToken = async () => {
-      const refreshToken = localStorage.getItem("refreshToken")
+    const token = localStorage.getItem("authToken")
 
-      if (refreshToken) {
-        try {
-          // Si le refresh token est présent, demander un nouveau token d'accès
-          const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/refresh-token`,
-            {
-              token: refreshToken,
-            }
-          )
-
-          if (response.status === 200) {
-            setIsLoggedIn(true) // Connexion réussie
-          } else {
-            setIsLoggedIn(false) // Échec, redirection vers login
-            navigate("/login")
-          }
-        } catch (error) {
-          setIsLoggedIn(false) // En cas d'erreur, redirection vers login
-          navigate("/login")
-        }
-      } else {
-        setIsLoggedIn(false) // Si pas de refresh token, redirection vers login
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token)
+        setIsLoggedIn(true)
+        setUserRole(decodedToken.role)
+        setUserData(decodedToken)
+      } catch (error) {
+        console.error("Token invalide :", error)
+        setIsLoggedIn(false)
+        setUserRole("visitor")
+        setUserData(null)
         navigate("/login")
       }
+    } else {
+      setIsLoggedIn(false)
+      setUserRole("visitor")
+      setUserData(null)
+      navigate("/login")
     }
-
-    checkAccessToken()
-  }, [navigate, setIsLoggedIn])
+  }, [navigate, setIsLoggedIn, setUserRole, setUserData])
 
   // Soumission du formulaire de connexion
   const handleLoginSubmit = async (e) => {
@@ -88,19 +82,30 @@ const LoginSignup = () => {
         {
           email: loginForm.email,
           password: loginForm.password,
-        },
-        { withCredentials: true } // Cela permet d'envoyer et de recevoir le cookie HTTP-Only
+        }
       )
 
       if (response.status === 200) {
-        // Stocker le refresh token dans le localStorage
-        localStorage.setItem("refreshToken", response.data.refreshToken)
+        const token = response.data.token
 
-        // Mettre à jour l'état de connexion dans le contexte
-        setIsLoggedIn(true)
+        if (token) {
+          // Stocker le token d'accès dans le localStorage
+          localStorage.setItem("authToken", token)
 
-        // Rediriger vers la page d'accueil ou une autre page
-        navigate("/")
+          // Décoder le token pour récupérer les informations de l'utilisateur
+          const decodedToken = jwtDecode(token)
+
+          // Mettre à jour l'état de connexion dans le contexte
+          setIsLoggedIn(true)
+          setUserRole(decodedToken.role)
+          setUserData(decodedToken)
+
+          // Rediriger vers la page d'accueil
+          navigate("/")
+        } else {
+          console.error("Token non fourni dans la réponse du serveur.")
+          toast.error("Erreur lors de la connexion. Veuillez réessayer.")
+        }
       }
     } catch (error) {
       console.error("Erreur lors de la connexion :", error)
@@ -158,40 +163,6 @@ const LoginSignup = () => {
     const { name, value } = e.target
     setSignupForm((prevForm) => ({ ...prevForm, [name]: value }))
   }
-
-  // Intercepteur pour gérer l'expiration du token d'accès et utiliser le refresh token
-  axios.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true // Marquer la requête pour éviter la boucle
-
-        const refreshToken = localStorage.getItem("refreshToken")
-        if (!refreshToken) {
-          window.location.href = "/login" // Si pas de refresh token, rediriger
-          return Promise.reject(error)
-        }
-
-        try {
-          const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/refresh-token`,
-            { token: refreshToken }
-          )
-
-          if (response.status === 200) {
-            originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`
-            return axios(originalRequest) // Relancer la requête originale
-          }
-        } catch (err) {
-          window.location.href = "/login" // Si le refresh token échoue, rediriger
-          return Promise.reject(err)
-        }
-      }
-
-      return Promise.reject(error)
-    }
-  )
 
   return (
     <>
