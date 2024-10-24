@@ -87,7 +87,8 @@ const LoginSignup = () => {
 
       if (response.status === 200) {
         const token = response.data.token
-
+        // console.info("token de connexion", token)
+        console.info("connexion réussie")
         if (token) {
           // Stocker le token d'accès dans le localStorage
           localStorage.setItem("authToken", token)
@@ -99,8 +100,14 @@ const LoginSignup = () => {
           setIsLoggedIn(true)
           setUserRole(decodedToken.role)
           setUserData(decodedToken)
+          // Logs pour le diagnostic
+          console.info("Connexion réussie")
+          console.info("isLoggedIn après setIsLoggedIn:", true)
+          console.info("userRole:", decodedToken.role)
+          console.info("userData:", decodedToken)
 
           // Rediriger vers la page d'accueil
+          console.info("redirection vers home")
           navigate("/")
         } else {
           console.error("Token non fourni dans la réponse du serveur.")

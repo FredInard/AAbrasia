@@ -31,7 +31,7 @@ function App() {
           <Route
             path="/creer-partie"
             element={
-              <ProtectedRoute requiredRole="user">
+              <ProtectedRoute requiredRole="membre">
                 <CreateGame />
               </ProtectedRoute>
             }
@@ -39,7 +39,7 @@ function App() {
           <Route
             path="/profil"
             element={
-              <ProtectedRoute requiredRole="user">
+              <ProtectedRoute requiredRole="membre">
                 <Profil />
               </ProtectedRoute>
             }

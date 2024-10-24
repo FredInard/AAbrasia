@@ -29,6 +29,7 @@ const generateAccessToken = (user) => {
   return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: "12h", // Expiration du token : 12 heures
   })
+  // console.info("user.role", user.role)
 }
 
 // Vérification du mot de passe et génération du token

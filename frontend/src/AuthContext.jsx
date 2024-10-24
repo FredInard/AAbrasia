@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null)
 
   const logout = () => {
+    console.info("Déconnexion utilisateur.")
     localStorage.removeItem("authToken")
     setIsLoggedIn(false)
     setUserRole("visitor")
@@ -17,9 +18,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken")
+    console.info("Vérification du token stocké : ", token)
+
     if (token) {
       try {
         const decodedToken = jwtDecode.default(token) // Utilisation de .default
+        console.info("Token décodé : ", decodedToken)
+
         setIsLoggedIn(true)
         setUserRole(decodedToken.role)
         setUserData(decodedToken)
@@ -30,6 +35,7 @@ export const AuthProvider = ({ children }) => {
         setUserData(null)
       }
     } else {
+      console.info("Pas de token présent. L'utilisateur n'est pas connecté.")
       setIsLoggedIn(false)
       setUserRole("visitor")
       setUserData(null)

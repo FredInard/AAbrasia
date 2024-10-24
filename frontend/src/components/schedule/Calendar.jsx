@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-import Cookies from "js-cookie"
 import "./Calendar.scss" // Assurez-vous que le chemin vers votre fichier CSS est correct
 import ArrowLeftCal from "../../assets/pics/arrow-circle-left-svgrepo-com.svg"
 import ArrowRightCal from "../../assets/pics/arrow-circle-right-svgrepo-com.svg"
 
 export default function Calendar({ onDateSelect }) {
+  const token = localStorage.getItem("authToken")
+
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [calendarDays, setCalendarDays] = useState([])
@@ -15,14 +16,14 @@ export default function Calendar({ onDateSelect }) {
     "selectedDateCalendar in Calendar component",
     selectedDateCalendar
   )
-  const tokenFromCookie = Cookies.get("authToken")
+
   const headers = {
-    Authorization: `Bearer ${tokenFromCookie}`,
+    Authorization: `Bearer ${token}`,
   }
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/partie`, { headers })
+      .get(`${import.meta.env.VITE_BACKEND_URL}/parties`, { headers })
       .then((res) => setPartieExiste(res.data))
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)
@@ -178,7 +179,7 @@ export default function Calendar({ onDateSelect }) {
                   (dayInfo.date &&
                   partieExiste.find(
                     (partie) =>
-                      partie.Date.split("T")[0] ===
+                      partie.date?.split("T")[0] ===
                       dayInfo.date.toISOString().split("T")[0]
                   )
                     ? " has-event"
