@@ -3,7 +3,8 @@ import { AuthContext } from "../AuthContext"
 import { useNavigate } from "react-router-dom"
 import "./LoginSignup.scss"
 import axios from "axios"
-import { toast } from "react-toastify"
+// import { toast } from "react-toastify"
+import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import NavBar from "../components/NavBar/NavBar"
 import jwtDecode from "jwt-decode" // Importation corrigée
@@ -37,7 +38,7 @@ const LoginSignup = () => {
       clearLockout()
     }, LOCKOUT_DURATION)
 
-    toast.error(
+    ToastContainer.error(
       "Trop de tentatives infructueuses. Compte temporairement bloqué."
     )
   }
@@ -111,12 +112,14 @@ const LoginSignup = () => {
           navigate("/")
         } else {
           console.error("Token non fourni dans la réponse du serveur.")
-          toast.error("Erreur lors de la connexion. Veuillez réessayer.")
+          ToastContainer.error(
+            "Erreur lors de la connexion. Veuillez réessayer."
+          )
         }
       }
     } catch (error) {
       console.error("Erreur lors de la connexion :", error)
-      toast.error("Email ou mot de passe incorrect.")
+      ToastContainer.error("Email ou mot de passe incorrect.")
       setLoginAttempts([...loginAttempts, Date.now()])
 
       if (loginAttempts.length >= MAX_LOGIN_ATTEMPTS) {
@@ -129,7 +132,7 @@ const LoginSignup = () => {
   const handleSignupSubmit = async (e) => {
     e.preventDefault()
     if (signupForm.password !== signupForm.confirmPassword) {
-      return toast.error("Les mots de passe ne correspondent pas.")
+      return ToastContainer.error("Les mots de passe ne correspondent pas.")
     }
 
     try {
@@ -145,12 +148,12 @@ const LoginSignup = () => {
       )
 
       if (response.status === 201) {
-        toast.success("Inscription réussie !")
+        ToastContainer.success("Inscription réussie !")
         setIsLogin(true) // Retourner au formulaire de connexion
       }
     } catch (error) {
       console.error("Erreur lors de l'inscription :", error)
-      toast.error("Erreur lors de l'inscription. Veuillez réessayer.")
+      ToastContainer.error("Erreur lors de l'inscription. Veuillez réessayer.")
     }
   }
 
@@ -291,6 +294,7 @@ const LoginSignup = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
     </>
   )
 }
