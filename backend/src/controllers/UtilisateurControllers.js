@@ -21,7 +21,7 @@ class UtilisateurControllers {
   // GET /utilisateurs/:id
   static read(req, res) {
     const id = parseInt(req.params.id, 10)
-
+    console.info("id incontroler", id)
     models.utilisateur
       .find(id)
       .then(([rows]) => {
@@ -58,16 +58,19 @@ class UtilisateurControllers {
   static edit(req, res) {
     const utilisateur = req.body
     utilisateur.id = parseInt(req.params.id, 10)
-
+    console.info("utilisateur.id", utilisateur.id)
     // TODO: Validations (length, format...)
-
+    console.info("utilisateur", utilisateur)
     models.utilisateur
+
       .update(utilisateur)
       .then(([result]) => {
         if (result.affectedRows === 0) {
           res.sendStatus(404)
+          console.info("result", result)
         } else {
           res.status(200).json(utilisateur)
+          console.info("result", result)
         }
       })
       .catch((err) => {

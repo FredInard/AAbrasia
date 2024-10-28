@@ -28,22 +28,25 @@ class UtilisateurManager extends AbstractManager {
 
   // Mettre à jour un utilisateur existant
   update(utilisateur) {
-    return this.database.query(
-      `UPDATE ${this.table} SET nom = ?, prenom = ?, email = ?, pseudo = ?, role = ?, date_naissance = ?, adresse = ?, ville = ?, telephone = ?, bio = ?, photo_profil = ? WHERE id = ?`,
-      [
-        utilisateur.nom,
-        utilisateur.prenom,
-        utilisateur.email,
-        utilisateur.pseudo,
-        utilisateur.role,
-        utilisateur.date_naissance,
-        utilisateur.adresse,
-        utilisateur.ville,
-        utilisateur.telephone,
-        utilisateur.bio,
-        utilisateur.photo_profil,
-        utilisateur.id,
-      ]
+    return (
+      this.database.query(
+        `UPDATE ${this.table} SET nom = ?, prenom = ?, email = ?, pseudo = ?, role = ?, date_naissance = ?, adresse = ?, ville = ?, telephone = ?, bio = ?, photo_profil = ? WHERE id = ?`,
+        [
+          utilisateur.nom,
+          utilisateur.prenom,
+          utilisateur.email,
+          utilisateur.pseudo,
+          utilisateur.role,
+          utilisateur.date_naissance,
+          utilisateur.adresse,
+          utilisateur.ville,
+          utilisateur.telephone,
+          utilisateur.bio,
+          utilisateur.photo_profil,
+          utilisateur.id,
+        ]
+      ),
+      console.info("utilisateur manager", utilisateur)
     )
   }
 

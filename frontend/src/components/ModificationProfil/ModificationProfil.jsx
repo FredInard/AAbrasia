@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-import Cookies from "js-cookie"
-import { toast } from "react-toastify"
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import jwtDecode from "jwt-decode"
+import ChangePassword from "./ChangePassword.jsx"
 import "./ModificationProfil.scss"
 
 export default function ModificationProfil() {
@@ -18,40 +20,84 @@ export default function ModificationProfil() {
     bio: "",
     photo_profil: null,
   })
+  const [imageUrl, setImageUrl] = useState(null)
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
 
-  const idUser = Cookies.get("idUtilisateur")
-  const idUserNumb = parseInt(idUser)
-  const tokenFromCookie = Cookies.get("authToken")
+  console.info("formData", formData)
+
+  // Récupérer le token depuis le localStorage
+  const token = localStorage.getItem("authToken")
+  console.info("Token récupéré :", token)
+
+  let idUser = null
+
+  if (token && token.trim() !== "") {
+    try {
+      const decodedToken = jwtDecode(token)
+      idUser = decodedToken.id // Assurez-vous que l'ID est bien sous la clé 'id'
+      console.info("idUser", idUser)
+    } catch (error) {
+      console.error("Erreur lors du décodage du token :", error)
+      // Gérer le cas où le token est invalide
+      // Par exemple, rediriger vers la page de connexion
+    }
+  } else {
+    console.error(
+      "Aucun token valide trouvé. L'utilisateur n'est pas authentifié."
+    )
+    // Rediriger vers la page de connexion ou afficher un message d'erreur
+  }
 
   const headers = {
-    Authorization: `Bearer ${tokenFromCookie}`,
+    Authorization: `Bearer ${token}`,
   }
 
   // Charger les données utilisateur depuis le backend
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUserNumb}`, {
-        headers,
-      })
-      .then((res) => {
-        setUtilisateur(res.data)
-        setFormData({
-          nom: res.data.nom || "",
-          prenom: res.data.prenom || "",
-          email: res.data.email || "",
-          pseudo: res.data.pseudo || "",
-          date_naissance: res.data.date_naissance || "",
-          adresse: res.data.adresse || "",
-          ville: res.data.ville || "",
-          telephone: res.data.telephone || "",
-          bio: res.data.bio || "",
-          photo_profil: null,
+    if (idUser) {
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUser}`, {
+          headers,
         })
-      })
-      .catch((err) => {
-        console.error("Problème lors du chargement de l'utilisateur", err)
-      })
-  }, [idUserNumb, headers])
+        .then((res) => {
+          setUtilisateur(res.data)
+          setFormData({
+            nom: res.data.nom || "",
+            prenom: res.data.prenom || "",
+            email: res.data.email || "",
+            pseudo: res.data.pseudo || "",
+            date_naissance: res.data.date_naissance || "",
+            adresse: res.data.adresse || "",
+            ville: res.data.ville || "",
+            telephone: res.data.telephone || "",
+            bio: res.data.bio || "",
+            photo_profil: null,
+          })
+          if (res.data.photo_profil) {
+            setImageUrl(
+              `${import.meta.env.VITE_BACKEND_URL}/${res.data.photo_profil}`
+            )
+          }
+        })
+        .catch((err) => {
+          console.error("Problème lors du chargement de l'utilisateur", err)
+        })
+    } else {
+      console.error(
+        "ID utilisateur non disponible. Impossible de charger les données utilisateur."
+      )
+      // Gérer le cas où l'ID utilisateur n'est pas disponible
+    }
+  }, [idUser])
+
+  // Mettre à jour l'image quand l'utilisateur change
+  useEffect(() => {
+    if (utilisateur.photo_profil) {
+      setImageUrl(
+        `${import.meta.env.VITE_BACKEND_URL}/${utilisateur.photo_profil}`
+      )
+    }
+  }, [utilisateur.photo_profil])
 
   // Gérer les changements dans les champs du formulaire
   const handleChange = (e) => {
@@ -64,30 +110,49 @@ export default function ModificationProfil() {
 
   // Gérer l'upload de la photo de profil
   const handleFileChange = (e) => {
+    const file = e.target.files[0]
     setFormData((prevData) => ({
       ...prevData,
-      photo_profil: e.target.files[0],
+      photo_profil: file,
     }))
+    setImageUrl(URL.createObjectURL(file))
   }
 
   // Fonction de soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    // Vérifier le contenu de formData
+    console.info("Contenu de formData avant la soumission :", formData)
+
     const formDataToSend = new FormData()
+
+    // Ajouter les champs texte
     for (const key in formData) {
-      formDataToSend.append(key, formData[key])
+      if (key !== "photo_profil") {
+        formDataToSend.append(key, formData[key])
+      }
+    }
+
+    // Ajouter le fichier s'il existe
+    if (formData.photo_profil) {
+      formDataToSend.append("photo_profil", formData.photo_profil)
+    }
+
+    // Afficher les données envoyées
+    console.info("Contenu de formDataToSend :")
+    for (const pair of formDataToSend.entries()) {
+      console.info(`${pair[0]}: ${pair[1]}`)
     }
 
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${utilisateur.id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUser}`,
         formDataToSend,
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${tokenFromCookie}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       )
@@ -102,10 +167,21 @@ export default function ModificationProfil() {
     }
   }
 
+  // Ouvrir le modal de changement de mot de passe
+  const openChangePasswordModal = () => {
+    setShowChangePasswordModal(true)
+  }
+
+  // Fermer le modal de changement de mot de passe
+  const closeChangePasswordModal = () => {
+    setShowChangePasswordModal(false)
+  }
+
   return (
     <div className="modificationProfil">
       <h2>Modifier le profil</h2>
       <form onSubmit={handleSubmit} className="formProfil">
+        {/* Champ Nom */}
         <div className="form-group">
           <label htmlFor="nom">Nom*</label>
           <input
@@ -118,6 +194,7 @@ export default function ModificationProfil() {
           />
         </div>
 
+        {/* Champ Prénom */}
         <div className="form-group">
           <label htmlFor="prenom">Prénom*</label>
           <input
@@ -130,6 +207,7 @@ export default function ModificationProfil() {
           />
         </div>
 
+        {/* Champ Email */}
         <div className="form-group">
           <label htmlFor="email">Email*</label>
           <input
@@ -142,6 +220,7 @@ export default function ModificationProfil() {
           />
         </div>
 
+        {/* Champ Pseudo */}
         <div className="form-group">
           <label htmlFor="pseudo">Pseudo*</label>
           <input
@@ -154,6 +233,7 @@ export default function ModificationProfil() {
           />
         </div>
 
+        {/* Champ Date de Naissance */}
         <div className="form-group">
           <label htmlFor="date_naissance">Date de naissance</label>
           <input
@@ -165,6 +245,7 @@ export default function ModificationProfil() {
           />
         </div>
 
+        {/* Champ Adresse */}
         <div className="form-group">
           <label htmlFor="adresse">Adresse</label>
           <input
@@ -176,6 +257,7 @@ export default function ModificationProfil() {
           />
         </div>
 
+        {/* Champ Ville */}
         <div className="form-group">
           <label htmlFor="ville">Ville</label>
           <input
@@ -187,17 +269,18 @@ export default function ModificationProfil() {
           />
         </div>
 
+        {/* Champ Téléphone */}
         <div className="form-group">
           <label htmlFor="telephone">Téléphone</label>
           <input
-            type="text"
+            type="tel"
             id="telephone"
             name="telephone"
             value={formData.telephone}
             onChange={handleChange}
           />
         </div>
-
+        {/* Champ Bio */}
         <div className="form-group">
           <label htmlFor="bio">Bio</label>
           <textarea
@@ -208,8 +291,16 @@ export default function ModificationProfil() {
           />
         </div>
 
+        {/* Champ Photo de Profil */}
         <div className="form-group">
           <label htmlFor="photo_profil">Photo de profil</label>
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              alt="Photo de profil"
+              className="profilPictureChange"
+            />
+          )}
           <input
             type="file"
             id="photo_profil"
@@ -223,6 +314,23 @@ export default function ModificationProfil() {
           Mettre à jour
         </button>
       </form>
+
+      <button
+        className="openChangePasswordButton"
+        onClick={openChangePasswordModal}
+      >
+        Changer le mot de passe
+      </button>
+
+      {showChangePasswordModal && (
+        <ChangePassword
+          isOpen={showChangePasswordModal}
+          onClose={closeChangePasswordModal}
+          onPasswordChangeSuccess={closeChangePasswordModal}
+        />
+      )}
+
+      <ToastContainer />
     </div>
   )
 }
