@@ -1,70 +1,100 @@
-import React from "react"
-import "./GameDetails.scss" // Styles associés
-import { FaClock, FaMapMarkerAlt, FaUsers } from "react-icons/fa" // Icons (font-awesome)
+import React, { useState, useEffect } from "react"
+import axios from "axios"
+import "./GameDetails.scss"
+// import { FaClock, FaMapMarkerAlt, FaUsers } from "react-icons/fa"
+import ParticipantsList from "../ParticipantsList/ParticipantsList"
+import MealList from "../MealList/MealList"
+import CarpoolList from "../CarpoolList/CarpoolList"
 
-const GameDetails = ({ game, isOpen, onClose }) => {
-  if (!isOpen) return null // Ne pas afficher si la modal n'est pas ouverte
+const GameDetails = ({ isOpen, onClose, partyId }) => {
+  const [gameDetails, setGameDetails] = useState(null)
+
+  useEffect(() => {
+    if (isOpen && partyId) {
+      fetchGameDetails(partyId)
+    }
+  }, [isOpen, partyId])
+
+  const fetchGameDetails = async (partyId) => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/parties/${partyId}`
+      )
+      setGameDetails(res.data)
+    } catch (err) {
+      console.error("Erreur lors du chargement des détails de la partie :", err)
+    }
+  }
+
+  if (!isOpen) return null
+  if (!gameDetails) return <p>Chargement des détails de la partie...</p>
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-labelledby="game-title"
+      aria-modal="true"
+    >
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        {/* Titre de la Partie */}
-        <button className="close-btn" onClick={onClose}>
+        <button
+          className="close-btn"
+          onClick={onClose}
+          aria-label="Fermer la modal"
+        >
           ✕
         </button>
-        <h1 className="game-title">{game.title}</h1>
+
+        {/* Titre de la Partie */}
+        <h1 id="game-title" className="game-title">
+          {gameDetails.titre}
+        </h1>
 
         {/* Maître du jeu */}
         <div className="game-master-info">
-          <img
-            src={game.gameMasterPhoto}
-            alt="Maître du jeu"
-            className="game-master-photo"
-          />
-          <span className="game-master-pseudo">{game.gameMasterPseudo}</span>
+          {gameDetails.maitre_du_jeu_photo && (
+            <img
+              src={gameDetails.maitre_du_jeu_photo}
+              alt={`Maître du jeu ${gameDetails.maitre_du_jeu_pseudo}`}
+              className="game-master-photo"
+            />
+          )}
+          <span className="game-master-pseudo">
+            {gameDetails.maitre_du_jeu_pseudo}
+          </span>
         </div>
 
         {/* Description */}
         <div className="game-description">
           <h3>Description :</h3>
-          <p>{game.description}</p>
+          <p>{gameDetails.description}</p>
         </div>
 
         {/* Détails de la partie */}
         <div className="game-details">
           <div className="game-info-item">
-            <FaClock /> {game.time}
+            <h2> Heure : {gameDetails.time || "Non précisé"}</h2>
           </div>
           <div className="game-info-item">
-            <FaMapMarkerAlt /> {game.location}
+            <h2> Lieu : {gameDetails.location || "Lieu non précisé"}</h2>
           </div>
           <div className="game-info-item">
-            <FaUsers /> x{game.maxPlayers}
+            <h2>
+              {" "}
+              Nombre de joueurs max : x{gameDetails.maxPlayers || "Non précisé"}
+            </h2>
           </div>
         </div>
 
         {/* Participants */}
         <h3>Participants :</h3>
-        <div className="participants">
-          {game.participants.map((participant, index) => (
-            <div key={index} className="participant">
-              <img
-                src={participant.photo}
-                alt={participant.name}
-                className="participant-photo"
-              />
-              <span>{participant.name}</span>
-            </div>
-          ))}
-        </div>
+        <ParticipantsList partyId={partyId} />
 
         {/* Autres informations */}
         <h3>Autres infos :</h3>
-        <div className="extra-info">
-          {game.extraInfo.map((info, index) => (
-            <p key={index}>{info}</p>
-          ))}
-        </div>
+        <CarpoolList partyId={partyId} />
+        <MealList partyId={partyId} />
       </div>
     </div>
   )

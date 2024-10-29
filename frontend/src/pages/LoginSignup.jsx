@@ -1,19 +1,18 @@
-import React, { useState, useRef, useContext, useEffect } from "react"
+import React, { useState, useRef, useContext } from "react"
 import { AuthContext } from "../AuthContext"
 import { useNavigate } from "react-router-dom"
 import "./LoginSignup.scss"
 import axios from "axios"
-// import { toast } from "react-toastify"
-import { ToastContainer } from "react-toastify"
+import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import NavBar from "../components/NavBar/NavBar"
-import jwtDecode from "jwt-decode" // Importation corrigée
+import jwtDecode from "jwt-decode"
 
 const MAX_LOGIN_ATTEMPTS = 5
 const LOCKOUT_DURATION = 300000 // 5 minutes de verrouillage
 
 const LoginSignup = () => {
-  const { setIsLoggedIn, setUserRole, setUserData } = useContext(AuthContext)
+  const { setAuthData } = useContext(AuthContext)
   const [isLogin, setIsLogin] = useState(true) // Basculer entre login et signup
   const [loginForm, setLoginForm] = useState({ email: "", password: "" })
   const [signupForm, setSignupForm] = useState({
@@ -38,7 +37,7 @@ const LoginSignup = () => {
       clearLockout()
     }, LOCKOUT_DURATION)
 
-    ToastContainer.error(
+    toast.error(
       "Trop de tentatives infructueuses. Compte temporairement bloqué."
     )
   }
@@ -49,34 +48,17 @@ const LoginSignup = () => {
     clearTimeout(lockoutTimerRef.current)
   }
 
-  // Vérification du token stocké dans le localStorage lors du chargement de la page
-  useEffect(() => {
-    const token = localStorage.getItem("authToken")
-
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token)
-        setIsLoggedIn(true)
-        setUserRole(decodedToken.role)
-        setUserData(decodedToken)
-      } catch (error) {
-        console.error("Token invalide :", error)
-        setIsLoggedIn(false)
-        setUserRole("visitor")
-        setUserData(null)
-        navigate("/login")
-      }
-    } else {
-      setIsLoggedIn(false)
-      setUserRole("visitor")
-      setUserData(null)
-      navigate("/login")
-    }
-  }, [navigate, setIsLoggedIn, setUserRole, setUserData])
-
   // Soumission du formulaire de connexion
   const handleLoginSubmit = async (e) => {
     e.preventDefault()
+
+    if (isUserLocked) {
+      toast.error(
+        "Votre compte est temporairement bloqué. Veuillez réessayer plus tard."
+      )
+      return
+    }
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/login`,
@@ -88,8 +70,7 @@ const LoginSignup = () => {
 
       if (response.status === 200) {
         const token = response.data.token
-        // console.info("token de connexion", token)
-        console.info("connexion réussie")
+        console.info("Connexion réussie")
         if (token) {
           // Stocker le token d'accès dans le localStorage
           localStorage.setItem("authToken", token)
@@ -98,28 +79,32 @@ const LoginSignup = () => {
           const decodedToken = jwtDecode(token)
 
           // Mettre à jour l'état de connexion dans le contexte
-          setIsLoggedIn(true)
-          setUserRole(decodedToken.role)
-          setUserData(decodedToken)
+          setAuthData({
+            isAuthenticated: true,
+            user: decodedToken,
+            role: decodedToken.role,
+            isLoading: false,
+          })
+
           // Logs pour le diagnostic
-          console.info("Connexion réussie")
-          console.info("isLoggedIn après setIsLoggedIn:", true)
-          console.info("userRole:", decodedToken.role)
-          console.info("userData:", decodedToken)
+          console.info("authData après connexion:", {
+            isAuthenticated: true,
+            user: decodedToken,
+            role: decodedToken.role,
+            isLoading: false,
+          })
 
           // Rediriger vers la page d'accueil
-          console.info("redirection vers home")
+          console.info("Redirection vers la page d'accueil")
           navigate("/")
         } else {
           console.error("Token non fourni dans la réponse du serveur.")
-          ToastContainer.error(
-            "Erreur lors de la connexion. Veuillez réessayer."
-          )
+          toast.error("Erreur lors de la connexion. Veuillez réessayer.")
         }
       }
     } catch (error) {
       console.error("Erreur lors de la connexion :", error)
-      ToastContainer.error("Email ou mot de passe incorrect.")
+      toast.error("Email ou mot de passe incorrect.")
       setLoginAttempts([...loginAttempts, Date.now()])
 
       if (loginAttempts.length >= MAX_LOGIN_ATTEMPTS) {
@@ -132,7 +117,7 @@ const LoginSignup = () => {
   const handleSignupSubmit = async (e) => {
     e.preventDefault()
     if (signupForm.password !== signupForm.confirmPassword) {
-      return ToastContainer.error("Les mots de passe ne correspondent pas.")
+      return toast.error("Les mots de passe ne correspondent pas.")
     }
 
     try {
@@ -148,12 +133,12 @@ const LoginSignup = () => {
       )
 
       if (response.status === 201) {
-        ToastContainer.success("Inscription réussie !")
+        toast.success("Inscription réussie !")
         setIsLogin(true) // Retourner au formulaire de connexion
       }
     } catch (error) {
       console.error("Erreur lors de l'inscription :", error)
-      ToastContainer.error("Erreur lors de l'inscription. Veuillez réessayer.")
+      toast.error("Erreur lors de l'inscription. Veuillez réessayer.")
     }
   }
 

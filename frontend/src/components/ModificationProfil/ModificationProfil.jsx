@@ -122,28 +122,14 @@ export default function ModificationProfil() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // Vérifier le contenu de formData
-    console.info("Contenu de formData avant la soumission :", formData)
-
     const formDataToSend = new FormData()
-
-    // Ajouter les champs texte
-    for (const key in formData) {
-      if (key !== "photo_profil") {
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== "") {
         formDataToSend.append(key, formData[key])
+      } else {
+        formDataToSend.append(key, null)
       }
-    }
-
-    // Ajouter le fichier s'il existe
-    if (formData.photo_profil) {
-      formDataToSend.append("photo_profil", formData.photo_profil)
-    }
-
-    // Afficher les données envoyées
-    console.info("Contenu de formDataToSend :")
-    for (const pair of formDataToSend.entries()) {
-      console.info(`${pair[0]}: ${pair[1]}`)
-    }
+    })
 
     try {
       const response = await axios.put(
@@ -159,7 +145,7 @@ export default function ModificationProfil() {
 
       if (response.status === 200) {
         toast.success("Profil mis à jour avec succès")
-        setUtilisateur(response.data) // Mettre à jour les informations utilisateur
+        setUtilisateur(response.data)
       }
     } catch (error) {
       console.error("Erreur lors de la mise à jour du profil :", error)

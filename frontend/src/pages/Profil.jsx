@@ -3,69 +3,46 @@ import { useNavigate } from "react-router-dom"
 import NavBar from "../components/NavBar/NavBar"
 import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch"
 import { AuthContext } from "../AuthContext"
-import Cookies from "js-cookie"
-import jwtDecode from "jwt-decode"
 import ModificationProfil from "../components/ModificationProfil/ModificationProfil"
 import "./Profil.scss"
+import Game from "../components/Game/Game"
 
 export default function Profil() {
   const [showListeParties, setShowListeParties] = useState(true)
-  const [utilisateur, setUtilisateur] = useState(null)
   const navigate = useNavigate()
-  const { isLoggedIn, setIsLoggedIn, userData } = useContext(AuthContext)
+  const { authData, logout } = useContext(AuthContext)
+
+  const utilisateur = authData.user
 
   console.info("Profil Component Rendered")
-  console.info("isLoggedIn: ", isLoggedIn)
-  console.info("setIsLoggedIn: ", setIsLoggedIn)
-  console.info("userData: ", userData)
+  console.info("authData: ", authData)
 
   useEffect(() => {
     console.info("Effect triggered: Checking if user is logged in")
 
-    if (!isLoggedIn) {
+    if (authData.isLoading) {
+      console.info("Authentication is loading...")
+      // Ne faites rien tant que l'authentification est en cours de vérification
+      return
+    }
+
+    if (!authData.isAuthenticated || !utilisateur) {
       console.info("User is not logged in, redirecting to /login")
       navigate("/login")
     } else {
-      console.info("User is logged in, checking userData...")
-
-      if (userData) {
-        console.info("User data found in context: ", userData)
-        setUtilisateur(userData)
-      } else {
-        console.warn(
-          "User data not found in context, checking localStorage for token..."
-        )
-        const token = localStorage.getItem("authToken")
-
-        if (token) {
-          try {
-            const decodedToken = jwtDecode(token)
-            console.info("Token decoded successfully: ", decodedToken)
-            setIsLoggedIn(true)
-            setUtilisateur(decodedToken)
-          } catch (error) {
-            console.error("Error decoding token: ", error)
-            setIsLoggedIn(false)
-            navigate("/login")
-          }
-        } else {
-          console.warn("No token found in localStorage, redirecting to login.")
-          setIsLoggedIn(false)
-          navigate("/login")
-        }
-      }
+      console.info("User is logged in: ", utilisateur)
     }
-  }, [isLoggedIn, navigate, userData, setIsLoggedIn])
+  }, [authData.isAuthenticated, authData.isLoading, utilisateur, navigate])
 
   const handleLogout = () => {
     console.info("User logging out...")
-
-    Cookies.remove("authToken")
-    Cookies.remove("Pseudo")
-    Cookies.remove("loggedInUtilisateur")
-
-    setIsLoggedIn(false)
+    logout()
     navigate("/")
+  }
+
+  // Affichage d'un indicateur de chargement si l'authentification est en cours
+  if (authData.isLoading) {
+    return <div>Chargement...</div>
   }
 
   return (
@@ -91,14 +68,10 @@ export default function Profil() {
 
         <div className="globalBoxProfil">
           {showListeParties ? (
-            <p>Les parties seront affichées ici.</p>
+            <Game />
           ) : (
-            utilisateur && (
-              <ModificationProfil
-                utilisateur={utilisateur}
-                setUtilisateur={setUtilisateur}
-              />
-            )
+            // <p>Les parties seront affichées ici.</p>
+            <ModificationProfil />
           )}
         </div>
       </div>

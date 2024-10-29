@@ -1,10 +1,38 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Game from "./Game"
-import GameDetails from "./GameDetails"
+import GameDetails from "../GameDetails/GameDetails"
+import axios from "axios"
 
 const ParentComponent = () => {
+  const [games, setGames] = useState([])
   const [isModalOpen, setModalOpen] = useState(false)
   const [selectedGame, setSelectedGame] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      const token = localStorage.getItem("authToken")
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      }
+
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/partie/affichage`,
+          { headers }
+        )
+        setGames(response.data)
+      } catch (err) {
+        console.error("Erreur lors du chargement des parties :", err)
+        setError("Erreur lors du chargement des parties")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchGames()
+  }, [])
 
   const handleGameClick = (game) => {
     setSelectedGame(game)
@@ -13,45 +41,33 @@ const ParentComponent = () => {
 
   const closeModal = () => {
     setModalOpen(false)
+    setSelectedGame(null)
   }
 
-  // Exemple de données pour un jeu
-  const gameData = {
-    title: "Titre de la Partie",
-    description: "Lorem ipsum dolor sit amet...",
-    time: "19h30",
-    location: "ECE Mallijai",
-    maxPlayers: 5,
-    gameMasterPhoto: "/path/to/photo.jpg",
-    gameMasterPseudo: "Pseudo",
-    participants: [
-      { name: "Katia", photo: "/path/to/katia.jpg" },
-      { name: "Maria", photo: "/path/to/maria.jpg" },
-      { name: "Mathieu", photo: "/path/to/mathieu.jpg" },
-    ],
-    extraInfo: [
-      "Katia propose un covoiturage de Sisteron à Manosque départ 18h.",
-      "Maria ramène 1 Pizza et 1 bouteille de lait de coco.",
-      "Mathieu ramène 1 Pizza et 1 bouteille de lait de coco.",
-    ],
-  }
+  if (loading) return <p>Chargement des parties...</p>
+  if (error) return <p>{error}</p>
 
   return (
     <div>
-      {/* Game component */}
-      <Game
-        title={gameData.title}
-        maxPlayers={gameData.maxPlayers}
-        gameMasterPhoto={gameData.gameMasterPhoto}
-        onClick={() => handleGameClick(gameData)}
-      />
+      {/* Liste de toutes les parties */}
+      {games.map((game) => (
+        <Game
+          key={game.id}
+          title={game.title}
+          maxPlayers={game.maxPlayers}
+          gameMasterPhoto={game.gameMasterPhoto}
+          onClick={() => handleGameClick(game)}
+        />
+      ))}
 
-      {/* GameDetails modal */}
-      <GameDetails
-        game={selectedGame}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      />
+      {/* Modal des détails de la partie sélectionnée */}
+      {selectedGame && (
+        <GameDetails
+          game={selectedGame}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
     </div>
   )
 }

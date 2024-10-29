@@ -6,7 +6,7 @@ import logo from "../../assets/pics/logoArpenteurBlanc.svg"
 import ToggleTheme from "../ToggleTheme/ToggleTheme"
 
 const NavBar = () => {
-  const { isLoggedIn, userRole, logout } = useContext(AuthContext)
+  const { authData, logout } = useContext(AuthContext)
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -31,7 +31,7 @@ const NavBar = () => {
             Accueil
           </NavLink>
         </li>
-        {isLoggedIn && (
+        {authData.isAuthenticated && (
           <li>
             <NavLink
               to="/creer-partie"
@@ -57,7 +57,7 @@ const NavBar = () => {
             L'équipe
           </NavLink>
         </li>
-        {userRole === "admin" && (
+        {authData.role === "admin" && (
           <li>
             <NavLink
               to="/admin"
@@ -69,7 +69,7 @@ const NavBar = () => {
         )}
       </ul>
       <div className="navbar-cta">
-        {isLoggedIn ? (
+        {authData.isAuthenticated ? (
           <>
             <NavLink to="/profil" className="btn-cta">
               Mon Profil

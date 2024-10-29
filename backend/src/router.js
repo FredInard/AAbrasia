@@ -22,7 +22,12 @@ router.post("/login", UtilisateurControllers.verifyUtilisateur, verifyPassword)
 router.post("/utilisateurs", hashPassword, UtilisateurControllers.add)
 router.get("/utilisateurs", UtilisateurControllers.browse)
 router.get("/utilisateurs/:id", UtilisateurControllers.read)
-router.put("/utilisateurs/:id", verifyToken, UtilisateurControllers.edit)
+router.put(
+  "/utilisateurs/:id",
+  verifyToken,
+  upload.single("photo_profil"), // Gestion du fichier avec multer
+  UtilisateurControllers.edit
+)
 router.delete("/utilisateurs/:id", verifyToken, UtilisateurControllers.destroy)
 
 // Route pour changer le mot de passe de l'utilisateur
@@ -42,7 +47,8 @@ router.put(
 )
 
 // Routes pour les parties
-router.get("/parties", PartieControllers.browse)
+// router.get("/parties", PartieControllers.browse)
+router.get("/partie/affichage", PartieControllers.affichageInfoPartie)
 router.get("/parties/:id", PartieControllers.read)
 router.post("/parties", verifyToken, PartieControllers.add)
 router.put("/parties/:id", verifyToken, PartieControllers.edit)
