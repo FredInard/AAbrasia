@@ -35,6 +35,25 @@ class RepasControllers {
       })
   }
 
+  // GET /repas/:id
+  static getRepasByPartyId(req, res) {
+    const id = parseInt(req.params.id, 10)
+    // console.info("",)
+    models.repas
+      .getRepasByPartyId(id)
+      .then(([rows]) => {
+        if (rows[0]) {
+          res.status(200).json(rows[0])
+        } else {
+          res.sendStatus(404)
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+        res.sendStatus(500)
+      })
+  }
+
   // POST /repas
   static add(req, res) {
     const repas = req.body

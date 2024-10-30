@@ -10,7 +10,7 @@ const ParticipantsList = ({ partyId }) => {
       .get(
         `${
           import.meta.env.VITE_BACKEND_URL
-        }/participation/${partyId}/participants`
+        }/participations/${partyId}/participants`
       )
       .then((res) => setParticipants(res.data))
       .catch((err) =>

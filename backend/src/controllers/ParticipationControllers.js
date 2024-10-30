@@ -35,6 +35,25 @@ class ParticipationControllers {
       })
   }
 
+  // GET /participations/:id
+  static getparticipationsByPartyId(req, res) {
+    const id = parseInt(req.params.id, 10)
+
+    models.participation
+      .findParticipationsByPartyId(id)
+      .then(([rows]) => {
+        if (rows[0]) {
+          res.status(200).json(rows[0])
+        } else {
+          res.sendStatus(404)
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+        res.sendStatus(500)
+      })
+  }
+
   // POST /participations
   static add(req, res) {
     const participation = req.body

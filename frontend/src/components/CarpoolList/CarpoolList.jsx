@@ -7,7 +7,7 @@ const CarpoolList = ({ partyId }) => {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/covoiturage/${partyId}`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/covoiturages/${partyId}`)
       .then((res) => setCarpools(res.data))
       .catch((err) =>
         console.error("Erreur lors du chargement du covoiturage :", err)

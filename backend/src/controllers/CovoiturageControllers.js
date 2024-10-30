@@ -35,6 +35,25 @@ class CovoiturageControllers {
       })
   }
 
+  // GET /covoiturages/:idPartie
+  static getCovoiturageByPartyId(req, res) {
+    const id = parseInt(req.params.id, 10)
+
+    models.covoiturage
+      .findCovoiturageByPartyId(id)
+      .then(([rows]) => {
+        if (rows[0]) {
+          res.status(200).json(rows[0])
+        } else {
+          res.sendStatus(404)
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+        res.sendStatus(500)
+      })
+  }
+
   // POST /covoiturages
   static add(req, res) {
     const covoiturage = req.body

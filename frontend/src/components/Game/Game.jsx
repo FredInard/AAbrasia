@@ -23,9 +23,12 @@ const ParentComponent = () => {
           { headers }
         )
         setGames(response.data)
+        console.info("response.data", response.data)
       } catch (err) {
         console.error("Erreur lors du chargement des parties :", err)
-        setError("Erreur lors du chargement des parties")
+        setError(
+          "Impossible de charger les parties. Veuillez vérifier la connexion réseau."
+        )
       } finally {
         setLoading(false)
       }

@@ -40,6 +40,17 @@ class ParticipationManager extends AbstractManager {
     return this.database.query(`SELECT * FROM ${this.table} WHERE id = ?`, [id])
   }
 
+  // Récupérer les pseudo et photo_profil des participants pour une partie spécifique par son ID
+  findParticipationsByPartyId(id) {
+    return this.database.query(
+      `SELECT utilisateur.pseudo, utilisateur.photo_profil 
+     FROM ${this.table} AS participation
+     JOIN utilisateur ON participation.utilisateur_id = utilisateur.id 
+     WHERE participation.partie_id = ?`, // Remplacez "partie_id" par le bon nom de colonne si nécessaire
+      [id]
+    )
+  }
+
   // Delete a participation by ID
   delete(id) {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id])

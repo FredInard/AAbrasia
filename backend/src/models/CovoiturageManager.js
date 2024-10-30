@@ -46,6 +46,17 @@ class CovoiturageManager extends AbstractManager {
     return this.database.query(`SELECT * FROM ${this.table} WHERE id = ?`, [id])
   }
 
+  // Récupérer les covoiturages pour une partie spécifique par son ID avec le pseudo de l'utilisateur
+  findCovoiturageByPartyId(partyId) {
+    return this.database.query(
+      `SELECT covoiturage.*, utilisateur.pseudo 
+     FROM ${this.table} AS covoiturage 
+     JOIN utilisateur ON covoiturage.utilisateur_id = utilisateur.id 
+     WHERE covoiturage.id = ?`, // Correction ici
+      [partyId]
+    )
+  }
+
   // Supprimer un covoiturage par ID
   delete(id) {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id])

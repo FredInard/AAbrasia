@@ -26,6 +26,17 @@ class RepasManager extends AbstractManager {
     return this.database.query(`SELECT * FROM ${this.table}`)
   }
 
+  // Récupérer tous les repas pour une partie spécifique par son ID avec le pseudo de l'utilisateur
+  getRepasByPartyId(partyId) {
+    return this.database.query(
+      `SELECT repas.*, utilisateur.pseudo 
+     FROM ${this.table} AS repas 
+     JOIN utilisateur ON repas.utilisateur_id = utilisateur.id 
+     WHERE repas.partie_id = ?`, // Utilisation de 'partie_id' conformément à la table
+      [partyId]
+    )
+  }
+
   // Récupérer un repas par ID
   find(id) {
     return this.database.query(`SELECT * FROM ${this.table} WHERE id = ?`, [id])
