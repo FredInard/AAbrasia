@@ -4,14 +4,11 @@ import axios from "axios"
 
 const ParticipantsList = ({ partyId }) => {
   const [participants, setParticipants] = useState([])
-
+  console.info("participants", participants)
+  console.info("ParticipantsList partyId", partyId)
   useEffect(() => {
     axios
-      .get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/participations/${partyId}/participants`
-      )
+      .get(`${import.meta.env.VITE_BACKEND_URL}/participations/${partyId}`)
       .then((res) => setParticipants(res.data))
       .catch((err) =>
         console.error("Erreur lors du chargement des participants :", err)

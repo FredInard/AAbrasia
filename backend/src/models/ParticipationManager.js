@@ -40,15 +40,24 @@ class ParticipationManager extends AbstractManager {
     return this.database.query(`SELECT * FROM ${this.table} WHERE id = ?`, [id])
   }
 
-  // Récupérer les pseudo et photo_profil des participants pour une partie spécifique par son ID
-  findParticipationsByPartyId(id) {
-    return this.database.query(
-      `SELECT utilisateur.pseudo, utilisateur.photo_profil 
-     FROM ${this.table} AS participation
-     JOIN utilisateur ON participation.utilisateur_id = utilisateur.id 
-     WHERE participation.partie_id = ?`, // Remplacez "partie_id" par le bon nom de colonne si nécessaire
-      [id]
-    )
+  findParticipationsByPartyId(partyId) {
+    console.info("Appel de findParticipationsByPartyId avec partyId:", partyId)
+    return this.database
+      .query(
+        `SELECT utilisateur.pseudo, utilisateur.photo_profil 
+       FROM participation
+       JOIN utilisateur ON participation.utilisateur_id = utilisateur.id 
+       WHERE participation.partie_id = ?`,
+        [partyId]
+      )
+      .then((results) => {
+        console.info("Résultats de la requête:", results) // Vérifiez ici combien de résultats sont retournés
+        return results
+      })
+      .catch((error) => {
+        console.error("Erreur lors de l'exécution de la requête:", error)
+        throw error
+      })
   }
 
   // Delete a participation by ID
@@ -74,50 +83,3 @@ class ParticipationManager extends AbstractManager {
 }
 
 module.exports = ParticipationManager
-
-// const AbstractManager = require("./AbstractManager")
-
-// class ParticipationManager extends AbstractManager {
-//   constructor() {
-//     super({ table: "participation" })
-//   }
-
-//   insert(participation) {
-//     return this.database.query(
-//       `insert into ${this.table} (Utilisateurs_Id, Partie_Id, Partie_IdMaitreDuJeu) VALUES (?, ?, ?)`,
-//       [
-//         participation.Utilisateurs_Id,
-//         participation.Partie_Id,
-//         participation.Partie_IdMaitreDuJeu,
-//       ]
-//     )
-//   }
-
-//   update(participation) {
-//     return this.database.query(
-//       `update ${this.table} set Utilisateurs_Id = ?, Partie_Id = ?, Partie_IdMaitreDuJeu = ?`, // Utilisation de "id" au lieu de "participation_id"
-//       [
-//         participation.Utilisateurs_Id,
-//         participation.Partie_Id,
-//         participation.Partie_IdMaitreDuJeu,
-//         participation.id,
-//       ]
-//     )
-//   }
-
-//   getCountUserParticipation(utilisateurId, partieId) {
-//     return this.database.query(
-//       `SELECT COUNT(*) AS count FROM participation WHERE Utilisateurs_Id = ? AND Partie_Id = ?`,
-//       [utilisateurId, partieId]
-//     )
-//   }
-
-//   getDeleteUserParticipation(utilisateurId, partieId) {
-//     return this.database.query(
-//       `DELETE FROM ${this.table} WHERE Utilisateurs_Id = ? AND Partie_Id = ?`,
-//       [utilisateurId, partieId]
-//     )
-//   }
-// }
-
-// module.exports = ParticipationManager

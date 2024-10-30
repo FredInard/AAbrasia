@@ -4,7 +4,8 @@ import axios from "axios"
 
 const CarpoolList = ({ partyId }) => {
   const [carpools, setCarpools] = useState([])
-
+  console.info("carpools :", carpools)
+  console.info("CarpoolList partyId :", partyId)
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/covoiturages/${partyId}`)

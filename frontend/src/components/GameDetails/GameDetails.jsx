@@ -5,13 +5,13 @@ import ParticipantsList from "../ParticipantsList/ParticipantsList"
 import MealList from "../MealList/MealList"
 import CarpoolList from "../CarpoolList/CarpoolList"
 
-const GameDetails = ({ isOpen, onClose, partyId }) => {
+const GameDetails = ({ partyId }) => {
   const [gameDetails, setGameDetails] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    if (!isOpen || !partyId) return
+    if (!partyId) return
 
     const fetchGameDetails = async () => {
       setLoading(true)
@@ -20,6 +20,7 @@ const GameDetails = ({ isOpen, onClose, partyId }) => {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/parties/${partyId}`
         )
+        console.info("gameDetails :", gameDetails)
         setGameDetails(res.data)
       } catch (err) {
         console.error(
@@ -33,16 +34,16 @@ const GameDetails = ({ isOpen, onClose, partyId }) => {
     }
 
     fetchGameDetails()
-  }, [isOpen, partyId])
+  }, [partyId])
 
-  if (!isOpen) return null
+  // if (!isOpen) return null
   if (loading) return <p>Chargement des détails de la partie...</p>
   if (error) return <p>{error}</p>
 
   return (
     <div
       className="modal-overlay"
-      onClick={onClose}
+      // onClick={onClose}
       role="dialog"
       aria-labelledby="game-title"
       aria-modal="true"
@@ -50,7 +51,7 @@ const GameDetails = ({ isOpen, onClose, partyId }) => {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button
           className="close-btn"
-          onClick={onClose}
+          // onClick={onClose}
           aria-label="Fermer la modal"
         >
           ✕

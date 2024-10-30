@@ -4,7 +4,8 @@ import axios from "axios"
 
 const MealList = ({ partyId }) => {
   const [meals, setMeals] = useState([])
-
+  console.info("meals :", meals)
+  console.info("MealList partyId :", partyId)
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/repas/${partyId}`)
