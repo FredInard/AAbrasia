@@ -36,6 +36,25 @@ class PartieControllers {
       })
   }
 
+  // GET /parties/utilisateur/:id
+  static getPartieByUtilisateurId(req, res) {
+    const id = parseInt(req.params.id, 10)
+
+    models.partie
+      .findPartieByUtilisateurId(id)
+      .then(([rows]) => {
+        if (rows.length > 0) {
+          res.status(200).json(rows)
+        } else {
+          res.sendStatus(404)
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+        res.sendStatus(500)
+      })
+  }
+
   // POST /parties
   static add(req, res) {
     // Validations

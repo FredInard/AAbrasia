@@ -101,30 +101,37 @@ JOIN
     )
   }
 
-  // Find parties by utilisateur ID
-  findPartieByUtilisateurId(utilisateurId) {
+  // Find all parties by utilisateur ID
+  findPartieByUtilisateurId(id) {
     return this.database.query(
       `
-      SELECT
-        p.id AS partieId,
-        p.titre,
-        p.type,
-        p.description,
-        p.date,
-        p.nb_max_joueurs,
-        p.id_maitre_du_jeu,
-        u.pseudo AS pseudoMaitreDuJeu,
-        u.photo_profil AS photoProfilMaitreDuJeu,
-        p.duree_estimee,
-        p.lieu,
-        p.photo_scenario
-      FROM partie p
-      JOIN participation pa ON p.id = pa.partie_id
-      LEFT JOIN utilisateur u ON p.id_maitre_du_jeu = u.id
-      WHERE pa.utilisateur_id = ?
-      GROUP BY p.id;
-      `,
-      [utilisateurId]
+    SELECT 
+      partie.id,
+      partie.titre,
+      partie.type,
+      partie.description,
+      partie.date,
+      partie.nb_max_joueurs,
+      partie.duree_estimee,
+      partie.lieu,
+      partie.photo_scenario,
+      utilisateur.pseudo AS maitre_du_jeu_pseudo,
+      utilisateur.photo_profil AS maitre_du_jeu_photo,
+      CASE 
+        WHEN partie.id_maitre_du_jeu = ? THEN 'maitre_du_jeu'
+        ELSE 'participant'
+      END AS role
+    FROM 
+      partie
+    LEFT JOIN 
+      utilisateur ON partie.id_maitre_du_jeu = utilisateur.id
+    LEFT JOIN 
+      participation ON participation.partie_id = partie.id
+    WHERE 
+      partie.id_maitre_du_jeu = ? 
+      OR participation.utilisateur_id = ?
+    `,
+      [id, id, id]
     )
   }
 

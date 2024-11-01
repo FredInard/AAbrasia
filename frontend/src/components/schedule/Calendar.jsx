@@ -23,7 +23,7 @@ export default function Calendar({ onDateSelect }) {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/parties`, { headers })
+      .get(`${import.meta.env.VITE_BACKEND_URL}/parties/affichage`, { headers })
       .then((res) => setPartieExiste(res.data))
       .catch((err) => {
         console.error("Problème lors du chargement des parties", err)

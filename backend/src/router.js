@@ -49,6 +49,7 @@ router.put(
 // Routes pour les parties
 // router.get("/parties", PartieControllers.browse)
 router.get("/parties/affichage", PartieControllers.affichageInfoPartie)
+router.get("/parties/player/:id", PartieControllers.getPartieByUtilisateurId)
 router.get("/parties/:id", PartieControllers.read)
 router.post("/parties", verifyToken, PartieControllers.add)
 router.put("/parties/:id", verifyToken, PartieControllers.edit)

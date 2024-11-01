@@ -5,7 +5,7 @@ import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch"
 import { AuthContext } from "../AuthContext"
 import ModificationProfil from "../components/ModificationProfil/ModificationProfil"
 import "./Profil.scss"
-import Game from "../components/Game/Game"
+import PlayerGames from "../components/PlayerGames/PlayerGames"
 
 export default function Profil() {
   const [showListeParties, setShowListeParties] = useState(true)
@@ -68,7 +68,7 @@ export default function Profil() {
 
         <div className="globalBoxProfil">
           {showListeParties ? (
-            <Game />
+            <PlayerGames />
           ) : (
             // <p>Les parties seront affichées ici.</p>
             <ModificationProfil />
