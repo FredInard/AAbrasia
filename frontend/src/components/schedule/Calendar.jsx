@@ -6,7 +6,7 @@ import ArrowRightCal from "../../assets/pics/arrow-circle-right-svgrepo-com.svg"
 
 export default function Calendar({ onDateSelect }) {
   const token = localStorage.getItem("authToken")
-
+  console.info("onDateSelect :", onDateSelect)
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [calendarDays, setCalendarDays] = useState([])
@@ -107,6 +107,7 @@ export default function Calendar({ onDateSelect }) {
       console.info("date du handleDateClick de Calendar coponet", adjustedDate)
       setselectedDateCalendar(adjustedDate.toISOString().split("T")[0]) // Formater la date au format "YYYY-MM-DD"
       onDateSelect(adjustedDate) // Passer la date ajustée
+      console.info("adjustedDate :", adjustedDate)
     }
   }
 

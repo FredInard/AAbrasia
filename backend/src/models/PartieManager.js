@@ -105,7 +105,7 @@ JOIN
   findPartieByUtilisateurId(id) {
     return this.database.query(
       `
-    SELECT 
+    SELECT DISTINCT
       partie.id,
       partie.titre,
       partie.type,
@@ -115,6 +115,7 @@ JOIN
       partie.duree_estimee,
       partie.lieu,
       partie.photo_scenario,
+      partie.id_maitre_du_jeu, -- Ajout de l'id du maître du jeu
       utilisateur.pseudo AS maitre_du_jeu_pseudo,
       utilisateur.photo_profil AS maitre_du_jeu_photo,
       CASE 

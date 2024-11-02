@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import "./Home.scss"
 
 import Calendar from "../components/schedule/Calendar"
@@ -6,11 +6,11 @@ import NavBar from "../components/NavBar/NavBar"
 import Image1 from "../assets/pics/Jdrenfants.webp"
 import Carrousel from "../components/Carrousel/Carrousel"
 import Footer from "../components/Footer/Footer"
-
 import iconeDiscorde from "../assets/pics/discord.svg"
 import iconeFacebook from "../assets/pics/facebook.svg"
 import iconeMail from "../assets/pics/mail.svg"
 import give from "../assets/pics/give.svg"
+import GameList from "../components/Game/GameList"
 
 const images = [
   "https://via.placeholder.com/800x400/FFBB52/FFFFFF?text=Slide+1",
@@ -19,6 +19,21 @@ const images = [
 ]
 
 export default function Home() {
+  // Déclarez `selectedDate` pour suivre la date cliquée dans le calendrier
+  const [selectedDate, setSelectedDate] = useState(null)
+
+  // Définissez `handleDateSelect` pour mettre à jour `selectedDate`
+  const handleDateSelect = (date) => {
+    const formattedDate = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60000
+    )
+      .toISOString()
+      .split("T")[0] // Format en YYYY-MM-DD
+    setSelectedDate(formattedDate) // Met à jour selectedDate sous un format homogène
+  }
+
+  console.info("selectedDate Home:", selectedDate)
+
   return (
     <div>
       <NavBar className="NavBarHome" />
@@ -86,7 +101,8 @@ export default function Home() {
         <section className="section-agenda">
           <h2>Notre Agenda</h2>
           <p>Rejoins une de nos parties ou viens découvrir l'association.</p>
-          <Calendar />
+          <Calendar onDateSelect={handleDateSelect} />
+          <GameList selectedDate={selectedDate} />
         </section>
 
         {/* Section : Team */}

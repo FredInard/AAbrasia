@@ -113,25 +113,35 @@ const PlayerGames = () => {
       {/* Liste des parties filtrées */}
       <div className="game-list">
         {filteredGames.length > 0 ? (
-          filteredGames.map((game) => (
-            <div key={game.id} className="game-item">
-              <h3>{game.titre}</h3>
-              <p>{game.description}</p>
-              <p>
-                <strong>Lieu :</strong> {game.lieu}
-              </p>
-              <p>
-                <strong>Date :</strong>{" "}
-                {new Date(game.date).toLocaleDateString()}
-              </p>
-              <p>
-                <strong>Rôle :</strong>{" "}
-                {game.id_maitre_du_jeu === playerId
-                  ? "Maître du jeu"
-                  : "Participant"}
-              </p>
-            </div>
-          ))
+          filteredGames.map((game) => {
+            console.info(
+              "game:",
+              game,
+              "game.id_maitre_du_jeu:",
+              game.id_maitre_du_jeu,
+              "playerId:",
+              playerId
+            )
+            return (
+              <div key={game.id} className="game-item">
+                <h3>{game.titre}</h3>
+                <p>{game.description}</p>
+                <p>
+                  <strong>Lieu :</strong> {game.lieu}
+                </p>
+                <p>
+                  <strong>Date :</strong>{" "}
+                  {new Date(game.date).toLocaleDateString()}
+                </p>
+                <p>
+                  <strong>Rôle :</strong>{" "}
+                  {Number(game.id_maitre_du_jeu) === Number(playerId)
+                    ? "Maître du jeu"
+                    : "Participant"}
+                </p>
+              </div>
+            )
+          })
         ) : (
           <p>Aucune partie trouvée avec les filtres actuels.</p>
         )}

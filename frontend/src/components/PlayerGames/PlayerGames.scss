@@ -48,47 +48,56 @@
   }
 
   .games-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .game-card {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: var(--card-bg-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
 
-    .game-card {
-      padding: 1rem;
-      background-color: var(--card-bg-color);
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
 
-      &:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    .game-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: var(--primary-color);
       }
 
-      .game-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .title {
-          font-size: 1.25rem;
-          font-weight: bold;
-          color: var(--primary-color);
-        }
-
-        .role {
-          font-size: 1rem;
-          color: var(--secondary-color);
-        }
-      }
-
-      .details {
-        margin-top: 0.5rem;
+      .role {
         font-size: 0.9rem;
-        color: var(--text-secondary);
+        color: var(--secondary-color);
+        font-weight: bold;
+      }
+    }
 
-        .date,
-        .location {
-          margin-right: 1rem;
-        }
+    .details {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+
+      .date,
+      .location {
+        display: block;
+        margin-top: 0.3rem;
       }
     }
   }
