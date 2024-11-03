@@ -19,20 +19,28 @@ const images = [
 ]
 
 export default function Home() {
-  // Déclarez `selectedDate` pour suivre la date cliquée dans le calendrier
-  const [selectedDate, setSelectedDate] = useState(null)
+  console.info("Home component rendered")
+
+  // Initialiser `selectedDate` avec la date d'aujourd'hui
+  const today = new Date()
+  const adjustedToday = new Date(
+    today.getTime() - today.getTimezoneOffset() * 60000
+  )
+  const formattedToday = adjustedToday.toISOString().split("T")[0]
+  const [selectedDate, setSelectedDate] = useState(formattedToday)
 
   // Définissez `handleDateSelect` pour mettre à jour `selectedDate`
   const handleDateSelect = (date) => {
-    const formattedDate = new Date(
+    const adjustedDate = new Date(
       date.getTime() - date.getTimezoneOffset() * 60000
     )
-      .toISOString()
-      .split("T")[0] // Format en YYYY-MM-DD
+    const formattedDate = adjustedDate.toISOString().split("T")[0]
+    console.info("Date selected in Calendar:", date)
+    console.info("Formatted selectedDate:", formattedDate) // Format en YYYY-MM-DD
     setSelectedDate(formattedDate) // Met à jour selectedDate sous un format homogène
   }
 
-  console.info("selectedDate Home:", selectedDate)
+  console.info("Current selectedDate in Home:", selectedDate)
 
   return (
     <div>

@@ -27,7 +27,7 @@ const hashPassword = (req, res, next) => {
 // Générer un token JWT avec une durée de 12 heures
 const generateAccessToken = (user) => {
   return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
-    expiresIn: "12h", // Expiration du token : 12 heures
+    expiresIn: "2h", // Expiration du token : 2 heures
   })
   // console.info("user.role", user.role)
 }
