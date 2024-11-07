@@ -83,6 +83,8 @@ const LoginSignup = () => {
             isAuthenticated: true,
             user: decodedToken,
             role: decodedToken.role,
+            pseudo: decodedToken.pseudo,
+            photo: decodedToken.photo,
             isLoading: false,
           })
 
@@ -91,6 +93,8 @@ const LoginSignup = () => {
             isAuthenticated: true,
             user: decodedToken,
             role: decodedToken.role,
+            pseudo: decodedToken.pseudo,
+            photo: decodedToken.photo,
             isLoading: false,
           })
 

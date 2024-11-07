@@ -19,8 +19,6 @@ const images = [
 ]
 
 export default function Home() {
-  console.info("Home component rendered")
-
   // Initialiser `selectedDate` avec la date d'aujourd'hui
   const today = new Date()
   const adjustedToday = new Date(
@@ -35,12 +33,9 @@ export default function Home() {
       date.getTime() - date.getTimezoneOffset() * 60000
     )
     const formattedDate = adjustedDate.toISOString().split("T")[0]
-    console.info("Date selected in Calendar:", date)
-    console.info("Formatted selectedDate:", formattedDate) // Format en YYYY-MM-DD
+
     setSelectedDate(formattedDate) // Met à jour selectedDate sous un format homogène
   }
-
-  console.info("Current selectedDate in Home:", selectedDate)
 
   return (
     <div>

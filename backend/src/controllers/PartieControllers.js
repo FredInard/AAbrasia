@@ -123,7 +123,7 @@ class PartieControllers {
       .getAffichageInfoPartie()
       .then(([rows]) => {
         res.status(200).json(rows)
-        console.info("rows de affichageInfoPartie", rows)
+        // console.info("rows de affichageInfoPartie", rows)
       })
       .catch((err) => {
         console.error(err)

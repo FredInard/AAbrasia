@@ -76,10 +76,10 @@ class UtilisateurManager extends AbstractManager {
     )
   }
 
-  // Trouver un utilisateur par pseudo avec le mot de passe
+  // Trouver un utilisateur par email avec le mot de passe
   findByEmailWithPassword(email) {
     return this.database.query(
-      `SELECT id, email, hashedPassword, role FROM ${this.table} WHERE email = ?`,
+      `SELECT id, email, hashedPassword, role, pseudo, photo_profil FROM ${this.table} WHERE email = ?`,
       [email]
     )
   }

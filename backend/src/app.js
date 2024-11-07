@@ -1,23 +1,19 @@
-// import some node modules for later
+// Importation de modules Node.js pour plus tard
 require("dotenv").config()
 // const port = process.env.APP_PORT ?? 5000;
-// soit lors de la phase de déploiement le serveur nous donnera un numéro de port qui remplacera les ?? soit par défaut il prendra le port 5000.
+// Lors de la phase de déploiement, le serveur nous donnera un numéro de port qui remplacera les ??, sinon il prendra le port 5000 par défaut.
 
 const fs = require("node:fs")
 const path = require("node:path")
 
-// create express app
-
+// Création de l'application Express
 const express = require("express")
-
 const app = express()
 
-// use some application-level middlewares
-
+// Utilisation de middlewares au niveau de l'application
 app.use(express.json())
 
 const cors = require("cors")
-
 const cookieParser = require("cookie-parser")
 
 app.use(cookieParser())
@@ -30,18 +26,14 @@ app.use(
   })
 )
 
-// import and mount the API routes
-
+// Importation et montage des routes de l'API
 const router = require("./router")
-
 app.use(router)
 
-// serve the `backend/public` folder for public resources
-
+// Servir le dossier `backend/public` pour les ressources publiques
 app.use(express.static(path.join(__dirname, "../public")))
 
-// serve REACT APP
-
+// Servir l'application REACT
 const reactIndexFile = path.join(
   __dirname,
   "..",
@@ -52,17 +44,14 @@ const reactIndexFile = path.join(
 )
 
 if (fs.existsSync(reactIndexFile)) {
-  // serve REACT resources
-
+  // Servir les ressources REACT
   app.use(express.static(path.join(__dirname, "..", "..", "frontend", "dist")))
 
-  // redirect all requests to the REACT index file
-
+  // Rediriger toutes les requêtes vers le fichier index de REACT
   app.get("*", (req, res) => {
     res.sendFile(reactIndexFile)
   })
 }
 
-// ready to export
-
+// Prêt à être exporté
 module.exports = app

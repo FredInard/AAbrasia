@@ -5,30 +5,21 @@ import ArrowLeftCal from "../../assets/pics/arrow-circle-left-svgrepo-com.svg"
 import ArrowRightCal from "../../assets/pics/arrow-circle-right-svgrepo-com.svg"
 
 export default function Calendar({ onDateSelect }) {
-  console.info("Calendar component rendered with onDateSelect:", onDateSelect)
-
   const token = localStorage.getItem("authToken")
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [calendarDays, setCalendarDays] = useState([])
   const [partieExiste, setPartieExiste] = useState([])
   const [selectedDateCalendar, setselectedDateCalendar] = useState(new Date())
-
-  console.info("Initial token from localStorage:", token)
-  console.info("Initial selectedMonth:", selectedMonth)
-  console.info("Initial selectedYear:", selectedYear)
-  console.info("Calendar selectedDateCalendar:", selectedDateCalendar)
-
+  console.info("selectedDateCalendar", selectedDateCalendar)
   const headers = {
     Authorization: `Bearer ${token}`,
   }
 
   useEffect(() => {
-    console.info("Fetching parties data with headers:", headers)
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/parties/affichage`, { headers })
       .then((res) => {
-        console.info("Fetched parties data:", res.data)
         setPartieExiste(res.data)
       })
       .catch((err) => {
@@ -37,14 +28,13 @@ export default function Calendar({ onDateSelect }) {
   }, [])
 
   useEffect(() => {
-    console.info("Generating calendar days for:", selectedYear, selectedMonth)
     generateCalendarDays(selectedYear, selectedMonth)
   }, [selectedMonth, selectedYear])
 
   const leftArrowClick = () => {
     const newMonth = selectedMonth === 0 ? 11 : selectedMonth - 1
     const newYear = selectedMonth === 0 ? selectedYear - 1 : selectedYear
-    console.info("Left arrow clicked. New month and year:", newMonth, newYear)
+
     setSelectedMonth(newMonth)
     setSelectedYear(newYear)
   }
@@ -52,25 +42,24 @@ export default function Calendar({ onDateSelect }) {
   const rightArrowClick = () => {
     const newMonth = selectedMonth === 11 ? 0 : selectedMonth + 1
     const newYear = selectedMonth === 11 ? selectedYear + 1 : selectedYear
-    console.info("Right arrow clicked. New month and year:", newMonth, newYear)
+
     setSelectedMonth(newMonth)
     setSelectedYear(newYear)
   }
 
   const monthChange = (e) => {
     const newMonth = parseInt(e.target.value)
-    console.info("Month changed to:", newMonth)
+
     setSelectedMonth(newMonth)
   }
 
   const yearChange = (e) => {
     const newYear = parseInt(e.target.value)
-    console.info("Year changed to:", newYear)
+
     setSelectedYear(newYear)
   }
 
   const generateCalendarDays = (year, month) => {
-    console.info("Starting generation of calendar days for:", year, month)
     const totalDaysInMonth = new Date(year, month + 1, 0).getDate()
     const firstDayOfWeek = new Date(year, month, 1).getDay()
     const days = []
@@ -87,7 +76,6 @@ export default function Calendar({ onDateSelect }) {
     for (let i = startDay; i > 0; i--) {
       const previousDate = new Date(year, month, 1 - i)
       days.push({ day: null, isToday: false, date: previousDate })
-      console.info("Added previous date to days array:", previousDate)
     }
 
     for (let i = 1; i <= totalDaysInMonth; i++) {
@@ -97,19 +85,14 @@ export default function Calendar({ onDateSelect }) {
         currentDate.getMonth() === currentMonth &&
         currentDate.getFullYear() === currentYear
       days.push({ day: i, isToday, date: currentDate })
-      console.info("Added current date to days array:", currentDate)
     }
 
     setCalendarDays(days)
-    console.info("Final days array set in state:", days)
   }
 
   const goToToday = () => {
     const today = new Date()
-    console.info(
-      "Today button clicked. Setting month and year to today:",
-      today
-    )
+
     setSelectedMonth(today.getMonth())
     setSelectedYear(today.getFullYear())
   }
@@ -119,7 +102,7 @@ export default function Calendar({ onDateSelect }) {
       const adjustedDate = new Date(
         date.getTime() - date.getTimezoneOffset() * 60000
       )
-      console.info("Date clicked:", adjustedDate)
+
       setselectedDateCalendar(adjustedDate.toISOString().split("T")[0])
       onDateSelect(adjustedDate)
     } else {

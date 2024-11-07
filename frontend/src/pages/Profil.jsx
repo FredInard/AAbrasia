@@ -15,11 +15,9 @@ export default function Profil() {
   const utilisateur = authData.user
 
   console.info("Profil Component Rendered")
-  console.info("authData: ", authData)
+  console.info("authData de Profil: ", authData)
 
   useEffect(() => {
-    console.info("Effect triggered: Checking if user is logged in")
-
     if (authData.isLoading) {
       console.info("Authentication is loading...")
       // Ne faites rien tant que l'authentification est en cours de vérification

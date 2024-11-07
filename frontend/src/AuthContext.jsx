@@ -8,6 +8,8 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: false,
     user: null,
     role: null,
+    pseudo: null, // Ajoutez le pseudo
+    photo: null,
     isLoading: true,
   })
 
@@ -19,6 +21,8 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated: false,
       user: null,
       role: null,
+      pseudo: null, // Ajoutez le pseudo
+      photo: null, // Ajoutez la photo
       isLoading: false,
     })
   }
@@ -31,13 +35,29 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       try {
         const decodedToken = jwtDecode(token)
+        if (decodedToken.exp * 1000 < Date.now()) {
+          console.warn("Le token a expiré.")
+          logout()
+        } else {
+          setAuthData({
+            isAuthenticated: true,
+            user: decodedToken,
+            role: decodedToken.role,
+            pseudo: decodedToken.pseudo, // Ajoutez le pseudo
+            photo: decodedToken.photo_profil, // Ajoutez la photo
+            isLoading: false,
+          })
+        }
+        console.info("Token décodé, rôle :", decodedToken.role)
+
         setAuthData({
           isAuthenticated: true,
           user: decodedToken,
           role: decodedToken.role,
+          pseudo: null,
+          photo: null,
           isLoading: false,
         })
-        console.info("Token décodé : ", decodedToken)
       } catch (error) {
         console.error("Token invalide :", error)
         localStorage.removeItem("authToken")
@@ -45,6 +65,8 @@ export const AuthProvider = ({ children }) => {
           isAuthenticated: false,
           user: null,
           role: null,
+          pseudo: null,
+          photo: null,
           isLoading: false,
         })
       }
