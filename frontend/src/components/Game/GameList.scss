@@ -52,3 +52,39 @@
   font-size: 18px;
   font-weight: bold;
 }
+.gameBox {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  border: solid red;
+
+  .game-item {
+    display: inline-block;
+    width: 200px; /* Largeur de la vignette */
+    height: 200px; /* Hauteur de la vignette */
+    margin: 10px; /* Espacement autour de la vignette */
+    border: 1px solid #ccc; /* Bordure légère */
+    border-radius: 8px; /* Coins arrondis */
+    overflow: hidden; /* Masque le débordement du contenu */
+    background-color: #f9f9f9; /* Couleur de fond */
+    text-align: center; /* Centre le texte à l'intérieur */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ajoute une légère ombre */
+  }
+
+  .game-item img {
+    width: 100%; /* L'image occupe toute la largeur de la vignette */
+    height: auto;
+  }
+
+  .game-item h3 {
+    margin: 10px 0 5px 0; /* Espacement autour du titre */
+    font-size: 1.1em;
+  }
+
+  .game-item p {
+    margin: 0 10px 10px 10px; /* Espacement autour du paragraphe */
+    font-size: 0.9em;
+    color: #666; /* Couleur du texte */
+  }
+}

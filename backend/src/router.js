@@ -2,12 +2,36 @@
 
 const express = require("express")
 const multer = require("multer")
-
+const path = require("path")
 const router = express.Router()
 
 const { hashPassword, verifyPassword, verifyToken } = require("./auth.js")
 
-const upload = multer({ dest: "public/assets/tmp" })
+// Configure multer for file upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/assets/uploads")
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)
+    cb(null, uniqueSuffix + path.extname(file.originalname))
+  },
+})
+
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    // Accept images only
+    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+      req.fileValidationError = "Only image files are allowed!"
+      return cb(new Error("Only image files are allowed!"), false)
+    }
+    cb(null, true)
+  },
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB max-size
+  },
+})
 
 // Importation des contrôleurs
 const UtilisateurControllers = require("./controllers/UtilisateurControllers")
@@ -51,7 +75,13 @@ router.put(
 router.get("/parties/affichage", PartieControllers.affichageInfoPartie)
 router.get("/parties/player/:id", PartieControllers.getPartieByUtilisateurId)
 router.get("/parties/:id", PartieControllers.read)
-router.post("/parties", verifyToken, PartieControllers.add)
+// router.post("/parties", verifyToken, PartieControllers.add)
+router.post(
+  "/parties",
+  verifyToken,
+  upload.single("photo_scenario"),
+  PartieControllers.add
+)
 router.put("/parties/:id", verifyToken, PartieControllers.edit)
 router.delete("/parties/:id", verifyToken, PartieControllers.destroy)
 

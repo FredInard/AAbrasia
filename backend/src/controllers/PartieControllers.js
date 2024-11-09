@@ -56,25 +56,41 @@ class PartieControllers {
   }
 
   // POST /parties
-  static add(req, res) {
-    // Validations
-    const errors = validationResult(req)
+  static async add(req, res) {
+    try {
+      console.info("Requête reçue pour ajouter une partie.")
+      console.info("req.body :", req.body)
+      console.info("req.file :", req.file)
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
+      // Validations
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        console.info("Erreurs de validation trouvées :", errors.array())
+        return res.status(400).json({ errors: errors.array() })
+      }
+
+      // Create partie object from req.body
+      const partie = { ...req.body }
+
+      // Add the file path to the partie object if a file was uploaded
+      if (req.file) {
+        // Convert Windows-style path to URL-style path
+        const filePath = req.file.path.replace(/\\/g, "/")
+        // Remove 'public' from the beginning of the path as it's typically served as static
+        partie.photo_scenario = filePath.replace("public", "")
+      } else {
+        partie.photo_scenario = null
+      }
+
+      console.info("Données de la partie à insérer :", partie)
+
+      const [result] = await models.partie.insert(partie)
+      console.info("Partie insérée avec succès, ID :", result.insertId)
+      res.status(201).json({ id: result.insertId, ...partie })
+    } catch (err) {
+      console.error("Erreur lors de l'insertion de la partie :", err)
+      res.sendStatus(500)
     }
-
-    const partie = req.body
-
-    models.partie
-      .insert(partie)
-      .then(([result]) => {
-        res.status(201).json({ id: result.insertId, ...partie })
-      })
-      .catch((err) => {
-        console.error(err)
-        res.sendStatus(500)
-      })
   }
 
   // PUT /parties/:id

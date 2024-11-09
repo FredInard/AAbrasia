@@ -7,7 +7,7 @@ const GameList = ({ selectedDate }) => {
   const [filteredGames, setFilteredGames] = useState([])
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
-
+  console.info("games GameList :", games)
   useEffect(() => {
     const fetchGames = async () => {
       try {
@@ -59,20 +59,23 @@ const GameList = ({ selectedDate }) => {
   }
 
   return (
-    <div>
+    <div className="gameBox">
       {selectedDate ? (
         filteredGames.length > 0 ? (
           filteredGames.map((game) => {
             return (
               <div key={game.id} className="game-item">
                 <h3>{game.titre}</h3>
-                <p>{game.description}</p>
+                <img
+                  src={`${import.meta.env.VITE_BACKEND_URL}/${
+                    game.photo_scenario
+                  }`}
+                  alt="illustration de la partie"
+                  className="illustrationPartie"
+                />
+
                 <p>
-                  <strong>Lieu :</strong> {game.lieu}
-                </p>
-                <p>
-                  <strong>Date :</strong>{" "}
-                  {new Date(game.date).toLocaleDateString()}
+                  <strong>Lieu :</strong> {game.nb_max_joueurs}
                 </p>
               </div>
             )

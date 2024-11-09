@@ -23,7 +23,7 @@ export default function ModificationProfil() {
   const [imageUrl, setImageUrl] = useState(null)
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
 
-  console.info("formData", formData)
+  console.info("formData ModificationProfil :", formData)
 
   // Récupérer le token depuis le localStorage
   const token = localStorage.getItem("authToken")
@@ -119,13 +119,27 @@ export default function ModificationProfil() {
   }
 
   // Fonction de soumission du formulaire
+  // Fonction de soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     const formDataToSend = new FormData()
-    Object.keys(formData).forEach((key) => {
-      if (formData[key] !== "") {
-        formDataToSend.append(key, formData[key])
+
+    // Créer une copie de formData pour manipulation
+    const formDataCopy = { ...formData }
+
+    // Formater la date au format 'YYYY-MM-DD'
+    if (formDataCopy.date_naissance) {
+      const dateObj = new Date(formDataCopy.date_naissance)
+      const year = dateObj.getFullYear()
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0") // Les mois commencent à 0
+      const day = String(dateObj.getDate()).padStart(2, "0")
+      formDataCopy.date_naissance = `${year}-${month}-${day}`
+    }
+
+    Object.keys(formDataCopy).forEach((key) => {
+      if (formDataCopy[key] !== "") {
+        formDataToSend.append(key, formDataCopy[key])
       } else {
         formDataToSend.append(key, null)
       }
