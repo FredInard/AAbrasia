@@ -12,18 +12,19 @@ export default function ModificationProfil() {
     nom: "",
     prenom: "",
     email: "",
+    role: "", // Le rôle est inclus ici
     pseudo: "",
     date_naissance: "",
     adresse: "",
     ville: "",
     telephone: "",
     bio: "",
-    photo_profil: null,
+    photo_profil: "",
   })
   const [imageUrl, setImageUrl] = useState(null)
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
 
-  console.info("formData ModificationProfil :", formData)
+  console.info("formData :", formData)
 
   // Récupérer le token depuis le localStorage
   const token = localStorage.getItem("authToken")
@@ -65,14 +66,19 @@ export default function ModificationProfil() {
             nom: res.data.nom || "",
             prenom: res.data.prenom || "",
             email: res.data.email || "",
+            role: res.data.role, // Récupérer le rôle tel quel
             pseudo: res.data.pseudo || "",
-            date_naissance: res.data.date_naissance || "",
+            date_naissance: res.data.date_naissance
+              ? res.data.date_naissance.slice(0, 10)
+              : "",
             adresse: res.data.adresse || "",
             ville: res.data.ville || "",
             telephone: res.data.telephone || "",
             bio: res.data.bio || "",
-            photo_profil: null,
+            photo_profil: res.data.photo_profil || "",
           })
+          console.info("setFormData :", formData)
+
           if (res.data.photo_profil) {
             setImageUrl(
               `${import.meta.env.VITE_BACKEND_URL}/${res.data.photo_profil}`
@@ -119,7 +125,6 @@ export default function ModificationProfil() {
   }
 
   // Fonction de soumission du formulaire
-  // Fonction de soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -128,22 +133,27 @@ export default function ModificationProfil() {
     // Créer une copie de formData pour manipulation
     const formDataCopy = { ...formData }
 
-    // Formater la date au format 'YYYY-MM-DD'
+    // Formater la date au format 'YYYY-MM-DD' si nécessaire
     if (formDataCopy.date_naissance) {
       const dateObj = new Date(formDataCopy.date_naissance)
       const year = dateObj.getFullYear()
-      const month = String(dateObj.getMonth() + 1).padStart(2, "0") // Les mois commencent à 0
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0")
       const day = String(dateObj.getDate()).padStart(2, "0")
       formDataCopy.date_naissance = `${year}-${month}-${day}`
     }
 
+    // Ajouter tous les champs au FormData, y compris 'role'
     Object.keys(formDataCopy).forEach((key) => {
-      if (formDataCopy[key] !== "") {
+      // Vérifier si la valeur est définie, sinon utiliser une chaîne vide
+      if (formDataCopy[key] !== undefined && formDataCopy[key] !== null) {
         formDataToSend.append(key, formDataCopy[key])
       } else {
-        formDataToSend.append(key, null)
+        formDataToSend.append(key, "")
       }
     })
+
+    // Afficher les données envoyées pour vérification
+    console.info("Données envoyées :", [...formDataToSend.entries()])
 
     try {
       const response = await axios.put(
@@ -296,9 +306,15 @@ export default function ModificationProfil() {
           <label htmlFor="photo_profil">Photo de profil</label>
           {imageUrl && (
             <img
-              src={imageUrl}
+              src={
+                formData.photo_profil instanceof File
+                  ? imageUrl
+                  : `${import.meta.env.VITE_BACKEND_URL}/${
+                      formData.photo_profil
+                    }`
+              }
               alt="Photo de profil"
-              className="profilPictureChange"
+              className="profilPicture"
             />
           )}
           <input

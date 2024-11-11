@@ -60,6 +60,7 @@ const GameList = ({ selectedDate }) => {
 
   return (
     <div className="gameBox">
+      <p>{selectedDate}</p>
       {selectedDate ? (
         filteredGames.length > 0 ? (
           filteredGames.map((game) => {

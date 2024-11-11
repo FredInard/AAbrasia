@@ -40,7 +40,7 @@ class UtilisateurControllers {
   // POST /utilisateurs
   static add(req, res) {
     const utilisateur = req.body
-    console.info("utilisateur backis :", utilisateur)
+    console.info("utilisateur back is :", utilisateur)
     // TODO: Validations (length, format...)
 
     models.utilisateur
@@ -56,13 +56,11 @@ class UtilisateurControllers {
 
   // PUT /utilisateurs/:id
   static edit(req, res) {
+    console.info("Contenu de req.body :", req.body)
     const utilisateur = {
       ...req.body,
       id: parseInt(req.params.id, 10),
     }
-
-    console.info("Données reçues dans req.body:", req.body)
-    console.info("Fichier reçu dans req.file:", req.file)
 
     // Remplacez les champs vides ou contenant "null" par null pour éviter les erreurs de base de données
     Object.keys(utilisateur).forEach((key) => {
@@ -70,10 +68,7 @@ class UtilisateurControllers {
         utilisateur[key] = null
       }
     })
-
-    // Supprimez le champ 'role' pour éviter toute modification non autorisée du rôle
-    delete utilisateur.role
-
+    console.info("Utilisateur avant traitement:", utilisateur)
     // Si un fichier est inclus, ajoutez son chemin
     if (req.file) {
       utilisateur.photo_profil = req.file.path
