@@ -9,8 +9,17 @@ const GameDetails = ({ partyId, onClose }) => {
   const [gameDetails, setGameDetails] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [isJoined, setIsJoined] = useState(false) // pour vérifier si l'utilisateur a rejoint la partie
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
+    // Récupérer les informations de l'utilisateur connecté
+    const token = localStorage.getItem("authToken")
+    if (token) {
+      const decodedToken = JSON.parse(atob(token.split(".")[1]))
+      setUser(decodedToken)
+    }
+
     if (!partyId) return
     console.info("Fetching game details for partyId:", partyId)
 
@@ -38,10 +47,50 @@ const GameDetails = ({ partyId, onClose }) => {
     fetchGameDetails()
   }, [partyId])
 
+  const handleJoinParty = async () => {
+    if (!user) {
+      console.info(
+        "Utilisateur non connecté, annulation de la tentative de rejoindre."
+      )
+      return
+    }
+
+    console.info("Tentative de rejoindre la partie avec :", {
+      partyId,
+      userId: user.id,
+    })
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/participations/${partyId}/${
+          user.id
+        }`,
+        null, // Pas de corps de requête nécessaire, les données sont dans l'URL
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      )
+
+      console.info(
+        "Réponse de l'API après tentative d'inscription :",
+        response.data
+      )
+      setIsJoined(true) // Confirme que l'utilisateur a rejoint la partie
+    } catch (err) {
+      console.error("Erreur lors de l'inscription à la partie :", err)
+      setError("Impossible de rejoindre la partie. Veuillez réessayer.")
+    }
+  }
+
   if (loading) return <p>Chargement des détails de la partie...</p>
   if (error) return <p>{error}</p>
 
   console.info("Rendering GameDetails with data:", gameDetails)
+
+  // Vérifie si l'utilisateur est connecté et n'est pas le maître du jeu
+  const canJoin = user && user.id !== gameDetails.id_maitre_du_jeu && !isJoined
 
   return (
     <div
@@ -120,6 +169,12 @@ const GameDetails = ({ partyId, onClose }) => {
         <h3>Autres infos :</h3>
         <CarpoolList partyId={partyId} />
         <MealList partyId={partyId} />
+
+        {canJoin && (
+          <button onClick={handleJoinParty} className="join-btn">
+            Rejoindre l'aventure
+          </button>
+        )}
       </div>
     </div>
   )

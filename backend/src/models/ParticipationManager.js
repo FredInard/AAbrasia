@@ -41,23 +41,17 @@ class ParticipationManager extends AbstractManager {
   }
 
   findParticipationsByPartyId(partyId) {
-    console.info("Appel de findParticipationsByPartyId avec partyId:", partyId)
-    return this.database
-      .query(
-        `SELECT utilisateur.pseudo, utilisateur.photo_profil 
-       FROM participation
-       JOIN utilisateur ON participation.utilisateur_id = utilisateur.id 
-       WHERE participation.partie_id = ?`,
-        [partyId]
-      )
-      .then((results) => {
-        console.info("Résultats de la requête:", results) // Vérifiez ici combien de résultats sont retournés
-        return results
-      })
-      .catch((error) => {
-        console.error("Erreur lors de l'exécution de la requête:", error)
-        throw error
-      })
+    // console.info("Appel de findParticipationsByPartyId avec partyId:", partyId)
+    return this.database.query(
+      `
+        SELECT utilisateur.pseudo, utilisateur.photo_profil 
+        FROM participation
+        JOIN utilisateur ON participation.utilisateur_id = utilisateur.id
+        JOIN partie ON participation.partie_id = partie.id
+        WHERE participation.partie_id = ? AND utilisateur.id != partie.id_maitre_du_jeu
+        `,
+      [partyId]
+    )
   }
 
   // Delete a participation by ID
@@ -78,6 +72,22 @@ class ParticipationManager extends AbstractManager {
     return this.database.query(
       `DELETE FROM ${this.table} WHERE utilisateur_id = ? AND partie_id = ?`,
       [utilisateurId, partieId]
+    )
+  }
+
+  // Vérifie si l'utilisateur est déjà dans la partie
+  findByPartyAndUserId(partyId, userId) {
+    return this.database.query(
+      `SELECT * FROM participation WHERE partie_id = ? AND utilisateur_id = ?`,
+      [partyId, userId]
+    )
+  }
+
+  // Ajoute un utilisateur à la participation
+  addParticipantToParty(partyId, userId) {
+    return this.database.query(
+      `INSERT INTO participation (partie_id, utilisateur_id) VALUES (?, ?)`,
+      [partyId, userId]
     )
   }
 }

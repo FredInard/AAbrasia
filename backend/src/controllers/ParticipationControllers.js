@@ -24,7 +24,7 @@ class ParticipationControllers {
       .find(id)
       .then(([rows]) => {
         if (rows[0]) {
-          res.status(200).json(rows[0])
+          res.status(200).json(rows)
         } else {
           res.sendStatus(404)
         }
@@ -42,15 +42,12 @@ class ParticipationControllers {
     models.participation
       .findParticipationsByPartyId(id)
       .then(([rows]) => {
-        if (rows[0]) {
-          res.status(200).json(rows[0])
-        } else {
-          res.sendStatus(404)
-        }
+        console.info("Participants trouvés dans la base de données :", rows) // vérification des données avant de les renvoyer
+        res.status(200).json(rows) // Renvoie tous les résultats, même s'il est vide
       })
       .catch((err) => {
         console.error(err)
-        res.sendStatus(500)
+        res.sendStatus(500) // Problème côté serveur
       })
   }
 
@@ -69,6 +66,67 @@ class ParticipationControllers {
       .catch((err) => {
         console.error(err)
         res.sendStatus(500)
+      })
+  }
+
+  // POST /participations by idPartie et idPlayer
+  static addByPartiId(req, res) {
+    const partyId = parseInt(req.params.idPartie, 10)
+    const userId = parseInt(req.params.idPlayer, 10)
+
+    console.info("Requête reçue pour ajouter un participant :", {
+      partyId,
+      userId,
+    })
+
+    // Vérifie que partyId et userId sont valides
+    if (!partyId || !userId) {
+      console.info("ID de partie ou d'utilisateur manquant ou invalide", {
+        partyId,
+        userId,
+      })
+      return res
+        .status(400)
+        .json({ error: "L'ID de la partie et de l'utilisateur sont requis." })
+    }
+
+    // Vérifie si l'utilisateur est déjà inscrit à cette partie
+    models.participation
+      .findByPartyAndUserId(partyId, userId)
+      .then(([existingParticipant]) => {
+        console.info(
+          "Vérification de l'existence de la participation :",
+          existingParticipant
+        )
+
+        if (existingParticipant.length > 0) {
+          console.info("Utilisateur déjà inscrit à cette partie :", {
+            partyId,
+            userId,
+          })
+          return res
+            .status(409)
+            .json({ error: "L'utilisateur est déjà inscrit à cette partie." })
+        }
+
+        // Ajoute l'utilisateur à la participation
+        return models.participation
+          .addParticipantToParty(partyId, userId)
+          .then(([result]) => {
+            console.info(
+              "Utilisateur ajouté à la participation avec succès :",
+              { partyId, userId }
+            )
+            res
+              .status(201)
+              .json({ message: "Utilisateur ajouté à la partie avec succès." })
+          })
+      })
+      .catch((err) => {
+        console.error("Erreur lors de l'ajout de la participation :", err)
+        res.status(500).json({
+          error: "Erreur serveur lors de l'ajout de la participation.",
+        })
       })
   }
 

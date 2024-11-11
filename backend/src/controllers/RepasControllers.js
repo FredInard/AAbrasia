@@ -38,19 +38,16 @@ class RepasControllers {
   // GET /repas/:id
   static getRepasByPartyId(req, res) {
     const id = parseInt(req.params.id, 10)
-    // console.info("",)
+
     models.repas
       .getRepasByPartyId(id)
       .then(([rows]) => {
-        if (rows[0]) {
-          res.status(200).json(rows[0])
-        } else {
-          res.sendStatus(404)
-        }
+        console.info("Repas trouvés dans la base de données :", rows) // vérification des données avant de les renvoyer
+        res.status(200).json(rows) // Renvoie tous les repas, même si le tableau est vide
       })
       .catch((err) => {
         console.error(err)
-        res.sendStatus(500)
+        res.sendStatus(500) // Problème côté serveur
       })
   }
 

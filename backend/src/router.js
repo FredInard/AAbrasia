@@ -93,6 +93,11 @@ router.get(
   ParticipationControllers.getparticipationsByPartyId
 )
 router.post("/participations", verifyToken, ParticipationControllers.add)
+router.post(
+  "/participations/:idPartie/:idPlayer",
+  verifyToken,
+  ParticipationControllers.addByPartiId
+)
 router.delete(
   "/participations/:id",
   verifyToken,
