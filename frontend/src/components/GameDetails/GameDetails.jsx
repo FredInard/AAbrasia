@@ -5,13 +5,14 @@ import ParticipantsList from "../ParticipantsList/ParticipantsList"
 import MealList from "../MealList/MealList"
 import CarpoolList from "../CarpoolList/CarpoolList"
 
-const GameDetails = ({ partyId }) => {
+const GameDetails = ({ partyId, onClose }) => {
   const [gameDetails, setGameDetails] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
     if (!partyId) return
+    console.info("Fetching game details for partyId:", partyId)
 
     const fetchGameDetails = async () => {
       setLoading(true)
@@ -20,7 +21,7 @@ const GameDetails = ({ partyId }) => {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/parties/${partyId}`
         )
-        console.info("gameDetails :", gameDetails)
+        console.info("Données complètes du jeu dans gameDetails:", res.data)
         setGameDetails(res.data)
       } catch (err) {
         console.error(
@@ -30,20 +31,22 @@ const GameDetails = ({ partyId }) => {
         setError("Erreur lors du chargement des détails de la partie.")
       } finally {
         setLoading(false)
+        console.info("Loading set to false in GameDetails")
       }
     }
 
     fetchGameDetails()
   }, [partyId])
 
-  // if (!isOpen) return null
   if (loading) return <p>Chargement des détails de la partie...</p>
   if (error) return <p>{error}</p>
+
+  console.info("Rendering GameDetails with data:", gameDetails)
 
   return (
     <div
       className="modal-overlay"
-      // onClick={onClose}
+      onClick={onClose}
       role="dialog"
       aria-labelledby="game-title"
       aria-modal="true"
@@ -51,7 +54,7 @@ const GameDetails = ({ partyId }) => {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button
           className="close-btn"
-          // onClick={onClose}
+          onClick={onClose}
           aria-label="Fermer la modal"
         >
           ✕
@@ -64,7 +67,9 @@ const GameDetails = ({ partyId }) => {
         <div className="game-master-info">
           {gameDetails.maitre_du_jeu_photo && (
             <img
-              src={gameDetails.maitre_du_jeu_photo}
+              src={`${import.meta.env.VITE_BACKEND_URL}/${
+                gameDetails.maitre_du_jeu_photo
+              }`}
               alt={`Maître du jeu ${gameDetails.maitre_du_jeu_pseudo}`}
               className="game-master-photo"
             />
@@ -81,14 +86,30 @@ const GameDetails = ({ partyId }) => {
 
         <div className="game-details">
           <div className="game-info-item">
-            <h2>Heure : {gameDetails.time || "Non précisé"}</h2>
+            <h2>
+              Heure :{" "}
+              {gameDetails.date
+                ? new Date(gameDetails.date).toLocaleDateString("fr-FR", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }) +
+                  " à " +
+                  new Date(gameDetails.date).toLocaleTimeString("fr-FR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "Non précisé"}
+            </h2>
           </div>
           <div className="game-info-item">
-            <h2>Lieu : {gameDetails.location || "Lieu non précisé"}</h2>
+            <h2>Lieu : {gameDetails.lieu || "Lieu non précisé"}</h2>
           </div>
           <div className="game-info-item">
             <h2>
-              Nombre de joueurs max : x{gameDetails.maxPlayers || "Non précisé"}
+              Nombre de joueurs max : x
+              {gameDetails.nb_max_joueurs || "Non précisé"}
             </h2>
           </div>
         </div>

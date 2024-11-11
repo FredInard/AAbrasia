@@ -1,4 +1,3 @@
-// CarpoolList.jsx
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 
@@ -6,45 +5,39 @@ const CarpoolList = ({ partyId }) => {
   const [carpools, setCarpools] = useState([])
   console.info("carpools :", carpools)
   console.info("CarpoolList partyId :", partyId)
+
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/covoiturages/${partyId}`)
-      .then((res) => setCarpools(res.data))
+      .then((res) => {
+        const data = Array.isArray(res.data) ? res.data : [res.data] // Si `res.data` est un objet, le transformer en tableau
+        setCarpools(data)
+      })
       .catch((err) =>
-        console.error("Erreur lors du chargement du covoiturage :", err)
+        console.error("Erreur lors du chargement des covoiturages :", err)
       )
   }, [partyId])
-
-  if (carpools.length === 0)
-    return <p>Aucune option de covoiturage pour cette partie.</p>
 
   return (
     <div>
       <h3>Covoiturages</h3>
-      {carpools.map((carpool, index) => (
-        <div key={index} className="carpool-item">
-          <p>
-            <strong>Conducteur :</strong> {carpool.pseudo}
-          </p>
-          <img
-            src={carpool.photo_profil}
-            alt="Conducteur"
-            className="carpool-driver-photo"
-          />
-          <p>
-            <strong>Départ :</strong> {carpool.lieu_depart}
-          </p>
-          <p>
-            <strong>Arrivée :</strong> {carpool.lieu_arrivee}
-          </p>
-          <p>
-            <strong>Heure de départ :</strong> {carpool.heure_depart}
-          </p>
-          <p>
-            <strong>Places disponibles :</strong> {carpool.places_disponibles}
-          </p>
-        </div>
-      ))}
+      {Array.isArray(carpools) && carpools.length > 0 ? (
+        carpools.map((carpool) => (
+          <div key={carpool.id}>
+            <p>
+              <strong>Conducteur :</strong> {carpool.pseudo}
+            </p>
+            <p>
+              <strong>Départ :</strong> {carpool.ville_depart}
+            </p>
+            <p>
+              <strong>Arrivée :</strong> {carpool.ville_arrivee}
+            </p>
+          </div>
+        ))
+      ) : (
+        <p>Aucun covoiturage disponible.</p>
+      )}
     </div>
   )
 }

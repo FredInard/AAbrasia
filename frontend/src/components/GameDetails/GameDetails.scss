@@ -14,6 +14,9 @@
 }
 
 .modal-content {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   background-color: #f0f0f0;
   border-radius: 20px;
   padding: 20px;
@@ -46,7 +49,7 @@
 }
 
 .game-title {
-  text-align: right;
+  text-align: left;
   font-size: 24px;
   font-weight: bold;
 }

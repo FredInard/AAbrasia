@@ -8,6 +8,7 @@ import "./ModificationProfil.scss"
 
 export default function ModificationProfil() {
   const [utilisateur, setUtilisateur] = useState({})
+  const [existingPhotoUrl, setExistingPhotoUrl] = useState(null)
   const [formData, setFormData] = useState({
     nom: "",
     prenom: "",
@@ -114,6 +115,48 @@ export default function ModificationProfil() {
     }))
   }
 
+  useEffect(() => {
+    if (idUser) {
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUser}`, {
+          headers,
+        })
+        .then((res) => {
+          setUtilisateur(res.data)
+          setFormData({
+            nom: res.data.nom || "",
+            prenom: res.data.prenom || "",
+            email: res.data.email || "",
+            role: res.data.role, // Récupérer le rôle tel quel
+            pseudo: res.data.pseudo || "",
+            date_naissance: res.data.date_naissance
+              ? res.data.date_naissance.slice(0, 10)
+              : "",
+            adresse: res.data.adresse || "",
+            ville: res.data.ville || "",
+            telephone: res.data.telephone || "",
+            bio: res.data.bio || "",
+            photo_profil: res.data.photo_profil || "",
+          })
+          console.info("setFormData :", formData)
+
+          if (res.data.photo_profil) {
+            setExistingPhotoUrl(
+              `${import.meta.env.VITE_BACKEND_URL}/${res.data.photo_profil}`
+            )
+          }
+        })
+        .catch((err) => {
+          console.error("Problème lors du chargement de l'utilisateur", err)
+        })
+    } else {
+      console.error(
+        "ID utilisateur non disponible. Impossible de charger les données utilisateur."
+      )
+      // Gérer le cas où l'ID utilisateur n'est pas disponible
+    }
+  }, [idUser])
+
   // Gérer l'upload de la photo de profil
   const handleFileChange = (e) => {
     const file = e.target.files[0]
@@ -190,6 +233,12 @@ export default function ModificationProfil() {
   return (
     <div className="modificationProfil">
       <h2>Modifier le profil</h2>
+      <img
+        src={`${import.meta.env.VITE_BACKEND_URL}/${utilisateur.photo_profil}`}
+        alt="Photo de profil"
+        className="profilPicture"
+      />
+
       <form onSubmit={handleSubmit} className="formProfil">
         {/* Champ Nom */}
         <div className="form-group">
@@ -304,15 +353,9 @@ export default function ModificationProfil() {
         {/* Champ Photo de Profil */}
         <div className="form-group">
           <label htmlFor="photo_profil">Photo de profil</label>
-          {imageUrl && (
+          {(imageUrl || existingPhotoUrl) && (
             <img
-              src={
-                formData.photo_profil instanceof File
-                  ? imageUrl
-                  : `${import.meta.env.VITE_BACKEND_URL}/${
-                      formData.photo_profil
-                    }`
-              }
+              src={imageUrl || existingPhotoUrl}
               alt="Photo de profil"
               className="profilPicture"
             />

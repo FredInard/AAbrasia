@@ -47,16 +47,25 @@ class PartieManager extends AbstractManager {
     return this.database.query(`SELECT * FROM ${this.table}`)
   }
 
-  // Find a partie by ID
+  // Find a partie by ID, including the pseudo and photo_profil of the maître du jeu
   find(id) {
-    return this.database.query(`SELECT * FROM ${this.table} WHERE id = ?`, [id])
+    return this.database.query(
+      `
+    SELECT p.*, u.pseudo AS maitre_du_jeu_pseudo, u.photo_profil AS maitre_du_jeu_photo
+    FROM ${this.table} AS p
+    LEFT JOIN utilisateur AS u ON p.id_maitre_du_jeu = u.id
+    WHERE p.id = ?
+    `,
+      [id]
+    )
   }
 
   // Get detailed info of all parties
   getAffichageInfoPartie() {
     return this.database.query(`
      
-    SELECT 
+    SELECT
+    partie.id, 
     partie.titre,
     partie.type,
     partie.description,
