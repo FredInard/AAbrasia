@@ -54,9 +54,23 @@ class ParticipationManager extends AbstractManager {
     )
   }
 
+  findByPartyAndUserId(partyId, userId) {
+    return this.database.query(
+      `SELECT * FROM participation WHERE partie_id = ? AND utilisateur_id = ?`,
+      [partyId, userId]
+    )
+  }
+
   // Delete a participation by ID
   delete(id) {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id])
+  }
+
+  deleteByPartyAndUserId(partyId, userId) {
+    return this.database.query(
+      `DELETE FROM participation WHERE partie_id = ? AND utilisateur_id = ?`,
+      [partyId, userId]
+    )
   }
 
   // Get count of participations for a user in a specific partie
@@ -72,14 +86,6 @@ class ParticipationManager extends AbstractManager {
     return this.database.query(
       `DELETE FROM ${this.table} WHERE utilisateur_id = ? AND partie_id = ?`,
       [utilisateurId, partieId]
-    )
-  }
-
-  // Vérifie si l'utilisateur est déjà dans la partie
-  findByPartyAndUserId(partyId, userId) {
-    return this.database.query(
-      `SELECT * FROM participation WHERE partie_id = ? AND utilisateur_id = ?`,
-      [partyId, userId]
     )
   }
 

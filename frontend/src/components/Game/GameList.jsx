@@ -91,12 +91,14 @@ const GameList = ({ selectedDate }) => {
               >
                 <h3>{game.titre}</h3>
                 <img
-                  src={`${import.meta.env.VITE_BACKEND_URL}/${
-                    game.photo_scenario
-                  }`}
+                  src={`${import.meta.env.VITE_BACKEND_URL.replace(
+                    /\/$/,
+                    ""
+                  )}/${game.photo_scenario.replace(/\\/g, "/")}`}
                   alt="illustration de la partie"
                   className="illustrationPartie"
                 />
+
                 <p>
                   <strong>Lieu :</strong> {game.nb_max_joueurs}
                 </p>

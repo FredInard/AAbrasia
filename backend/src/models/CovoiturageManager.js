@@ -52,7 +52,7 @@ class CovoiturageManager extends AbstractManager {
       `SELECT covoiturage.*, utilisateur.pseudo 
      FROM ${this.table} AS covoiturage 
      JOIN utilisateur ON covoiturage.utilisateur_id = utilisateur.id 
-     WHERE covoiturage.id = ?`, // Correction ici
+     WHERE covoiturage.partie_id = ?`, // Correction ici
       [partyId]
     )
   }

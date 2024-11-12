@@ -42,8 +42,8 @@ class CovoiturageControllers {
     models.covoiturage
       .findCovoiturageByPartyId(id)
       .then(([rows]) => {
-        if (rows[0]) {
-          res.status(200).json(rows[0])
+        if (rows) {
+          res.status(200).json(rows)
         } else {
           res.sendStatus(404)
         }

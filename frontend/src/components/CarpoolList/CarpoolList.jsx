@@ -1,42 +1,57 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 
-const CarpoolList = ({ partyId }) => {
+import "./CarpoolList.scss"
+import IconCar from "../../assets/pics/iconCar.svg"
+
+const CarpoolList = ({ partyId, isUpdated }) => {
   const [carpools, setCarpools] = useState([])
-  console.info("carpools :", carpools)
-  console.info("CarpoolList partyId :", partyId)
+  const [error, setError] = useState(null) // Ajout d'un état pour l'erreur
 
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/covoiturages/${partyId}`)
       .then((res) => {
-        const data = Array.isArray(res.data) ? res.data : [res.data] // Si `res.data` est un objet, le transformer en tableau
-        setCarpools(data)
+        if (Array.isArray(res.data)) {
+          setCarpools(res.data) // Si res.data est bien un tableau
+        } else {
+          console.warn("Format inattendu des données :", res.data)
+          setCarpools([res.data]) // Si res.data n'est pas un tableau, le transformer en tableau
+        }
       })
-      .catch((err) =>
+      .catch((err) => {
         console.error("Erreur lors du chargement des covoiturages :", err)
-      )
-  }, [partyId])
+        setError("Impossible de charger les covoiturages.")
+      })
+  }, [partyId, isUpdated])
+
+  if (error) return <p>{error}</p>
 
   return (
     <div>
-      <h3>Covoiturages</h3>
+      {/* <h4>Covoiturages</h4> */}
       {Array.isArray(carpools) && carpools.length > 0 ? (
         carpools.map((carpool) => (
           <div key={carpool.id}>
             <p>
-              <strong>Conducteur :</strong> {carpool.pseudo}
-            </p>
-            <p>
-              <strong>Départ :</strong> {carpool.ville_depart}
-            </p>
-            <p>
-              <strong>Arrivée :</strong> {carpool.ville_arrivee}
+              <div className="carpoolListBox">
+                <img
+                  className="iconCar"
+                  src={IconCar}
+                  alt="icone d'une petite voiture rouge"
+                />
+                {carpool.pseudo} propose un covoiturage de{" "}
+                {carpool.ville_depart} à {carpool.ville_arrivee}, départ à{" "}
+                {new Date(carpool.heure_depart).toLocaleTimeString("fr-FR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </div>
             </p>
           </div>
         ))
       ) : (
-        <p>Aucun covoiturage disponible.</p>
+        <p></p>
       )}
     </div>
   )

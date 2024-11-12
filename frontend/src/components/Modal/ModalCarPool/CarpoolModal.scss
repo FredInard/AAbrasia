@@ -1,0 +1,30 @@
+.modal-overlayCP {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-contentCP {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    position: relative;
+  }
+  
+  .close-btnCP {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  

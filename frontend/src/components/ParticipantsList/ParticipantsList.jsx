@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 
-const ParticipantsList = ({ partyId }) => {
+import "./ParticipantsList.scss"
+
+const ParticipantsList = ({ partyId, isUpdated }) => {
   const [participants, setParticipants] = useState([])
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -23,21 +25,31 @@ const ParticipantsList = ({ partyId }) => {
       .finally(() => {
         setLoading(false) // Arrête le chargement après la réponse de l'API
       })
-  }, [partyId])
+  }, [partyId, isUpdated])
 
   if (loading) return <p>Chargement des participants...</p>
   if (error) return <p>{error}</p>
 
   return (
     <div>
-      <h3>Participants</h3>
-      {participants.length > 0 || null || undefined ? (
-        participants.map((participant) => (
-          <p key={participant.id}>{participant.pseudo}</p>
-        ))
-      ) : (
-        <p>Aucun participant disponible pour cette partie.</p>
-      )}
+      <div className="participantsListBox">
+        {participants.length > 0 ? (
+          participants.map((participant) => (
+            <div className="participantsAffichage" key={participant.id}>
+              <img
+                src={`${
+                  import.meta.env.VITE_BACKEND_URL
+                }/${participant.photo_profil.replace(/\\/g, "/")}`}
+                alt="Photo de profil participant"
+                className="ProfilPhoto"
+              />
+              {participant.pseudo}
+            </div>
+          ))
+        ) : (
+          <p>Aucun participant disponible pour cette partie.</p>
+        )}
+      </div>
     </div>
   )
 }

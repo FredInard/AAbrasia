@@ -92,11 +92,20 @@ router.get(
   "/participations/:id",
   ParticipationControllers.getparticipationsByPartyId
 )
+router.get(
+  "/participations/:idPartie/:idPlayer",
+  ParticipationControllers.getparticipationsByPartyIdAndPlayerId
+)
 router.post("/participations", verifyToken, ParticipationControllers.add)
 router.post(
   "/participations/:idPartie/:idPlayer",
   verifyToken,
   ParticipationControllers.addByPartiId
+)
+router.delete(
+  "/participations/:idPartie/:idPlayer",
+  verifyToken,
+  ParticipationControllers.deleteParticipationsByPartyIdAndPlayerId
 )
 router.delete(
   "/participations/:id",

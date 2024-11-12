@@ -32,6 +32,8 @@ $container-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // Box shadow par défaut 
   box-shadow: $container-box-shadow;
   color: var(--text-color);
   border: none;
+  margin-top: 200px;
+  margin-bottom: 20px;
 }
 
 // Spécifique au mode sombre

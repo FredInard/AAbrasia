@@ -1,0 +1,21 @@
+.participantsListBox{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 20px;
+
+    .participantsAffichage{
+        display: flex;
+        align-items: center;
+        gap:5px;
+        flex-direction: column;
+
+        .ProfilPhoto{
+            border-radius: 50%;
+            width: 50px;
+            height: auto;
+        }
+    }
+
+}
+

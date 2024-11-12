@@ -31,7 +31,7 @@ const router = require("./router")
 app.use(router)
 
 // Servir le dossier `backend/public` pour les ressources publiques
-app.use(express.static(path.join(__dirname, "../public")))
+app.use("/public", express.static(path.join(__dirname, "../public")))
 
 // Servir l'application REACT
 const reactIndexFile = path.join(

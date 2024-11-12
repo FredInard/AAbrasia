@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
+import iconPizza from "../../assets/pics/iconPizza.svg"
+import "./MealList.scss"
 
-const MealList = ({ partyId }) => {
+const MealList = ({ partyId, isUpdated }) => {
   const [meals, setMeals] = useState([])
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -20,25 +22,29 @@ const MealList = ({ partyId }) => {
       .finally(() => {
         setLoading(false) // Arrête le chargement après la réponse de l'API
       })
-  }, [partyId])
+  }, [partyId, isUpdated])
 
   if (loading) return <p>Chargement des repas...</p>
   if (error) return <p>{error}</p>
 
   return (
-    <div>
-      <h3>Repas</h3>
+    <div className="MealListBox">
+      {/* <h4>Repas</h4> */}
       {meals.length > 0 ? (
         meals.map((meal) => (
-          <div key={meal.id}>
-            <p>{meal.pseudo}</p>
-            <p>
-              {meal.repas_description} - Quantité : {meal.repas_quantite}
-            </p>
+          <div key={meal.id} className="MealListInfo">
+            <img
+              className="iconPizza"
+              src={iconPizza}
+              alt="icone d'une part de pizza"
+            />
+            <div>
+              {meal.pseudo} Apporte {meal.contenu}
+            </div>
           </div>
         ))
       ) : (
-        <p>Aucun repas pour cette partie.</p>
+        <p></p>
       )}
     </div>
   )
