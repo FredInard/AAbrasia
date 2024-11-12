@@ -5,6 +5,7 @@ import ParticipantsList from "../ParticipantsList/ParticipantsList"
 import MealList from "../MealList/MealList"
 import CarpoolList from "../CarpoolList/CarpoolList"
 import CarpoolModal from "../Modal/ModalCarPool/CarpoolModal"
+import MealModal from "../Modal/ModalMealList/MealModal"
 
 import "./GameDetails.scss"
 import iconTime from "../../assets/pics/iconTime.svg"
@@ -21,6 +22,7 @@ const GameDetails = ({ partyId, onClose }) => {
   const [user, setUser] = useState(null)
   const [isUpdated, setIsUpdated] = useState(false)
   const [isCarpoolModalOpen, setIsCarpoolModalOpen] = useState(false)
+  const [isMealModalOpen, setIsMealModalOpen] = useState(false)
 
   // Récupérer l'utilisateur connecté une fois au chargement
   useEffect(() => {
@@ -153,6 +155,57 @@ const GameDetails = ({ partyId, onClose }) => {
       })
   }
 
+  // Fonction pour gérer l'ouverture de la modal
+  const handleOpenMealModal = () => {
+    setIsMealModalOpen(true)
+  }
+
+  // Fonction pour gérer la fermeture de la modal
+  const handleCloseMealModal = () => {
+    setIsMealModalOpen(false)
+  }
+
+  // Fonction pour soumettre les données du repas
+  const handleMealSubmit = (mealData) => {
+    console.info(
+      "Tentative de soumission du repas avec les données :",
+      mealData
+    )
+
+    const authToken = localStorage.getItem("authToken")
+    if (!authToken) {
+      console.error("Jeton d'authentification manquant !")
+      setError("Vous devez être connecté pour proposer un repas.")
+      return
+    }
+
+    console.info("Jeton d'authentification récupéré :", authToken)
+
+    axios
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/repas`,
+        {
+          utilisateur_id: user.id,
+          partie_id: partyId,
+          contenu: mealData.contenu,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then(() => {
+        console.info("Repas ajouté avec succès !")
+        setIsUpdated(!isUpdated)
+        console.info("État isUpdated basculé :", isUpdated)
+      })
+      .catch((err) => {
+        console.error("Erreur lors de l'ajout du repas :", err)
+        setError("Erreur lors de l'ajout du repas.")
+      })
+  }
+
   if (loading) return <p>Chargement des détails de la partie...</p>
   if (error) return <p>{error}</p>
 
@@ -235,7 +288,7 @@ const GameDetails = ({ partyId, onClose }) => {
           <>
             <h3>Autres infos :</h3>
             <CarpoolList partyId={partyId} />
-            <MealList partyId={partyId} />
+            <MealList partyId={partyId} isUpdated={isUpdated} />
 
             {isJoined && (
               <>
@@ -263,7 +316,16 @@ const GameDetails = ({ partyId, onClose }) => {
                     className="icon"
                     src={iconPizza}
                     alt="icone d'une part de pizza"
+                    onClick={handleOpenMealModal}
                   />
+                  {isMealModalOpen && (
+                    <MealModal
+                      partyId={partyId}
+                      user={user}
+                      onClose={handleCloseMealModal}
+                      onSubmit={handleMealSubmit}
+                    />
+                  )}
                 </div>
               </>
             )}

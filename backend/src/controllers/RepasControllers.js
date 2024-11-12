@@ -56,7 +56,7 @@ class RepasControllers {
     const repas = req.body
 
     // TODO: Validations (length, format...)
-
+    console.info("Données reçues pour l'ajout de repas :", req.body)
     models.repas
       .insert(repas)
       .then(([result]) => {
