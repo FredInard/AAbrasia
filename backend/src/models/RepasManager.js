@@ -42,6 +42,13 @@ class RepasManager extends AbstractManager {
     return this.database.query(`SELECT * FROM ${this.table} WHERE id = ?`, [id])
   }
 
+  deleteByPartyAndUserId(partyId, userId) {
+    return this.database.query(
+      `DELETE FROM repas WHERE partie_id = ? AND utilisateur_id = ?`,
+      [partyId, userId]
+    )
+  }
+
   // Supprimer un repas par ID
   delete(id) {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id])

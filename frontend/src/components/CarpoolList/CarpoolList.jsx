@@ -4,9 +4,10 @@ import axios from "axios"
 import "./CarpoolList.scss"
 import IconCar from "../../assets/pics/iconCar.svg"
 
-const CarpoolList = ({ partyId, isUpdated }) => {
+const CarpoolList = ({ partyId, userId, isUpdated }) => {
   const [carpools, setCarpools] = useState([])
   const [error, setError] = useState(null) // Ajout d'un état pour l'erreur
+  console.info("User ID dans CarpoolList:", userId)
 
   useEffect(() => {
     axios
@@ -27,6 +28,22 @@ const CarpoolList = ({ partyId, isUpdated }) => {
 
   if (error) return <p>{error}</p>
 
+  // Fonction pour supprimer un covoiturage
+  const handleDeleteCarpool = (carpoolId) => {
+    const authToken = localStorage.getItem("authToken")
+    if (!authToken) return
+
+    axios
+      .delete(`${import.meta.env.VITE_BACKEND_URL}/covoiturages/${carpoolId}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then(() => {
+        console.info("Covoiturage supprimé avec succès !")
+        setCarpools(carpools.filter((carpool) => carpool.id !== carpoolId))
+      })
+      .catch((err) => console.error("Erreur lors de la suppression :", err))
+  }
+
   return (
     <div>
       {/* <h4>Covoiturages</h4> */}
@@ -41,11 +58,19 @@ const CarpoolList = ({ partyId, isUpdated }) => {
                   alt="icone d'une petite voiture rouge"
                 />
                 {carpool.pseudo} propose un covoiturage de{" "}
-                {carpool.ville_depart} à {carpool.ville_arrivee}, départ à{" "}
+                {carpool.ville_depart} à {carpool.ville_arrivee} - départ{" "}
                 {new Date(carpool.heure_depart).toLocaleTimeString("fr-FR", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
+                {carpool.utilisateur_id === userId && (
+                  <button
+                    onClick={() => handleDeleteCarpool(carpool.id)}
+                    className="delete-btn"
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
             </p>
           </div>

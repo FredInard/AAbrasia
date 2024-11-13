@@ -57,6 +57,13 @@ class CovoiturageManager extends AbstractManager {
     )
   }
 
+  deleteByPartyAndUserId(partyId, userId) {
+    return this.database.query(
+      `DELETE FROM covoiturage WHERE partie_id = ? AND utilisateur_id = ?`,
+      [partyId, userId]
+    )
+  }
+
   // Supprimer un covoiturage par ID
   delete(id) {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id])

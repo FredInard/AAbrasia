@@ -10,7 +10,7 @@ import PlayerGames from "../components/PlayerGames/PlayerGames"
 export default function Profil() {
   const [showListeParties, setShowListeParties] = useState(true)
   const navigate = useNavigate()
-  const { authData, logout } = useContext(AuthContext)
+  const { authData } = useContext(AuthContext)
 
   const utilisateur = authData.user
 
@@ -32,11 +32,11 @@ export default function Profil() {
     }
   }, [authData.isAuthenticated, authData.isLoading, utilisateur, navigate])
 
-  const handleLogout = () => {
-    console.info("User logging out...")
-    logout()
-    navigate("/")
-  }
+  // const handleLogout = () => {
+  //   console.info("User logging out...")
+  //   logout()
+  //   navigate("/")
+  // }
 
   // Affichage d'un indicateur de chargement si l'authentification est en cours
   if (authData.isLoading) {
@@ -60,9 +60,9 @@ export default function Profil() {
           <p>Modifier mon profil</p>
         </div>
 
-        <button className="logoutButton" onClick={handleLogout}>
+        {/* <button className="logoutButton" onClick={handleLogout}>
           Se déconnecter
-        </button>
+        </button> */}
 
         <div className="globalBoxProfil">
           {showListeParties ? (

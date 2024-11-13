@@ -104,8 +104,15 @@ const GameDetails = ({ partyId, onClose }) => {
         }
       )
       setIsJoined(false) // Mettre à jour l'état pour refléter le départ de l'utilisateur
-      setIsUpdated(!isUpdated) // Basculer isUpdated pour rafraîchir ParticipantsList
+      setIsUpdated(!isUpdated) // Rafraîchit les listes liées aux repas et covoiturages
+      console.info(
+        "L'utilisateur a quitté la partie et toutes ses données ont été supprimées."
+      )
     } catch (err) {
+      console.error(
+        "Erreur lors de la suppression des données de l'utilisateur :",
+        err
+      )
       setError("Impossible de quitter la partie. Veuillez réessayer.")
     }
   }
@@ -212,6 +219,8 @@ const GameDetails = ({ partyId, onClose }) => {
   const canJoin = user && user.id !== gameDetails.id_maitre_du_jeu && !isJoined
   const canLeave = user && user.id !== gameDetails.id_maitre_du_jeu && isJoined
 
+  console.info("User ID envoyé à CarpoolList:", user?.id)
+
   return (
     <div
       className="modal-overlay"
@@ -287,8 +296,16 @@ const GameDetails = ({ partyId, onClose }) => {
         {user && (
           <>
             <h3>Autres infos :</h3>
-            <CarpoolList partyId={partyId} />
-            <MealList partyId={partyId} isUpdated={isUpdated} />
+            <CarpoolList
+              partyId={partyId}
+              isUpdated={isUpdated}
+              userId={user?.id}
+            />
+            <MealList
+              partyId={partyId}
+              isUpdated={isUpdated}
+              userId={user?.id}
+            />
 
             {isJoined && (
               <>

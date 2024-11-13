@@ -12,7 +12,20 @@
             height: auto;
             width: 40px;
             
+
+            
         }
+
+        .delete-cross {
+            color: red;
+            cursor: pointer;
+            margin-left: 8px;
+          }
+          
+          .delete-cross:hover {
+            transform: scale(1.2);
+          }
+          
     }
 
 }

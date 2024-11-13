@@ -231,13 +231,24 @@ export default function ModificationProfil() {
   }
 
   return (
-    <div className="modificationProfil">
-      <h2>Modifier le profil</h2>
-      <img
-        src={`${import.meta.env.VITE_BACKEND_URL}/${utilisateur.photo_profil}`}
-        alt="Photo de profil"
-        className="profilPicture"
-      />
+    <>
+      <div className="header">
+        {imageUrl || existingPhotoUrl ? (
+          <img
+            src={imageUrl || existingPhotoUrl}
+            alt="Photo de profil"
+            className="profilPicture"
+          />
+        ) : (
+          <div className="profilPicture" />
+        )}
+        <div className="info-header">
+          <h2>
+            {formData.nom} {formData.prenom}
+          </h2>
+          <p>Rôle : {formData.role}</p>
+        </div>
+      </div>
 
       <form onSubmit={handleSubmit} className="formProfil">
         {/* Champ Nom */}
@@ -339,6 +350,7 @@ export default function ModificationProfil() {
             onChange={handleChange}
           />
         </div>
+
         {/* Champ Bio */}
         <div className="form-group">
           <label htmlFor="bio">Bio</label>
@@ -353,13 +365,13 @@ export default function ModificationProfil() {
         {/* Champ Photo de Profil */}
         <div className="form-group">
           <label htmlFor="photo_profil">Photo de profil</label>
-          {(imageUrl || existingPhotoUrl) && (
+          {/* {(imageUrl || existingPhotoUrl) && (
             <img
               src={imageUrl || existingPhotoUrl}
               alt="Photo de profil"
               className="profilPicture"
             />
-          )}
+          )} */}
           <input
             type="file"
             id="photo_profil"
@@ -390,6 +402,6 @@ export default function ModificationProfil() {
       )}
 
       <ToastContainer />
-    </div>
+    </>
   )
 }

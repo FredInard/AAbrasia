@@ -1,23 +1,49 @@
 @import "../../styles/variables.scss"; // Assure-toi d'importer les variables SCSS
 
-.modificationProfil {
-  max-width: 600px;
-  margin: 0 auto;
+.globalBoxProfil {
+  max-width: 400px;
+  margin: 20px auto;
   padding: 20px;
-  background-color: var(--container-background-color);
-  border-radius: 8px;
-  box-shadow: var(--box-shadow); // Utilisation du box-shadow selon le thème
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 
-  h2 {
-    text-align: center;
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 20px;
-    font-family: $font-primary;
-    color: var(--text-color);
+
+    .profilPicture {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ccc;
+    }
+
+    .info-header {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      h2 {
+        font-size: 1.5rem;
+        color: #333;
+        margin: 0;
+      }
+      p {
+        color: #666;
+        font-size: 0.9rem;
+      }
+    }
   }
 
   .formProfil {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
 
     .form-group {
@@ -28,7 +54,7 @@
       label {
         font-weight: bold;
         margin-bottom: 5px;
-        color: var(--text-color);
+        color: #333;
       }
 
       input,
@@ -36,37 +62,33 @@
         padding: 8px;
         font-size: 1rem;
         border-radius: 4px;
-        border: 1px solid var(--border-color);
-        background-color: var(--background-color);
-        color: var(--text-color);
-        box-shadow: var(
-          --box-shadow
-        ); // Ajout d'une ombre sur les champs d'entrée
+        border: 1px solid #ddd;
+        background-color: #fff;
+        color: #333;
 
         &:focus {
           outline: none;
-          border-color: $accent-color; // Couleur d'accentuation pour le focus
+          border-color: #007bff;
         }
       }
-
       textarea {
         resize: vertical;
       }
     }
 
     .btn-update {
-      padding: $button-padding;
-      background-color: $button-background;
-      color: $button-text-color;
+      grid-column: span 2;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
       border: none;
-      border-radius: $button-border-radius;
+      border-radius: 5px;
       cursor: pointer;
       font-size: 1rem;
-      font-family: $font-primary;
       transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: $button-hover-background; // Couleur au survol
+        background-color: #0056b3;
       }
     }
   }

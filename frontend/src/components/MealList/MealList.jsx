@@ -3,7 +3,7 @@ import axios from "axios"
 import iconPizza from "../../assets/pics/iconPizza.svg"
 import "./MealList.scss"
 
-const MealList = ({ partyId, isUpdated }) => {
+const MealList = ({ partyId, isUpdated, userId }) => {
   const [meals, setMeals] = useState([])
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -24,6 +24,32 @@ const MealList = ({ partyId, isUpdated }) => {
       })
   }, [partyId, isUpdated])
 
+  // Fonction pour supprimer un repas
+  const handleDeleteMeal = (mealId) => {
+    const authToken = localStorage.getItem("authToken")
+
+    if (!authToken) {
+      console.error("Jeton d'authentification manquant !")
+      setError("Vous devez être connecté pour supprimer un repas.")
+      return
+    }
+
+    axios
+      .delete(`${import.meta.env.VITE_BACKEND_URL}/repas/${mealId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then(() => {
+        console.info("Repas supprimé avec succès !")
+        setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== mealId))
+      })
+      .catch((err) => {
+        console.error("Erreur lors de la suppression du repas :", err)
+        setError("Erreur lors de la suppression du repas.")
+      })
+  }
+
   if (loading) return <p>Chargement des repas...</p>
   if (error) return <p>{error}</p>
 
@@ -41,6 +67,14 @@ const MealList = ({ partyId, isUpdated }) => {
             <div>
               {meal.pseudo} Apporte {meal.contenu}
             </div>
+            {userId === meal.utilisateur_id && (
+              <span
+                className="delete-cross"
+                onClick={() => handleDeleteMeal(meal.id)}
+              >
+                ✕
+              </span>
+            )}
           </div>
         ))
       ) : (

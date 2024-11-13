@@ -168,15 +168,18 @@ class ParticipationControllers {
       })
   }
 
-  // DELETE /participations/:idPartie/:idPlayer
+  /// DELETE /participations/:idPartie/:idPlayer
   static deleteParticipationsByPartyIdAndPlayerId(req, res) {
     const partyId = parseInt(req.params.idPartie, 10)
     const userId = parseInt(req.params.idPlayer, 10)
 
-    console.info("Suppression de la participation pour l'utilisateur :", {
-      partyId,
-      userId,
-    })
+    console.info(
+      "Suppression de la participation, covoiturages et repas pour l'utilisateur :",
+      {
+        partyId,
+        userId,
+      }
+    )
 
     if (!partyId || !userId) {
       return res
@@ -184,10 +187,14 @@ class ParticipationControllers {
         .json({ error: "L'ID de la partie et de l'utilisateur sont requis." })
     }
 
-    models.participation
-      .deleteByPartyAndUserId(partyId, userId)
-      .then(([result]) => {
-        if (result.affectedRows === 0) {
+    // Suppression des covoiturages, repas, et participation
+    Promise.all([
+      models.covoiturage.deleteByPartyAndUserId(partyId, userId), // Suppression des covoiturages
+      models.repas.deleteByPartyAndUserId(partyId, userId), // Suppression des repas
+      models.participation.deleteByPartyAndUserId(partyId, userId), // Suppression de la participation
+    ])
+      .then(([covoiturageResult, repasResult, participationResult]) => {
+        if (participationResult.affectedRows === 0) {
           console.info(
             "Aucune participation trouvée pour l'utilisateur dans la partie :",
             partyId
@@ -195,19 +202,19 @@ class ParticipationControllers {
           return res.status(404).json({ message: "Participation non trouvée." })
         } else {
           console.info(
-            "Participation supprimée avec succès pour l'utilisateur dans la partie :",
+            "Participation, covoiturages et repas supprimés pour l'utilisateur dans la partie :",
             partyId
           )
-          return res.status(204).send() // Pas de contenu pour un succès de suppression
+          return res.status(204).send() // Succès de suppression
         }
       })
       .catch((err) => {
         console.error(
-          "Erreur lors de la suppression de la participation :",
+          "Erreur lors de la suppression des données de l'utilisateur dans la partie :",
           err
         )
         res.status(500).json({
-          error: "Erreur serveur lors de la suppression de la participation.",
+          error: "Erreur serveur lors de la suppression des données.",
         })
       })
   }
