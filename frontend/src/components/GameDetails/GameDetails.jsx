@@ -7,6 +7,7 @@ import CarpoolList from "../CarpoolList/CarpoolList"
 import CarpoolModal from "../Modal/ModalCarPool/CarpoolModal"
 import MealModal from "../Modal/ModalMealList/MealModal"
 import UserProfileModal from "../UserProfileModal/UserProfileModal"
+import GameEditModal from "../Modal/GameEditModal/GameEditModal" // Import du nouveau composant
 
 import "./GameDetails.scss"
 import iconTime from "../../assets/pics/iconTime.svg"
@@ -25,6 +26,7 @@ const GameDetails = ({ partyId, game, onClose }) => {
   const [isCarpoolModalOpen, setIsCarpoolModalOpen] = useState(false)
   const [isMealModalOpen, setIsMealModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false) // État pour la modale d'édition
 
   // Récupérer l'utilisateur connecté une fois au chargement
   useEffect(() => {
@@ -65,12 +67,16 @@ const GameDetails = ({ partyId, game, onClose }) => {
     }
 
     fetchGameDetails()
-  }, [partyId, user?.id])
+  }, [partyId, user?.id, isUpdated]) // Ajouter isUpdated pour rafraîchir les données après modification
+
+  // Calculer si la date de la partie est passée
+  const isPast = gameDetails && new Date(gameDetails.date) < new Date()
+
+  // Vérifier si l'utilisateur est le créateur de la partie
+  const isCreator = user && user.id === gameDetails?.id_maitre_du_jeu
 
   const handleJoinParty = async () => {
-    if (!user) {
-      return
-    }
+    if (!user) return
 
     try {
       await axios.post(
@@ -105,11 +111,8 @@ const GameDetails = ({ partyId, game, onClose }) => {
           },
         }
       )
-      setIsJoined(false) // Mettre à jour l'état pour refléter le départ de l'utilisateur
+      setIsJoined(false)
       setIsUpdated(!isUpdated) // Rafraîchit les listes liées aux repas et covoiturages
-      console.info(
-        "L'utilisateur a quitté la partie et toutes ses données ont été supprimées."
-      )
     } catch (err) {
       console.error(
         "Erreur lors de la suppression des données de l'utilisateur :",
@@ -149,14 +152,12 @@ const GameDetails = ({ partyId, game, onClose }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${authToken}`, // Préfixe "Bearer"
+            Authorization: `Bearer ${authToken}`,
           },
         }
       )
       .then(() => {
-        console.info("Covoiturage ajouté avec succès !")
         setIsUpdated(!isUpdated)
-        console.info("isUpdated", isUpdated) // Basculer isUpdated pour rafraîchir CarpoolList
       })
       .catch((err) => {
         console.error("Erreur lors de l'ajout du covoiturage :", err)
@@ -164,31 +165,21 @@ const GameDetails = ({ partyId, game, onClose }) => {
       })
   }
 
-  // Fonction pour gérer l'ouverture de la modal
   const handleOpenMealModal = () => {
     setIsMealModalOpen(true)
   }
 
-  // Fonction pour gérer la fermeture de la modal
   const handleCloseMealModal = () => {
     setIsMealModalOpen(false)
   }
 
-  // Fonction pour soumettre les données du repas
   const handleMealSubmit = (mealData) => {
-    console.info(
-      "Tentative de soumission du repas avec les données :",
-      mealData
-    )
-
     const authToken = localStorage.getItem("authToken")
     if (!authToken) {
       console.error("Jeton d'authentification manquant !")
       setError("Vous devez être connecté pour proposer un repas.")
       return
     }
-
-    console.info("Jeton d'authentification récupéré :", authToken)
 
     axios
       .post(
@@ -205,9 +196,7 @@ const GameDetails = ({ partyId, game, onClose }) => {
         }
       )
       .then(() => {
-        console.info("Repas ajouté avec succès !")
         setIsUpdated(!isUpdated)
-        console.info("État isUpdated basculé :", isUpdated)
       })
       .catch((err) => {
         console.error("Erreur lors de l'ajout du repas :", err)
@@ -216,10 +205,9 @@ const GameDetails = ({ partyId, game, onClose }) => {
   }
 
   // Ouvrir la fiche descriptive d'un utilisateur
-  const handleUserClick = (userData) => {
+  const handleUserClick = (userId) => {
     if (user) {
-      // Vérifier que l'utilisateur est connecté
-      setSelectedUser(userData) // Stocker les informations de l'utilisateur sélectionné
+      setSelectedUser(userId)
     } else {
       console.info("Veuillez vous connecter pour voir le profil.")
     }
@@ -228,13 +216,52 @@ const GameDetails = ({ partyId, game, onClose }) => {
   // Fermer la fiche descriptive
   const closeModal = () => setSelectedUser(null)
 
+  // Ouvrir la modale d'édition
+  const handleOpenEditModal = () => {
+    setIsEditModalOpen(true)
+  }
+
+  // Fermer la modale d'édition
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false)
+  }
+
+  // Gérer la soumission du formulaire de modification
+  const handleEditSubmit = (updatedGameData) => {
+    const authToken = localStorage.getItem("authToken")
+    if (!authToken) {
+      setError("Vous devez être connecté pour modifier la partie.")
+      return
+    }
+
+    axios
+      .put(
+        `${import.meta.env.VITE_BACKEND_URL}/parties/${partyId}`,
+        updatedGameData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then(() => {
+        setIsUpdated(!isUpdated) // Rafraîchir les détails de la partie
+        setIsEditModalOpen(false) // Fermer la modale d'édition
+      })
+      .catch((err) => {
+        console.error("Erreur lors de la modification de la partie :", err)
+        setError("Erreur lors de la modification de la partie.")
+      })
+  }
+
   if (loading) return <p>Chargement des détails de la partie...</p>
   if (error) return <p>{error}</p>
 
-  const canJoin = user && user.id !== gameDetails.id_maitre_du_jeu && !isJoined
-  const canLeave = user && user.id !== gameDetails.id_maitre_du_jeu && isJoined
-
-  console.info("User ID envoyé à CarpoolList:", user?.id)
+  // Mise à jour des conditions pour les boutons
+  const canJoin =
+    user && user.id !== gameDetails.id_maitre_du_jeu && !isJoined && !isPast
+  const canLeave =
+    user && user.id !== gameDetails.id_maitre_du_jeu && isJoined && !isPast
 
   return (
     <div
@@ -245,13 +272,26 @@ const GameDetails = ({ partyId, game, onClose }) => {
       aria-modal="true"
     >
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button
-          className="close-btn"
-          onClick={onClose}
-          aria-label="Fermer la modal"
-        >
-          ✕
-        </button>
+        <div className="modal-header">
+          <button
+            className="close-btn"
+            onClick={onClose}
+            aria-label="Fermer la modal"
+          >
+            ✕
+          </button>
+
+          {/* Afficher le bouton Modifier si l'utilisateur est le créateur et que la date n'est pas passée */}
+          {isCreator && !isPast && (
+            <button
+              className="edit-btn"
+              onClick={handleOpenEditModal}
+              aria-label="Modifier la partie"
+            >
+              ✎
+            </button>
+          )}
+        </div>
 
         <h1 id="game-title" className="game-title">
           {gameDetails.titre}
@@ -279,7 +319,7 @@ const GameDetails = ({ partyId, game, onClose }) => {
           </div>
         </div>
         {selectedUser && (
-          <UserProfileModal user={selectedUser} onClose={closeModal} />
+          <UserProfileModal userId={selectedUser} onClose={closeModal} />
         )}
 
         <div className="game-details">
@@ -304,8 +344,8 @@ const GameDetails = ({ partyId, game, onClose }) => {
             {gameDetails.lieu || "Lieu non précisé"}
           </div>
           <div className="game-info-item">
-            <img src={iconTeam} alt="Icône de des joueur" className="icon2" /> :
-            x {gameDetails.nb_max_joueurs || "Non précisé"}
+            <img src={iconTeam} alt="Icône des joueurs" className="icon2" /> : x{" "}
+            {gameDetails.nb_max_joueurs || "Non précisé"}
           </div>
         </div>
 
@@ -326,7 +366,8 @@ const GameDetails = ({ partyId, game, onClose }) => {
               userId={user?.id}
             />
 
-            {isJoined && (
+            {/* Afficher les icônes uniquement si la date n'est pas passée */}
+            {isJoined && !isPast && (
               <>
                 <p>
                   Tu souhaites proposer un covoiturage ou informer que tu nous
@@ -337,7 +378,7 @@ const GameDetails = ({ partyId, game, onClose }) => {
                   <img
                     className="icon"
                     src={IconCar}
-                    alt="icone d'une petite voiture rouge"
+                    alt="Icône d'une petite voiture rouge"
                     onClick={handleOpenCarpoolModal}
                   />
                   {isCarpoolModalOpen && (
@@ -351,7 +392,7 @@ const GameDetails = ({ partyId, game, onClose }) => {
                   <img
                     className="icon"
                     src={iconPizza}
-                    alt="icone d'une part de pizza"
+                    alt="Icône d'une part de pizza"
                     onClick={handleOpenMealModal}
                   />
                   {isMealModalOpen && (
@@ -368,6 +409,7 @@ const GameDetails = ({ partyId, game, onClose }) => {
           </>
         )}
 
+        {/* Boutons Rejoindre/Quitter visibles uniquement si la date n'est pas passée */}
         {canJoin && (
           <button onClick={handleJoinParty} className="join-btn">
             Rejoindre l'aventure
@@ -378,6 +420,23 @@ const GameDetails = ({ partyId, game, onClose }) => {
           <button onClick={handleLeaveParty} className="leave-btn">
             Quitter l'aventure
           </button>
+        )}
+
+        {/* Afficher un message si la partie est passée */}
+        {isPast && (
+          <p className="past-game-message">
+            Cette partie est terminée. Vous ne pouvez plus vous y inscrire ou la
+            modifier.
+          </p>
+        )}
+
+        {/* Modale d'édition */}
+        {isEditModalOpen && (
+          <GameEditModal
+            gameDetails={gameDetails}
+            onClose={handleCloseEditModal}
+            onSubmit={handleEditSubmit}
+          />
         )}
       </div>
     </div>

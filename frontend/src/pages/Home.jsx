@@ -3,7 +3,7 @@ import "./Home.scss"
 
 import Calendar from "../components/schedule/Calendar"
 import NavBar from "../components/NavBar/NavBar"
-import Image1 from "../assets/pics/Jdrenfants.webp"
+import Image1 from "../assets/pics/headerPicture (2).svg"
 import Carrousel from "../components/Carrousel/Carrousel"
 import Footer from "../components/Footer/Footer"
 import iconeDiscorde from "../assets/pics/discord.svg"
