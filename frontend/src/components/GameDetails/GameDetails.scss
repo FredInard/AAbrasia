@@ -60,12 +60,12 @@
   flex-direction: column;
   margin-top: 20px;
 
-  .game-master-photo {
+  .userPhoto {
     width: 70px;
     height: 70px;
     border-radius: 50%;
     object-fit: cover;
-    
+    cursor: pointer;
   }
 
   .game-master-pseudo {
@@ -96,10 +96,10 @@
     display: flex;
     align-items: center;
     font-size: 16px;
-    
-  .game-info-item2{
-    display: flex;
-    align-items: center;
+
+    .game-info-item2 {
+      display: flex;
+      align-items: center;
       svg {
         margin-right: 5px;
       }
@@ -133,12 +133,11 @@
   }
 }
 
-.GmEtDescription{
+.GmEtDescription {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   gap: 25px;
-  
 }
 
 .icon {
@@ -153,11 +152,15 @@
   transform: scale(1.1); /* Agrandit de 10% au survol */
 }
 
-.buttonAutresInfos{
+.icon2 {
+  width: 50px;
+  height: auto;
+}
+
+.buttonAutresInfos {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   gap: 30px;
-  
 }
 @media (max-width: 600px) {
   .modal-content {

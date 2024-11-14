@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-
+import UserProfileModal from "../UserProfileModal/UserProfileModal" // Import de la modale de profil
 import "./ParticipantsList.scss"
 
 const ParticipantsList = ({ partyId, isUpdated }) => {
   const [participants, setParticipants] = useState([])
+  const [selectedParticipant, setSelectedParticipant] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
-  console.info("participants de ParticipantsList", participants)
+
+  console.info("selectedParticipant de ParticipantsList", selectedParticipant)
+
   useEffect(() => {
     setLoading(true) // Active le chargement avant la requête
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/participations/${partyId}`)
       .then((res) => {
         console.info("Données reçues de l'API :", res.data)
-        // Vérifie si res.data est un tableau et le met à jour
         setParticipants(Array.isArray(res.data) ? res.data : [])
         setError(null) // Réinitialise l'erreur si les données sont bien reçues
       })
@@ -26,6 +28,16 @@ const ParticipantsList = ({ partyId, isUpdated }) => {
         setLoading(false) // Arrête le chargement après la réponse de l'API
       })
   }, [partyId, isUpdated])
+
+  // Fonction pour ouvrir la modale avec le participant sélectionné
+  const handleProfileClick = (participant) => {
+    setSelectedParticipant(participant.id)
+  }
+
+  // Fonction pour fermer la modale
+  const closeModal = () => {
+    setSelectedParticipant(null)
+  }
 
   if (loading) return <p>Chargement des participants...</p>
   if (error) return <p>{error}</p>
@@ -42,6 +54,7 @@ const ParticipantsList = ({ partyId, isUpdated }) => {
                 }/${participant.photo_profil.replace(/\\/g, "/")}`}
                 alt="Photo de profil participant"
                 className="ProfilPhoto"
+                onClick={() => handleProfileClick(participant)} // Gestionnaire de clic
               />
               {participant.pseudo}
             </div>
@@ -50,6 +63,11 @@ const ParticipantsList = ({ partyId, isUpdated }) => {
           <p>Aucun participant disponible pour cette partie.</p>
         )}
       </div>
+
+      {/* Afficher la fiche descriptive du participant dans une modale si sélectionné */}
+      {selectedParticipant && (
+        <UserProfileModal user={selectedParticipant} onClose={closeModal} />
+      )}
     </div>
   )
 }

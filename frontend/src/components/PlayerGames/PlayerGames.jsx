@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import jwtDecode from "jwt-decode" // Import pour décoder le token
+import GameDetails from "../GameDetails/GameDetails" // Import de GameDetails
 import "./PlayerGames.scss"
 
 const PlayerGames = () => {
@@ -8,6 +9,7 @@ const PlayerGames = () => {
   const [filteredGames, setFilteredGames] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [selectedPartyId, setSelectedPartyId] = useState(null) // État pour le partyId sélectionné
 
   // États pour les filtres
   const [isMaster, setIsMaster] = useState(false)
@@ -73,79 +75,94 @@ const PlayerGames = () => {
     setFilteredGames(filtered)
   }
 
+  // Gestionnaire de clic pour ouvrir GameDetails
+  const handleGameClick = (partyId) => {
+    setSelectedPartyId(partyId) // Définit l'ID de la partie sélectionnée
+  }
+
+  // Gestionnaire pour fermer GameDetails et revenir à la liste
+  const closeGameDetails = () => {
+    setSelectedPartyId(null)
+  }
+
   if (isLoading) return <p>Chargement des parties...</p>
   if (error) return <p>{error}</p>
 
   return (
     <div>
-      <h2>Parties de l'utilisateur</h2>
+      {selectedPartyId ? (
+        // Affiche GameDetails si un partyId est sélectionné
+        <GameDetails partyId={selectedPartyId} onClose={closeGameDetails} />
+      ) : (
+        <div>
+          <h2>Parties de l'utilisateur</h2>
 
-      {/* Filtres */}
-      <div className="filters">
-        <label>
-          <input
-            type="checkbox"
-            checked={isMaster}
-            onChange={(e) => setIsMaster(e.target.checked)}
-          />
-          Maître du jeu uniquement
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="dateFilter"
-            checked={showUpcoming}
-            onChange={() => setShowUpcoming(true)}
-          />
-          À venir
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="dateFilter"
-            checked={!showUpcoming}
-            onChange={() => setShowUpcoming(false)}
-          />
-          Passé
-        </label>
-      </div>
+          {/* Filtres */}
+          <div className="filters">
+            <label>
+              <input
+                type="checkbox"
+                checked={isMaster}
+                onChange={(e) => setIsMaster(e.target.checked)}
+              />
+              Maître du jeu uniquement
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="dateFilter"
+                checked={showUpcoming}
+                onChange={() => setShowUpcoming(true)}
+              />
+              À venir
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="dateFilter"
+                checked={!showUpcoming}
+                onChange={() => setShowUpcoming(false)}
+              />
+              Passé
+            </label>
+          </div>
 
-      {/* Liste des parties filtrées */}
-      <div className="game-list">
-        {filteredGames.length > 0 ? (
-          filteredGames.map((game) => {
-            console.info(
-              "game:",
-              game,
-              "game.id_maitre_du_jeu:",
-              game.id_maitre_du_jeu,
-              "playerId:",
-              playerId
-            )
-            return (
-              <div key={game.id} className="game-item">
-                <h3>{game.titre}</h3>
-                <p>{game.description}</p>
-                <p>
-                  <strong>Lieu :</strong> {game.lieu}
-                </p>
-                <p>
-                  <strong>Date :</strong>{" "}
-                  {new Date(game.date).toLocaleDateString()}
-                </p>
-                <p>
-                  <strong>Rôle :</strong>{" "}
-                  {Number(game.id_maitre_du_jeu) === Number(playerId)
-                    ? "Maître du jeu"
-                    : "Participant"}
-                </p>
-              </div>
-            )
-          })
-        ) : (
-          <p>Aucune partie trouvée avec les filtres actuels.</p>
-        )}
-      </div>
+          {/* Liste des parties filtrées */}
+          <div className="game-list">
+            {filteredGames.length > 0 ? (
+              filteredGames.map((game) => (
+                <div
+                  key={game.id}
+                  className="game-item"
+                  onClick={() => handleGameClick(game.id)}
+                >
+                  <h3>{game.titre}</h3>
+                  <img
+                    src={`${import.meta.env.VITE_BACKEND_URL.replace(
+                      /\/$/,
+                      ""
+                    )}/${game.photo_scenario.replace(/\\/g, "/")}`}
+                    alt="illustration de la partie"
+                    className="illustrationPartie"
+                  />
+                  <p>
+                    <strong>Date :</strong>{" "}
+                    {new Date(game.date).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Rôle :</strong>{" "}
+                    {Number(game.id_maitre_du_jeu) === Number(playerId)
+                      ? "Maître du jeu"
+                      : "Participant"}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>Aucune partie trouvée avec les filtres actuels.</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

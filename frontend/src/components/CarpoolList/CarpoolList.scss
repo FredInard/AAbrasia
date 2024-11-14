@@ -12,30 +12,29 @@
   border-radius: 50%;
   margin-right: 10px;
 }
-.carpoolListBox{
+.carpoolListBox {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-start;
-  
-    .iconCar{
-        width: 50px;
-        height: auto;
-        margin-left: 10px;
-        margin-right: 10px;
-      }
 
-      .delete-btn {
-        background: none;
-        border: none;
-        color: red;
-        font-size: 1.2rem;
-        cursor: pointer;
-        margin-left: 10px;
-      }
-      
-      .delete-btn:hover {
-        transform: scale(1.1);
-      }
-      
+  .iconCar {
+    width: 50px;
+    height: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  .delete-btn:hover {
+    transform: scale(1.1);
+  }
 }

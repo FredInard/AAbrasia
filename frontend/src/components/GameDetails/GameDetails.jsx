@@ -6,6 +6,7 @@ import MealList from "../MealList/MealList"
 import CarpoolList from "../CarpoolList/CarpoolList"
 import CarpoolModal from "../Modal/ModalCarPool/CarpoolModal"
 import MealModal from "../Modal/ModalMealList/MealModal"
+import UserProfileModal from "../UserProfileModal/UserProfileModal"
 
 import "./GameDetails.scss"
 import iconTime from "../../assets/pics/iconTime.svg"
@@ -14,7 +15,7 @@ import iconTeam from "../../assets/pics/iconTeam.svg"
 import IconCar from "../../assets/pics/iconCar.svg"
 import iconPizza from "../../assets/pics/iconPizza.svg"
 
-const GameDetails = ({ partyId, onClose }) => {
+const GameDetails = ({ partyId, game, onClose }) => {
   const [gameDetails, setGameDetails] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -23,6 +24,7 @@ const GameDetails = ({ partyId, onClose }) => {
   const [isUpdated, setIsUpdated] = useState(false)
   const [isCarpoolModalOpen, setIsCarpoolModalOpen] = useState(false)
   const [isMealModalOpen, setIsMealModalOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null)
 
   // Récupérer l'utilisateur connecté une fois au chargement
   useEffect(() => {
@@ -213,6 +215,19 @@ const GameDetails = ({ partyId, onClose }) => {
       })
   }
 
+  // Ouvrir la fiche descriptive d'un utilisateur
+  const handleUserClick = (userData) => {
+    if (user) {
+      // Vérifier que l'utilisateur est connecté
+      setSelectedUser(userData) // Stocker les informations de l'utilisateur sélectionné
+    } else {
+      console.info("Veuillez vous connecter pour voir le profil.")
+    }
+  }
+
+  // Fermer la fiche descriptive
+  const closeModal = () => setSelectedUser(null)
+
   if (loading) return <p>Chargement des détails de la partie...</p>
   if (error) return <p>{error}</p>
 
@@ -249,7 +264,8 @@ const GameDetails = ({ partyId, onClose }) => {
                   gameDetails.maitre_du_jeu_photo
                 }`}
                 alt={`Maître du jeu ${gameDetails.maitre_du_jeu_pseudo}`}
-                className="game-master-photo"
+                className="userPhoto"
+                onClick={() => handleUserClick(gameDetails.id_maitre_du_jeu)}
               />
             )}
             <span className="game-master-pseudo">
@@ -262,10 +278,13 @@ const GameDetails = ({ partyId, onClose }) => {
             <p>{gameDetails.description}</p>
           </div>
         </div>
+        {selectedUser && (
+          <UserProfileModal user={selectedUser} onClose={closeModal} />
+        )}
 
         <div className="game-details">
           <div className="game-info-item">
-            <img src={iconTime} alt="Icône de l'heure" className="icon" /> :{" "}
+            <img src={iconTime} alt="Icône de l'heure" className="icon2" /> :{" "}
             {gameDetails.date
               ? new Date(gameDetails.date).toLocaleDateString("fr-FR", {
                   weekday: "long",
@@ -281,12 +300,12 @@ const GameDetails = ({ partyId, onClose }) => {
               : "Non précisé"}
           </div>
           <div className="game-info-item">
-            <img src={iconPlace} alt="Icône de l'heure" className="icon" /> :{" "}
+            <img src={iconPlace} alt="Icône du lieu" className="icon2" /> :{" "}
             {gameDetails.lieu || "Lieu non précisé"}
           </div>
           <div className="game-info-item">
-            <img src={iconTeam} alt="Icône de l'heure" className="icon" /> : x{" "}
-            {gameDetails.nb_max_joueurs || "Non précisé"}
+            <img src={iconTeam} alt="Icône de des joueur" className="icon2" /> :
+            x {gameDetails.nb_max_joueurs || "Non précisé"}
           </div>
         </div>
 

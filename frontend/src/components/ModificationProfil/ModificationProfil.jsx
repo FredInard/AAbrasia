@@ -392,6 +392,12 @@ export default function ModificationProfil() {
       >
         Changer le mot de passe
       </button>
+      <p>
+        Seul ton prénom, ton pseudo, ta bio et ta photo de profils sont rendu
+        accésible (uniquement) aux personnes ayant un compte. Le reste des
+        informations sont réservés aux administrateurs pour des raisons
+        logistique ou pratiques.
+      </p>
 
       {showChangePasswordModal && (
         <ChangePassword

@@ -52,12 +52,12 @@ export default function Profil() {
         </h1>
 
         <div className="boutonSwitch">
-          <p>Tableau de bord des parties</p>
+          <p>Modifier mon profil</p>
           <ToggleSwitch
             isChecked={showListeParties}
             onChange={() => setShowListeParties(!showListeParties)}
           />
-          <p>Modifier mon profil</p>
+          <p>Tableau de bord des parties</p>
         </div>
 
         {/* <button className="logoutButton" onClick={handleLogout}>
@@ -65,12 +65,7 @@ export default function Profil() {
         </button> */}
 
         <div className="globalBoxProfil">
-          {showListeParties ? (
-            <PlayerGames />
-          ) : (
-            // <p>Les parties seront affichées ici.</p>
-            <ModificationProfil />
-          )}
+          {showListeParties ? <PlayerGames /> : <ModificationProfil />}
         </div>
       </div>
     </>

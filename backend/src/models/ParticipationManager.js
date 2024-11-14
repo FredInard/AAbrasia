@@ -44,7 +44,7 @@ class ParticipationManager extends AbstractManager {
     // console.info("Appel de findParticipationsByPartyId avec partyId:", partyId)
     return this.database.query(
       `
-        SELECT utilisateur.pseudo, utilisateur.photo_profil 
+        SELECT utilisateur.id, utilisateur.pseudo, utilisateur.photo_profil 
         FROM participation
         JOIN utilisateur ON participation.utilisateur_id = utilisateur.id
         JOIN partie ON participation.partie_id = partie.id
