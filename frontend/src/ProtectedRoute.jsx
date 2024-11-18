@@ -1,7 +1,7 @@
 // ProtectedRoute.jsx
-import React, { useContext } from "react"
+import React from "react"
 import { Navigate } from "react-router-dom"
-import { AuthContext } from "./AuthContext"
+import jwtDecode from "jwt-decode"
 
 // Fonction pour vérifier si l'utilisateur a le rôle requis ou un rôle supérieur
 const hasRequiredRole = (userRole, requiredRole) => {
@@ -10,17 +10,23 @@ const hasRequiredRole = (userRole, requiredRole) => {
 }
 
 const ProtectedRoute = ({ children, requiredRole }) => {
-  const { authData } = useContext(AuthContext)
+  const token = localStorage.getItem("authToken")
 
-  if (authData.isLoading) {
-    return <p>Chargement...</p>
-  }
-
-  if (!authData.isAuthenticated) {
+  if (!token) {
     return <Navigate to="/login" />
   }
 
-  if (!hasRequiredRole(authData.role, requiredRole)) {
+  let decodedToken
+  try {
+    decodedToken = jwtDecode(token)
+  } catch (err) {
+    console.error("Erreur lors du décodage du token :", err)
+    return <Navigate to="/login" />
+  }
+
+  const userRole = decodedToken.role
+
+  if (!hasRequiredRole(userRole, requiredRole)) {
     return <Navigate to="/" /> // Redirection vers la page d'accueil si accès refusé
   }
 

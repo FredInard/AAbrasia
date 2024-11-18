@@ -1,16 +1,44 @@
-import React, { useContext } from "react"
+import React from "react"
 import { NavLink, useNavigate } from "react-router-dom"
-import { AuthContext } from "../../AuthContext"
+import jwtDecode from "jwt-decode"
 import "./NavBar.scss"
 import logo from "../../assets/pics/logoArpenteurBlanc.svg"
 import ToggleTheme from "../ToggleTheme/ToggleTheme"
 
 const NavBar = () => {
-  const { authData, logout } = useContext(AuthContext)
   const navigate = useNavigate()
 
+  // Récupérer le token depuis localStorage
+  const token = localStorage.getItem("authToken")
+  let authData = {
+    isAuthenticated: false,
+    role: null,
+  }
+
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token)
+      const currentTime = Date.now() / 1000
+
+      if (decodedToken.exp > currentTime) {
+        authData = {
+          isAuthenticated: true,
+          role: decodedToken.role,
+        }
+      } else {
+        // Token expiré
+        localStorage.removeItem("authToken")
+        navigate("/login")
+      }
+    } catch (err) {
+      console.error("Erreur lors du décodage du token :", err)
+      localStorage.removeItem("authToken")
+      navigate("/login")
+    }
+  }
+
   const handleLogout = () => {
-    logout()
+    localStorage.removeItem("authToken")
     navigate("/") // Rediriger vers la page d'accueil après la déconnexion
   }
 
