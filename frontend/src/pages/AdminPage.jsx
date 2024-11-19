@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import jwtDecode from "jwt-decode"
-// import UsersTab from "../components/AdminTabs/UsersTab"
-// import PartiesTab from "../components/AdminTabs/PartiesTab"
+import UsersTab from "../components/AdminTabs/UsersTab"
+import PartiesTab from "../components/AdminTabs/PartiesTab"
 // import ParticipationsTab from "../components/AdminTabs/ParticipationsTab"
 // import CarpoolTab from "../components/AdminTabs/CarpoolTab"
 // import NourritureTab from "../components/AdminTabs/NourritureTab"
@@ -39,9 +39,9 @@ const AdminPage = () => {
   const renderActiveTab = () => {
     switch (activeTab) {
       case "users":
-      //   return <UsersTab />
-      // case "parties":
-      //   return <PartiesTab />
+        return <UsersTab />
+      case "parties":
+        return <PartiesTab />
       // case "participations":
       //   return <ParticipationsTab />
       // case "carpool":

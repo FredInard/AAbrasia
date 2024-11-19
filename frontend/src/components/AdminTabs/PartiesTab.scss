@@ -1,0 +1,66 @@
+// src/components/AdminTabs/PartiesTab.scss
+
+.parties-tab {
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  button {
+    margin-bottom: 20px;
+  }
+
+  .party-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+
+    div {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+    }
+
+    button {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+  }
+
+  .parties-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+
+    button {
+      margin-right: 5px;
+    }
+  }
+}
