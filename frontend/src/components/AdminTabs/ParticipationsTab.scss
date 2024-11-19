@@ -1,6 +1,6 @@
-// src/components/AdminTabs/UsersTab.scss
+// src/components/AdminTabs/ParticipationsTab.scss
 
-.users-tab {
+.participations-tab {
   padding: 20px;
 
   h2 {
@@ -11,7 +11,7 @@
     margin-bottom: 20px;
   }
 
-  .user-form {
+  .participation-form {
     display: flex;
     flex-direction: column;
     max-width: 400px;
@@ -38,7 +38,7 @@
     }
   }
 
-  .users-table {
+  .participations-table {
     width: 100%;
     border-collapse: collapse;
 

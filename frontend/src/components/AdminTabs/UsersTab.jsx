@@ -6,6 +6,7 @@ import "./UsersTab.scss"
 
 const UsersTab = () => {
   const [users, setUsers] = useState([])
+  const [filteredUsers, setFilteredUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedUser, setSelectedUser] = useState(null)
@@ -15,14 +16,31 @@ const UsersTab = () => {
     pseudo: "",
     email: "",
     role: "membre",
+    nom: "",
+    prenom: "",
+    date_de_naissance: "",
+    telephone: "",
+    adresse: "",
+    code_postal: "",
+    ville: "",
+    pays: "",
     // Ajoutez d'autres champs si nécessaire
   })
+
+  // États pour les filtres
+  const [filterPseudo, setFilterPseudo] = useState("")
+  const [filterEmail, setFilterEmail] = useState("")
+  const [filterRole, setFilterRole] = useState("")
 
   const authToken = localStorage.getItem("authToken")
 
   useEffect(() => {
     fetchUsers()
   }, [])
+
+  useEffect(() => {
+    applyFilters()
+  }, [users, filterPseudo, filterEmail, filterRole])
 
   const fetchUsers = () => {
     setLoading(true)
@@ -41,6 +59,28 @@ const UsersTab = () => {
         setError("Erreur lors du chargement des utilisateurs.")
         setLoading(false)
       })
+  }
+
+  const applyFilters = () => {
+    let filtered = users
+
+    if (filterPseudo.trim() !== "") {
+      filtered = filtered.filter((user) =>
+        user.pseudo.toLowerCase().includes(filterPseudo.toLowerCase())
+      )
+    }
+
+    if (filterEmail.trim() !== "") {
+      filtered = filtered.filter((user) =>
+        user.email.toLowerCase().includes(filterEmail.toLowerCase())
+      )
+    }
+
+    if (filterRole !== "") {
+      filtered = filtered.filter((user) => user.role === filterRole)
+    }
+
+    setFilteredUsers(filtered)
   }
 
   const handleDelete = (userId) => {
@@ -69,23 +109,41 @@ const UsersTab = () => {
   const handleEdit = (user) => {
     setSelectedUser(user)
     setFormData({
-      pseudo: user.pseudo,
-      email: user.email,
-      role: user.role,
+      pseudo: user.pseudo || "",
+      email: user.email || "",
+      role: user.role || "membre",
+      nom: user.nom || "",
+      prenom: user.prenom || "",
+      date_de_naissance: user.date_de_naissance
+        ? new Date(user.date_de_naissance).toISOString().slice(0, 10)
+        : "",
+      telephone: user.telephone || "",
+      adresse: user.adresse || "",
+      code_postal: user.code_postal || "",
+      ville: user.ville || "",
+      pays: user.pays || "",
       // Ajoutez d'autres champs si nécessaire
     })
     setIsEditing(true)
   }
 
-  const handleCreate = () => {
-    setFormData({
-      pseudo: "",
-      email: "",
-      role: "membre",
-      // Ajoutez d'autres champs si nécessaire
-    })
-    setIsCreating(true)
-  }
+  // const handleCreate = () => {
+  //   setFormData({
+  //     pseudo: "",
+  //     email: "",
+  //     role: "membre",
+  //     nom: "",
+  //     prenom: "",
+  //     date_de_naissance: "",
+  //     telephone: "",
+  //     adresse: "",
+  //     code_postal: "",
+  //     ville: "",
+  //     pays: "",
+  //     // Ajoutez d'autres champs si nécessaire
+  //   })
+  //   setIsCreating(true)
+  // }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -145,6 +203,14 @@ const UsersTab = () => {
       pseudo: "",
       email: "",
       role: "membre",
+      nom: "",
+      prenom: "",
+      date_de_naissance: "",
+      telephone: "",
+      adresse: "",
+      code_postal: "",
+      ville: "",
+      pays: "",
       // Ajoutez d'autres champs si nécessaire
     })
   }
@@ -160,7 +226,43 @@ const UsersTab = () => {
   return (
     <div className="users-tab">
       <h2>Gestion des utilisateurs</h2>
-      <button onClick={handleCreate}>Créer un nouvel utilisateur</button>
+      {/* <button onClick={handleCreate}>Créer un nouvel utilisateur</button> */}
+      {/* Champs de filtre */}
+      {!isEditing && !isCreating && (
+        <div className="filters">
+          <div>
+            <label htmlFor="filterPseudo">Filtrer par pseudo :</label>
+            <input
+              type="text"
+              id="filterPseudo"
+              value={filterPseudo}
+              onChange={(e) => setFilterPseudo(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="filterEmail">Filtrer par email :</label>
+            <input
+              type="text"
+              id="filterEmail"
+              value={filterEmail}
+              onChange={(e) => setFilterEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="filterRole">Filtrer par rôle :</label>
+            <select
+              id="filterRole"
+              value={filterRole}
+              onChange={(e) => setFilterRole(e.target.value)}
+            >
+              <option value="">Tous</option>
+              <option value="membre">Membre</option>
+              <option value="admin">Administrateur</option>
+              {/* Ajoutez d'autres rôles si nécessaire */}
+            </select>
+          </div>
+        </div>
+      )}
       {isEditing || isCreating ? (
         <form onSubmit={handleSubmit} className="user-form">
           <div>
@@ -198,6 +300,86 @@ const UsersTab = () => {
               {/* Ajoutez d'autres rôles si nécessaire */}
             </select>
           </div>
+          <div>
+            <label htmlFor="nom">Nom :</label>
+            <input
+              type="text"
+              id="nom"
+              name="nom"
+              value={formData.nom}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="prenom">Prénom :</label>
+            <input
+              type="text"
+              id="prenom"
+              name="prenom"
+              value={formData.prenom}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="date_de_naissance">Date de naissance :</label>
+            <input
+              type="date"
+              id="date_de_naissance"
+              name="date_de_naissance"
+              value={formData.date_de_naissance}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="telephone">Téléphone :</label>
+            <input
+              type="tel"
+              id="telephone"
+              name="telephone"
+              value={formData.telephone}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="adresse">Adresse :</label>
+            <input
+              type="text"
+              id="adresse"
+              name="adresse"
+              value={formData.adresse}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="code_postal">Code postal :</label>
+            <input
+              type="text"
+              id="code_postal"
+              name="code_postal"
+              value={formData.code_postal}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="ville">Ville :</label>
+            <input
+              type="text"
+              id="ville"
+              name="ville"
+              value={formData.ville}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="pays">Pays :</label>
+            <input
+              type="text"
+              id="pays"
+              name="pays"
+              value={formData.pays}
+              onChange={handleChange}
+            />
+          </div>
           {/* Ajoutez d'autres champs si nécessaire */}
           <button type="submit">
             {isEditing ? "Mettre à jour l'utilisateur" : "Créer l'utilisateur"}
@@ -218,7 +400,7 @@ const UsersTab = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.pseudo}</td>

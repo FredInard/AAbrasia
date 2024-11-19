@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom"
 import jwtDecode from "jwt-decode"
 import UsersTab from "../components/AdminTabs/UsersTab"
 import PartiesTab from "../components/AdminTabs/PartiesTab"
-// import ParticipationsTab from "../components/AdminTabs/ParticipationsTab"
-// import CarpoolTab from "../components/AdminTabs/CarpoolTab"
-// import NourritureTab from "../components/AdminTabs/NourritureTab"
+import ParticipationsTab from "../components/AdminTabs/ParticipationsTab"
+import CarpoolTab from "../components/AdminTabs/CarpoolTab"
+import NourritureTab from "../components/AdminTabs/NourritureTab"
 import "./AdminPage.scss"
+import NavBar from "../components/NavBar/NavBar"
 
 const AdminPage = () => {
   const [activeTab, setActiveTab] = useState("users")
@@ -42,55 +43,58 @@ const AdminPage = () => {
         return <UsersTab />
       case "parties":
         return <PartiesTab />
-      // case "participations":
-      //   return <ParticipationsTab />
-      // case "carpool":
-      //   return <CarpoolTab />
-      // case "nourriture":
-      //   return <NourritureTab />
-      // default:
-      //   return <UsersTab />
+      case "participations":
+        return <ParticipationsTab />
+      case "carpool":
+        return <CarpoolTab />
+      case "nourriture":
+        return <NourritureTab />
+      default:
+        return <UsersTab />
     }
   }
-
+  console.info("user", user)
   return (
-    <div className="admin-page">
-      <h1>Bienvenue, {user && user.username} !</h1>
-      <h1>Tableau de bord administrateur</h1>
-      <div className="tabs">
-        <button
-          className={activeTab === "users" ? "active" : ""}
-          onClick={() => setActiveTab("users")}
-        >
-          Utilisateurs
-        </button>
-        <button
-          className={activeTab === "parties" ? "active" : ""}
-          onClick={() => setActiveTab("parties")}
-        >
-          Parties
-        </button>
-        <button
-          className={activeTab === "participations" ? "active" : ""}
-          onClick={() => setActiveTab("participations")}
-        >
-          Participations
-        </button>
-        <button
-          className={activeTab === "carpool" ? "active" : ""}
-          onClick={() => setActiveTab("carpool")}
-        >
-          Covoiturages
-        </button>
-        <button
-          className={activeTab === "nourriture" ? "active" : ""}
-          onClick={() => setActiveTab("nourriture")}
-        >
-          Nourriture
-        </button>
+    <>
+      <NavBar />
+      <div className="admin-page">
+        <h1>Bienvenue, {user && user.pseudo} !</h1>
+        <h1>Tableau de bord administrateur</h1>
+        <div className="tabs">
+          <button
+            className={activeTab === "users" ? "active" : ""}
+            onClick={() => setActiveTab("users")}
+          >
+            Utilisateurs
+          </button>
+          <button
+            className={activeTab === "parties" ? "active" : ""}
+            onClick={() => setActiveTab("parties")}
+          >
+            Parties
+          </button>
+          <button
+            className={activeTab === "participations" ? "active" : ""}
+            onClick={() => setActiveTab("participations")}
+          >
+            Participations
+          </button>
+          <button
+            className={activeTab === "carpool" ? "active" : ""}
+            onClick={() => setActiveTab("carpool")}
+          >
+            Covoiturages
+          </button>
+          <button
+            className={activeTab === "nourriture" ? "active" : ""}
+            onClick={() => setActiveTab("nourriture")}
+          >
+            Nourriture
+          </button>
+        </div>
+        <div className="tab-content">{renderActiveTab()}</div>
       </div>
-      <div className="tab-content">{renderActiveTab()}</div>
-    </div>
+    </>
   )
 }
 

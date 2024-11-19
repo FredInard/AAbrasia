@@ -6,6 +6,7 @@ import "./PartiesTab.scss"
 
 const PartiesTab = () => {
   const [parties, setParties] = useState([])
+  const [filteredParties, setFilteredParties] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedParty, setSelectedParty] = useState(null)
@@ -23,16 +24,26 @@ const PartiesTab = () => {
     // Ajoutez d'autres champs si nécessaire
   })
 
+  // États pour les filtres
+  const [filterTitre, setFilterTitre] = useState("")
+  const [filterType, setFilterType] = useState("")
+  const [filterDate, setFilterDate] = useState("")
+  const [filterLieu, setFilterLieu] = useState("")
+
   const authToken = localStorage.getItem("authToken")
 
   useEffect(() => {
     fetchParties()
   }, [])
 
+  useEffect(() => {
+    applyFilters()
+  }, [parties, filterTitre, filterType, filterDate, filterLieu])
+
   const fetchParties = () => {
     setLoading(true)
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/parties`, {
+      .get(`${import.meta.env.VITE_BACKEND_URL}/parties/affichage`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -46,6 +57,35 @@ const PartiesTab = () => {
         setError("Erreur lors du chargement des parties.")
         setLoading(false)
       })
+  }
+
+  const applyFilters = () => {
+    let filtered = parties
+
+    if (filterTitre.trim() !== "") {
+      filtered = filtered.filter((party) =>
+        party.titre.toLowerCase().includes(filterTitre.toLowerCase())
+      )
+    }
+
+    if (filterType !== "") {
+      filtered = filtered.filter((party) => party.type === filterType)
+    }
+
+    if (filterDate !== "") {
+      filtered = filtered.filter((party) => {
+        const partyDate = new Date(party.date).toISOString().slice(0, 10)
+        return partyDate === filterDate
+      })
+    }
+
+    if (filterLieu.trim() !== "") {
+      filtered = filtered.filter((party) =>
+        party.lieu.toLowerCase().includes(filterLieu.toLowerCase())
+      )
+    }
+
+    setFilteredParties(filtered)
   }
 
   const handleDelete = (partyId) => {
@@ -173,6 +213,51 @@ const PartiesTab = () => {
     <div className="parties-tab">
       <h2>Gestion des parties</h2>
       <button onClick={handleCreate}>Créer une nouvelle partie</button>
+      {/* Champs de filtre */}
+      {!isEditing && !isCreating && (
+        <div className="filters">
+          <div>
+            <label htmlFor="filterTitre">Filtrer par titre :</label>
+            <input
+              type="text"
+              id="filterTitre"
+              value={filterTitre}
+              onChange={(e) => setFilterTitre(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="filterType">Filtrer par type :</label>
+            <select
+              id="filterType"
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
+              <option value="">Tous</option>
+              <option value="jeux">Jeux</option>
+              <option value="événement">Événement</option>
+              {/* Ajoutez d'autres types si nécessaire */}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="filterDate">Filtrer par date :</label>
+            <input
+              type="date"
+              id="filterDate"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="filterLieu">Filtrer par lieu :</label>
+            <input
+              type="text"
+              id="filterLieu"
+              value={filterLieu}
+              onChange={(e) => setFilterLieu(e.target.value)}
+            />
+          </div>
+        </div>
+      )}
       {isEditing || isCreating ? (
         <form onSubmit={handleSubmit} className="party-form">
           <div>
@@ -282,7 +367,7 @@ const PartiesTab = () => {
             </tr>
           </thead>
           <tbody>
-            {parties.map((party) => (
+            {filteredParties.map((party) => (
               <tr key={party.id}>
                 <td>{party.id}</td>
                 <td>{party.titre}</td>
