@@ -40,6 +40,7 @@ const ParticipationControllers = require("./controllers/ParticipationControllers
 const RepasControllers = require("./controllers/RepasControllers")
 const CovoiturageControllers = require("./controllers/CovoiturageControllers")
 const LogControllers = require("./controllers/LogControllers")
+const ExportController = require("./controllers/ExportController")
 
 // Routes pour les utilisateurs
 router.post("/login", UtilisateurControllers.verifyUtilisateur, verifyPassword)
@@ -140,5 +141,8 @@ router.delete("/covoiturages/:id", verifyToken, CovoiturageControllers.destroy)
 // Routes pour les logs (optionnel, généralement pour les admins)
 router.get("/logs", verifyToken, LogControllers.browse)
 router.get("/logs/:id", verifyToken, LogControllers.read)
+
+// Route pour exporter toutes les données
+router.get("/export/all", ExportController.exportAllTables)
 
 module.exports = router
