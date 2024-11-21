@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import jwtDecode from "jwt-decode"
+import axios from "axios"
 import UsersTab from "../components/AdminTabs/UsersTab"
 import PartiesTab from "../components/AdminTabs/PartiesTab"
 import ParticipationsTab from "../components/AdminTabs/ParticipationsTab"
@@ -37,6 +38,29 @@ const AdminPage = () => {
     }
   }, [navigate])
 
+  const handleExport = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/export/all`,
+        {
+          responseType: "blob", // Pour recevoir le fichier en tant que blob
+        }
+      )
+
+      // Créer un lien de téléchargement pour le fichier Excel
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement("a")
+      link.href = url
+      link.setAttribute("download", "all_data.xlsx") // Nom du fichier
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (error) {
+      console.error("Erreur lors de l'exportation des données :", error)
+      alert("Une erreur s'est produite lors de l'exportation des données.")
+    }
+  }
+
   const renderActiveTab = () => {
     switch (activeTab) {
       case "users":
@@ -53,6 +77,7 @@ const AdminPage = () => {
         return <UsersTab />
     }
   }
+
   console.info("user", user)
   return (
     <>
@@ -90,6 +115,11 @@ const AdminPage = () => {
             onClick={() => setActiveTab("nourriture")}
           >
             Nourriture
+          </button>
+        </div>
+        <div className="actions">
+          <button className="export-button" onClick={handleExport}>
+            Exporter toutes les données
           </button>
         </div>
         <div className="tab-content">{renderActiveTab()}</div>
