@@ -24,7 +24,7 @@ class ParticipationControllers {
       .find(id)
       .then(([rows]) => {
         if (rows[0]) {
-          res.status(200).json(rows)
+          res.status(200).json(rows[0]) // Retourner l'objet unique
         } else {
           res.sendStatus(404)
         }
@@ -35,15 +35,15 @@ class ParticipationControllers {
       })
   }
 
-  // GET /participations/:id
+  // GET /participations/party/:id
   static getparticipationsByPartyId(req, res) {
     const id = parseInt(req.params.id, 10)
 
     models.participation
       .findParticipationsByPartyId(id)
       .then(([rows]) => {
-        console.info("Participants trouvés dans la base de données :", rows) // vérification des données avant de les renvoyer
-        res.status(200).json(rows) // Renvoie tous les résultats, même s'il est vide
+        console.info("Participants trouvés dans la base de données :", rows) // Vérification des données avant de les renvoyer
+        res.status(200).json(rows) // Renvoie tous les résultats, même s'ils sont vides
       })
       .catch((err) => {
         console.error(err)
@@ -107,7 +107,7 @@ class ParticipationControllers {
       })
   }
 
-  // POST /participations by idPartie et idPlayer
+  // POST /participations/:idPartie/:idPlayer
   static addByPartiId(req, res) {
     const partyId = parseInt(req.params.idPartie, 10)
     const userId = parseInt(req.params.idPlayer, 10)
@@ -276,6 +276,29 @@ class ParticipationControllers {
         } else {
           console.info("L'utilisateur a été retiré de la partie")
           res.sendStatus(204)
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+        res.sendStatus(500)
+      })
+  }
+
+  // PUT /participations/:id
+  static edit(req, res) {
+    const id = parseInt(req.params.id, 10)
+    const participation = req.body
+    participation.id = id
+
+    // TODO: Validations (length, format...)
+
+    models.participation
+      .update(participation)
+      .then(([result]) => {
+        if (result.affectedRows === 0) {
+          res.sendStatus(404)
+        } else {
+          res.status(200).json(participation)
         }
       })
       .catch((err) => {

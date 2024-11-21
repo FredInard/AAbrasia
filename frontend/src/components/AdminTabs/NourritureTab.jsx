@@ -1,11 +1,10 @@
-// src/components/AdminTabs/NourritureTab.jsx
-
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 import "./NourritureTab.scss"
 
 const NourritureTab = () => {
   const [nourritures, setNourritures] = useState([])
+  const [filteredNourritures, setFilteredNourritures] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedNourriture, setSelectedNourriture] = useState(null)
@@ -14,10 +13,12 @@ const NourritureTab = () => {
   const [formData, setFormData] = useState({
     partie_id: "",
     utilisateur_id: "",
-    item: "",
-    quantite: "",
-    // Ajoutez d'autres champs si nécessaire
+    contenu: "",
   })
+
+  // Filtres
+  const [filterPartieId, setFilterPartieId] = useState("")
+  const [filterUtilisateurId, setFilterUtilisateurId] = useState("")
 
   const authToken = localStorage.getItem("authToken")
 
@@ -35,32 +36,52 @@ const NourritureTab = () => {
       })
       .then((response) => {
         setNourritures(response.data)
+        setFilteredNourritures(response.data)
         setLoading(false)
       })
       .catch((error) => {
-        console.error("Erreur lors du chargement des nourritures :", error)
-        setError("Erreur lors du chargement des nourritures.")
+        console.error("Erreur lors du chargement des repas :", error)
+        setError("Erreur lors du chargement des repas.")
         setLoading(false)
       })
   }
 
+  const applyFilters = () => {
+    let filtered = [...nourritures]
+
+    if (filterPartieId.trim() !== "") {
+      filtered = filtered.filter((repas) =>
+        repas.partie_id.toString().includes(filterPartieId.trim())
+      )
+    }
+
+    if (filterUtilisateurId.trim() !== "") {
+      filtered = filtered.filter((repas) =>
+        repas.utilisateur_id.toString().includes(filterUtilisateurId.trim())
+      )
+    }
+
+    setFilteredNourritures(filtered)
+  }
+
+  useEffect(() => {
+    applyFilters()
+  }, [nourritures, filterPartieId, filterUtilisateurId])
+
   const handleDelete = (nourritureId) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce repas ?")) {
       axios
-        .delete(
-          `${import.meta.env.VITE_BACKEND_URL}/nourritures/${nourritureId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        )
+        .delete(`${import.meta.env.VITE_BACKEND_URL}/repas/${nourritureId}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
         .then(() => {
           fetchNourritures()
         })
         .catch((error) => {
-          console.error("Erreur lors de la suppression de l'élément :", error)
-          setError("Erreur lors de la suppression de l'élément.")
+          console.error("Erreur lors de la suppression du repas :", error)
+          setError("Erreur lors de la suppression du repas.")
         })
     }
   }
@@ -70,33 +91,18 @@ const NourritureTab = () => {
     setFormData({
       partie_id: nourriture.partie_id,
       utilisateur_id: nourriture.utilisateur_id,
-      item: nourriture.item,
-      quantite: nourriture.quantite,
-      // Ajoutez d'autres champs si nécessaire
+      contenu: nourriture.contenu,
     })
     setIsEditing(true)
-  }
-
-  const handleCreate = () => {
-    setFormData({
-      partie_id: "",
-      utilisateur_id: "",
-      item: "",
-      quantite: "",
-      // Ajoutez d'autres champs si nécessaire
-    })
-    setIsCreating(true)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (isEditing) {
-      // Mettre à jour l'élément
+      // Mettre à jour le repas
       axios
         .put(
-          `${import.meta.env.VITE_BACKEND_URL}/nourritures/${
-            selectedNourriture.id
-          }`,
+          `${import.meta.env.VITE_BACKEND_URL}/repas/${selectedNourriture.id}`,
           formData,
           {
             headers: {
@@ -110,13 +116,13 @@ const NourritureTab = () => {
           fetchNourritures()
         })
         .catch((error) => {
-          console.error("Erreur lors de la mise à jour de l'élément :", error)
-          setError("Erreur lors de la mise à jour de l'élément.")
+          console.error("Erreur lors de la mise à jour du repas :", error)
+          setError("Erreur lors de la mise à jour du repas.")
         })
     } else if (isCreating) {
-      // Créer un nouvel élément
+      // Créer un nouveau repas
       axios
-        .post(`${import.meta.env.VITE_BACKEND_URL}/nourritures`, formData, {
+        .post(`${import.meta.env.VITE_BACKEND_URL}/repas`, formData, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -126,8 +132,8 @@ const NourritureTab = () => {
           fetchNourritures()
         })
         .catch((error) => {
-          console.error("Erreur lors de la création de l'élément :", error)
-          setError("Erreur lors de la création de l'élément.")
+          console.error("Erreur lors de la création du repas :", error)
+          setError("Erreur lors de la création du repas.")
         })
     }
   }
@@ -144,14 +150,12 @@ const NourritureTab = () => {
     setFormData({
       partie_id: "",
       utilisateur_id: "",
-      item: "",
-      quantite: "",
-      // Ajoutez d'autres champs si nécessaire
+      contenu: "",
     })
   }
 
   if (loading) {
-    return <p>Chargement des éléments de nourriture...</p>
+    return <p>Chargement des repas...</p>
   }
 
   if (error) {
@@ -160,8 +164,29 @@ const NourritureTab = () => {
 
   return (
     <div className="nourriture-tab">
-      <h2>Gestion des éléments de nourriture</h2>
-      <button onClick={handleCreate}>Ajouter un élément</button>
+      <h2>Gestion des repas</h2>
+      <div className="filters">
+        <div>
+          <label htmlFor="filterPartieId">Filtrer par Partie ID :</label>
+          <input
+            type="text"
+            id="filterPartieId"
+            value={filterPartieId}
+            onChange={(e) => setFilterPartieId(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="filterUtilisateurId">
+            Filtrer par Utilisateur ID :
+          </label>
+          <input
+            type="text"
+            id="filterUtilisateurId"
+            value={filterUtilisateurId}
+            onChange={(e) => setFilterUtilisateurId(e.target.value)}
+          />
+        </div>
+      </div>
       {isEditing || isCreating ? (
         <form onSubmit={handleSubmit} className="nourriture-form">
           <div>
@@ -187,29 +212,17 @@ const NourritureTab = () => {
             />
           </div>
           <div>
-            <label htmlFor="item">Item :</label>
-            <input
-              type="text"
-              id="item"
-              name="item"
-              value={formData.item}
+            <label htmlFor="contenu">Contenu :</label>
+            <textarea
+              id="contenu"
+              name="contenu"
+              value={formData.contenu}
               onChange={handleChange}
               required
             />
           </div>
-          <div>
-            <label htmlFor="quantite">Quantité :</label>
-            <input
-              type="text"
-              id="quantite"
-              name="quantite"
-              value={formData.quantite}
-              onChange={handleChange}
-            />
-          </div>
-          {/* Ajoutez d'autres champs si nécessaire */}
           <button type="submit">
-            {isEditing ? "Mettre à jour l'élément" : "Ajouter l'élément"}
+            {isEditing ? "Mettre à jour le repas" : "Ajouter le repas"}
           </button>
           <button type="button" onClick={handleCancel}>
             Annuler
@@ -222,19 +235,17 @@ const NourritureTab = () => {
               <th>ID</th>
               <th>Partie ID</th>
               <th>Utilisateur ID</th>
-              <th>Item</th>
-              <th>Quantité</th>
+              <th>Contenu</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {nourritures.map((nourriture) => (
+            {filteredNourritures.map((nourriture) => (
               <tr key={nourriture.id}>
                 <td>{nourriture.id}</td>
                 <td>{nourriture.partie_id}</td>
                 <td>{nourriture.utilisateur_id}</td>
-                <td>{nourriture.item}</td>
-                <td>{nourriture.quantite}</td>
+                <td>{nourriture.contenu}</td>
                 <td>
                   <button onClick={() => handleEdit(nourriture)}>
                     Modifier

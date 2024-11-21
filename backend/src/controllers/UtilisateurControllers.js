@@ -95,23 +95,23 @@ class UtilisateurControllers {
   }
 
   // DELETE /utilisateurs/:id
-  static destroy(req, res) {
-    const id = parseInt(req.params.id, 10)
+  // static destroy(req, res) {
+  //   const id = parseInt(req.params.id, 10)
 
-    models.utilisateur
-      .delete(id)
-      .then(([result]) => {
-        if (result.affectedRows === 0) {
-          res.sendStatus(404)
-        } else {
-          res.sendStatus(204)
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-        res.sendStatus(500)
-      })
-  }
+  //   models.utilisateur
+  //     .delete(id)
+  //     .then(([result]) => {
+  //       if (result.affectedRows === 0) {
+  //         res.sendStatus(404)
+  //       } else {
+  //         res.sendStatus(204)
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error(err)
+  //       res.sendStatus(500)
+  //     })
+  // }
 
   // POST /login
   static verifyUtilisateur(req, res, next) {
@@ -229,6 +229,43 @@ class UtilisateurControllers {
       })
       .catch((err) => {
         console.error(err)
+        res.sendStatus(500)
+      })
+  }
+
+  // DELETE /utilisateurs/:id
+  static destroy(req, res) {
+    const id = parseInt(req.params.id, 10)
+
+    console.info(
+      `Suppression de l'utilisateur avec l'ID : ${id} et ses données associées`
+    )
+
+    // Supprimer les données associées via les managers
+    const deletions = [
+      models.repas.deleteByUtilisateurId(id), // Supprime les repas
+      models.covoiturage.deleteByUtilisateurId(id), // Supprime les covoiturages
+      models.participation.deleteByUtilisateurId(id), // Supprime les participations
+      models.partie.deleteByMaitreDuJeuId(id), // Supprime les parties
+    ]
+
+    // Exécuter les suppressions en parallèle
+    Promise.all(deletions)
+      .then(() => {
+        // Supprimer l'utilisateur une fois les données associées supprimées
+        return models.utilisateur.delete(id)
+      })
+      .then(([result]) => {
+        if (result.affectedRows === 0) {
+          console.info(`Utilisateur avec l'ID ${id} non trouvé.`)
+          res.sendStatus(404)
+        } else {
+          console.info(`Utilisateur avec l'ID ${id} supprimé avec succès.`)
+          res.sendStatus(204)
+        }
+      })
+      .catch((err) => {
+        console.error("Erreur lors de la suppression des données :", err)
         res.sendStatus(500)
       })
   }

@@ -42,6 +42,14 @@ class PartieManager extends AbstractManager {
     )
   }
 
+  // Supprimer les parties par id_maitre_du_jeu
+  deleteByMaitreDuJeuId(maitreDuJeuId) {
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE id_maitre_du_jeu = ?`,
+      [maitreDuJeuId]
+    )
+  }
+
   // Find all parties
   findAll() {
     return this.database.query(`SELECT * FROM ${this.table}`)

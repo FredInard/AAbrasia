@@ -109,6 +109,7 @@ router.post(
   verifyToken,
   ParticipationControllers.addByPartiId
 )
+router.put("/participations/:id", verifyToken, ParticipationControllers.edit)
 router.delete(
   "/participations/:idPartie/:idPlayer",
   verifyToken,

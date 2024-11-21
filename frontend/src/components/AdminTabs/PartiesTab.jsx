@@ -32,8 +32,11 @@ const PartiesTab = () => {
   // États pour les filtres
   const [filterTitre, setFilterTitre] = useState("")
   const [filterType, setFilterType] = useState("")
-  const [filterDate, setFilterDate] = useState("")
+  // const [filterDate, setFilterDate] = useState("")
   const [filterLieu, setFilterLieu] = useState("")
+  const [filterIdMj, setFilterIdMj] = useState("")
+  const [filterMonth, setFilterMonth] = useState("")
+  const [filterYear, setFilterYear] = useState("")
 
   const authToken = localStorage.getItem("authToken")
 
@@ -74,10 +77,18 @@ const PartiesTab = () => {
       filtered = filtered.filter((party) => party.type === filterType)
     }
 
-    if (filterDate !== "") {
+    if (filterMonth !== "" || filterYear !== "") {
       filtered = filtered.filter((party) => {
-        const partyDate = new Date(party.date).toISOString().slice(0, 10)
-        return partyDate === filterDate
+        const partyDate = new Date(party.date)
+        const partyMonth = (partyDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0") // Mois au format "01" pour janvier
+        const partyYear = partyDate.getFullYear().toString()
+
+        const monthMatch = filterMonth === "" || partyMonth === filterMonth
+        const yearMatch = filterYear === "" || partyYear === filterYear
+
+        return monthMatch && yearMatch
       })
     }
 
@@ -86,13 +97,26 @@ const PartiesTab = () => {
         party.lieu.toLowerCase().includes(filterLieu.toLowerCase())
       )
     }
+    if (filterIdMj.trim() !== "") {
+      filtered = filtered.filter(
+        (party) => party.id_maitre_du_jeu.toString() === filterIdMj.trim()
+      )
+    }
 
     setFilteredParties(filtered)
   }
 
   useEffect(() => {
     applyFilters()
-  }, [parties, filterTitre, filterType, filterDate, filterLieu])
+  }, [
+    parties,
+    filterTitre,
+    filterType,
+    filterLieu,
+    filterIdMj,
+    filterMonth,
+    filterYear,
+  ])
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0]
@@ -107,24 +131,6 @@ const PartiesTab = () => {
       const previewUrl = URL.createObjectURL(file)
       setPhotoPreview(previewUrl)
     }
-  }
-
-  const handleCreate = () => {
-    setFormData({
-      titre: "",
-      type: "jeux",
-      description: "",
-      date: "",
-      nb_max_joueurs: "",
-      id_maitre_du_jeu: "",
-      duree_estimee: "",
-      lieu: "",
-      photo_scenario: null,
-    })
-    setPhotoPreview(null)
-    setExistingPhoto(null)
-    setIsCreating(true)
-    console.info("Mode création activé")
   }
 
   const handleEdit = (party) => {
@@ -274,8 +280,6 @@ const PartiesTab = () => {
   return (
     <div className="parties-tab">
       <h2>Gestion des parties</h2>
-      <button onClick={handleCreate}>Créer une nouvelle partie</button>
-
       {!isEditing && !isCreating && (
         <div className="filters">
           <div>
@@ -301,14 +305,58 @@ const PartiesTab = () => {
             </select>
           </div>
           <div>
-            <label htmlFor="filterDate">Filtrer par date :</label>
+            <label htmlFor="filterMonth">Filtrer par mois :</label>
+            <select
+              id="filterMonth"
+              value={filterMonth}
+              onChange={(e) => setFilterMonth(e.target.value)}
+            >
+              <option value="">Tous</option>
+              <option value="01">Janvier</option>
+              <option value="02">Février</option>
+              <option value="03">Mars</option>
+              <option value="04">Avril</option>
+              <option value="05">Mai</option>
+              <option value="06">Juin</option>
+              <option value="07">Juillet</option>
+              <option value="08">Août</option>
+              <option value="09">Septembre</option>
+              <option value="10">Octobre</option>
+              <option value="11">Novembre</option>
+              <option value="12">Décembre</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="filterYear">Filtrer par année :</label>
+            <select
+              id="filterYear"
+              value={filterYear}
+              onChange={(e) => setFilterYear(e.target.value)}
+            >
+              <option value="">Toutes</option>
+              {Array.from(
+                new Set(
+                  parties.map((party) => new Date(party.date).getFullYear())
+                )
+              )
+                .sort()
+                .map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="filterIdMj">Filtrer par ID MJ :</label>
             <input
-              type="date"
-              id="filterDate"
-              value={filterDate}
-              onChange={(e) => setFilterDate(e.target.value)}
+              type="text"
+              id="filterIdMj"
+              value={filterIdMj}
+              onChange={(e) => setFilterIdMj(e.target.value)}
             />
           </div>
+          ;
           <div>
             <label htmlFor="filterLieu">Filtrer par lieu :</label>
             <input

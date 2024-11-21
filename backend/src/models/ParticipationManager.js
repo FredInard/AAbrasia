@@ -30,6 +30,14 @@ class ParticipationManager extends AbstractManager {
     )
   }
 
+  // Supprimer les participations par utilisateur_id
+  deleteByUtilisateurId(utilisateurId) {
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE utilisateur_id = ?`,
+      [utilisateurId]
+    )
+  }
+
   // Find all participations
   findAll() {
     return this.database.query(`SELECT * FROM ${this.table}`)

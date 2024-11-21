@@ -6,6 +6,7 @@ import "./ParticipationsTab.scss"
 
 const ParticipationsTab = () => {
   const [participations, setParticipations] = useState([])
+  const [filteredParticipations, setFilteredParticipations] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedParticipation, setSelectedParticipation] = useState(null)
@@ -14,16 +15,24 @@ const ParticipationsTab = () => {
   const [formData, setFormData] = useState({
     utilisateur_id: "",
     partie_id: "",
+    // Retiré : date_participation: "",
     // Ajoutez d'autres champs si nécessaire
   })
+
+  // États pour les filtres
+  const [filterUtilisateurId, setFilterUtilisateurId] = useState("")
+  const [filterPartieId, setFilterPartieId] = useState("")
+  // Ajoutez d'autres états de filtres si nécessaire
 
   const authToken = localStorage.getItem("authToken")
 
   useEffect(() => {
+    console.info("Composant ParticipationsTab monté. Fetch des participations.")
     fetchParticipations()
   }, [])
 
   const fetchParticipations = () => {
+    console.info("Fetching participations from backend.")
     setLoading(true)
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/participations`, {
@@ -32,7 +41,9 @@ const ParticipationsTab = () => {
         },
       })
       .then((response) => {
+        console.info("Participations reçues du backend :", response.data)
         setParticipations(response.data)
+        setFilteredParticipations(response.data)
         setLoading(false)
       })
       .catch((error) => {
@@ -42,7 +53,46 @@ const ParticipationsTab = () => {
       })
   }
 
+  const applyFilters = () => {
+    console.info("Application des filtres:", {
+      filterUtilisateurId,
+      filterPartieId,
+    })
+    let filtered = participations
+
+    if (filterUtilisateurId.trim() !== "") {
+      filtered = filtered.filter((participation) =>
+        participation.utilisateur_id
+          .toString()
+          .includes(filterUtilisateurId.trim())
+      )
+      console.info(
+        `Filtré par utilisateur_id=${filterUtilisateurId.trim()}:`,
+        filtered
+      )
+    }
+
+    if (filterPartieId.trim() !== "") {
+      filtered = filtered.filter((participation) =>
+        participation.partie_id.toString().includes(filterPartieId.trim())
+      )
+      console.info(`Filtré par partie_id=${filterPartieId.trim()}:`, filtered)
+    }
+
+    // Ajoutez d'autres filtres ici si nécessaire
+
+    setFilteredParticipations(filtered)
+    console.info("Participations filtrées :", filtered)
+  }
+
+  useEffect(() => {
+    applyFilters()
+  }, [participations, filterUtilisateurId, filterPartieId])
+
   const handleDelete = (participationId) => {
+    console.info(
+      `Tentative de suppression de la participation avec ID: ${participationId}`
+    )
     if (
       window.confirm("Êtes-vous sûr de vouloir supprimer cette participation ?")
     ) {
@@ -58,6 +108,9 @@ const ParticipationsTab = () => {
           }
         )
         .then(() => {
+          console.info(
+            `Participation avec ID ${participationId} supprimée avec succès`
+          )
           fetchParticipations()
         })
         .catch((error) => {
@@ -71,28 +124,29 @@ const ParticipationsTab = () => {
   }
 
   const handleEdit = (participation) => {
+    console.info(
+      "Mode édition activé pour la participation :",
+      participation.id
+    )
     setSelectedParticipation(participation)
     setFormData({
       utilisateur_id: participation.utilisateur_id,
       partie_id: participation.partie_id,
+      // Retiré : date_participation: participation.date_participation,
       // Ajoutez d'autres champs si nécessaire
     })
     setIsEditing(true)
   }
 
-  const handleCreate = () => {
-    setFormData({
-      utilisateur_id: "",
-      partie_id: "",
-      // Ajoutez d'autres champs si nécessaire
-    })
-    setIsCreating(true)
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.info(
+      `Soumission du formulaire. Mode: ${isEditing ? "Édition" : "Création"}`,
+      formData
+    )
     if (isEditing) {
       // Mettre à jour la participation
+      console.info("Envoi de la requête PUT avec les données :", formData)
       axios
         .put(
           `${import.meta.env.VITE_BACKEND_URL}/participations/${
@@ -102,10 +156,12 @@ const ParticipationsTab = () => {
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
             },
           }
         )
-        .then(() => {
+        .then((response) => {
+          console.info("Participation mise à jour avec succès :", response.data)
           setIsEditing(false)
           setSelectedParticipation(null)
           fetchParticipations()
@@ -119,13 +175,16 @@ const ParticipationsTab = () => {
         })
     } else if (isCreating) {
       // Créer une nouvelle participation
+      console.info("Envoi de la requête POST avec les données :", formData)
       axios
         .post(`${import.meta.env.VITE_BACKEND_URL}/participations`, formData, {
           headers: {
             Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
           },
         })
-        .then(() => {
+        .then((response) => {
+          console.info("Participation créée avec succès :", response.data)
           setIsCreating(false)
           fetchParticipations()
         })
@@ -141,32 +200,79 @@ const ParticipationsTab = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData((prevData) => ({ ...prevData, [name]: value }))
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }))
+    console.info(`FormData mis à jour - ${name}:`, value)
   }
 
   const handleCancel = () => {
+    console.info("Formulaire annulé et réinitialisé")
     setIsEditing(false)
     setIsCreating(false)
     setSelectedParticipation(null)
     setFormData({
       utilisateur_id: "",
       partie_id: "",
+      // Retiré : date_participation: "",
       // Ajoutez d'autres champs si nécessaire
     })
   }
 
   if (loading) {
+    console.info("Affichage du message de chargement")
     return <p>Chargement des participations...</p>
   }
 
   if (error) {
+    console.error("Affichage de l'erreur :", error)
     return <p>{error}</p>
   }
 
   return (
     <div className="participations-tab">
       <h2>Gestion des participations</h2>
-      <button onClick={handleCreate}>Ajouter une participation</button>
+
+      {/* Section des filtres */}
+      <div className="filters">
+        <h3>Filtres</h3>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            applyFilters()
+          }}
+          className="filters-form"
+        >
+          <div>
+            <label htmlFor="filterUtilisateurId">ID Utilisateur :</label>
+            <input
+              type="text"
+              id="filterUtilisateurId"
+              name="filterUtilisateurId"
+              value={filterUtilisateurId}
+              onChange={(e) => setFilterUtilisateurId(e.target.value)}
+              placeholder="Rechercher par ID Utilisateur"
+            />
+          </div>
+          <div>
+            <label htmlFor="filterPartieId">ID Partie :</label>
+            <input
+              type="text"
+              id="filterPartieId"
+              name="filterPartieId"
+              value={filterPartieId}
+              onChange={(e) => setFilterPartieId(e.target.value)}
+              placeholder="Rechercher par ID Partie"
+            />
+          </div>
+          {/* Ajoutez d'autres champs de filtre ici si nécessaire */}
+          {/* <button type="button" onClick={handleFilterReset}>
+            Réinitialiser les filtres
+          </button> */}
+        </form>
+      </div>
+
       {isEditing || isCreating ? (
         <form onSubmit={handleSubmit} className="participation-form">
           <div>
@@ -191,6 +297,7 @@ const ParticipationsTab = () => {
               required
             />
           </div>
+          {/* Retiré : Champ pour la date de participation */}
           {/* Ajoutez d'autres champs si nécessaire */}
           <button type="submit">
             {isEditing
@@ -208,25 +315,37 @@ const ParticipationsTab = () => {
               <th>ID</th>
               <th>ID Utilisateur</th>
               <th>ID Partie</th>
+              <th>Date de Participation</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {participations.map((participation) => (
-              <tr key={participation.id}>
-                <td>{participation.id}</td>
-                <td>{participation.utilisateur_id}</td>
-                <td>{participation.partie_id}</td>
-                <td>
-                  <button onClick={() => handleEdit(participation)}>
-                    Modifier
-                  </button>
-                  <button onClick={() => handleDelete(participation.id)}>
-                    Supprimer
-                  </button>
-                </td>
+            {filteredParticipations.length > 0 ? (
+              filteredParticipations.map((participation) => (
+                <tr key={participation.id}>
+                  <td>{participation.id}</td>
+                  <td>{participation.utilisateur_id}</td>
+                  <td>{participation.partie_id}</td>
+                  <td>
+                    {new Date(
+                      participation.date_participation
+                    ).toLocaleString()}
+                  </td>
+                  <td>
+                    <button onClick={() => handleEdit(participation)}>
+                      Modifier
+                    </button>
+                    <button onClick={() => handleDelete(participation.id)}>
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5">Aucune participation trouvée.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       )}

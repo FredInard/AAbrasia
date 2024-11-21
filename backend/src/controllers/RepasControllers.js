@@ -74,6 +74,9 @@ class RepasControllers {
     const repas = req.body
     repas.id = id
 
+    console.info("repas", repas)
+    console.info("repas.id", repas.id)
+
     // TODO: Validations (length, format...)
 
     models.repas
