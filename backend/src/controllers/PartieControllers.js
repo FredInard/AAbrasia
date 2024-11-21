@@ -94,22 +94,55 @@ class PartieControllers {
   }
 
   // PUT /parties/:id
+  // Méthode pour éditer une partie existante
   static edit(req, res) {
     const id = parseInt(req.params.id, 10)
+    console.info(`Modification de la partie avec l'ID: ${id}`)
+
+    // Récupération des données de la partie depuis le corps de la requête
     const partie = req.body
+    console.info("Données de la partie reçues:", partie)
+
+    // Assignation de l'ID à l'objet partie
     partie.id = id
+    console.info("Objet partie après assignation de l'ID:", partie)
+
+    // Gestion de la photo_scenario
+    if (req.file) {
+      // Si un nouveau fichier est téléchargé, utilisez son chemin
+      partie.photo_scenario = req.file.path.replace(/\\/g, "/") // Convertir les antislashs en slashs
+      console.info("Nouvelle photo_scenario définie:", partie.photo_scenario)
+    } else if (partie.photo_scenario) {
+      // Sinon, utilisez la photo existante (envoyée via formData)
+      console.info("Photo_scenario existante conservée:", partie.photo_scenario)
+      // La valeur de photo_scenario est déjà définie dans req.body
+    } else {
+      // Si aucune photo n'est fournie, vous pouvez définir une valeur par défaut ou gérer l'erreur
+      partie.photo_scenario = null
+      console.info("Aucune photo_scenario fournie. Définie à null.")
+    }
+
+    console.info("Objet partie final pour mise à jour:", partie)
 
     models.partie
       .update(partie)
       .then(([result]) => {
+        console.info("Résultat de la mise à jour:", result)
+
         if (result.affectedRows === 0) {
+          console.info(
+            `Aucune partie trouvée avec l'ID: ${id}. Envoi d'un statut 404.`
+          )
           res.sendStatus(404)
         } else {
+          console.info(
+            `Partie avec l'ID: ${id} mise à jour avec succès. Envoi de la réponse.`
+          )
           res.status(200).json(partie)
         }
       })
       .catch((err) => {
-        console.error(err)
+        console.error("Erreur lors de la mise à jour de la partie:", err)
         res.sendStatus(500)
       })
   }

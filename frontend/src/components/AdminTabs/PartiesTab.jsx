@@ -12,6 +12,7 @@ const PartiesTab = () => {
   const [selectedParty, setSelectedParty] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
+  const [photoPreview, setPhotoPreview] = useState(null)
   const [formData, setFormData] = useState({
     titre: "",
     type: "jeux",
@@ -21,8 +22,12 @@ const PartiesTab = () => {
     id_maitre_du_jeu: "",
     duree_estimee: "",
     lieu: "",
-    // Ajoutez d'autres champs si nécessaire
+    photo_scenario: null, // Utilisation cohérente de 'photo_scenario'
   })
+  const [existingPhoto, setExistingPhoto] = useState(null) // Stocker la photo actuelle
+
+  console.info("existingPhoto :", existingPhoto)
+  console.info("formData initial :", formData)
 
   // États pour les filtres
   const [filterTitre, setFilterTitre] = useState("")
@@ -36,10 +41,6 @@ const PartiesTab = () => {
     fetchParties()
   }, [])
 
-  useEffect(() => {
-    applyFilters()
-  }, [parties, filterTitre, filterType, filterDate, filterLieu])
-
   const fetchParties = () => {
     setLoading(true)
     axios
@@ -50,6 +51,7 @@ const PartiesTab = () => {
       })
       .then((response) => {
         setParties(response.data)
+        setFilteredParties(response.data)
         setLoading(false)
       })
       .catch((error) => {
@@ -88,38 +90,23 @@ const PartiesTab = () => {
     setFilteredParties(filtered)
   }
 
-  const handleDelete = (partyId) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette partie ?")) {
-      axios
-        .delete(`${import.meta.env.VITE_BACKEND_URL}/parties/${partyId}`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        })
-        .then(() => {
-          fetchParties()
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la suppression de la partie :", error)
-          setError("Erreur lors de la suppression de la partie.")
-        })
-    }
-  }
+  useEffect(() => {
+    applyFilters()
+  }, [parties, filterTitre, filterType, filterDate, filterLieu])
 
-  const handleEdit = (party) => {
-    setSelectedParty(party)
-    setFormData({
-      titre: party.titre,
-      type: party.type,
-      description: party.description,
-      date: party.date ? new Date(party.date).toISOString().slice(0, 16) : "",
-      nb_max_joueurs: party.nb_max_joueurs,
-      id_maitre_du_jeu: party.id_maitre_du_jeu,
-      duree_estimee: party.duree_estimee,
-      lieu: party.lieu,
-      // Ajoutez d'autres champs si nécessaire
-    })
-    setIsEditing(true)
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        photo_scenario: file, // Utilisation cohérente de 'photo_scenario'
+      }))
+      console.info("Nouvelle photo sélectionnée :", file)
+
+      // Créer une URL de prévisualisation
+      const previewUrl = URL.createObjectURL(file)
+      setPhotoPreview(previewUrl)
+    }
   }
 
   const handleCreate = () => {
@@ -132,62 +119,117 @@ const PartiesTab = () => {
       id_maitre_du_jeu: "",
       duree_estimee: "",
       lieu: "",
-      // Ajoutez d'autres champs si nécessaire
+      photo_scenario: null,
     })
+    setPhotoPreview(null)
+    setExistingPhoto(null)
     setIsCreating(true)
+    console.info("Mode création activé")
   }
 
-  const handleSubmit = (e) => {
+  const handleEdit = (party) => {
+    setSelectedParty(party)
+    setFormData({
+      titre: party.titre || "",
+      type: party.type || "jeux",
+      description: party.description || "",
+      date: party.date ? new Date(party.date).toISOString().slice(0, 16) : "",
+      nb_max_joueurs: party.nb_max_joueurs || "",
+      id_maitre_du_jeu: party.id_maitre_du_jeu || "",
+      duree_estimee: party.duree_estimee || "",
+      lieu: party.lieu || "",
+      photo_scenario: null, // Pour remplacer la photo uniquement si une nouvelle est sélectionnée
+    })
+    setPhotoPreview(
+      party.photo_scenario
+        ? `${import.meta.env.VITE_BACKEND_URL}/${party.photo_scenario.replace(
+            /\\/g,
+            "/"
+          )}`
+        : null
+    )
+    setExistingPhoto(party.photo_scenario || null)
+    setIsEditing(true)
+    console.info("Mode édition activé pour la partie :", party.id)
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (isEditing) {
-      // Mettre à jour la partie
-      axios
-        .put(
+
+    const submitFormData = new FormData()
+    Object.keys(formData).forEach((key) => {
+      if (key === "photo_scenario") {
+        if (formData.photo_scenario) {
+          submitFormData.append("photo_scenario", formData.photo_scenario)
+        }
+      } else {
+        submitFormData.append(key, formData[key])
+      }
+    })
+
+    // Si aucune nouvelle photo, envoyer l'URL existante
+    if (!formData.photo_scenario && existingPhoto) {
+      submitFormData.append("photo_scenario", existingPhoto)
+    }
+
+    // Ajouter un log pour vérifier le contenu de FormData
+    console.info("Contenu de FormData avant envoi :")
+    for (const pair of submitFormData.entries()) {
+      console.info(`${pair[0]}:`, pair[1])
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        // Ne pas définir 'Content-Type' manuellement pour 'multipart/form-data'
+      },
+    }
+
+    try {
+      if (isEditing) {
+        const response = await axios.put(
           `${import.meta.env.VITE_BACKEND_URL}/parties/${selectedParty.id}`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
+          submitFormData,
+          config
         )
-        .then(() => {
-          setIsEditing(false)
-          setSelectedParty(null)
-          fetchParties()
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la mise à jour de la partie :", error)
-          setError("Erreur lors de la mise à jour de la partie.")
-        })
-    } else if (isCreating) {
-      // Créer une nouvelle partie
-      axios
-        .post(`${import.meta.env.VITE_BACKEND_URL}/parties`, formData, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        })
-        .then(() => {
-          setIsCreating(false)
-          fetchParties()
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la création de la partie :", error)
-          setError("Erreur lors de la création de la partie.")
-        })
+        console.info("Partie mise à jour avec succès :", response.data)
+        setIsEditing(false)
+        setSelectedParty(null)
+        setPhotoPreview(null)
+        setExistingPhoto(null)
+        fetchParties()
+      } else if (isCreating) {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/parties`,
+          submitFormData,
+          config
+        )
+        console.info("Partie créée avec succès :", response.data)
+        setIsCreating(false)
+        setPhotoPreview(null)
+        fetchParties()
+      }
+    } catch (error) {
+      console.error("Erreur lors de la soumission de la partie :", error)
+      setError("Erreur lors de la soumission de la partie.")
     }
   }
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData((prevData) => ({ ...prevData, [name]: value }))
+    setFormData((prevData) => {
+      const updatedFormData = { ...prevData, [name]: value }
+      console.info(`FormData mis à jour - ${name}:`, value)
+      return updatedFormData
+    })
   }
 
   const handleCancel = () => {
     setIsEditing(false)
     setIsCreating(false)
     setSelectedParty(null)
+    setPhotoPreview(null)
+    setExistingPhoto(null)
     setFormData({
       titre: "",
       type: "jeux",
@@ -197,8 +239,28 @@ const PartiesTab = () => {
       id_maitre_du_jeu: "",
       duree_estimee: "",
       lieu: "",
-      // Ajoutez d'autres champs si nécessaire
+      photo_scenario: null,
     })
+    console.info("Formulaire annulé et réinitialisé")
+  }
+
+  const handleDelete = (partyId) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette partie ?")) {
+      axios
+        .delete(`${import.meta.env.VITE_BACKEND_URL}/parties/${partyId}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+        .then(() => {
+          console.info(`Partie avec ID ${partyId} supprimée avec succès`)
+          fetchParties()
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la suppression de la partie :", error)
+          setError("Erreur lors de la suppression de la partie.")
+        })
+    }
   }
 
   if (loading) {
@@ -213,7 +275,7 @@ const PartiesTab = () => {
     <div className="parties-tab">
       <h2>Gestion des parties</h2>
       <button onClick={handleCreate}>Créer une nouvelle partie</button>
-      {/* Champs de filtre */}
+
       {!isEditing && !isCreating && (
         <div className="filters">
           <div>
@@ -258,6 +320,7 @@ const PartiesTab = () => {
           </div>
         </div>
       )}
+
       {isEditing || isCreating ? (
         <form onSubmit={handleSubmit} className="party-form">
           <div>
@@ -345,7 +408,41 @@ const PartiesTab = () => {
               onChange={handleChange}
             />
           </div>
-          {/* Ajoutez d'autres champs si nécessaire */}
+          <div>
+            <label htmlFor="photo_scenario">Photo du scénario :</label>
+            <input
+              type="file"
+              id="photo_scenario"
+              name="photo_scenario"
+              accept="image/*"
+              onChange={handlePhotoChange}
+            />
+            {photoPreview ? (
+              <div className="photo-preview">
+                <p>Aperçu de la photo :</p>
+                <img
+                  src={photoPreview}
+                  alt="Aperçu de la photo"
+                  style={{ maxWidth: "200px", marginTop: "10px" }}
+                />
+              </div>
+            ) : (
+              isEditing &&
+              existingPhoto && (
+                <div>
+                  <p>Photo actuelle :</p>
+                  <img
+                    src={`${
+                      import.meta.env.VITE_BACKEND_URL
+                    }/${existingPhoto.replace(/\\/g, "/")}`}
+                    alt="Photo actuelle"
+                    style={{ maxWidth: "200px", marginTop: "10px" }}
+                  />
+                </div>
+              )
+            )}
+          </div>
+
           <button type="submit">
             {isEditing ? "Mettre à jour la partie" : "Créer la partie"}
           </button>
@@ -358,11 +455,15 @@ const PartiesTab = () => {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Photo</th>
               <th>Titre</th>
               <th>Type</th>
+              <th>Description</th>
               <th>Date</th>
-              <th>Lieu</th>
+              <th>Nombre max</th>
               <th>ID MJ</th>
+              <th>Durée</th>
+              <th>Lieu</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -370,8 +471,26 @@ const PartiesTab = () => {
             {filteredParties.map((party) => (
               <tr key={party.id}>
                 <td>{party.id}</td>
+                <td>
+                  {party.photo_scenario ? (
+                    <img
+                      src={`${
+                        import.meta.env.VITE_BACKEND_URL
+                      }/${party.photo_scenario.replace(/\\/g, "/")}`}
+                      alt={party.titre}
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <p>Pas de photo</p>
+                  )}
+                </td>
                 <td>{party.titre}</td>
                 <td>{party.type}</td>
+                <td>{party.description}</td>
                 <td>
                   {new Date(party.date).toLocaleString("fr-FR", {
                     day: "numeric",
@@ -381,8 +500,10 @@ const PartiesTab = () => {
                     minute: "2-digit",
                   })}
                 </td>
-                <td>{party.lieu}</td>
+                <td>{party.nb_max_joueurs}</td>
                 <td>{party.id_maitre_du_jeu}</td>
+                <td>{party.duree_estimee}</td>
+                <td>{party.lieu}</td>
                 <td>
                   <button onClick={() => handleEdit(party)}>Modifier</button>
                   <button onClick={() => handleDelete(party.id)}>

@@ -82,7 +82,14 @@ router.post(
   upload.single("photo_scenario"),
   PartieControllers.add
 )
-router.put("/parties/:id", verifyToken, PartieControllers.edit)
+// PUT /parties/:id
+router.put(
+  "/parties/:id",
+  verifyToken,
+  upload.single("photo_scenario"),
+  PartieControllers.edit
+)
+
 router.delete("/parties/:id", verifyToken, PartieControllers.destroy)
 
 // Routes pour les participations
