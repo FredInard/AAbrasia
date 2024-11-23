@@ -136,23 +136,45 @@ class UtilisateurControllers {
 
   // PUT /utilisateurs/:id/changerMotDePasse
   static changerMotDePasse(req, res) {
-    const id = parseInt(req.params.id, 10)
-    const { motDePasse } = req.body
+    console.info("Requête reçue pour changer le mot de passe.")
 
-    // Le mot de passe est déjà haché par le middleware hashPassword
+    const id = parseInt(req.params.id, 10)
+    const { hashedPassword } = req.body // Assurez-vous d'utiliser le bon champ
+
+    console.info("ID utilisateur reçu :", id)
+    console.info("Mot de passe haché reçu :", hashedPassword)
+
+    if (!hashedPassword) {
+      console.warn("Aucun mot de passe haché fourni dans la requête.")
+      return res.status(400).json({
+        error: "Le mot de passe haché est requis",
+      })
+    }
+
+    console.info(
+      "Tentative de mise à jour du mot de passe pour l'utilisateur ID :",
+      id
+    )
 
     models.utilisateur
-      .updatePassword(id, motDePasse)
+      .updatePassword(id, hashedPassword) // Passez le mot de passe haché
       .then(([result]) => {
+        console.info("Résultat de la mise à jour :", result)
+
         if (result.affectedRows === 0) {
-          res.sendStatus(404)
+          console.warn("Utilisateur introuvable avec ID :", id)
+          res.status(404).json({ error: "Utilisateur introuvable" })
         } else {
-          res.sendStatus(204)
+          console.info(
+            "Mot de passe mis à jour avec succès pour l'utilisateur ID :",
+            id
+          )
+          res.sendStatus(204) // Succès
         }
       })
       .catch((err) => {
-        console.error(err)
-        res.sendStatus(500)
+        console.error("Erreur lors de la mise à jour du mot de passe :", err)
+        res.status(500).json({ error: "Erreur interne du serveur" })
       })
   }
 

@@ -1,47 +1,24 @@
 import React, { useState, useRef, useEffect } from "react"
 import axios from "axios"
-import Cookies from "js-cookie"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 import "./ChangePassword.scss"
 
-function ChangePassword({ isOpen, onClose, onPasswordChangeSuccess }) {
-  const [oldPassword, setOldPassword] = useState("") // Ajout de l'état pour l'ancien mot de passe
+function ChangePassword({
+  isOpen,
+  onClose,
+  onPasswordChangeSuccess,
+  email,
+  idUser,
+}) {
+  const [oldPassword, setOldPassword] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [utilisateur, setUtilisateur] = useState({})
-  const nom = utilisateur.Nom
-  const prenom = utilisateur.Prenom
-  const pseudo = utilisateur.Pseudo
-  const mail = utilisateur.Mail || null
-  const telephone = utilisateur.Telephone || null
-  const pseudoDiscord = utilisateur.PseudoDiscord || null
-  const description = utilisateur.Description || null
-  const photoProfil = utilisateur.PhotoProfil
-  const villeResidence = utilisateur.VilleResidence || null
-  const admin = utilisateur.Admin || null
-  const membreEquipe = utilisateur.MembreEquipe || null
-  const membreAssociation = utilisateur.MembreAssociation || null
   const modalRef = useRef(null)
-  const tokenFromCookie = Cookies.get("authToken")
-  const headers = {
-    Authorization: `Bearer ${tokenFromCookie}`,
-  }
-  const idUser = Cookies.get("idUtilisateur")
-  const pseudoUser = Cookies.get("Pseudo")
+  console.info("userId :", idUser)
+  const authToken = localStorage.getItem("authToken")
 
   useEffect(() => {
-    axios
-      .get(
-        `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/profil/${idUser}`,
-        { headers }
-      )
-      .then((res) => setUtilisateur(res.data))
-      .catch((err) => {
-        console.error("Problème lors du chargement de l'utlisateur", err)
-      })
-  }, [])
-
-  useEffect(() => {
-    // Ajoutez un écouteur d'événements pour gérer les clics en dehors de la modal
     function handleOutsideClick(e) {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
         onClose()
@@ -54,46 +31,47 @@ function ChangePassword({ isOpen, onClose, onPasswordChangeSuccess }) {
       document.removeEventListener("mousedown", handleOutsideClick)
     }
 
-    // Nettoyez l'écouteur d'événements lors de la fermeture de la modal
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick)
     }
   }, [isOpen, onClose])
 
-  const handleChangePassword = (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault()
 
-    // Appel à axios.post pour vérifier le mot de passe
-    axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/verifPW`,
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/login`,
         {
-          Pseudo: pseudoUser,
-          hashedPassword: oldPassword,
-        },
-        {
-          headers,
+          email,
+          password: oldPassword,
         }
       )
-      .then((res) => {
-        if (res.status === 200 || res.status === 201) {
-          console.info("Mot de passe correct !")
-          // Appeler ici la fonction de modification du mot de passe (Code n°2)
-          handleChangePassword2()
-        } else {
-          console.error("Mot de passe incorrect !")
-          // Afficher un message d'erreur ou gérer la logique appropriée
-        }
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la vérification du mot de passe :", error)
-        // Gérer l'erreur
-      })
+
+      if (response.status === 200) {
+        console.info("Ancien mot de passe vérifié avec succès !")
+        toast.success("Ancien mot de passe vérifié avec succès.")
+        handleChangePassword2()
+      } else {
+        console.error("Ancien mot de passe incorrect.")
+        toast.error("L'ancien mot de passe est incorrect.")
+      }
+    } catch (error) {
+      console.error(
+        "Erreur lors de la vérification de l'ancien mot de passe :",
+        error
+      )
+      if (error.response?.status === 401) {
+        toast.error("L'ancien mot de passe est incorrect.")
+      } else {
+        toast.error("Une erreur est survenue. Veuillez réessayer.")
+      }
+    }
   }
 
   const handleChangePassword2 = async () => {
     if (password !== confirmPassword) {
-      alert("Les mots de passe ne correspondent pas.")
+      toast.warning("Les mots de passe ne correspondent pas.")
       return
     }
 
@@ -101,86 +79,79 @@ function ChangePassword({ isOpen, onClose, onPasswordChangeSuccess }) {
       const response = await axios.put(
         `${
           import.meta.env.VITE_BACKEND_URL
-        }/utilisateurs/changerMotDePasse/${idUser}`,
+        }/utilisateurs/${idUser}/changerMotDePasse`,
         {
-          Nom: nom,
-          Prenom: prenom,
-          Pseudo: pseudo,
-          Mail: mail,
-          Telephone: telephone,
-          PseudoDiscord: pseudoDiscord,
-          Description: description,
-          PhotoProfil: photoProfil,
-          VilleResidence: villeResidence,
           password,
-          Admin: admin,
-          MembreEquipe: membreEquipe,
-          MembreAssociation: membreAssociation,
-          id: idUser,
         },
-        { headers }
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
       )
 
-      if (response.status === 200 || response.status === 201) {
+      if (
+        response.status === 200 ||
+        response.status === 201 ||
+        response.status === 204
+      ) {
         console.info("Mot de passe modifié avec succès !")
-        onClose() // Fermez la modal
-        onPasswordChangeSuccess() // Appel de la fonction de rappel
+        toast.success("Mot de passe modifié avec succès.")
+        onClose()
+        onPasswordChangeSuccess()
       } else {
-        // console.error("Erreur lors de la modification du mot de passe :", error)
-        onClose() // Fermez la modal
-        onPasswordChangeSuccess() // Appel de la fonction de rappel
+        console.error(
+          "Erreur lors de la modification du mot de passe :",
+          response
+        )
+        toast.error(
+          "Une erreur est survenue lors de la modification du mot de passe."
+        )
       }
     } catch (error) {
       console.error("Erreur lors de la modification du mot de passe :", error)
-      alert(
-        "Une erreur s'est produite lors de la modification du mot de passe."
+      toast.error(
+        "Une erreur est survenue lors de la modification du mot de passe."
       )
     }
   }
 
   return (
-    <>
-      <div
-        className="modalChangePW"
-        style={{ display: isOpen ? "block" : "none" }}
-      >
-        <div
-          className="modalChangePW"
-          style={{ display: isOpen ? "block" : "none" }}
-        >
-          <div className="modalContent" ref={modalRef}>
-            <h2 className="titleChangePW">Changer le mot de passe</h2>
-            <div className="divChangePWThird">
-              <h2 className="titleChangePW">Ancien mot de passe:</h2>
-              <input
-                type="password"
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-              />
-            </div>
-            <div className="divChangePWFirst">
-              <h2 className="titleChangePW">Nouveau mot de passe:</h2>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="divChangePWSecond">
-              <h2 className="titleChangePW">Confirmer le mot de passe:</h2>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-            <button className="buttonChangePW" onClick={handleChangePassword}>
-              Changer le mot de passe
-            </button>
-          </div>
+    <div
+      className="modalChangePW"
+      style={{ display: isOpen ? "block" : "none" }}
+    >
+      <div className="modalContent" ref={modalRef}>
+        <h2 className="titleChangePW">Changer le mot de passe</h2>
+        <div className="divChangePWThird">
+          <h2 className="titleChangePW">Ancien mot de passe:</h2>
+          <input
+            type="password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
         </div>
+        <div className="divChangePWFirst">
+          <h2 className="titleChangePW">Nouveau mot de passe:</h2>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="divChangePWSecond">
+          <h2 className="titleChangePW">Confirmer le mot de passe:</h2>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+        <button className="buttonChangePW" onClick={handleChangePassword}>
+          Changer le mot de passe
+        </button>
       </div>
-    </>
+    </div>
   )
 }
 

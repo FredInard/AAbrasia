@@ -404,6 +404,8 @@ export default function ModificationProfil() {
           isOpen={showChangePasswordModal}
           onClose={closeChangePasswordModal}
           onPasswordChangeSuccess={closeChangePasswordModal}
+          email={formData.email}
+          idUser={idUser}
         />
       )}
 

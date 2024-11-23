@@ -4,40 +4,35 @@ import "./CreateGame.scss"
 import NavBar from "../components/NavBar/NavBar"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css" // Importation des styles pour react-toastify
-import jwtDecode from "jwt-decode" // Importation de jwt-decode
+import "react-toastify/dist/ReactToastify.css"
+import jwtDecode from "jwt-decode"
 
 const CreateGame = () => {
   const navigate = useNavigate()
 
-  // État pour gérer les champs du formulaire
   const [titre, setTitre] = useState("")
   const [description, setDescription] = useState("")
   const [date, setDate] = useState("")
-  const [nbMaxJoueurs, setNbMaxJoueurs] = useState(4) // Par défaut 4 joueurs
+  const [nbMaxJoueurs, setNbMaxJoueurs] = useState(4)
   const [niveauDifficulte, setNiveauDifficulte] = useState("moyen")
   const [lieu, setLieu] = useState("")
   const [dureeEstimee, setDureeEstimee] = useState("")
-  const [photoScenario, setPhotoScenario] = useState(null) // Variable pour l'image
-  const [type, setType] = useState("jeux") // Variable d'état pour "type"
+  const [photoScenario, setPhotoScenario] = useState(null)
+  const [type, setType] = useState("jeux")
 
-  // Récupérer le token depuis le localStorage
   const token = localStorage.getItem("authToken")
-
-  // Extraire l'ID du maître du jeu depuis le token
   let idMaitreDuJeu = null
 
   if (token && token.trim() !== "") {
     try {
       const decodedToken = jwtDecode(token)
-      idMaitreDuJeu = decodedToken.id // Assurez-vous que l'ID est bien sous la clé 'id'
+      idMaitreDuJeu = decodedToken.id
       console.info("idMaitreDuJeu :", idMaitreDuJeu)
     } catch (error) {
       console.error("Erreur lors du décodage du token :", error)
       toast.error(
         "Erreur lors de l'authentification. Veuillez vous reconnecter."
       )
-      // Rediriger vers la page de connexion si nécessaire
       navigate("/login")
       return
     }
@@ -46,35 +41,29 @@ const CreateGame = () => {
       "Aucun token valide trouvé. L'utilisateur n'est pas authentifié."
     )
     toast.error("Vous devez être connecté pour créer une partie.")
-    // Rediriger vers la page de connexion
     navigate("/login")
     return
   }
 
-  // Gestion de la soumission du formulaire
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    // Validation des données
     if (!titre || !description || !date || !lieu || !dureeEstimee) {
-      toast.error("Veuillez remplir tous les champs requis")
+      toast.error("Veuillez remplir tous les champs requis.")
       return
     }
 
     if (!idMaitreDuJeu) {
-      toast.error("Utilisateur non authentifié")
-      // Rediriger vers la page de connexion
+      toast.error("Utilisateur non authentifié.")
       navigate("/login")
       return
     }
 
     try {
-      // Utilisation de FormData pour envoyer des fichiers avec d'autres données
       const formData = new FormData()
       formData.append("titre", titre)
       formData.append("description", description)
 
-      // Formatage de la date
       let formattedDate = date
       if (date) {
         const dateObj = new Date(date)
@@ -88,35 +77,28 @@ const CreateGame = () => {
       }
       formData.append("date", formattedDate)
 
-      // Conversion du nombre de joueurs en entier
       const nbMaxJoueursInt = parseInt(nbMaxJoueurs, 10)
       formData.append("nb_max_joueurs", nbMaxJoueursInt)
 
-      // Conversion de la durée estimée en entier
       const dureeEstimeeInt = parseInt(dureeEstimee, 10)
       formData.append("duree_estimee", dureeEstimeeInt)
 
       formData.append("niveau_difficulte", niveauDifficulte)
       formData.append("lieu", lieu)
-      formData.append("type", type) // Ajout de "type" aux données envoyées
-
-      // Ajout de l'ID du maître du jeu aux données envoyées
+      formData.append("type", type)
       formData.append("id_maitre_du_jeu", idMaitreDuJeu)
 
       if (photoScenario) {
-        formData.append("photo_scenario", photoScenario) // Ajout de l'image dans formData
+        formData.append("photo_scenario", photoScenario)
       }
 
-      // Avant la requête, pour afficher le contenu de formData
       console.info("Contenu de formData :")
       for (const [key, value] of formData.entries()) {
         console.info(`${key}:`, value)
       }
 
-      // Afficher un toast de chargement pendant la requête
       const loadingToast = toast.loading("Création de la partie en cours...")
 
-      // Requête POST à l'API pour créer une partie
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/parties`,
         formData,
@@ -127,7 +109,6 @@ const CreateGame = () => {
         }
       )
 
-      // Après la requête, pour afficher la réponse du serveur
       console.info("Réponse du serveur :", response)
 
       if (response.status === 201) {
@@ -137,7 +118,7 @@ const CreateGame = () => {
           isLoading: false,
           autoClose: 3000,
         })
-        // Réinitialisation du formulaire après succès
+
         setTitre("")
         setDescription("")
         setDate("")
@@ -145,16 +126,15 @@ const CreateGame = () => {
         setNiveauDifficulte("moyen")
         setLieu("")
         setDureeEstimee("")
-        setPhotoScenario(null) // Réinitialise l'image
-        setType("jeux") // Réinitialise le type
+        setPhotoScenario(null)
+        setType("jeux")
 
-        // Redirection vers la page des parties après un délai
         setTimeout(() => {
           navigate("/parties")
         }, 3000)
       } else {
         toast.update(loadingToast, {
-          render: "Erreur lors de la création de la partie",
+          render: "Erreur lors de la création de la partie.",
           type: "error",
           isLoading: false,
           autoClose: 3000,
@@ -170,7 +150,6 @@ const CreateGame = () => {
     }
   }
 
-  // Gestion du changement de fichier pour l'image
   const handleFileChange = (e) => {
     setPhotoScenario(e.target.files[0])
   }
@@ -291,11 +270,10 @@ const CreateGame = () => {
               type="file"
               id="photoScenario"
               accept="image/*"
-              onChange={handleFileChange} // Capture du fichier
+              onChange={handleFileChange}
             />
           </div>
 
-          {/* Bouton de soumission */}
           <button type="submit" className="btn-submit">
             Créer la partie
           </button>

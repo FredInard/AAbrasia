@@ -57,7 +57,13 @@
       min-height: 80px;
     }
   }
-
+  .photo-preview {
+    max-width: 100%;
+    max-height: 200px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
   .submit-btn {
     padding: 10px;
     background-color: #007bff;

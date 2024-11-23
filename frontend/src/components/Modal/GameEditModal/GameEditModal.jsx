@@ -1,5 +1,3 @@
-// src/components/GameEditModal/GameEditModal.jsx
-
 import React, { useState } from "react"
 import "./GameEditModal.scss"
 
@@ -14,6 +12,14 @@ const GameEditModal = ({ gameDetails, onClose, onSubmit }) => {
     }
   })
 
+  // Fonction pour normaliser l'URL
+  const normalizeUrl = (url) => url.replace(/([^:]\/)\/+/g, "$1")
+  // Pour prévisualiser la photo téléchargée
+  const [photoPreview, setPhotoPreview] = useState(
+    normalizeUrl(
+      `${import.meta.env.VITE_BACKEND_URL}/${gameDetails.photo_scenario}`
+    ) || null
+  )
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prevData) => ({
@@ -22,9 +28,31 @@ const GameEditModal = ({ gameDetails, onClose, onSubmit }) => {
     }))
   }
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        photo_scenario: file, // Stocker le fichier pour l'envoi
+      }))
+      setPhotoPreview(URL.createObjectURL(file)) // Prévisualisation
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    onSubmit(formData) // Envoyer toutes les données de formData, y compris les champs non modifiables
+
+    const updatedFormData = new FormData()
+    // Ajouter les champs texte au FormData
+    Object.keys(formData).forEach((key) => {
+      if (key === "photo_scenario" && formData[key] instanceof File) {
+        updatedFormData.append(key, formData[key]) // Ajouter la photo seulement si modifiée
+      } else {
+        updatedFormData.append(key, formData[key])
+      }
+    })
+
+    onSubmit(updatedFormData) // Envoyer les données au parent
   }
 
   return (
@@ -107,13 +135,24 @@ const GameEditModal = ({ gameDetails, onClose, onSubmit }) => {
               onChange={handleChange}
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="photo_scenario">Photo du scénario :</label>
+            {photoPreview && (
+              <img
+                src={normalizeUrl(photoPreview)}
+                alt="Prévisualisation"
+                className="photo-preview"
+              />
+            )}
+            <input
+              type="file"
+              id="photo_scenario"
+              name="photo_scenario"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </div>
 
-          {/* Champs non modifiables (inclus dans formData mais non affichés) */}
-          {/* Si nécessaire, vous pouvez inclure des inputs cachés */}
-          {/* Exemple :
-          <input type="hidden" name="id" value={formData.id} />
-          */}
-          {/* Bouton de soumission */}
           <button type="submit" className="submit-btn">
             Enregistrer les modifications
           </button>
