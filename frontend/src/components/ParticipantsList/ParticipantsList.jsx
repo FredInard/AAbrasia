@@ -3,7 +3,12 @@ import axios from "axios"
 import UserProfileModal from "../UserProfileModal/UserProfileModal" // Import de la modale de profil
 import "./ParticipantsList.scss"
 
-const ParticipantsList = ({ partyId, isUpdated }) => {
+const ParticipantsList = ({
+  partyId,
+  isUpdated,
+  isCreator,
+  onParticipantRemoved,
+}) => {
   const [participants, setParticipants] = useState([])
   const [selectedParticipant, setSelectedParticipant] = useState(null)
   const [error, setError] = useState(null)
@@ -39,6 +44,43 @@ const ParticipantsList = ({ partyId, isUpdated }) => {
     setSelectedParticipant(null)
   }
 
+  // Fonction pour supprimer un participant
+  const handleRemoveParticipant = async (participantId) => {
+    if (!isCreator) return // Seul le MJ peut supprimer un participant
+
+    try {
+      await axios.delete(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/participations/${partyId}/${participantId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      )
+
+      // Mettre à jour la liste des participants localement
+      setParticipants((prevParticipants) =>
+        prevParticipants.filter((p) => p.id !== participantId)
+      )
+
+      // Optionnel : Notifier l'utilisateur
+      alert("Participant supprimé avec succès.")
+
+      // Appeler la fonction de rafraîchissement passée en prop
+      if (typeof onParticipantRemoved === "function") {
+        onParticipantRemoved() // Rafraîchit CarpoolList et MealList
+      }
+    } catch (err) {
+      console.error(
+        `Erreur lors de la suppression du participant ${participantId} :`,
+        err
+      )
+      setError("Impossible de supprimer ce participant. Veuillez réessayer.")
+    }
+  }
+
   if (loading) return <p>Chargement des participants...</p>
   if (error) return <p>{error}</p>
 
@@ -57,6 +99,15 @@ const ParticipantsList = ({ partyId, isUpdated }) => {
                 onClick={() => handleProfileClick(participant)} // Gestionnaire de clic
               />
               {participant.pseudo}
+              {isCreator && (
+                <button
+                  className="remove-participant-btn"
+                  onClick={() => handleRemoveParticipant(participant.id)}
+                  aria-label={`Supprimer ${participant.pseudo}`}
+                >
+                  Supprimer
+                </button>
+              )}
             </div>
           ))
         ) : (

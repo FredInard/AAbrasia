@@ -13,9 +13,9 @@ import give from "../assets/pics/give.svg"
 import GameList from "../components/Game/GameList"
 
 const images = [
-  "https://via.placeholder.com/800x400/FFBB52/FFFFFF?text=Slide+1",
-  "https://via.placeholder.com/800x400/52BBFF/FFFFFF?text=Slide+2",
-  "https://via.placeholder.com/800x400/FF52BB/FFFFFF?text=Slide+3",
+  "https://img.lamontagne.fr/dC7lKP3qe-GxvvOjOL58e7cZoN3fz7YAf9bjOeWLz9I/fit/657/438/sm/0/bG9jYWw6Ly8vMDAvMDAvMDIvOTEvNjcvMjAwMDAwMjkxNjc1Nw.jpg",
+  "https://cdn-s-www.republicain-lorrain.fr/images/4C0D3920-CE05-41DC-91E6-93F0A40520CF/NW_raw/les-jeux-de-role-sur-table-sont-tout-aussi-animes-qu-en-grandeur-nature-photo-rl-1546706878.jpg",
+  "https://cdn.svc.asmodee.net/production-asmodeefrblog/uploads/2023/08/Dice_header.jpg",
 ]
 
 export default function Home() {

@@ -168,7 +168,7 @@ class ParticipationControllers {
       })
   }
 
-  /// DELETE /participations/:idPartie/:idPlayer
+  // DELETE /participations/:idPartie/:idPlayer
   static deleteParticipationsByPartyIdAndPlayerId(req, res) {
     const partyId = parseInt(req.params.idPartie, 10)
     const userId = parseInt(req.params.idPlayer, 10)

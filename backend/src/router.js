@@ -91,7 +91,7 @@ router.put(
   PartieControllers.edit
 )
 
-router.delete("/parties/:id", verifyToken, PartieControllers.destroy)
+router.delete("/parties/:id", verifyToken, PartieControllers.deleteByPartyId)
 
 // Routes pour les participations
 router.get("/participations", ParticipationControllers.browse)

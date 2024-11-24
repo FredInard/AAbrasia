@@ -210,8 +210,15 @@ JOIN
   }
 
   // Delete a partie and its related participations
-  getDestroyeurDePartie(partieId) {
-    return this.database.query("DELETE FROM partie WHERE id = ?", [partieId])
+  // getDestroyeurDePartie(partieId) {
+  //   return this.database.query("DELETE FROM partie WHERE id = ?", [partieId])
+  // }
+
+  deleteByPartyId(partyId) {
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE partie_id = ?`,
+      [partyId]
+    )
   }
 }
 

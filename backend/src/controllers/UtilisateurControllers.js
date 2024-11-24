@@ -41,7 +41,11 @@ class UtilisateurControllers {
   static add(req, res) {
     const utilisateur = req.body
     console.info("utilisateur back is :", utilisateur)
-    // TODO: Validations (length, format...)
+
+    // Ajouter une valeur par défaut pour l'image de profil si non spécifiée
+    utilisateur.photo_profil =
+      utilisateur.photo_profil ||
+      "public/assets/images/profilPictures/dragonBook.webp"
 
     models.utilisateur
       .insert(utilisateur)
@@ -49,7 +53,7 @@ class UtilisateurControllers {
         res.status(201).json({ id: result.insertId, ...utilisateur })
       })
       .catch((err) => {
-        console.error(err)
+        console.error("Erreur lors de l'insertion de l'utilisateur :", err)
         res.sendStatus(500)
       })
   }

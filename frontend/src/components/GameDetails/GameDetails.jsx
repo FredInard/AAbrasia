@@ -16,7 +16,7 @@ import iconTeam from "../../assets/pics/iconTeam.svg"
 import IconCar from "../../assets/pics/iconCar.svg"
 import iconPizza from "../../assets/pics/iconPizza.svg"
 
-const GameDetails = ({ partyId, game, onClose }) => {
+const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
   const [gameDetails, setGameDetails] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -27,7 +27,9 @@ const GameDetails = ({ partyId, game, onClose }) => {
   const [isMealModalOpen, setIsMealModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false) // État pour la modale d'édition
-
+  const refreshData = () => {
+    setIsUpdated(!isUpdated) // Change la valeur pour forcer un rechargement
+  }
   // Récupérer l'utilisateur connecté une fois au chargement
   useEffect(() => {
     const token = localStorage.getItem("authToken")
@@ -113,6 +115,10 @@ const GameDetails = ({ partyId, game, onClose }) => {
       )
       setIsJoined(false)
       setIsUpdated(!isUpdated) // Rafraîchit les listes liées aux repas et covoiturages
+      // Si onUpdate est défini, appelez-le pour notifier PlayerGames
+      if (typeof onUpdate === "function") {
+        onUpdate()
+      }
     } catch (err) {
       console.error(
         "Erreur lors de la suppression des données de l'utilisateur :",
@@ -254,6 +260,41 @@ const GameDetails = ({ partyId, game, onClose }) => {
       })
   }
 
+  const handleDeleteParty = async () => {
+    if (
+      !window.confirm(
+        "Êtes-vous sûr de vouloir supprimer cette partie ? Cette action est irréversible."
+      )
+    ) {
+      return // Annule si l'utilisateur ne confirme pas
+    }
+
+    try {
+      const token = localStorage.getItem("authToken")
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/parties/${partyId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      alert("Partie supprimée avec succès.")
+      if (typeof onClose === "function") {
+        onClose() // Ferme la modale
+      }
+      if (typeof onUpdate === "function") {
+        onUpdate() // Notifie le parent pour rafraîchir la liste des parties
+      }
+    } catch (err) {
+      console.error("Erreur lors de la suppression de la partie :", err)
+      setError(
+        "Erreur lors de la suppression de la partie. Veuillez réessayer."
+      )
+    }
+  }
+
   if (loading) return <p>Chargement des détails de la partie...</p>
   if (error) return <p>{error}</p>
 
@@ -283,13 +324,22 @@ const GameDetails = ({ partyId, game, onClose }) => {
 
           {/* Afficher le bouton Modifier si l'utilisateur est le créateur et que la date n'est pas passée */}
           {isCreator && !isPast && (
-            <button
-              className="edit-btn"
-              onClick={handleOpenEditModal}
-              aria-label="Modifier la partie"
-            >
-              ✎
-            </button>
+            <>
+              <button
+                className="edit-btn"
+                onClick={handleOpenEditModal}
+                aria-label="Modifier la partie"
+              >
+                ✎
+              </button>
+              <button
+                className="delete-btn"
+                onClick={handleDeleteParty}
+                aria-label="Supprimer la partie"
+              >
+                🗑️
+              </button>
+            </>
           )}
         </div>
 
@@ -319,7 +369,7 @@ const GameDetails = ({ partyId, game, onClose }) => {
           </div>
         </div>
         {selectedUser && (
-          <UserProfileModal userId={selectedUser} onClose={closeModal} />
+          <UserProfileModal user={selectedUser} onClose={closeModal} />
         )}
 
         <div className="game-details">
@@ -350,7 +400,12 @@ const GameDetails = ({ partyId, game, onClose }) => {
         </div>
 
         <h3>Participants :</h3>
-        <ParticipantsList partyId={partyId} isUpdated={isUpdated} />
+        <ParticipantsList
+          partyId={partyId}
+          isUpdated={isUpdated}
+          isCreator={isCreator}
+          onParticipantRemoved={refreshData}
+        />
 
         {user && (
           <>

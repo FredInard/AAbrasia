@@ -85,6 +85,31 @@ const PlayerGames = () => {
     setSelectedPartyId(null)
   }
 
+  const handleGameUpdate = () => {
+    setGames([]) // Réinitialise la liste des jeux
+    setIsLoading(true) // Active le rechargement
+
+    // Recharge les parties
+    const fetchUpdatedGames = async () => {
+      try {
+        const token = localStorage.getItem("authToken")
+        const headers = { Authorization: `Bearer ${token}` }
+
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/parties/player/${playerId}`,
+          { headers }
+        )
+        setGames(response.data)
+      } catch (err) {
+        setError("Erreur lors du rafraîchissement des parties.")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchUpdatedGames()
+  }
+
   if (isLoading) return <p>Chargement des parties...</p>
   if (error) return <p>{error}</p>
 
@@ -92,7 +117,11 @@ const PlayerGames = () => {
     <div>
       {selectedPartyId ? (
         // Affiche GameDetails si un partyId est sélectionné
-        <GameDetails partyId={selectedPartyId} onClose={closeGameDetails} />
+        <GameDetails
+          partyId={selectedPartyId}
+          onClose={closeGameDetails}
+          onUpdate={handleGameUpdate} // Passe la fonction de mise à jour
+        />
       ) : (
         <div>
           <h2>Parties de l'utilisateur</h2>

@@ -76,6 +76,13 @@ class CovoiturageManager extends AbstractManager {
   delete(id) {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id])
   }
+
+  deleteByPartyId(partyId) {
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE partie_id = ?`,
+      [partyId]
+    )
+  }
 }
 
 module.exports = CovoiturageManager

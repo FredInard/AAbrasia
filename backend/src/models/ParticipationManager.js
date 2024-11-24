@@ -104,6 +104,13 @@ class ParticipationManager extends AbstractManager {
       [partyId, userId]
     )
   }
+
+  deleteByPartyId(partyId) {
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE partie_id = ?`,
+      [partyId]
+    )
+  }
 }
 
 module.exports = ParticipationManager

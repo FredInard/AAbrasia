@@ -79,7 +79,9 @@ class PartieControllers {
         // Remove 'public' from the beginning of the path as it's typically served as static
         partie.photo_scenario = filePath.replace("public", "")
       } else {
-        partie.photo_scenario = null
+        // Set default photo if none is provided
+        partie.photo_scenario =
+          "public/assets/images/profilPictures/dragonBook.webp"
       }
 
       console.info("Données de la partie à insérer :", partie)
@@ -147,23 +149,35 @@ class PartieControllers {
       })
   }
 
-  // DELETE /parties/:id
-  static destroy(req, res) {
-    const id = parseInt(req.params.id, 10)
+  static async deleteByPartyId(req, res) {
+    const partyId = parseInt(req.params.id, 10)
 
-    models.partie
-      .delete(id)
-      .then(([result]) => {
-        if (result.affectedRows === 0) {
-          res.sendStatus(404)
-        } else {
-          res.sendStatus(204)
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-        res.sendStatus(500)
-      })
+    if (!partyId) {
+      return res.status(400).json({ error: "L'ID de la partie est requis." })
+    }
+
+    try {
+      console.info(`Suppression des dépendances pour la partie ID: ${partyId}`)
+
+      // Suppression des dépendances
+      await Promise.all([
+        models.participation.deleteByPartyId(partyId), // Supprime les participations
+        models.repas.deleteByPartyId(partyId), // Supprime les repas
+        models.covoiturage.deleteByPartyId(partyId), // Supprime les covoiturages
+      ])
+
+      // Suppression de la partie elle-même
+      const result = await models.partie.delete(partyId)
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Partie non trouvée." })
+      }
+
+      console.info(`Partie ID: ${partyId} et dépendances supprimées.`)
+      res.status(204).send() // Succès sans contenu
+    } catch (err) {
+      console.error("Erreur lors de la suppression de la partie :", err)
+      res.status(500).json({ error: "Erreur serveur." })
+    }
   }
 
   // GET /parties/affichage
@@ -272,25 +286,25 @@ class PartieControllers {
   }
 
   // DELETE /parties/destroyer/:id
-  static destroyeurDePartie(req, res) {
-    const id = parseInt(req.params.id, 10)
+  // static destroyeurDePartie(req, res) {
+  //   const id = parseInt(req.params.id, 10)
 
-    models.partie
-      .getDestroyeurDePartie(id)
-      .then(() => {
-        res.sendStatus(204) // La suppression a réussi
-        console.info(
-          "La suppression de la partie et des participations a réussi"
-        )
-      })
-      .catch((err) => {
-        console.error(err)
-        res.sendStatus(500) // Erreur de serveur
-        console.info(
-          "Échec de la suppression de la partie et des participations"
-        )
-      })
-  }
+  //   models.partie
+  //     .getDestroyeurDePartie(id)
+  //     .then(() => {
+  //       res.sendStatus(204) // La suppression a réussi
+  //       console.info(
+  //         "La suppression de la partie et des participations a réussi"
+  //       )
+  //     })
+  //     .catch((err) => {
+  //       console.error(err)
+  //       res.sendStatus(500) // Erreur de serveur
+  //       console.info(
+  //         "Échec de la suppression de la partie et des participations"
+  //       )
+  //     })
+  // }
 }
 
 module.exports = PartieControllers
