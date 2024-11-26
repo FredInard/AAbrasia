@@ -5,6 +5,13 @@ class UtilisateurManager extends AbstractManager {
     super({ table: "utilisateur" })
   }
 
+  findByEmailOrPseudo(email, pseudo) {
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE email = ? OR pseudo = ?`,
+      [email, pseudo]
+    )
+  }
+
   // Insérer un nouvel utilisateur
   insert(utilisateur) {
     return this.database.query(

@@ -30,6 +30,20 @@ const LoginSignup = () => {
 
   console.info("isUserLocked :", isUserLocked)
 
+  const isPasswordStrong = (password) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{12,})/
+
+    return passwordRegex.test(password)
+  }
+
+  // Test cases
+  console.info(isPasswordStrong("Abc123!@#def")) // true (valide)
+  console.info(isPasswordStrong("abc123!@#def")) // false (pas de majuscule)
+  console.info(isPasswordStrong("ABC123!@#DEF")) // false (pas assez long)
+  console.info(isPasswordStrong("Abc12345678")) // false (pas de caractère spécial)
+
+  console.info("signupForm.confirmPassword", signupForm.confirmPassword)
+
   // Gestion des tentatives de connexion infructueuses
   const lockoutUser = () => {
     setIsUserLocked(true)
@@ -120,6 +134,13 @@ const LoginSignup = () => {
   // Soumission du formulaire d'inscription
   const handleSignupSubmit = async (e) => {
     e.preventDefault()
+
+    if (!isPasswordStrong(signupForm.password)) {
+      return toast.error(
+        "Le mot de passe doit contenir au moins 12 caractères, un chiffre, une lettre en majuscule et un caractère spécial."
+      )
+    }
+
     if (signupForm.password !== signupForm.confirmPassword) {
       return toast.error("Les mots de passe ne correspondent pas.")
     }
@@ -141,8 +162,14 @@ const LoginSignup = () => {
         setIsLogin(true) // Retourner au formulaire de connexion
       }
     } catch (error) {
-      console.error("Erreur lors de l'inscription :", error)
-      toast.error("Erreur lors de l'inscription. Veuillez réessayer.")
+      if (error.response?.status === 409) {
+        toast.error(
+          "L'email ou le pseudo est déjà utilisé. Veuillez en choisir un autre."
+        )
+      } else {
+        console.error("Erreur lors de l'inscription :", error)
+        toast.error("Erreur lors de l'inscription. Veuillez réessayer.")
+      }
     }
   }
 

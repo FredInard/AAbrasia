@@ -38,7 +38,7 @@ class UtilisateurControllers {
   }
 
   // POST /utilisateurs
-  static add(req, res) {
+  static async add(req, res) {
     const utilisateur = req.body
     console.info("utilisateur back is :", utilisateur)
 
@@ -47,15 +47,26 @@ class UtilisateurControllers {
       utilisateur.photo_profil ||
       "public/assets/images/profilPictures/dragonBook.webp"
 
-    models.utilisateur
-      .insert(utilisateur)
-      .then(([result]) => {
-        res.status(201).json({ id: result.insertId, ...utilisateur })
-      })
-      .catch((err) => {
-        console.error("Erreur lors de l'insertion de l'utilisateur :", err)
-        res.sendStatus(500)
-      })
+    try {
+      // Vérification si l'email ou le pseudo existe déjà
+      const [existingUsers] = await models.utilisateur.findByEmailOrPseudo(
+        utilisateur.email,
+        utilisateur.pseudo
+      )
+
+      if (existingUsers.length > 0) {
+        return res.status(409).json({
+          error: "L'email ou le pseudo est déjà utilisé.",
+        })
+      }
+
+      // Insérer le nouvel utilisateur
+      const [result] = await models.utilisateur.insert(utilisateur)
+      res.status(201).json({ id: result.insertId, ...utilisateur })
+    } catch (err) {
+      console.error("Erreur lors de l'insertion de l'utilisateur :", err)
+      res.sendStatus(500)
+    }
   }
 
   // PUT /utilisateurs/:id
