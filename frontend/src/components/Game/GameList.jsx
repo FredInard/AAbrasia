@@ -78,43 +78,45 @@ const GameList = ({ selectedDate }) => {
   }
 
   return (
-    <div className="gameBox">
+    <>
       <p>{selectedDate}</p>
-      {selectedDate ? (
-        filteredGames.length > 0 ? (
-          filteredGames.map((game) => {
-            return (
-              <div
-                key={game.id}
-                className="game-item"
-                onClick={() => handleGameClick(game.id)}
-              >
-                <h3>{game.titre}</h3>
-                <img
-                  src={`${import.meta.env.VITE_BACKEND_URL.replace(
-                    /\/$/,
-                    ""
-                  )}/${game.photo_scenario.replace(/\\/g, "/")}`}
-                  alt="illustration de la partie"
-                  className="illustrationPartie"
-                />
+      <div className="gameBox">
+        {selectedDate ? (
+          filteredGames.length > 0 ? (
+            filteredGames.map((game) => {
+              return (
+                <div
+                  key={game.id}
+                  className="game-item"
+                  onClick={() => handleGameClick(game.id)}
+                >
+                  <h3>{game.titre}</h3>
+                  <img
+                    src={`${import.meta.env.VITE_BACKEND_URL.replace(
+                      /\/$/,
+                      ""
+                    )}/${game.photo_scenario.replace(/\\/g, "/")}`}
+                    alt="illustration de la partie"
+                    className="illustrationPartie"
+                  />
 
-                <p>
-                  <strong>Lieu :</strong> {game.nb_max_joueurs}
-                </p>
-              </div>
-            )
-          })
+                  <p>
+                    <strong>Lieu :</strong> {game.nb_max_joueurs}
+                  </p>
+                </div>
+              )
+            })
+          ) : (
+            <p>Aucune partie trouvée pour la date sélectionnée.</p>
+          )
         ) : (
-          <p>Aucune partie trouvée pour la date sélectionnée.</p>
-        )
-      ) : (
-        <p>Veuillez sélectionner une date pour afficher les parties.</p>
-      )}
-      {isModalOpen && (
-        <GameDetails partyId={selectedGameId} onClose={closeModal} />
-      )}
-    </div>
+          <p>Veuillez sélectionner une date pour afficher les parties.</p>
+        )}
+        {isModalOpen && (
+          <GameDetails partyId={selectedGameId} onClose={closeModal} />
+        )}
+      </div>
+    </>
   )
 }
 

@@ -4,7 +4,12 @@ import "./Home.scss"
 import Calendar from "../components/schedule/Calendar"
 import NavBar from "../components/NavBar/NavBar"
 import Image1 from "../assets/pics/headerPictureD.png"
-import Carrousel from "../components/Carrousel/Carrousel"
+import iNeedYou from "../assets/pics/iNeedYou.svg"
+import reflective from "../assets/pics/characterReflectivePose.svg"
+import team from "../assets/pics/teamB.svg"
+import logoArpenteur from "../assets/pics/logoArpenteur.svg"
+// import logo from "../assets/pics/logo.svg"
+// import Carrousel from "../components/Carrousel/Carrousel"
 import Footer from "../components/Footer/Footer"
 import iconeDiscorde from "../assets/pics/discord.svg"
 import iconeFacebook from "../assets/pics/facebook.svg"
@@ -12,11 +17,11 @@ import iconeMail from "../assets/pics/mail.svg"
 import give from "../assets/pics/give.svg"
 import GameList from "../components/Game/GameList"
 
-const images = [
-  "https://img.lamontagne.fr/dC7lKP3qe-GxvvOjOL58e7cZoN3fz7YAf9bjOeWLz9I/fit/657/438/sm/0/bG9jYWw6Ly8vMDAvMDAvMDIvOTEvNjcvMjAwMDAwMjkxNjc1Nw.jpg",
-  "https://cdn-s-www.republicain-lorrain.fr/images/4C0D3920-CE05-41DC-91E6-93F0A40520CF/NW_raw/les-jeux-de-role-sur-table-sont-tout-aussi-animes-qu-en-grandeur-nature-photo-rl-1546706878.jpg",
-  "https://cdn.svc.asmodee.net/production-asmodeefrblog/uploads/2023/08/Dice_header.jpg",
-]
+// const images = [
+//   "https://img.lamontagne.fr/dC7lKP3qe-GxvvOjOL58e7cZoN3fz7YAf9bjOeWLz9I/fit/657/438/sm/0/bG9jYWw6Ly8vMDAvMDAvMDIvOTEvNjcvMjAwMDAwMjkxNjc1Nw.jpg",
+//   "https://cdn-s-www.republicain-lorrain.fr/images/4C0D3920-CE05-41DC-91E6-93F0A40520CF/NW_raw/les-jeux-de-role-sur-table-sont-tout-aussi-animes-qu-en-grandeur-nature-photo-rl-1546706878.jpg",
+//   "https://cdn.svc.asmodee.net/production-asmodeefrblog/uploads/2023/08/Dice_header.jpg",
+// ]
 
 export default function Home() {
   // Initialiser `selectedDate` avec la date d'aujourd'hui
@@ -46,8 +51,8 @@ export default function Home() {
         <section className="section-intro">
           <div className="intro-text">
             <h1>
-              Plongez dans l'aventure avec l'Association de jeux de rôle des
-              Arpenteurs d'Abrasia
+              <img src={logoArpenteur} alt="Jeux de rôle" />
+              l'Association de jeux de rôle qui te fait oublier Netflix
             </h1>
             <p>
               Bienvenue, <br />
@@ -59,7 +64,7 @@ export default function Home() {
             </p>
           </div>
           <div className="intro-image">
-            <img src={Image1} alt="Jeux de rôle" />
+            <img src={team} alt="Jeux de rôle" />
           </div>
         </section>
 
@@ -69,35 +74,50 @@ export default function Home() {
         </div>
 
         {/* Carrousel */}
-        <Carrousel images={images} interval={4000} />
+        {/* <Carrousel images={images} interval={4000} /> */}
 
         {/* Section : C'est quoi le jeu de rôle ? */}
         <section className="section-what-is-jdr">
-          <h2>C’est quoi le jeu de rôle ?</h2>
-          <p>
-            Le jeu de rôle est un loisir qui se pratique en petits groupes
-            (entre 3 et 6 personnes) autour d'une table. Une personne prend le
-            rôle de meneuse de jeu et raconte une histoire dans laquelle chacune
-            des personnes attablées incarne un personnage. Le but est d’imaginer
-            et mettre en place collectivement des solutions pour déjouer les
-            pièges et mener à bien l’aventure... À condition que les dés le
-            permettent !
-          </p>
+          <div className="section-what-is-jdr1">
+            <h2>C’est quoi le jeu de rôle ?</h2>
+            <p>
+              Le jeu de rôle est un loisir qui se pratique en petits groupes
+              (entre 3 et 6 personnes) autour d'une table. Une personne prend le
+              rôle de meneuse de jeu et raconte une histoire dans laquelle
+              chacune des personnes attablées incarne un personnage. Le but est
+              d’imaginer et mettre en place collectivement des solutions pour
+              déjouer les pièges et mener à bien l’aventure... À condition que
+              les dés le permettent !
+            </p>
+          </div>
+          <div className="reflective-image">
+            <img src={reflective} alt="Jeux de rôle" />
+          </div>
         </section>
 
         {/* Section : Notre association */}
         <section className="section-our-association">
-          <h2>Notre association</h2>
-          <p>
-            L'association des Arpenteurs d'Abrasia (AA) a une double vocation
-            ludique et culturelle. Elle a pour objet de réunir des joueurs et
-            joueuses de façon régulière autour de tables de jeu de rôle (jdr)
-            afin de partager des moments conviviaux et inclusifs. Elle se donne
-            pour mission de créer du lien social, d'une part en créant des
-            espaces de jeu mixtes et bienveillants pour toute personne
-            souhaitant la rejoindre, d'autre part en allant vers des publics en
-            recherche de sociabilité et/ou isolés.
-          </p>
+          <div className="divImageSectionAsso">
+            <img
+              src={Image1}
+              alt="imageSectionAsso"
+              className="imageSectionAssociation"
+            />
+          </div>
+
+          <div className="section-what-is-jdr1">
+            <h2>Notre association</h2>
+            <p>
+              L'association des Arpenteurs d'Abrasia (AA) a une double vocation
+              ludique et culturelle. Elle a pour objet de réunir des joueurs et
+              joueuses de façon régulière autour de tables de jeu de rôle (jdr)
+              afin de partager des moments conviviaux et inclusifs. Elle se
+              donne pour mission de créer du lien social, d'une part en créant
+              des espaces de jeu mixtes et bienveillants pour toute personne
+              souhaitant la rejoindre, d'autre part en allant vers des publics
+              en recherche de sociabilité et/ou isolés.
+            </p>
+          </div>
         </section>
 
         {/* Section : Notre Agenda */}
@@ -114,7 +134,28 @@ export default function Home() {
           <p>Voici la team de l'association</p>
           <button>Découvrir toute la team</button>
         </section>
-
+        <div className="section-HelloAsso">
+          <h2>Nous soutenir sur HelloAsso</h2>
+          <div className="boxHelloAsso">
+            <div className="helloAsso1">
+              <img
+                src={iNeedYou}
+                alt="imageSectionAsso"
+                className="imageSectionAssociation"
+              />
+              <p>Parceque donner c'est bien, mais a nous c'est mieux.</p>
+            </div>
+            <div className="helloAsso2">
+              <a
+                href="https://www.helloasso.com/associations/les-arpenteurs-d-abrasia"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img className="contact-icon" src={give} alt="Logo HelloAsso" />
+              </a>
+            </div>
+          </div>
+        </div>
         {/* Section : Nous contacter */}
         <section className="section-contact">
           <h2>Nous contacter</h2>
@@ -199,16 +240,6 @@ export default function Home() {
             </div>
 
             {/* Payer sa cotisation */}
-            <div className="contact-section">
-              <h3>Payer sa cotisation sur HelloAsso</h3>
-              <a
-                href="https://www.helloasso.com/associations/les-arpenteurs-d-abrasia"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img className="contact-icon" src={give} alt="Logo HelloAsso" />
-              </a>
-            </div>
 
             {/* Nous rejoindre sur */}
             <div className="contact-section">

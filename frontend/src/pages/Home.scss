@@ -1,33 +1,26 @@
 // == Importation des variables globales ==
 @import "../styles/variables.scss";
 
-// == Variables pour les boutons ==
-$button-background: $accent-color;
-$button-text-color: var(--text-color);
-$button-hover-background: scale-color($accent-color, $lightness: -10%);
-
-// == Styles globaux pour la page home ==
+// == Styles globaux pour la page Home ==
 .home {
-  padding-top: 10%;
-  padding-left: 15%;
-  padding-right: 15%;
+  padding: 5%;
 }
 
 // == Styles pour les boutons ==
 button {
-  background-color: $button-background;
-  color: $button-text-color;
-  padding: $button-padding;
+  background-color: $accent-color;
+  color: var(--text-color);
+  padding: 0.8rem 1.2rem;
   border: none;
-  border-radius: $button-border-radius;
+  border-radius: 5px;
   cursor: pointer;
   font-family: $font-primary;
   font-size: 1rem;
   transition: background-color 0.3s ease, transform 0.2s;
 
   &:hover {
-    background-color: $button-hover-background;
-    transform: translateY(-2px);
+    background-color: scale-color($accent-color, $lightness: -10%);
+    transform: translateY(-3px);
   }
 }
 
@@ -36,36 +29,32 @@ button {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2rem;
+  gap: 2rem;
+  margin-bottom: 3rem;
 
   .intro-text {
-    flex: 1;
-    min-width: 300px;
-    margin-right: 1rem;
-
+    flex: 1 1 50%;
     h1 {
       font-family: $font-secondary;
-      font-size: 2rem;
+      font-size: 2.5rem;
+      line-height: 1.4;
       color: var(--text-color);
       margin-bottom: 1rem;
     }
 
     p {
-      font-size: 1rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
       color: var(--text-color);
     }
   }
 
   .intro-image {
-    flex: 1;
-    min-width: 300px;
-    margin-left: 1rem;
-
+    flex: 1 1 40%;
     img {
-      max-width: 100%;
+      width: 100%;
       height: auto;
-      border-radius: 10px;
+      border-radius: 15px;
     }
   }
 }
@@ -73,47 +62,50 @@ button {
 // == Bouton pour découvrir l'association ==
 .cta {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 
-  /*button {
-    // Les styles du bouton sont déjà définis plus haut
-  }*/
+  button {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
 }
 
 // == Section : C'est quoi le jeu de rôle ? ==
 .section-what-is-jdr {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row; // De gauche à droite
-  align-items: center;
-  margin-bottom: 2rem;
+  display: flex  ;
+      flex-wrap: nowrap;
+      gap: 2rem;
+      align-items: center;
+      padding: 3rem 5%;
+      background-color: #f3f3f3;
+      border-radius: 10px;
+      margin-bottom: 3rem;
+      flex-direction: row-reverse;
+
+
+
+      .section-what-is-jdr1{width: 50%;}
 
   h2 {
-    width: 100%;
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-family: $font-secondary;
-    color: var(--text-color);
+    color: $accent-color;
     margin-bottom: 1rem;
   }
 
   p {
     flex: 1;
-    min-width: 300px;
     font-size: 1rem;
+    line-height: 1.6;
     color: var(--text-color);
-    margin-right: 1rem;
   }
 
-  // Si vous avez une image
-  .image {
-    flex: 1;
-    min-width: 300px;
-    margin-left: 1rem;
-
+  .reflective-image {
+    flex: 1 1 40%;
     img {
-      max-width: 100%;
+      width: 100%;
       height: auto;
-      border-radius: 10px;
+      border-radius: 15px;
     }
   }
 }
@@ -122,100 +114,147 @@ button {
 .section-our-association {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row-reverse; // De droite à gauche
+  gap: 2rem;
   align-items: center;
-  margin-bottom: 2rem;
+  padding: 3rem 5%;
+  margin-bottom: 3rem;
 
-  h2 {
-    width: 100%;
-    font-size: 1.75rem;
-    font-family: $font-secondary;
-    color: var(--text-color);
-    margin-bottom: 1rem;
-  }
-
-  p {
-    flex: 1;
-    min-width: 300px;
-    font-size: 1rem;
-    color: var(--text-color);
-    margin-left: 1rem;
-  }
-
-  // Si vous avez une image
-  .image {
-    flex: 1;
-    min-width: 300px;
-    margin-right: 1rem;
-
+  .divImageSectionAsso {
+    flex: 1 1 40%;
     img {
-      max-width: 100%;
+      width: 100%;
       height: auto;
-      border-radius: 10px;
+      border-radius: 15px;
+    }
+  }
+
+  .section-what-is-jdr1 {
+    flex: 1 1 50%;
+
+    h2 {
+      font-size: 2rem;
+      font-family: $font-secondary;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-color);
     }
   }
 }
 
 // == Section : Notre Agenda ==
 .section-agenda {
-  margin-bottom: 2rem;
+  padding: 3rem 5%;
+  background-color: #e8f0fe;
+  border-radius: 10px;
+  margin-bottom: 3rem;
 
   h2 {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-family: $font-secondary;
-    color: var(--text-color);
-    margin-bottom: 1rem;
+    color: $accent-color;
     text-align: center;
+    margin-bottom: 1rem;
   }
 
   p {
-    font-size: 1rem;
-    color: var(--text-color);
+    font-size: 1.1rem;
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
-
-  // Styles pour le calendrier si nécessaire
 }
 
 // == Section : Team ==
 .section-team {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 
   h2 {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-family: $font-secondary;
-    color: var(--text-color);
+    color: $accent-color;
     margin-bottom: 1rem;
   }
 
   p {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--text-color);
+    margin-bottom: 2rem;
+  }
+
+  button {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+}
+
+// == Section : HelloAsso ==
+.section-HelloAsso {
+  text-align: center;
+  margin-bottom: 3rem;
+
+  h2 {
+    font-size: 2rem;
+    font-family: $font-secondary;
+    color: $accent-color;
     margin-bottom: 1rem;
   }
 
-  /*button {
-    // Les styles du bouton sont déjà définis plus haut
-  }*/
+  .boxHelloAsso {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    .helloAsso1 {
+      flex: 1 1 40%;
+
+      img {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--text-color);
+      }
+    }
+
+    .helloAsso2 {
+      flex: 1 1 40%;
+
+      img {
+        width: 80px;
+        height: auto;
+        margin-bottom: 1rem;
+      }
+    }
+  }
 }
 
 // == Section : Nous contacter ==
 .section-contact {
-  margin-bottom: 2rem;
+  padding: 3rem 5%;
+  margin-bottom: 3rem;
 
   h2 {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-family: $font-secondary;
-    color: var(--text-color);
-    margin-bottom: 1rem;
+    color: $accent-color;
     text-align: center;
+    margin-bottom: 1rem;
   }
 
   p {
-    font-size: 1rem;
-    color: var(--text-color);
+    font-size: 1.1rem;
     text-align: center;
     margin-bottom: 2rem;
   }
@@ -223,13 +262,12 @@ button {
   .contact-links {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 1rem;
+    gap: 2rem;
+    justify-content: center;
 
     .contact-section {
-      flex: 1;
-      min-width: 250px;
-      margin: 10px;
+      flex: 1 1 30%;
+      text-align: left;
 
       h3 {
         font-family: $font-secondary;
@@ -252,7 +290,7 @@ button {
           margin-bottom: 0.5rem;
 
           a {
-            color: var(--accent-color);
+            color: $accent-color;
             text-decoration: none;
 
             &:hover {
@@ -262,42 +300,17 @@ button {
         }
       }
 
-      a {
-        color: var(--accent-color);
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-
-        &:hover {
-          text-decoration: underline;
-        }
-
-        // Icônes spécifiques
-        img.contact-icon {
-          width: 50px;
-          height: 50px;
-          margin-right: 10px;
-          filter: var(--icon-filter, none);
-        }
-      }
-
-      // Icônes sociales
       .social-icons {
         display: flex;
-        gap: 10px;
+        gap: 1rem;
 
-        a {
-          display: inline-block;
+        img {
+          width: 40px;
+          height: auto;
+          transition: transform 0.3s ease;
 
-          img.contact-icon {
-            width: 50px;
-            height: 50px;
-            transition: transform 0.3s ease;
-            filter: var(--icon-filter, none);
-
-            &:hover {
-              transform: scale(1.1);
-            }
+          &:hover {
+            transform: scale(1.1);
           }
         }
       }
@@ -305,23 +318,48 @@ button {
   }
 }
 
-// == Carrousel ==
-// Si vous avez besoin de styles spécifiques pour le carrousel, vous pouvez les ajouter ici ou dans le fichier SCSS du carrousel.
-
 // == Media Queries pour la réactivité ==
 @media (max-width: 768px) {
   .section-intro,
   .section-what-is-jdr,
   .section-our-association {
     flex-direction: column;
-    align-items: flex-start;
+    text-align: center;
 
     .intro-text,
-    .intro-image,
-    .image,
-    p {
-      margin: 0;
-      margin-bottom: 1rem;
+    .reflective-image,
+    .divImageSectionAsso {
+      flex: 1;
+      margin: 0 auto;
     }
+  }
+
+  .boxHelloAsso {
+    flex-direction: column;
+    align-items: center;
+
+    .helloAsso1,
+    .helloAsso2 {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
   }
 }

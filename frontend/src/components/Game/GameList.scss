@@ -53,10 +53,16 @@
   font-weight: bold;
 }
 .gameBox {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
+  display: flex  ;
+      align-items: center;
+      flex-direction: row;
+      width: 100%;
+      flex-wrap: nowrap;
+      padding-left: 15%;
+      justify-content: center;
+  padding-right: 15%;
+  padding-top: 5%;
+  padding-bottom: 2%;
   // border: solid red;
 
   .game-item {
