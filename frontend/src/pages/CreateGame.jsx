@@ -23,26 +23,19 @@ const CreateGame = () => {
   const token = localStorage.getItem("authToken")
   let idMaitreDuJeu = null
 
-  if (token && token.trim() !== "") {
+  if (token) {
     try {
       const decodedToken = jwtDecode(token)
       idMaitreDuJeu = decodedToken.id
-      console.info("idMaitreDuJeu :", idMaitreDuJeu)
     } catch (error) {
-      console.error("Erreur lors du décodage du token :", error)
-      toast.error(
-        "Erreur lors de l'authentification. Veuillez vous reconnecter."
-      )
+      toast.error("Erreur d'authentification. Veuillez vous reconnecter.")
       navigate("/login")
-      return
+      return null
     }
   } else {
-    console.error(
-      "Aucun token valide trouvé. L'utilisateur n'est pas authentifié."
-    )
     toast.error("Vous devez être connecté pour créer une partie.")
     navigate("/login")
-    return
+    return null
   }
 
   const handleSubmit = async (event) => {
@@ -53,63 +46,36 @@ const CreateGame = () => {
       return
     }
 
-    if (!idMaitreDuJeu) {
-      toast.error("Utilisateur non authentifié.")
-      navigate("/login")
-      return
+    const formData = new FormData()
+    formData.append("titre", titre)
+    formData.append("description", description)
+
+    const formattedDate = new Date(date)
+      .toISOString()
+      .replace("T", " ")
+      .slice(0, 19)
+    formData.append("date", formattedDate)
+    formData.append("nb_max_joueurs", parseInt(nbMaxJoueurs, 10))
+    formData.append("niveau_difficulte", niveauDifficulte)
+    formData.append("lieu", lieu)
+    formData.append("duree_estimee", parseInt(dureeEstimee, 10))
+    formData.append("type", type)
+    formData.append("id_maitre_du_jeu", idMaitreDuJeu)
+
+    if (photoScenario) {
+      formData.append("photo_scenario", photoScenario)
     }
 
+    const loadingToast = toast.loading("Création de la partie en cours...")
+
     try {
-      const formData = new FormData()
-      formData.append("titre", titre)
-      formData.append("description", description)
-
-      let formattedDate = date
-      if (date) {
-        const dateObj = new Date(date)
-        const year = dateObj.getFullYear()
-        const month = String(dateObj.getMonth() + 1).padStart(2, "0")
-        const day = String(dateObj.getDate()).padStart(2, "0")
-        const hours = String(dateObj.getHours()).padStart(2, "0")
-        const minutes = String(dateObj.getMinutes()).padStart(2, "0")
-        const seconds = String(dateObj.getSeconds()).padStart(2, "0")
-        formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-      }
-      formData.append("date", formattedDate)
-
-      const nbMaxJoueursInt = parseInt(nbMaxJoueurs, 10)
-      formData.append("nb_max_joueurs", nbMaxJoueursInt)
-
-      const dureeEstimeeInt = parseInt(dureeEstimee, 10)
-      formData.append("duree_estimee", dureeEstimeeInt)
-
-      formData.append("niveau_difficulte", niveauDifficulte)
-      formData.append("lieu", lieu)
-      formData.append("type", type)
-      formData.append("id_maitre_du_jeu", idMaitreDuJeu)
-
-      if (photoScenario) {
-        formData.append("photo_scenario", photoScenario)
-      }
-
-      console.info("Contenu de formData :")
-      for (const [key, value] of formData.entries()) {
-        console.info(`${key}:`, value)
-      }
-
-      const loadingToast = toast.loading("Création de la partie en cours...")
-
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/parties`,
         formData,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       )
-
-      console.info("Réponse du serveur :", response)
 
       if (response.status === 201) {
         toast.update(loadingToast, {
@@ -119,6 +85,7 @@ const CreateGame = () => {
           autoClose: 3000,
         })
 
+        // Réinitialisation des champs
         setTitre("")
         setDescription("")
         setDate("")
@@ -139,14 +106,15 @@ const CreateGame = () => {
           isLoading: false,
           autoClose: 3000,
         })
-        console.error(
-          "Erreur lors de la création de la partie :",
-          response.data
-        )
       }
     } catch (error) {
+      toast.update(loadingToast, {
+        render: "Une erreur est survenue lors de la création de la partie.",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      })
       console.error("Erreur lors de la création de la partie :", error)
-      toast.error("Une erreur est survenue lors de la création de la partie.")
     }
   }
 
@@ -157,11 +125,9 @@ const CreateGame = () => {
   return (
     <>
       <NavBar />
-
       <div className="creer-partie-container">
         <h1>Créer une nouvelle partie</h1>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
-          {/* Titre */}
           <div className="form-group">
             <label htmlFor="titre">Titre de la partie</label>
             <input
@@ -172,8 +138,6 @@ const CreateGame = () => {
               required
             />
           </div>
-
-          {/* Description */}
           <div className="form-group">
             <label htmlFor="description">Description</label>
             <textarea
@@ -183,8 +147,6 @@ const CreateGame = () => {
               required
             />
           </div>
-
-          {/* Type */}
           <div className="form-group">
             <label htmlFor="type">Type</label>
             <select
@@ -197,8 +159,6 @@ const CreateGame = () => {
               <option value="événement">Événement</option>
             </select>
           </div>
-
-          {/* Date */}
           <div className="form-group">
             <label htmlFor="date">Date de la partie</label>
             <input
@@ -209,8 +169,6 @@ const CreateGame = () => {
               required
             />
           </div>
-
-          {/* Nombre maximum de joueurs */}
           <div className="form-group">
             <label htmlFor="nbMaxJoueurs">Nombre maximum de joueurs</label>
             <input
@@ -222,8 +180,6 @@ const CreateGame = () => {
               required
             />
           </div>
-
-          {/* Niveau de difficulté */}
           <div className="form-group">
             <label htmlFor="niveauDifficulte">Niveau de difficulté</label>
             <select
@@ -237,8 +193,6 @@ const CreateGame = () => {
               <option value="difficile">Difficile</option>
             </select>
           </div>
-
-          {/* Lieu */}
           <div className="form-group">
             <label htmlFor="lieu">Lieu</label>
             <input
@@ -249,8 +203,6 @@ const CreateGame = () => {
               required
             />
           </div>
-
-          {/* Durée estimée */}
           <div className="form-group">
             <label htmlFor="dureeEstimee">Durée estimée (en heures)</label>
             <input
@@ -262,8 +214,6 @@ const CreateGame = () => {
               required
             />
           </div>
-
-          {/* Photo du scénario */}
           <div className="form-group">
             <label htmlFor="photoScenario">Photo du scénario</label>
             <input
@@ -273,7 +223,6 @@ const CreateGame = () => {
               onChange={handleFileChange}
             />
           </div>
-
           <button type="submit" className="btn-submit">
             Créer la partie
           </button>

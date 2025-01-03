@@ -3,7 +3,8 @@
 
 // == Styles globaux pour la page Home ==
 .home {
-  padding: 5%;
+  padding-top: 5%;
+  padding-bottom: 5%;
 }
 
 // == Styles pour les boutons ==
@@ -31,6 +32,8 @@ button {
   align-items: center;
   gap: 2rem;
   margin-bottom: 3rem;
+  padding-left: 15%;
+  padding-right: 15%;
 
   .intro-text {
     flex: 1 1 50%;
@@ -81,6 +84,8 @@ button {
       border-radius: 10px;
       margin-bottom: 3rem;
       flex-direction: row-reverse;
+      padding-left: 15%;
+      padding-right: 15%;
 
 
 
@@ -116,8 +121,11 @@ button {
   flex-wrap: wrap;
   gap: 2rem;
   align-items: center;
+  flex-direction: row-reverse;
   padding: 3rem 5%;
   margin-bottom: 3rem;
+  padding-left: 15%;
+  padding-right: 15%;
 
   .divImageSectionAsso {
     flex: 1 1 40%;
@@ -172,6 +180,8 @@ button {
 .section-team {
   text-align: center;
   margin-bottom: 3rem;
+  padding-left: 15%;
+  padding-right: 15%;
 
   h2 {
     font-size: 2rem;
@@ -196,6 +206,8 @@ button {
 .section-HelloAsso {
   text-align: center;
   margin-bottom: 3rem;
+  padding-left: 15%;
+  padding-right: 15%;
 
   h2 {
     font-size: 2rem;
@@ -244,6 +256,8 @@ button {
 .section-contact {
   padding: 3rem 5%;
   margin-bottom: 3rem;
+  padding-left: 15%;
+  padding-right: 15%;
 
   h2 {
     font-size: 2rem;

@@ -76,8 +76,11 @@ class PartieControllers {
       if (req.file) {
         // Convert Windows-style path to URL-style path
         const filePath = req.file.path.replace(/\\/g, "/")
-        // Remove 'public' from the beginning of the path as it's typically served as static
-        partie.photo_scenario = filePath.replace("public", "")
+
+        // Ensure 'public' is explicitly added at the beginning of the path
+        partie.photo_scenario = filePath.startsWith("public")
+          ? filePath
+          : `public/${filePath}`
       } else {
         // Set default photo if none is provided
         partie.photo_scenario =
