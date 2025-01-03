@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import jwtDecode from "jwt-decode"
 import "./NavBar.scss"
@@ -7,6 +7,7 @@ import ToggleTheme from "../ToggleTheme/ToggleTheme"
 
 const NavBar = () => {
   const navigate = useNavigate()
+  const [isMenuOpen, setIsMenuOpen] = useState(false) // État pour le menu burger
 
   // Récupérer le token depuis localStorage
   const token = localStorage.getItem("authToken")
@@ -42,6 +43,10 @@ const NavBar = () => {
     navigate("/") // Rediriger vers la page d'accueil après la déconnexion
   }
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -50,11 +55,18 @@ const NavBar = () => {
         </NavLink>
       </div>
       <ToggleTheme />
-      <ul className="navbar-links">
+      <button className="menu-toggle" onClick={toggleMenu}>
+        {/* Bouton menu burger */}
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul className={`navbar-links ${isMenuOpen ? "active" : ""}`}>
         <li>
           <NavLink
             to="/"
             className={({ isActive }) => (isActive ? "active" : undefined)}
+            onClick={() => setIsMenuOpen(false)}
           >
             Accueil
           </NavLink>
@@ -64,6 +76,7 @@ const NavBar = () => {
             <NavLink
               to="/creer-partie"
               className={({ isActive }) => (isActive ? "active" : undefined)}
+              onClick={() => setIsMenuOpen(false)}
             >
               Créer partie
             </NavLink>
@@ -73,6 +86,7 @@ const NavBar = () => {
           <NavLink
             to="/association"
             className={({ isActive }) => (isActive ? "active" : undefined)}
+            onClick={() => setIsMenuOpen(false)}
           >
             L'association
           </NavLink>
@@ -81,6 +95,7 @@ const NavBar = () => {
           <NavLink
             to="/equipe"
             className={({ isActive }) => (isActive ? "active" : undefined)}
+            onClick={() => setIsMenuOpen(false)}
           >
             L'équipe
           </NavLink>
@@ -90,6 +105,7 @@ const NavBar = () => {
             <NavLink
               to="/admin"
               className={({ isActive }) => (isActive ? "active" : undefined)}
+              onClick={() => setIsMenuOpen(false)}
             >
               Administration
             </NavLink>
@@ -99,15 +115,29 @@ const NavBar = () => {
       <div className="navbar-cta">
         {authData.isAuthenticated ? (
           <>
-            <NavLink to="/profil" className="btn-cta">
+            <NavLink
+              to="/profil"
+              className="btn-cta"
+              onClick={() => setIsMenuOpen(false)}
+            >
               Mon Profil
             </NavLink>
-            <button onClick={handleLogout} className="btn-cta logout-button">
+            <button
+              onClick={() => {
+                handleLogout()
+                setIsMenuOpen(false)
+              }}
+              className="btn-cta logout-button"
+            >
               Déconnexion
             </button>
           </>
         ) : (
-          <NavLink to="/login" className="btn-cta">
+          <NavLink
+            to="/login"
+            className="btn-cta"
+            onClick={() => setIsMenuOpen(false)}
+          >
             Se connecter
           </NavLink>
         )}

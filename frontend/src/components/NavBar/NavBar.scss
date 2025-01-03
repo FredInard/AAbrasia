@@ -7,33 +7,27 @@ $font-secondary: "system-ui", cursive;
 // == Styles pour la barre de navigation ==
 .navbar {
   width: 100%;
-  padding: 0.1rem 1rem;
+  padding: 0.5rem 1rem;
   background-color: var(--background-color);
   color: var(--text-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed; // La NavBar est fixée en haut de la page
-  top: 0; // Alignement en haut
-  left: 0; // Alignement à gauche
-  z-index: 1; // Z-index élevé pour que la NavBar reste au-dessus du contenu
-  box-shadow: var(--box-shadow); // Utilisation de la variable box-shadow
-
-  /* Exemple de style pour le bouton de déconnexion */
-  .logout-button {
-    background-color: transparent;
-    border: none;
-    color: inherit;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 10px;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  box-shadow: var(--box-shadow);
 
   // Logo de la navbar
   &-logo {
     img {
       width: 150px;
       height: auto;
+
+      @media (max-width: 768px) {
+        width: 100px;
+      }
     }
   }
 
@@ -48,20 +42,41 @@ $font-secondary: "system-ui", cursive;
 
       a {
         text-decoration: none;
-        color: var(--text-color); // Utilisation de la variable CSS
+        color: var(--text-color);
         font-family: $font-primary;
         font-size: 1rem;
         transition: color 0.3s ease;
 
         &:hover {
-          color: var(--accent-color); // Utilisation de la variable CSS
+          color: var(--accent-color);
         }
 
         &.active {
           font-weight: bold;
-          border-bottom: 2px solid var(--accent-color); // Indicateur de lien actif
+          border-bottom: 2px solid var(--accent-color);
         }
       }
+    }
+
+    // Cache les liens dans un menu burger pour les petits écrans
+    @media (max-width: 768px) {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: var(--background-color);
+      box-shadow: var(--box-shadow);
+      width: 100%;
+      padding: 1rem;
+
+      li {
+        margin: 1rem 0;
+      }
+    }
+
+    &.active {
+      display: flex; // Affiche les liens quand le menu est ouvert
     }
   }
 
@@ -71,7 +86,6 @@ $font-secondary: "system-ui", cursive;
     display: flex;
     align-items: center;
 
-    // Styles spécifiques pour le toggle
     label {
       display: flex;
       align-items: center;
@@ -124,4 +138,55 @@ $font-secondary: "system-ui", cursive;
       }
     }
   }
+
+  // Bouton menu burger pour les petits écrans
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+  
+    span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: var(--text-color);
+      margin: 5px 0;
+      transition: transform 0.3s ease;
+    }
+  
+    @media (max-width: 768px) {
+      display: block;
+    }
+  }
+  
+  .navbar-links {
+    display: flex;
+    list-style: none;
+  
+    @media (max-width: 768px) {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 100%;
+      background-color: var(--background-color);
+      box-shadow: var(--box-shadow);
+      padding: 1rem;
+  
+      &.active {
+        display: flex;
+      }
+  
+      li {
+        margin: 1rem 0;
+  
+        a {
+          text-align: center;
+        }
+      }
+    }
+  }
+  
 }
