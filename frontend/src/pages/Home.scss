@@ -75,21 +75,21 @@ button {
 
 // == Section : C'est quoi le jeu de rôle ? ==
 .section-what-is-jdr {
-  display: flex  ;
-      flex-wrap: nowrap;
-      gap: 2rem;
-      align-items: center;
-      padding: 3rem 5%;
-      background-color: #f3f3f3;
-      border-radius: 10px;
-      margin-bottom: 3rem;
-      flex-direction: row-reverse;
-      padding-left: 15%;
-      padding-right: 15%;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  align-items: center;
+  padding: 3rem 5%;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  margin-bottom: 3rem;
+  flex-direction: row-reverse;
+  padding-left: 15%;
+  padding-right: 15%;
 
-
-
-      .section-what-is-jdr1{width: 50%;}
+  .section-what-is-jdr1 {
+    width: 50%;
+  }
 
   h2 {
     font-size: 2rem;

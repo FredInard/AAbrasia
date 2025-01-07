@@ -1,7 +1,12 @@
 // controllers/PartieControllers.js
 
 const models = require("../models")
-const { validationResult } = require("express-validator")
+// const { validationResult } = require("express-validator")
+const { sendDiscordMessage } = require("../utils/discord")
+const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL
+console.info("URL Discord Webhook :", DISCORD_WEBHOOK_URL)
+
+const axios = require("axios")
 
 class PartieControllers {
   // GET /parties
@@ -59,97 +64,118 @@ class PartieControllers {
   static async add(req, res) {
     try {
       console.info("Requête reçue pour ajouter une partie.")
-      console.info("req.body :", req.body)
-      console.info("req.file :", req.file)
-
-      // Validations
-      const errors = validationResult(req)
-      if (!errors.isEmpty()) {
-        console.info("Erreurs de validation trouvées :", errors.array())
-        return res.status(400).json({ errors: errors.array() })
-      }
-
-      // Create partie object from req.body
       const partie = { ...req.body }
 
-      // Add the file path to the partie object if a file was uploaded
       if (req.file) {
-        // Convert Windows-style path to URL-style path
         const filePath = req.file.path.replace(/\\/g, "/")
-
-        // Ensure 'public' is explicitly added at the beginning of the path
         partie.photo_scenario = filePath.startsWith("public")
           ? filePath
           : `public/${filePath}`
       } else {
-        // Set default photo if none is provided
         partie.photo_scenario =
           "public/assets/images/profilPictures/dragonBook.webp"
       }
 
-      console.info("Données de la partie à insérer :", partie)
-
       const [result] = await models.partie.insert(partie)
-      console.info("Partie insérée avec succès, ID :", result.insertId)
+
+      // Préparer le message pour Discord
+      const discordMessage = `🎲 **Nouvelle partie créée !**
+**Titre :** ${partie.titre}
+**Description :** ${partie.description}
+**Date :** ${partie.date}
+**Lieu :** ${partie.lieu}`
+
+      // Envoyer le message sur Discord
+      await sendDiscordMessage(DISCORD_WEBHOOK_URL, discordMessage)
+
       res.status(201).json({ id: result.insertId, ...partie })
     } catch (err) {
-      console.error("Erreur lors de l'insertion de la partie :", err)
+      console.error("Erreur lors de l'ajout de la partie :", err)
       res.sendStatus(500)
     }
   }
 
   // PUT /parties/:id
   // Méthode pour éditer une partie existante
-  static edit(req, res) {
+  // PUT /parties/:id
+  static async edit(req, res) {
     const id = parseInt(req.params.id, 10)
     console.info(`Modification de la partie avec l'ID: ${id}`)
 
-    // Récupération des données de la partie depuis le corps de la requête
-    const partie = req.body
-    console.info("Données de la partie reçues:", partie)
-
-    // Assignation de l'ID à l'objet partie
+    const partie = { ...req.body }
     partie.id = id
-    console.info("Objet partie après assignation de l'ID:", partie)
 
-    // Gestion de la photo_scenario
     if (req.file) {
-      // Si un nouveau fichier est téléchargé, utilisez son chemin
-      partie.photo_scenario = req.file.path.replace(/\\/g, "/") // Convertir les antislashs en slashs
-      console.info("Nouvelle photo_scenario définie:", partie.photo_scenario)
-    } else if (partie.photo_scenario) {
-      // Sinon, utilisez la photo existante (envoyée via formData)
-      console.info("Photo_scenario existante conservée:", partie.photo_scenario)
-      // La valeur de photo_scenario est déjà définie dans req.body
-    } else {
-      // Si aucune photo n'est fournie, vous pouvez définir une valeur par défaut ou gérer l'erreur
-      partie.photo_scenario = null
-      console.info("Aucune photo_scenario fournie. Définie à null.")
+      partie.photo_scenario = req.file.path
+        .replace(/\\/g, "/")
+        .replace("public", "")
     }
 
-    console.info("Objet partie final pour mise à jour:", partie)
+    console.info("Données de la partie pour mise à jour:", partie)
 
-    models.partie
-      .update(partie)
-      .then(([result]) => {
-        console.info("Résultat de la mise à jour:", result)
+    try {
+      // Mise à jour de la base de données
+      const [result] = await models.partie.update(partie)
 
-        if (result.affectedRows === 0) {
-          console.info(
-            `Aucune partie trouvée avec l'ID: ${id}. Envoi d'un statut 404.`
-          )
-          res.sendStatus(404)
-        } else {
-          console.info(
-            `Partie avec l'ID: ${id} mise à jour avec succès. Envoi de la réponse.`
-          )
-          res.status(200).json(partie)
-        }
-      })
-      .catch((err) => {
-        console.error("Erreur lors de la mise à jour de la partie:", err)
-        res.sendStatus(500)
-      })
+      if (result.affectedRows === 0) {
+        console.info(`Aucune partie trouvée avec l'ID: ${id}`)
+        return res.status(404).json({ error: "Partie non trouvée." })
+      }
+
+      console.info(`Partie avec l'ID ${id} mise à jour avec succès.`)
+
+      // Préparation du message Discord
+      const discordMessage = {
+        content: `📢 Une partie a été modifiée !`,
+        embeds: [
+          {
+            title: `Partie : ${partie.titre || "Non spécifié"}`,
+            description: partie.description || "Aucune description fournie.",
+            color: 3447003,
+            fields: [
+              {
+                name: "Date",
+                value: partie.date || "Non spécifiée",
+                inline: true,
+              },
+              {
+                name: "Lieu",
+                value: partie.lieu || "Non spécifié",
+                inline: true,
+              },
+              {
+                name: "Niveau de difficulté",
+                value: partie.niveau_difficulte || "Non spécifié",
+                inline: true,
+              },
+            ],
+            timestamp: new Date().toISOString(),
+            footer: { text: `ID de la partie : ${id}` },
+          },
+        ],
+      }
+
+      try {
+        // Envoi du message à Discord
+        await axios.post(process.env.DISCORD_WEBHOOK_URL, discordMessage)
+        console.info("Message envoyé à Discord avec succès.")
+      } catch (discordError) {
+        console.error(
+          "Erreur lors de l'envoi du message à Discord :",
+          discordError.message
+        )
+      }
+
+      // Réponse au client
+      return res
+        .status(200)
+        .json({ message: "Partie mise à jour avec succès.", partie })
+    } catch (err) {
+      console.error("Erreur lors de la mise à jour de la partie :", err.message)
+      return res
+        .status(500)
+        .json({ error: "Erreur serveur lors de la mise à jour." })
+    }
   }
 
   static async deleteByPartyId(req, res) {

@@ -145,7 +145,7 @@ $font-secondary: "system-ui", cursive;
     background: none;
     border: none;
     cursor: pointer;
-  
+
     span {
       display: block;
       width: 25px;
@@ -154,16 +154,16 @@ $font-secondary: "system-ui", cursive;
       margin: 5px 0;
       transition: transform 0.3s ease;
     }
-  
+
     @media (max-width: 768px) {
       display: block;
     }
   }
-  
+
   .navbar-links {
     display: flex;
     list-style: none;
-  
+
     @media (max-width: 768px) {
       display: none;
       flex-direction: column;
@@ -174,19 +174,18 @@ $font-secondary: "system-ui", cursive;
       background-color: var(--background-color);
       box-shadow: var(--box-shadow);
       padding: 1rem;
-  
+
       &.active {
         display: flex;
       }
-  
+
       li {
         margin: 1rem 0;
-  
+
         a {
           text-align: center;
         }
       }
     }
   }
-  
 }
