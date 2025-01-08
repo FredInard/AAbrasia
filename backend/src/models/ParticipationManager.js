@@ -38,9 +38,23 @@ class ParticipationManager extends AbstractManager {
     )
   }
 
-  // Find all participations
+  // Find all participations with additional details
   findAll() {
-    return this.database.query(`SELECT * FROM ${this.table}`)
+    return this.database.query(`
+    SELECT 
+      participation.id, 
+      participation.utilisateur_id, 
+      participation.partie_id, 
+      participation.date_participation,
+      utilisateur.pseudo AS utilisateur_pseudo,
+      partie.titre AS partie_titre
+    FROM 
+      participation
+    JOIN 
+      utilisateur ON participation.utilisateur_id = utilisateur.id
+    JOIN 
+      partie ON participation.partie_id = partie.id
+  `)
   }
 
   // Find a participation by ID

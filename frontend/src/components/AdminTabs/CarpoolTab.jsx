@@ -66,15 +66,21 @@ const CarpoolTab = () => {
   const applyFilters = () => {
     let filtered = carpools
 
+    // Filtrer par pseudo utilisateur
     if (filterUtilisateurId.trim() !== "") {
       filtered = filtered.filter((carpool) =>
-        carpool.utilisateur_id.toString().includes(filterUtilisateurId.trim())
+        carpool.utilisateur_pseudo
+          .toLowerCase()
+          .includes(filterUtilisateurId.trim().toLowerCase())
       )
     }
 
+    // Filtrer par titre de partie
     if (filterPartieId.trim() !== "") {
       filtered = filtered.filter((carpool) =>
-        carpool.partie_id.toString().includes(filterPartieId.trim())
+        carpool.partie_titre
+          .toLowerCase()
+          .includes(filterPartieId.trim().toLowerCase())
       )
     }
 
@@ -142,17 +148,17 @@ const CarpoolTab = () => {
     setIsEditing(true)
   }
 
-  const handleCreate = () => {
-    setFormData({
-      utilisateur_id: "",
-      partie_id: "",
-      ville_depart: "",
-      ville_arrivee: "",
-      heure_depart: "",
-      propose_retour: false,
-    })
-    setIsCreating(true)
-  }
+  // const handleCreate = () => {
+  //   setFormData({
+  //     utilisateur_id: "",
+  //     partie_id: "",
+  //     ville_depart: "",
+  //     ville_arrivee: "",
+  //     heure_depart: "",
+  //     propose_retour: false,
+  //   })
+  //   setIsCreating(true)
+  // }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -229,29 +235,34 @@ const CarpoolTab = () => {
   return (
     <div className="carpool-tab">
       <h2>Gestion des covoiturages</h2>
-      <button onClick={handleCreate}>Ajouter un covoiturage</button>
+      {/* <button onClick={handleCreate}>Ajouter un covoiturage</button> */}
       {!isEditing && !isCreating && (
         <div className="filters">
           <div>
-            <label htmlFor="filterUtilisateurId">
-              Filtrer par utilisateur ID :
+            <label htmlFor="filterUtilisateurPseudo">
+              Filtrer par pseudo utilisateur :
             </label>
             <input
               type="text"
-              id="filterUtilisateurId"
-              value={filterUtilisateurId}
-              onChange={(e) => setFilterUtilisateurId(e.target.value)}
+              id="filterUtilisateurPseudo"
+              value={filterUtilisateurId} // Peut être renommé en `filterUtilisateurPseudo`
+              onChange={(e) => setFilterUtilisateurId(e.target.value)} // Renommez si nécessaire
+              placeholder="Rechercher par pseudo"
             />
           </div>
           <div>
-            <label htmlFor="filterPartieId">Filtrer par partie ID :</label>
+            <label htmlFor="filterPartieTitre">
+              Filtrer par titre de partie :
+            </label>
             <input
               type="text"
-              id="filterPartieId"
-              value={filterPartieId}
-              onChange={(e) => setFilterPartieId(e.target.value)}
+              id="filterPartieTitre"
+              value={filterPartieId} // Peut être renommé en `filterPartieTitre`
+              onChange={(e) => setFilterPartieId(e.target.value)} // Renommez si nécessaire
+              placeholder="Rechercher par titre"
             />
           </div>
+
           <div>
             <label htmlFor="filterVilleDepart">
               Filtrer par ville de départ :
@@ -368,8 +379,8 @@ const CarpoolTab = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Utilisateur ID</th>
-              <th>Partie ID</th>
+              <th>Utilisateur</th>
+              <th>Partie</th>
               <th>Départ</th>
               <th>Arrivée</th>
               <th>Heure de départ</th>
@@ -377,12 +388,13 @@ const CarpoolTab = () => {
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {filteredCarpools.map((carpool) => (
-              <tr key={carpool.id}>
-                <td>{carpool.id}</td>
-                <td>{carpool.utilisateur_id}</td>
-                <td>{carpool.partie_id}</td>
+              <tr key={carpool.covoiturage_id}>
+                <td>{carpool.covoiturage_id}</td>
+                <td>{carpool.utilisateur_pseudo || "Inconnu"}</td>
+                <td>{carpool.partie_titre || "Titre indisponible"}</td>
                 <td>{carpool.ville_depart}</td>
                 <td>{carpool.ville_arrivee}</td>
                 <td>
@@ -397,7 +409,7 @@ const CarpoolTab = () => {
                 <td>{carpool.propose_retour ? "Oui" : "Non"}</td>
                 <td>
                   <button onClick={() => handleEdit(carpool)}>Modifier</button>
-                  <button onClick={() => handleDelete(carpool.id)}>
+                  <button onClick={() => handleDelete(carpool.covoiturage_id)}>
                     Supprimer
                   </button>
                 </td>

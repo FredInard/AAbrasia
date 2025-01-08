@@ -98,8 +98,10 @@ const PartiesTab = () => {
       )
     }
     if (filterIdMj.trim() !== "") {
-      filtered = filtered.filter(
-        (party) => party.id_maitre_du_jeu.toString() === filterIdMj.trim()
+      filtered = filtered.filter((party) =>
+        party.maitre_du_jeu_pseudo
+          .toLowerCase()
+          .includes(filterIdMj.toLowerCase())
       )
     }
 
@@ -348,7 +350,7 @@ const PartiesTab = () => {
             </select>
           </div>
           <div>
-            <label htmlFor="filterIdMj">Filtrer par ID MJ :</label>
+            <label htmlFor="filterIdMj">Filtrer par MJ (Pseudo) :</label>
             <input
               type="text"
               id="filterIdMj"
@@ -509,12 +511,13 @@ const PartiesTab = () => {
               <th>Description</th>
               <th>Date</th>
               <th>Nombre max</th>
-              <th>ID MJ</th>
+              <th>MJ (Pseudo)</th> {/* Indiquez que c'est le pseudo du MJ */}
               <th>Durée</th>
               <th>Lieu</th>
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {filteredParties.map((party) => (
               <tr key={party.id}>
@@ -549,7 +552,8 @@ const PartiesTab = () => {
                   })}
                 </td>
                 <td>{party.nb_max_joueurs}</td>
-                <td>{party.id_maitre_du_jeu}</td>
+                <td>{party.maitre_du_jeu_pseudo}</td>{" "}
+                {/* Remplace id_maitre_du_jeu */}
                 <td>{party.duree_estimee}</td>
                 <td>{party.lieu}</td>
                 <td>

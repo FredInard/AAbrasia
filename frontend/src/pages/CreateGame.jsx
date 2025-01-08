@@ -14,8 +14,8 @@ const CreateGame = () => {
   const [description, setDescription] = useState("")
   const [date, setDate] = useState("")
   const [nbMaxJoueurs, setNbMaxJoueurs] = useState(4)
-  const [niveauDifficulte, setNiveauDifficulte] = useState("moyen")
-  const [lieu, setLieu] = useState("")
+  // const [niveauDifficulte, setNiveauDifficulte] = useState("moyen")
+  const [lieu, setLieu] = useState("ECE Malijai")
   const [dureeEstimee, setDureeEstimee] = useState("")
   const [photoScenario, setPhotoScenario] = useState(null)
   const [type, setType] = useState("jeux")
@@ -56,7 +56,7 @@ const CreateGame = () => {
       .slice(0, 19)
     formData.append("date", formattedDate)
     formData.append("nb_max_joueurs", parseInt(nbMaxJoueurs, 10))
-    formData.append("niveau_difficulte", niveauDifficulte)
+    // formData.append("niveau_difficulte", niveauDifficulte)
     formData.append("lieu", lieu)
     formData.append("duree_estimee", parseInt(dureeEstimee, 10))
     formData.append("type", type)
@@ -90,7 +90,7 @@ const CreateGame = () => {
         setDescription("")
         setDate("")
         setNbMaxJoueurs(4)
-        setNiveauDifficulte("moyen")
+        // setNiveauDifficulte("moyen")
         setLieu("")
         setDureeEstimee("")
         setPhotoScenario(null)
@@ -180,7 +180,7 @@ const CreateGame = () => {
               required
             />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="niveauDifficulte">Niveau de difficulté</label>
             <select
               id="niveauDifficulte"
@@ -192,7 +192,7 @@ const CreateGame = () => {
               <option value="moyen">Moyen</option>
               <option value="difficile">Difficile</option>
             </select>
-          </div>
+          </div> */}
           <div className="form-group">
             <label htmlFor="lieu">Lieu</label>
             <input

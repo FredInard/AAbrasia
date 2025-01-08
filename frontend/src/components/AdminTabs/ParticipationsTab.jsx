@@ -62,9 +62,9 @@ const ParticipationsTab = () => {
 
     if (filterUtilisateurId.trim() !== "") {
       filtered = filtered.filter((participation) =>
-        participation.utilisateur_id
-          .toString()
-          .includes(filterUtilisateurId.trim())
+        participation.utilisateur_pseudo
+          .toLowerCase()
+          .includes(filterUtilisateurId.toLowerCase())
       )
       console.info(
         `Filtré par utilisateur_id=${filterUtilisateurId.trim()}:`,
@@ -74,9 +74,10 @@ const ParticipationsTab = () => {
 
     if (filterPartieId.trim() !== "") {
       filtered = filtered.filter((participation) =>
-        participation.partie_id.toString().includes(filterPartieId.trim())
+        participation.partie_titre
+          .toLowerCase()
+          .includes(filterPartieId.toLowerCase())
       )
-      console.info(`Filtré par partie_id=${filterPartieId.trim()}:`, filtered)
     }
 
     // Ajoutez d'autres filtres ici si nécessaire
@@ -245,27 +246,32 @@ const ParticipationsTab = () => {
           className="filters-form"
         >
           <div>
-            <label htmlFor="filterUtilisateurId">ID Utilisateur :</label>
+            <label htmlFor="filterUtilisateurId">
+              Filtrer par Pseudo Utilisateur :
+            </label>
             <input
               type="text"
               id="filterUtilisateurId"
               name="filterUtilisateurId"
               value={filterUtilisateurId}
               onChange={(e) => setFilterUtilisateurId(e.target.value)}
-              placeholder="Rechercher par ID Utilisateur"
+              placeholder="Rechercher par pseudo utilisateur"
             />
           </div>
           <div>
-            <label htmlFor="filterPartieId">ID Partie :</label>
+            <label htmlFor="filterPartieId">
+              Filtrer par Titre de Partie :
+            </label>
             <input
               type="text"
               id="filterPartieId"
               name="filterPartieId"
               value={filterPartieId}
               onChange={(e) => setFilterPartieId(e.target.value)}
-              placeholder="Rechercher par ID Partie"
+              placeholder="Rechercher par titre de partie"
             />
           </div>
+
           {/* Ajoutez d'autres champs de filtre ici si nécessaire */}
           {/* <button type="button" onClick={handleFilterReset}>
             Réinitialiser les filtres
@@ -313,23 +319,32 @@ const ParticipationsTab = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>ID Utilisateur</th>
-              <th>ID Partie</th>
+              <th>Utilisateur (Pseudo)</th>
+              <th>Partie (Titre)</th>
               <th>Date de Participation</th>
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {filteredParticipations.length > 0 ? (
               filteredParticipations.map((participation) => (
                 <tr key={participation.id}>
                   <td>{participation.id}</td>
-                  <td>{participation.utilisateur_id}</td>
-                  <td>{participation.partie_id}</td>
+                  <td>{participation.utilisateur_pseudo}</td>{" "}
+                  {/* Affiche le pseudo */}
+                  <td>{participation.partie_titre}</td> {/* Affiche le titre */}
                   <td>
-                    {new Date(
-                      participation.date_participation
-                    ).toLocaleString()}
+                    {new Date(participation.date_participation).toLocaleString(
+                      "fr-FR",
+                      {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    )}
                   </td>
                   <td>
                     <button onClick={() => handleEdit(participation)}>

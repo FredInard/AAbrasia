@@ -105,10 +105,13 @@ class PartieControllers {
     const partie = { ...req.body }
     partie.id = id
 
+    // Gestion du chemin de l'image
     if (req.file) {
-      partie.photo_scenario = req.file.path
-        .replace(/\\/g, "/")
-        .replace("public", "")
+      partie.photo_scenario = req.file.path.replace(/\\/g, "/") // Convertir les antislashs en slashs
+      if (!partie.photo_scenario.startsWith("public/")) {
+        partie.photo_scenario =
+          "public/" + partie.photo_scenario.replace(/^\/+/, "") // Ajouter "public/" si absent
+      }
     }
 
     console.info("Données de la partie pour mise à jour:", partie)

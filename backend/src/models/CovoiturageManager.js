@@ -36,9 +36,27 @@ class CovoiturageManager extends AbstractManager {
     )
   }
 
-  // Récupérer tous les covoiturages
+  // Récupérer tous les covoiturages avec pseudo utilisateur et titre de partie
   findAll() {
-    return this.database.query(`SELECT * FROM ${this.table}`)
+    return this.database.query(`
+   SELECT 
+    covoiturage.id AS covoiturage_id,
+    covoiturage.utilisateur_id,
+    utilisateur.pseudo AS utilisateur_pseudo,
+    covoiturage.partie_id,
+    partie.titre AS partie_titre,
+    covoiturage.ville_depart,
+    covoiturage.ville_arrivee,
+    covoiturage.heure_depart,
+    covoiturage.propose_retour
+FROM 
+    covoiturage
+JOIN 
+    utilisateur ON covoiturage.utilisateur_id = utilisateur.id
+JOIN 
+    partie ON covoiturage.partie_id = partie.id;
+
+  `)
   }
 
   // Récupérer un covoiturage par ID
