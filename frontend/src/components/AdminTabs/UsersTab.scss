@@ -58,3 +58,59 @@
     }
   }
 }
+
+/* ----------------------------- */
+/*    STYLES POUR REACT-TOASTIFY */
+/* ----------------------------- */
+
+/* Conteneur principal des toasts */
+.Toastify__toast-container {
+  /* Par défaut, Toastify utilise un z-index élevé,
+     vous pouvez changer si besoin */
+  z-index: 9999;
+
+  /* Par exemple, si vous souhaitez un positionnement custom, 
+     vous pouvez ajouter ceci :
+     position: fixed; 
+     top: 2rem;
+     right: 2rem;
+  */
+}
+
+/* Style général d'un toast */
+.Toastify__toast {
+  border-radius: 4px;
+  font-family: sans-serif;
+  min-height: 48px; /* Ajustez si besoin */
+  display: flex;
+  align-items: center; /* Centre le contenu verticalement */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Couleur du texte par défaut */
+  color: #fff;
+
+  /* Pour l’icône de fermeture */
+  .Toastify__close-button > svg {
+    fill: #fff;
+  }
+}
+
+/* Toast de succès */
+.Toastify__toast--success {
+  background-color: #4caf50; /* vert */
+}
+
+/* Toast d'erreur */
+.Toastify__toast--error {
+  background-color: #f44336; /* rouge */
+}
+
+/* Toast d'avertissement */
+.Toastify__toast--warning {
+  background-color: #ff9800; /* orange */
+}
+
+/* Toast d'information */
+.Toastify__toast--info {
+  background-color: #2196f3; /* bleu */
+}

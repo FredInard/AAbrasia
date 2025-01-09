@@ -230,6 +230,49 @@ export default function ModificationProfil() {
     setShowChangePasswordModal(false)
   }
 
+  // Désinscription (anonymisation) de l'utilisateur
+  const handleUnsubscribe = async () => {
+    if (window.confirm("Êtes-vous sûr de vouloir vous désinscrire ?")) {
+      try {
+        // Données d'anonymisation
+        const anonymizedData = {
+          pseudo: "Ghost",
+          email: "ghost@free.fr",
+          nom: "...",
+          prenom: "...",
+          date_naissance: null,
+          telephone: null,
+          adresse: null,
+          ville: null,
+          code_postal: null,
+          pays: null,
+          bio: null,
+          photo_profil: null,
+        }
+
+        await axios.put(
+          `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUser}`,
+          anonymizedData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+
+        toast.success(
+          "Vous avez été désinscrit. Vos données ont été anonymisées."
+        )
+
+        // Optionnel : redirection, ou rafraîchir la page si souhaité
+        // window.location.href = "/";
+      } catch (error) {
+        console.error("Erreur lors de la désinscription :", error)
+        toast.error("Erreur lors de la désinscription.")
+      }
+    }
+  }
+
   return (
     <>
       <div className="header">
@@ -391,6 +434,9 @@ export default function ModificationProfil() {
         onClick={openChangePasswordModal}
       >
         Changer le mot de passe
+      </button>
+      <button className="btn-unsubscribe" onClick={handleUnsubscribe}>
+        Se désinscrire
       </button>
       <p>
         Seul ton prénom, ton pseudo, ta bio et ta photo de profils sont rendu

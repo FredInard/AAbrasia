@@ -21,9 +21,20 @@ class RepasManager extends AbstractManager {
     )
   }
 
-  // Récupérer tous les repas
+  // Récupérer tous les repas avec les informations utilisateur et partie
   findAll() {
-    return this.database.query(`SELECT * FROM ${this.table}`)
+    return this.database.query(`
+    SELECT 
+      repas.id,
+      repas.partie_id,
+      repas.utilisateur_id,
+      repas.contenu,
+      utilisateur.pseudo AS utilisateur_pseudo,
+      partie.titre AS partie_titre
+    FROM repas
+    JOIN utilisateur ON repas.utilisateur_id = utilisateur.id
+    JOIN partie ON repas.partie_id = partie.id
+  `)
   }
 
   // Récupérer tous les repas pour une partie spécifique par son ID avec le pseudo de l'utilisateur

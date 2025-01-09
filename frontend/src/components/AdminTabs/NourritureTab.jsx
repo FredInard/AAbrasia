@@ -50,14 +50,24 @@ const NourritureTab = () => {
     let filtered = [...nourritures]
 
     if (filterPartieId.trim() !== "") {
-      filtered = filtered.filter((repas) =>
-        repas.partie_id.toString().includes(filterPartieId.trim())
+      filtered = filtered.filter(
+        (repas) =>
+          repas.partie_id.toString().includes(filterPartieId.trim()) ||
+          repas.partie_titre
+            .toLowerCase()
+            .includes(filterPartieId.toLowerCase())
       )
     }
 
     if (filterUtilisateurId.trim() !== "") {
-      filtered = filtered.filter((repas) =>
-        repas.utilisateur_id.toString().includes(filterUtilisateurId.trim())
+      filtered = filtered.filter(
+        (repas) =>
+          repas.utilisateur_id
+            .toString()
+            .includes(filterUtilisateurId.trim()) ||
+          repas.utilisateur_pseudo
+            .toLowerCase()
+            .includes(filterUtilisateurId.toLowerCase())
       )
     }
 
@@ -167,7 +177,9 @@ const NourritureTab = () => {
       <h2>Gestion des repas</h2>
       <div className="filters">
         <div>
-          <label htmlFor="filterPartieId">Filtrer par Partie ID :</label>
+          <label htmlFor="filterPartieId">
+            Filtrer par Partie ID ou Titre :
+          </label>
           <input
             type="text"
             id="filterPartieId"
@@ -177,7 +189,7 @@ const NourritureTab = () => {
         </div>
         <div>
           <label htmlFor="filterUtilisateurId">
-            Filtrer par Utilisateur ID :
+            Filtrer par Utilisateur ID ou Pseudo :
           </label>
           <input
             type="text"
@@ -233,18 +245,24 @@ const NourritureTab = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Partie ID</th>
-              <th>Utilisateur ID</th>
+              <th>Partie (Titre & ID)</th>
+              <th>Utilisateur (Pseudo & ID)</th>
               <th>Contenu</th>
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {filteredNourritures.map((nourriture) => (
               <tr key={nourriture.id}>
                 <td>{nourriture.id}</td>
-                <td>{nourriture.partie_id}</td>
-                <td>{nourriture.utilisateur_id}</td>
+                <td>
+                  {nourriture.partie_titre} (ID: {nourriture.partie_id})
+                </td>
+                <td>
+                  {nourriture.utilisateur_pseudo} (ID:{" "}
+                  {nourriture.utilisateur_id})
+                </td>
                 <td>{nourriture.contenu}</td>
                 <td>
                   <button onClick={() => handleEdit(nourriture)}>

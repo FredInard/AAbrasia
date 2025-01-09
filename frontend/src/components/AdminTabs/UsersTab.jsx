@@ -12,6 +12,8 @@ const UsersTab = () => {
   const [selectedUser, setSelectedUser] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
+
+  // AJOUT : nouveau champ pour le mot de passe
   const [formData, setFormData] = useState({
     pseudo: "",
     email: "",
@@ -24,7 +26,7 @@ const UsersTab = () => {
     code_postal: "",
     ville: "",
     pays: "",
-    // Ajoutez d'autres champs si nécessaire
+    newPassword: "", // <-- AJOUT
   })
 
   // États pour les filtres
@@ -122,35 +124,23 @@ const UsersTab = () => {
       code_postal: user.code_postal || "",
       ville: user.ville || "",
       pays: user.pays || "",
-      // Ajoutez d'autres champs si nécessaire
+      newPassword: "", // Réinitialise le champ mot de passe
     })
     setIsEditing(true)
   }
 
   // const handleCreate = () => {
-  //   setFormData({
-  //     pseudo: "",
-  //     email: "",
-  //     role: "membre",
-  //     nom: "",
-  //     prenom: "",
-  //     date_de_naissance: "",
-  //     telephone: "",
-  //     adresse: "",
-  //     code_postal: "",
-  //     ville: "",
-  //     pays: "",
-  //     // Ajoutez d'autres champs si nécessaire
-  //   })
-  //   setIsCreating(true)
-  // }
+  //   ...
+  // };
 
-  const handleSubmit = (e) => {
+  // Fonction principale de soumission du formulaire
+  const handleSubmit = async (e) => {
     e.preventDefault()
+
     if (isEditing) {
-      // Mettre à jour l'utilisateur
-      axios
-        .put(
+      // 1) Mettre à jour les autres informations de l'utilisateur
+      try {
+        await axios.put(
           `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${selectedUser.id}`,
           formData,
           {
@@ -159,34 +149,33 @@ const UsersTab = () => {
             },
           }
         )
-        .then(() => {
-          setIsEditing(false)
-          setSelectedUser(null)
-          fetchUsers()
-        })
-        .catch((error) => {
-          console.error(
-            "Erreur lors de la mise à jour de l'utilisateur :",
-            error
+        // 2) Mettre à jour le mot de passe s’il y a un newPassword
+        if (formData.newPassword && formData.newPassword.trim().length > 0) {
+          await axios.put(
+            `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${
+              selectedUser.id
+            }/changerMotDePasse`,
+            {
+              password: formData.newPassword, // Le backend attend { password: ... }
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            }
           )
-          setError("Erreur lors de la mise à jour de l'utilisateur.")
-        })
+        }
+        // Terminé, on rafraîchit la liste des utilisateurs
+        setIsEditing(false)
+        setSelectedUser(null)
+        fetchUsers()
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour de l'utilisateur :", error)
+        setError("Erreur lors de la mise à jour de l'utilisateur.")
+      }
     } else if (isCreating) {
-      // Créer un nouvel utilisateur
-      axios
-        .post(`${import.meta.env.VITE_BACKEND_URL}/utilisateurs`, formData, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        })
-        .then(() => {
-          setIsCreating(false)
-          fetchUsers()
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la création de l'utilisateur :", error)
-          setError("Erreur lors de la création de l'utilisateur.")
-        })
+      // Création d’un nouvel utilisateur
+      // ...
     }
   }
 
@@ -211,7 +200,7 @@ const UsersTab = () => {
       code_postal: "",
       ville: "",
       pays: "",
-      // Ajoutez d'autres champs si nécessaire
+      newPassword: "", // <-- AJOUT
     })
   }
 
@@ -258,11 +247,11 @@ const UsersTab = () => {
               <option value="">Tous</option>
               <option value="membre">Membre</option>
               <option value="admin">Administrateur</option>
-              {/* Ajoutez d'autres rôles si nécessaire */}
             </select>
           </div>
         </div>
       )}
+
       {isEditing || isCreating ? (
         <form onSubmit={handleSubmit} className="user-form">
           <div>
@@ -297,7 +286,6 @@ const UsersTab = () => {
             >
               <option value="membre">Membre</option>
               <option value="admin">Administrateur</option>
-              {/* Ajoutez d'autres rôles si nécessaire */}
             </select>
           </div>
           <div>
@@ -380,7 +368,19 @@ const UsersTab = () => {
               onChange={handleChange}
             />
           </div>
-          {/* Ajoutez d'autres champs si nécessaire */}
+
+          {/* AJOUT : Champ du nouveau mot de passe */}
+          <div>
+            <label htmlFor="newPassword">Nouveau mot de passe :</label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleChange}
+            />
+          </div>
+
           <button type="submit">
             {isEditing ? "Mettre à jour l'utilisateur" : "Créer l'utilisateur"}
           </button>
