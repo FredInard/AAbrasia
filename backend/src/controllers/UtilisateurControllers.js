@@ -131,21 +131,32 @@ class UtilisateurControllers {
   // POST /login
   static verifyUtilisateur(req, res, next) {
     const { email } = req.body
-    console.info("email reçu :", email)
 
     models.utilisateur
       .findByEmailWithPassword(email)
       .then(([utilisateurs]) => {
-        if (utilisateurs[0]) {
-          req.utilisateur = utilisateurs[0]
-          next()
-        } else {
-          res.sendStatus(401)
+        const utilisateur = utilisateurs[0]
+
+        if (!utilisateur) {
+          return res.status(401).json({ error: "Utilisateur non trouvé." })
         }
+
+        // Vérifier si le rôle est "inactif"
+        if (utilisateur.role === "inactif") {
+          return res
+            .status(403) // Interdit
+            .json({
+              error:
+                "Ce compte est désactivé. Veuillez contacter un administrateur.",
+            })
+        }
+
+        req.utilisateur = utilisateur
+        next()
       })
       .catch((err) => {
         console.error(err)
-        res.status(500).send("Error retrieving data from the database")
+        res.status(500).json({ error: "Erreur interne du serveur." })
       })
   }
 

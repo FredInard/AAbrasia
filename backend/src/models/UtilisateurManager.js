@@ -28,8 +28,8 @@ class UtilisateurManager extends AbstractManager {
        telephone = '...',
        bio = '...',
        photo_profil = NULL,
-       hashedPassword = NULL,
-       date_inscription = date_inscription, // Non modifiée */
+       hashedPassword = 'AnonymizedPassword123!',
+       date_inscription = date_inscription,
        dernier_login = NULL
      WHERE id = ?`,
       [id]

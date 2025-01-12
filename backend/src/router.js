@@ -4,7 +4,7 @@ const express = require("express")
 const multer = require("multer")
 const path = require("path")
 const router = express.Router()
-
+const PasswordResetController = require("./controllers/PasswordResetController")
 const { hashPassword, verifyPassword, verifyToken } = require("./auth.js")
 
 // Configure multer for file upload
@@ -46,7 +46,7 @@ const ExportController = require("./controllers/ExportController")
 router.post("/login", UtilisateurControllers.verifyUtilisateur, verifyPassword)
 router.post("/utilisateurs", hashPassword, UtilisateurControllers.add)
 router.get("/utilisateurs", UtilisateurControllers.browse)
-router.get("/utilisateurs/:id", UtilisateurControllers.read)
+router.get("/utilisateurs/:id", verifyToken, UtilisateurControllers.read)
 router.put(
   "/utilisateurs/:id",
   verifyToken,
@@ -150,5 +150,11 @@ router.get("/logs/:id", verifyToken, LogControllers.read)
 
 // Route pour exporter toutes les données
 router.get("/export/all", ExportController.exportAllTables)
+
+// Route pour demander une réinitialisation de mot de passe
+router.post("/password-reset-request", PasswordResetController.requestReset)
+
+// Route pour confirmer la réinitialisation du mot de passe
+router.post("/password-reset-confirm", PasswordResetController.confirmReset)
 
 module.exports = router

@@ -147,9 +147,11 @@ class PartieControllers {
                 inline: true,
               },
               {
-                name: "Niveau de difficulté",
-                value: partie.niveau_difficulte || "Non spécifié",
-                inline: true,
+                name: "Nombre de joueurs",
+                value: partie.nb_max_joueurs
+                  ? `${partie.nb_max_joueurs} joueur(s) maximum`
+                  : "Non spécifié",
+                inline: false,
               },
             ],
             timestamp: new Date().toISOString(),
