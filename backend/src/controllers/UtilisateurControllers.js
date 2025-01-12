@@ -149,6 +149,27 @@ class UtilisateurControllers {
       })
   }
 
+  // PUT /utilisateurs/:id/anonymize
+  static anonymize(req, res) {
+    const id = parseInt(req.params.id, 10)
+
+    models.utilisateur
+      .anonymize(id)
+      .then(([result]) => {
+        if (result.affectedRows === 0) {
+          // L'utilisateur n'a pas été trouvé
+          res.sendStatus(404)
+        } else {
+          // Anonymisation réussie
+          res.sendStatus(204)
+        }
+      })
+      .catch((err) => {
+        console.error("Erreur lors de l'anonymisation :", err)
+        res.sendStatus(500)
+      })
+  }
+
   // PUT /utilisateurs/:id/changerMotDePasse
   static changerMotDePasse(req, res) {
     console.info("Requête reçue pour changer le mot de passe.")

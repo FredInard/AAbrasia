@@ -234,25 +234,12 @@ export default function ModificationProfil() {
   const handleUnsubscribe = async () => {
     if (window.confirm("Êtes-vous sûr de vouloir vous désinscrire ?")) {
       try {
-        // Données d'anonymisation
-        const anonymizedData = {
-          pseudo: "Ghost",
-          email: "ghost@free.fr",
-          nom: "...",
-          prenom: "...",
-          date_naissance: null,
-          telephone: null,
-          adresse: null,
-          ville: null,
-          code_postal: null,
-          pays: null,
-          bio: null,
-          photo_profil: null,
-        }
-
+        // Appel de la route PUT /utilisateurs/:id/anonymize
         await axios.put(
-          `${import.meta.env.VITE_BACKEND_URL}/utilisateurs/${idUser}`,
-          anonymizedData,
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/utilisateurs/${idUser}/anonymize`,
+          {},
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -260,12 +247,16 @@ export default function ModificationProfil() {
           }
         )
 
+        // Affiche un toast pour signaler le succès de l'opération
         toast.success(
           "Vous avez été désinscrit. Vos données ont été anonymisées."
         )
 
-        // Optionnel : redirection, ou rafraîchir la page si souhaité
-        // window.location.href = "/";
+        // 1) Déconnexion : retirer le token du localStorage
+        localStorage.removeItem("authToken")
+
+        // 2) Redirection vers la page principale ("/")
+        window.location.href = "/"
       } catch (error) {
         console.error("Erreur lors de la désinscription :", error)
         toast.error("Erreur lors de la désinscription.")

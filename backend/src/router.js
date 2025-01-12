@@ -70,6 +70,12 @@ router.put(
   upload.single("photo_profil"),
   UtilisateurControllers.updatePhotoProfil
 )
+// Anonymiser toutes les infos sauf l'ID et la date d'inscription
+router.put(
+  "/utilisateurs/:id/anonymize",
+  verifyToken, // si vous souhaitez protéger la route
+  UtilisateurControllers.anonymize
+)
 
 // Routes pour les parties
 // router.get("/parties", PartieControllers.browse)

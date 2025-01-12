@@ -12,6 +12,30 @@ class UtilisateurManager extends AbstractManager {
     )
   }
 
+  // Anonymise toutes les infos (sauf id, date_inscription)
+  anonymize(id) {
+    return this.database.query(
+      `UPDATE ${this.table}
+     SET
+       nom = '...',
+       prenom = '...',
+       email = '...',
+       pseudo = '...',
+       role = 'inactif',
+       date_naissance = NULL,
+       adresse = '...',
+       ville = '...',
+       telephone = '...',
+       bio = '...',
+       photo_profil = NULL,
+       hashedPassword = NULL,
+       date_inscription = date_inscription, // Non modifiée */
+       dernier_login = NULL
+     WHERE id = ?`,
+      [id]
+    )
+  }
+
   // Insérer un nouvel utilisateur
   insert(utilisateur) {
     return this.database.query(
