@@ -34,7 +34,7 @@ const UtilisateurManager = require("./UtilisateurManager")
 const RepasManager = require("./RepasManager")
 const CovoiturageManager = require("./CovoiturageManager")
 const LogManager = require("./LogManager")
-
+const PasswordResetTokenManager = require("./PasswordResetManager")
 models.participation = new ParticipationManager()
 models.participation.setDatabase(pool)
 
@@ -52,6 +52,9 @@ models.covoiturage.setDatabase(pool)
 
 models.log = new LogManager()
 models.log.setDatabase(pool)
+
+models.passwordResetToken = new PasswordResetTokenManager()
+models.passwordResetToken.setDatabase(pool)
 
 // Gestionnaire pour les références de modèles non définies
 const handler = {

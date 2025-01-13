@@ -1,6 +1,6 @@
 const crypto = require("crypto")
 const models = require("../models")
-const sendEmail = require("../utils/sendEmail")
+const sendEmail = require("../services/sendEmail")
 const bcrypt = require("bcrypt")
 
 class PasswordResetController {

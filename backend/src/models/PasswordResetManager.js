@@ -13,14 +13,14 @@ class PasswordResetManager extends AbstractManager {
     )
   }
 
-  // Rechercher un token
+  // Rechercher un token par sa valeur
   findByToken(token) {
     return this.database.query(`SELECT * FROM ${this.table} WHERE token = ?`, [
       token,
     ])
   }
 
-  // Supprimer un token
+  // Supprimer un token par ID
   delete(id) {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id])
   }

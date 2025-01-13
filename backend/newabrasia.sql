@@ -131,7 +131,6 @@ CREATE TABLE `covoiturage` (
 
 -- Table password_reset_tokens
 DROP TABLE IF EXISTS `password_reset_tokens`;
-
 CREATE TABLE `password_reset_tokens` (
   id INT AUTO_INCREMENT PRIMARY KEY,
   utilisateur_id INT NOT NULL,

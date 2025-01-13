@@ -8,7 +8,7 @@ function PasswordResetRequest() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/password-reset-request`,
         { email }
       )
@@ -26,7 +26,7 @@ function PasswordResetRequest() {
       <h2>Réinitialiser le mot de passe</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          Email :
+          Email :
           <input
             type="email"
             value={email}
