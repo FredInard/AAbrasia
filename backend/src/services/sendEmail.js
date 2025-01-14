@@ -26,6 +26,8 @@ async function sendEmail({ to, subject, text, html }) {
     console.info("EMAIL_PORT:", process.env.EMAIL_PORT)
     console.info("EMAIL_USER:", process.env.EMAIL_USER)
     console.info("EMAIL_PASSWORD:", process.env.EMAIL_PASSWORD)
+    console.info("Mail Options:", mailOptions)
+
     const info = await transporter.sendMail(mailOptions)
     console.info("Email envoyé avec succès : %s", info.messageId)
     return info

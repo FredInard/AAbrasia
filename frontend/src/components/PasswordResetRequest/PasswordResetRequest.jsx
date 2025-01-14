@@ -20,7 +20,8 @@ function PasswordResetRequest() {
       setMessage("Une erreur s'est produite. Veuillez réessayer.")
     }
   }
-
+  console.info("email :", email)
+  console.info("message :", message)
   return (
     <div>
       <h2>Réinitialiser le mot de passe</h2>
