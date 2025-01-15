@@ -1,7 +1,8 @@
 const crypto = require("crypto")
+const argon2 = require("argon2")
+const { hashingOptions } = require("../auth")
 const models = require("../models")
 const sendEmail = require("../services/sendEmail")
-const bcrypt = require("bcrypt")
 
 class PasswordResetController {
   static async requestReset(req, res) {
@@ -75,12 +76,23 @@ class PasswordResetController {
         return res.status(400).json({ message: "Token expiré." })
       }
 
-      const hashedPassword = await bcrypt.hash(newPassword, 10)
+      // Vérification de la longueur minimale du nouveau mot de passe
+      if (!newPassword || newPassword.length < 8) {
+        return res.status(400).json({
+          message: "Le mot de passe doit comporter au moins 8 caractères.",
+        })
+      }
+
+      // Hachage du mot de passe avec Argon2 et les mêmes options (hashingOptions)
+      const hashedPassword = await argon2.hash(newPassword, hashingOptions)
+
+      // Mise à jour du mot de passe en base de données
       await models.utilisateur.updatePassword(
         resetToken.utilisateur_id,
         hashedPassword
       )
 
+      // Suppression du token de réinitialisation
       await models.passwordResetToken.delete(resetToken.id)
 
       res

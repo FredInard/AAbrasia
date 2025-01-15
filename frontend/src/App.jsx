@@ -16,6 +16,7 @@ import Cgu from "./pages/Cgu"
 import Profil from "./pages/Profil"
 import AdminPage from "./pages/AdminPage" // Import de la page d'administration
 import ProtectedRoute from "./ProtectedRoute"
+import ResetPassword from "./pages/ResetPassword"
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Route protégée pour l'administrateur */}
         <Route

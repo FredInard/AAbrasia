@@ -169,4 +169,5 @@ module.exports = {
   hashPassword,
   verifyPassword,
   verifyToken,
+  hashingOptions,
 }

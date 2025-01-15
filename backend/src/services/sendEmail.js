@@ -3,29 +3,25 @@ const nodemailer = require("nodemailer")
 async function sendEmail({ to, subject, text, html }) {
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      service: "gmail",
+      // host: process.env.EMAIL_HOST,
+      // port: process.env.EMAIL_PORT,
       auth: {
-        user: process.env.EMAIL_USER, // Votre email généré par Mailgun
-        pass: process.env.EMAIL_PASSWORD, // Votre clé API Mailgun
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASSWORD,
       },
       tls: {
-        rejectUnauthorized: false, // Pour éviter les erreurs de certificats
+        rejectUnauthorized: false,
       },
     })
 
     const mailOptions = {
-      from: process.env.EMAIL_USER, // Adresse de l'expéditeur
+      from: process.env.GMAIL_USER, // Adresse de l'expéditeur
       to, // Destinataire
       subject, // Sujet
       text, // Corps en texte brut
       html, // Corps en HTML (optionnel)
     }
-
-    console.info("EMAIL_HOST:", process.env.EMAIL_HOST)
-    console.info("EMAIL_PORT:", process.env.EMAIL_PORT)
-    console.info("EMAIL_USER:", process.env.EMAIL_USER)
-    console.info("EMAIL_PASSWORD:", process.env.EMAIL_PASSWORD)
     console.info("Mail Options:", mailOptions)
 
     const info = await transporter.sendMail(mailOptions)
