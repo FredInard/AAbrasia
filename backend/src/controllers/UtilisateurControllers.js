@@ -60,6 +60,10 @@ class UtilisateurControllers {
         })
       }
 
+      // Si les champs ne sont pas fournis, tu peux imposer true/false ici :
+      // utilisateur.cgu_accepted = utilisateur.cgu_accepted ?? 1;
+      // utilisateur.cookies_accepted = utilisateur.cookies_accepted ?? 1;
+
       // Insérer le nouvel utilisateur
       const [result] = await models.utilisateur.insert(utilisateur)
       res.status(201).json({ id: result.insertId, ...utilisateur })

@@ -14,11 +14,13 @@ const CreateGame = () => {
   const [description, setDescription] = useState("")
   const [date, setDate] = useState("")
   const [nbMaxJoueurs, setNbMaxJoueurs] = useState(4)
-  // const [niveauDifficulte, setNiveauDifficulte] = useState("moyen")
   const [lieu, setLieu] = useState("ECE Malijai")
   const [dureeEstimee, setDureeEstimee] = useState("")
   const [photoScenario, setPhotoScenario] = useState(null)
   const [type, setType] = useState("jeux")
+
+  // Nouveau state pour la case à cocher (limiter les participants)
+  const [strictNbJoueurs, setStrictNbJoueurs] = useState(false)
 
   const token = localStorage.getItem("authToken")
   let idMaitreDuJeu = null
@@ -56,11 +58,14 @@ const CreateGame = () => {
       .slice(0, 19)
     formData.append("date", formattedDate)
     formData.append("nb_max_joueurs", parseInt(nbMaxJoueurs, 10))
-    // formData.append("niveau_difficulte", niveauDifficulte)
     formData.append("lieu", lieu)
     formData.append("duree_estimee", parseInt(dureeEstimee, 10))
     formData.append("type", type)
     formData.append("id_maitre_du_jeu", idMaitreDuJeu)
+
+    // === Nouveauté : on ajoute strict_nb_joueurs ===
+    // (Pour MySQL, ce sera un TINYINT(1), donc on peut envoyer "1" ou "0".)
+    formData.append("strict_nb_joueurs", strictNbJoueurs ? "1" : "0")
 
     if (photoScenario) {
       formData.append("photo_scenario", photoScenario)
@@ -90,11 +95,11 @@ const CreateGame = () => {
         setDescription("")
         setDate("")
         setNbMaxJoueurs(4)
-        // setNiveauDifficulte("moyen")
-        setLieu("")
+        setLieu("ECE Malijai")
         setDureeEstimee("")
         setPhotoScenario(null)
         setType("jeux")
+        setStrictNbJoueurs(false)
 
         setTimeout(() => {
           navigate("/parties")
@@ -180,19 +185,20 @@ const CreateGame = () => {
               required
             />
           </div>
-          {/* <div className="form-group">
-            <label htmlFor="niveauDifficulte">Niveau de difficulté</label>
-            <select
-              id="niveauDifficulte"
-              value={niveauDifficulte}
-              onChange={(e) => setNiveauDifficulte(e.target.value)}
-              required
-            >
-              <option value="facile">Facile</option>
-              <option value="moyen">Moyen</option>
-              <option value="difficile">Difficile</option>
-            </select>
-          </div> */}
+
+          {/* Case à cocher pour la limitation stricte */}
+          <div className="form-group">
+            <label htmlFor="strict_nb_joueurs">
+              Limiter les participants ?
+            </label>
+            <input
+              type="checkbox"
+              id="strict_nb_joueurs"
+              checked={strictNbJoueurs}
+              onChange={() => setStrictNbJoueurs(!strictNbJoueurs)}
+            />
+          </div>
+
           <div className="form-group">
             <label htmlFor="lieu">Lieu</label>
             <input

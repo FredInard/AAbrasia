@@ -39,13 +39,28 @@ class UtilisateurManager extends AbstractManager {
   // Insérer un nouvel utilisateur
   insert(utilisateur) {
     return this.database.query(
-      `INSERT INTO ${this.table} (nom, prenom, email, pseudo, hashedPassword, role, date_naissance, adresse, ville, telephone, bio, photo_profil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO ${this.table} (
+        nom,
+        prenom,
+        email,
+        pseudo,
+        hashedPassword,
+        role,
+        date_naissance,
+        adresse,
+        ville,
+        telephone,
+        bio,
+        photo_profil,
+        cgu_accepted,
+        cookies_accepted
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         utilisateur.nom,
         utilisateur.prenom,
         utilisateur.email,
         utilisateur.pseudo,
-        utilisateur.hashedPassword, // Le mot de passe doit déjà être haché
+        utilisateur.hashedPassword, // déjà haché par hashPassword
         utilisateur.role || "membre",
         utilisateur.date_naissance,
         utilisateur.adresse,
@@ -53,6 +68,8 @@ class UtilisateurManager extends AbstractManager {
         utilisateur.telephone,
         utilisateur.bio,
         utilisateur.photo_profil,
+        utilisateur.cgu_accepted ? 1 : 0,
+        utilisateur.cookies_accepted ? 1 : 0,
       ]
     )
   }

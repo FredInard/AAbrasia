@@ -26,16 +26,25 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
   const [isCarpoolModalOpen, setIsCarpoolModalOpen] = useState(false)
   const [isMealModalOpen, setIsMealModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false) // État pour la modale d'édition
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
+  // Nouvel état pour stocker le nombre de participants
+  const [participantsCount, setParticipantsCount] = useState(0)
+
   const refreshData = () => {
     setIsUpdated(!isUpdated) // Change la valeur pour forcer un rechargement
   }
+
   // Récupérer l'utilisateur connecté une fois au chargement
   useEffect(() => {
     const token = localStorage.getItem("authToken")
     if (token) {
-      const decodedToken = JSON.parse(atob(token.split(".")[1]))
-      setUser(decodedToken)
+      try {
+        const decodedToken = JSON.parse(atob(token.split(".")[1]))
+        setUser(decodedToken)
+      } catch (err) {
+        console.info("Erreur de déchiffrement du token :", err)
+      }
     }
   }, [])
 
@@ -69,13 +78,37 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
     }
 
     fetchGameDetails()
-  }, [partyId, user?.id, isUpdated]) // Ajouter isUpdated pour rafraîchir les données après modification
+  }, [partyId, user?.id, isUpdated])
+
+  // Charger la liste des participants pour connaître leur nombre
+  useEffect(() => {
+    if (!partyId) return
+
+    const fetchParticipants = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/participations/${partyId}`
+        )
+        // res.data devrait être la liste des participants
+        setParticipantsCount(res.data.length)
+      } catch (err) {
+        console.error("Erreur lors de la récupération des participants :", err)
+      }
+    }
+
+    fetchParticipants()
+  }, [partyId, isUpdated])
 
   // Calculer si la date de la partie est passée
   const isPast = gameDetails && new Date(gameDetails.date) < new Date()
 
   // Vérifier si l'utilisateur est le créateur de la partie
   const isCreator = user && user.id === gameDetails?.id_maitre_du_jeu
+
+  // Vérifier si la partie est "full" en mode strict
+  const isPartyFull =
+    gameDetails?.strict_nb_joueurs &&
+    participantsCount >= gameDetails?.nb_max_joueurs
 
   const handleJoinParty = async () => {
     if (!user) return
@@ -96,6 +129,7 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
       setIsUpdated(!isUpdated) // Basculer isUpdated pour rafraîchir ParticipantsList
     } catch (err) {
       setError("Impossible de rejoindre la partie. Veuillez réessayer.")
+      console.error(err)
     }
   }
 
@@ -131,11 +165,9 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
   const handleOpenCarpoolModal = () => {
     setIsCarpoolModalOpen(true)
   }
-
   const handleCloseCarpoolModal = () => {
     setIsCarpoolModalOpen(false)
   }
-
   const handleCarpoolSubmit = (carpoolData) => {
     const authToken = localStorage.getItem("authToken")
 
@@ -174,11 +206,9 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
   const handleOpenMealModal = () => {
     setIsMealModalOpen(true)
   }
-
   const handleCloseMealModal = () => {
     setIsMealModalOpen(false)
   }
-
   const handleMealSubmit = (mealData) => {
     const authToken = localStorage.getItem("authToken")
     if (!authToken) {
@@ -464,25 +494,38 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
           </>
         )}
 
-        {/* Boutons Rejoindre/Quitter visibles uniquement si la date n'est pas passée */}
-        {canJoin && (
-          <button onClick={handleJoinParty} className="join-btn">
-            Rejoindre l'aventure
-          </button>
-        )}
-
-        {canLeave && (
-          <button onClick={handleLeaveParty} className="leave-btn">
-            Quitter l'aventure
-          </button>
-        )}
-
-        {/* Afficher un message si la partie est passée */}
+        {/* Partie est passée -> pas de join/leave possible */}
         {isPast && (
           <p className="past-game-message">
             Cette partie est terminée. Vous ne pouvez plus vous y inscrire ou la
             modifier.
           </p>
+        )}
+
+        {/* Sinon, si la date n'est pas passée... */}
+        {!isPast && (
+          <>
+            {/* Si la partie est pleine (strict_nb_joueurs === true et participantsCount >= nb_max_joueurs) */}
+            {canJoin && isPartyFull && (
+              <p className="full-party-message">
+                La partie est victime de son succès, il ne reste plus de place.
+              </p>
+            )}
+
+            {/* Si on peut rejoindre ET la partie n'est pas pleine */}
+            {canJoin && !isPartyFull && (
+              <button onClick={handleJoinParty} className="join-btn">
+                Rejoindre l'aventure
+              </button>
+            )}
+
+            {/* Bouton pour quitter la partie, si applicable */}
+            {canLeave && (
+              <button onClick={handleLeaveParty} className="leave-btn">
+                Quitter l'aventure
+              </button>
+            )}
+          </>
         )}
 
         {/* Modale d'édition */}

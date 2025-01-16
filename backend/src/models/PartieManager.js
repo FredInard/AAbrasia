@@ -8,7 +8,18 @@ class PartieManager extends AbstractManager {
   // Insert a new partie
   insert(partie) {
     return this.database.query(
-      `INSERT INTO ${this.table} (titre, type, description, date, nb_max_joueurs, id_maitre_du_jeu, duree_estimee, lieu, photo_scenario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO partie (
+        titre,
+        type,
+        description,
+        date,
+        nb_max_joueurs,
+        id_maitre_du_jeu,
+        duree_estimee,
+        lieu,
+        photo_scenario,
+       strict_nb_joueurs
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         partie.titre,
         partie.type,
@@ -19,6 +30,9 @@ class PartieManager extends AbstractManager {
         partie.duree_estimee,
         partie.lieu,
         partie.photo_scenario,
+        partie.strict_nb_joueurs === "1" || partie.strict_nb_joueurs === true
+          ? 1
+          : 0,
       ]
     )
   }
@@ -26,7 +40,19 @@ class PartieManager extends AbstractManager {
   // Update an existing partie
   update(partie) {
     return this.database.query(
-      `UPDATE ${this.table} SET titre = ?, type = ?, description = ?, date = ?, nb_max_joueurs = ?, id_maitre_du_jeu = ?, duree_estimee = ?, lieu = ?, photo_scenario = ? WHERE id = ?`,
+      `UPDATE ${this.table} 
+       SET 
+         titre = ?, 
+         type = ?, 
+         description = ?, 
+         date = ?, 
+         nb_max_joueurs = ?, 
+         id_maitre_du_jeu = ?, 
+         duree_estimee = ?, 
+         lieu = ?, 
+         photo_scenario = ?, 
+         strict_nb_joueurs = ?
+       WHERE id = ?`,
       [
         partie.titre,
         partie.type,
@@ -37,6 +63,7 @@ class PartieManager extends AbstractManager {
         partie.duree_estimee,
         partie.lieu,
         partie.photo_scenario,
+        partie.strict_nb_joueurs === "1" ? 1 : 0,
         partie.id,
       ]
     )

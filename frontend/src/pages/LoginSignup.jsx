@@ -37,17 +37,14 @@ const LoginSignup = () => {
 
   const isPasswordStrong = (password) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{12,})/
-
     return passwordRegex.test(password)
   }
 
-  // Test cases
+  // Tests de robustesse du mot de passe (à titre indicatif)
   console.info(isPasswordStrong("Abc123!@#def")) // true (valide)
   console.info(isPasswordStrong("abc123!@#def")) // false (pas de majuscule)
   console.info(isPasswordStrong("ABC123!@#DEF")) // false (pas assez long)
   console.info(isPasswordStrong("Abc12345678")) // false (pas de caractère spécial)
-
-  console.info("signupForm.confirmPassword", signupForm.confirmPassword)
 
   // Gestion des tentatives de connexion infructueuses
   const lockoutUser = () => {
@@ -94,7 +91,7 @@ const LoginSignup = () => {
           // Stocker le token d'accès dans le localStorage
           localStorage.setItem("authToken", token)
 
-          // Décoder le token pour récupérer les informations de l'utilisateur
+          // Décoder le token pour récupérer les infos utilisateur
           const decodedToken = jwtDecode(token)
 
           // Mettre à jour l'état de connexion dans le contexte
@@ -107,7 +104,6 @@ const LoginSignup = () => {
             isLoading: false,
           })
 
-          // Logs pour le diagnostic
           console.info("authData après connexion:", {
             isAuthenticated: true,
             user: decodedToken,
@@ -151,6 +147,8 @@ const LoginSignup = () => {
     }
 
     try {
+      // Ici, on indique qu'en s'inscrivant, l'utilisateur accepte les CGU et les cookies.
+      // On suppose que le back prendra en compte `cgu_accepted` et `cookies_accepted`.
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/utilisateurs`,
         {
@@ -159,11 +157,14 @@ const LoginSignup = () => {
           pseudo: signupForm.pseudo,
           email: signupForm.email,
           password: signupForm.password,
+          cgu_accepted: true,
+          cookies_accepted: true,
         }
       )
 
       if (response.status === 201) {
         toast.success("Inscription réussie !")
+        // On peut ajouter un message ou un lien vers les CGU
         setIsLogin(true) // Retourner au formulaire de connexion
       }
     } catch (error) {
@@ -241,6 +242,10 @@ const LoginSignup = () => {
             ) : (
               <form onSubmit={handleSignupSubmit}>
                 <h2>Inscription</h2>
+                <p>
+                  En créant un compte, vous acceptez les CGU et l’utilisation de
+                  cookies nécessaires au bon fonctionnement du site.
+                </p>
                 <div className="form-group">
                   <label htmlFor="signupNom">Nom</label>
                   <input
