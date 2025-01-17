@@ -1,96 +1,122 @@
-@import "../../styles/variables.scss";
-
-.game-container {
+.navbar {
+  /* Rendre la navbar transparente */
+  background-color: transparent;
+  box-shadow: none;
   display: flex;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #f0f0f0;
-  border-radius: 50px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
-  margin: 20px auto;
-}
-
-.game-master {
-  margin-right: 15px;
-}
-
-.profile-photo {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.game-details {
-  display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
+  padding: 1rem;
+  border: none; /* Aucune bordure */
 
-.game-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.game-players {
-  display: flex;
-  align-items: center;
-}
-
-.players-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-}
-
-.game-players span {
-  font-size: 18px;
-  font-weight: bold;
-}
-.gameBox {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  width: 100%;
-  flex-wrap: wrap;
-  padding-left: 15%;
-  justify-content: center;
-  padding-right: 15%;
-  padding-top: 5%;
-  padding-bottom: 2%;
-  // border: solid red;
-
-  .game-item {
-    display: inline-block;
-    width: 200px; /* Largeur de la vignette */
-    height: 200px; /* Hauteur de la vignette */
-    margin: 10px; /* Espacement autour de la vignette */
-    border: 1px solid #ccc; /* Bordure légère */
-    border-radius: 8px; /* Coins arrondis */
-    overflow: hidden; /* Masque le débordement du contenu */
-    background-color: #f9f9f9; /* Couleur de fond */
-    text-align: center; /* Centre le texte à l'intérieur */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ajoute une légère ombre */
+  .navbar-logo {
+    img {
+      height: 50px;
+    }
   }
 
-  .game-item img {
-    width: 100%; /* L'image occupe toute la largeur de la vignette */
-    height: auto;
+  .menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 24px;
+    width: 30px;
+
+    span {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background: #fff; /* Couleur des barres du burger menu */
+      border-radius: 1px;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 
-  .game-item h3 {
-    margin: 10px 0 5px 0; /* Espacement autour du titre */
-    font-size: 1.1em;
+  .navbar-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+
+    li {
+      margin: 0 0.5rem; 
+
+      a {
+        display: inline-block;
+
+        /* Bouton arrondi avec fond toujours visible */
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;      /* angles très arrondis */
+        border: 2px solid #fff;    /* bordure blanche */
+        background-color: #fff;    /* fond blanc */
+        color: #333;               /* texte foncé */
+        text-decoration: none;
+        font-weight: 600;          /* léger renforcement du texte */
+
+        /* Animation de transition */
+        transition: 
+          background-color 0.3s ease, 
+          color 0.3s ease,
+          border-color 0.3s ease;
+
+        &:hover {
+          background-color: #333;  /* au survol => fond foncé */
+          color: #fff;             /* texte blanc */
+          border-color: #333;      /* bordure également foncée */
+        }
+
+        &.active {
+          /* Lien actif */
+          background-color: #333;  /* fond foncé */
+          color: #fff;             /* texte blanc */
+          border-color: #333;
+        }
+      }
+    }
+
+    &.active {
+      /* Gère l’état du menu burger si besoin (mobile) */
+    }
   }
 
-  .game-item p {
-    margin: 0 10px 10px 10px; /* Espacement autour du paragraphe */
-    font-size: 0.9em;
-    color: #666; /* Couleur du texte */
+  .navbar-cta {
+    display: flex;
+    align-items: center;
+
+    .btn-cta {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      border: 2px solid #fff;
+      background-color: #fff; /* fond toujours visible */
+      color: #333;
+      text-decoration: none;
+      margin-left: 0.5rem;
+      font-weight: 600;
+      transition: 
+        background-color 0.3s ease, 
+        color 0.3s ease,
+        border-color 0.3s ease;
+
+      &:hover {
+        background-color: #333;
+        color: #fff;
+        border-color: #333;
+      }
+
+      &.logout-button {
+        /* Optionnel : si tu veux un style différent pour déconnexion */
+        border-color: #f44;
+        &:hover {
+          border-color: #f44;
+          background-color: #f44;
+          color: #fff;
+        }
+      }
+    }
   }
 }

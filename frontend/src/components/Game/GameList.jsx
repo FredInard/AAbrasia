@@ -76,10 +76,17 @@ const GameList = ({ selectedDate }) => {
   if (error) {
     return <p>{error}</p>
   }
-
+  function formatDate(dateString) {
+    // dateString = "2025-01-17"
+    const [yyyy, mm, dd] = dateString.split("-")
+    // dd = "17", mm = "01", yyyy = "2025"
+    return `${dd}-${mm}-${yyyy}` // ex. "17-01-2025"
+  }
   return (
     <>
-      <p>{selectedDate}</p>
+      <div className="calendarDate">
+        {selectedDate ? formatDate(selectedDate) : ""}
+      </div>
       <div className="gameBox">
         {selectedDate ? (
           filteredGames.length > 0 ? (
