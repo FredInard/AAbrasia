@@ -1,28 +1,26 @@
-// App.scss
-
 @import "./styles/variables.scss";
+@import "./styles/buttons.scss";
 
-// == Définition des thèmes avec les mixins ==
+// Thèmes globaux
 .light-mode {
-  @include light-theme;
+  --background-color: rgb(var(--color-accent));
+  --text-color: rgb(var(--color-darkbrown));
 }
 
 .dark-mode {
-  @include dark-theme;
+  --background-color: rgb(var(--color-lighter-black));
+  --text-color: rgb(var(--color-snow));
 }
 
-// == Réinitialisation des styles par défaut ==
+// Réinitialisation globale
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: $font-primary;
 }
 
-// == Styles globaux pour le corps de la page ==
 body {
-  width: 100%;
-  height: 100%;
   background-color: var(--background-color);
   color: var(--text-color);
+  font-family: var(--font-primary);
 }

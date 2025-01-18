@@ -1,51 +1,81 @@
-// variables.scss
-
-// == Définition des variables SCSS pour les polices ==
+// == Définition des polices ==
 $font-primary: "Poppins", sans-serif;
-$font-secondary: "system-ui", cursive;
+$font-secondary: "Segoe UI", sans-serif;
 
-// == Couleurs pour le mode clair ==
-$color-light-background: #ffffff;
-$color-light-text: #000000;
-$color-light-container-background: #f9f9f9; // Couleur légèrement différente du fond
+:root {
+  // Polices
+  --font-primary: #{$font-primary};
+  --font-secondary: #{$font-secondary};
 
-// == Couleurs pour le mode sombre ==
-$color-dark-background: #060127;
-$color-dark-text: #ffffff;
+  // Couleurs
+  --color-lightbrown: 153 115 95;
+  --color-brown: 142 110 89;
+  --color-darkbrown: 77 57 48;
+  --color-darkbrown2: 117 109 105;
+  --color-darkbrown3: 136 136 136;
+  --color-accent: 251 247 244;
+  --color-accent-darker: 242 237 233;
+  --color-snow: 244 244 244;
+  --color-lighter-black: 20 20 20;
 
-// == Couleur d'accentuation ==
-$accent-color: #ffbb52;
+  // Couleurs adaptatives
+  --heading-color: rgb(var(--color-darkbrown));
+  --text-color: rgb(var(--color-darkbrown3));
+  --background-color: rgb(var(--color-accent));
+  --background-color-dark: rgb(var(--color-lighter-black));
 
-// == Box-shadows ==
-$light-box-shadow: 0px 5px 15px #000000; // Box-shadow pour le mode clair (noir)
-$dark-box-shadow: 0px 5px 15px #e4e7ec; // Box-shadow pour le mode sombre (gris clair)
+  // Tailles de police
+  --font-size-h1: 3rem;
+  --font-size-h2: 2rem;
+  --font-size-h3: 1.5rem;
+  --font-size-p: 1.2rem;
+  --font-size-small: 0.875rem;
+
+  // Autres variables
+  --border-radius: 40px;
+}
 
 // == Variables pour les boutons ==
 $button-padding: 0.75rem 1.5rem;
 $button-border-radius: 5px;
-$button-background: $accent-color;
-$button-hover-background: scale-color($accent-color, $lightness: -10%);
-$button-text-color: var(--text-color); // Si nécessaire
+$button-background: var(--color-accent);
+$button-hover-background: var(--color-accent-darker);
+$button-text-color: var(--text-color);
 
-// == Mixins pour définir les variables CSS en fonction du thème ==
+// == Mixins pour les thèmes ==
 @mixin light-theme {
-  --background-color: #{$color-light-background};
-  --text-color: #{$color-light-text};
-  --accent-color: #{$accent-color};
-  --icon-filter: none;
-  --border-color: #{adjust-color($color-light-text, $lightness: 20%)};
-  --container-background-color: #{$color-light-container-background};
-  --box-shadow: #{$light-box-shadow}; // Ajout du box-shadow clair
+  --background-color: var(--color-accent);
+  --text-color: var(--color-darkbrown3);
+  --accent-color: var(--color-accent);
+  --accent-color-darker: var(--color-accent-darker);
+  --border-color: var(--color-brown);
+  --box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  --container-background-color: var(--color-snow);
 }
 
 @mixin dark-theme {
-  --background-color: #{$color-dark-background};
-  --text-color: #{$color-dark-text};
-  --accent-color: #{$accent-color};
-  --icon-filter: invert(1);
-  --border-color: #{scale-color($color-light-text, $lightness: 20%)};
-  --container-background-color: var(
-    --background-color
-  ); // Même couleur que le fond
-  --box-shadow: #{$dark-box-shadow}; // Ajout du box-shadow sombre
+  --background-color: var(--color-lighter-black);
+  --text-color: var(--color-snow);
+  --accent-color: var(--color-accent);
+  --accent-color-darker: var(--color-accent-darker);
+  --border-color: var(--color-darkbrown2);
+  --box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.2);
+  --container-background-color: var(--color-darkbrown2);
+}
+
+// == Mixins pour les styles des boutons ==
+@mixin button-style {
+  padding: $button-padding;
+  border-radius: $button-border-radius;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    background-color: var(--accent-color-darker);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  }
 }

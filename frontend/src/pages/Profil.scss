@@ -1,71 +1,67 @@
-/* Profil.scss */
+@import "../styles/variables.scss"; // Importation des variables globales
+@import "../styles/buttons.scss"; // Si les styles de boutons sont définis dans un fichier séparé
 
-/* Importation des variables et mixins */
-@import "../styles/variables.scss"; // Assurez-vous que le chemin est correct
-
-/* Application du thème en fonction du mode (clair ou sombre) */
-body {
-  @include light-theme; // Par défaut, on applique le thème clair
-}
-
-/* Si vous avez un mécanisme pour basculer entre les thèmes, vous pouvez utiliser les classes suivantes :
-body.light-mode {
-  @include light-theme;
-}
-
-body.dark-mode {
-  @include dark-theme;
-}
-*/
+/* Styles pour la page de profil */
 .pageProfil {
   margin-top: 10%;
 }
-/* Style pour le titre de bienvenue */
+
+/* Titre de bienvenue */
 .bienvenueName {
-  font-size: 2rem;
-  color: var(--text-color);
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-h2);
+  color: var(--heading-color);
   text-align: center;
-  margin-top: 20px;
+  margin-top: 1.5rem;
 }
 
-/* Style pour le conteneur du bouton toggle */
+/* Conteneur du bouton toggle */
 .boutonSwitch {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px 0;
+  margin: 2rem 0;
 
-  /* Styles pour les paragraphes à l'intérieur du conteneur */
   p {
-    margin: 0 10px;
-    font-size: 1.2rem;
+    margin: 0 1rem;
+    font-size: var(--font-size-p);
     color: var(--text-color);
   }
 }
 
-/* Styles pour le conteneur global du profil */
+/* Conteneur principal pour le profil */
 .globalBoxProfil {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px auto;
+  margin: 2rem auto;
   max-width: 1200px;
-  padding: 20px;
+  padding: 2rem;
   background-color: var(--container-background-color);
   box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  color: var(--text-color);
 }
 
-/* Styles pour les boutons (si vous en avez dans ce composant) */
+/* Boutons spécifiques au composant */
 .btn {
-  padding: $button-padding;
-  border-radius: $button-border-radius;
-  background-color: $button-background;
-  color: $button-text-color;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  @include button-style; // Utilisation du mixin global pour les boutons
+  width: auto;
+  font-size: var(--font-size-p);
+}
 
-  &:hover {
-    background-color: $button-hover-background;
+/* Mode sombre spécifique */
+.dark-mode {
+  .globalBoxProfil {
+    background-color: var(--background-color-dark);
+    box-shadow: var(--box-shadow);
+  }
+
+  .bienvenueName {
+    color: var(--text-color);
+  }
+
+  .boutonSwitch p {
+    color: var(--text-color);
   }
 }

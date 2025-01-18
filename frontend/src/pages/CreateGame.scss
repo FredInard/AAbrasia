@@ -1,54 +1,49 @@
-// CreateGame.scss
-
 @import "../styles/variables.scss";
 
-// == Variables supplémentaires (si nécessaire) ==
+// == Variables supplémentaires ==
 $input-border-color: var(--border-color);
-$input-border-radius: 4px;
+$input-border-radius: 8px;
 $input-padding: 10px;
-$input-font-size: 16px;
+$input-font-size: var(--font-size-p);
 
-$btn-background-color: $accent-color;
-$btn-hover-background-color: scale-color($accent-color, $lightness: -10%);
+$btn-background-color: var(--accent-color);
+$btn-hover-background-color: var(--accent-color-darker);
 $btn-text-color: var(--text-color);
-$btn-border-radius: 4px;
+$btn-border-radius: var(--border-radius);
 $btn-padding: 12px;
-$btn-font-size: 18px;
+$btn-font-size: var(--font-size-p);
 $btn-font-weight: bold;
 
 $container-background-color: var(--container-background-color);
 $container-padding: 20px;
-$container-border-radius: 8px;
-$container-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // Box shadow par défaut (clair)
+$container-border-radius: var(--border-radius);
+$container-box-shadow: var(--box-shadow);
 
 // == Styles pour le conteneur principal ==
 .creer-partie-container {
-  margin-top: 10%;
+  margin: 200px auto 20px;
   max-width: 600px;
-  margin: 0 auto;
   padding: $container-padding;
   background-color: $container-background-color;
   border-radius: $container-border-radius;
   box-shadow: $container-box-shadow;
   color: var(--text-color);
   border: none;
-  margin-top: 200px;
-  margin-bottom: 20px;
-}
 
-// Spécifique au mode sombre
-.dark-mode .creer-partie-container {
-  background-color: var(--background-color); // Même couleur que le thème sombre
-  border: 1px solid #ffffff; // Bordure solide blanche
-  box-shadow: 0px 5px 15px #e4e7ec; // Box-shadow spécifique au mode sombre
+  // Spécifique au mode sombre
+  .dark-mode & {
+    background-color: var(--background-color-dark);
+    border: 1px solid var(--text-color);
+    box-shadow: var(--box-shadow);
+  }
 }
 
 // == Styles pour le titre ==
 .creer-partie-container h1 {
   text-align: center;
   margin-bottom: 20px;
-  font-family: $font-secondary;
-  font-size: 2rem;
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-h2);
 }
 
 // == Styles pour les groupes de formulaire ==
@@ -60,24 +55,27 @@ $container-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // Box shadow par défaut 
     font-weight: bold;
     margin-bottom: 5px;
     color: var(--text-color);
+    font-size: var(--font-size-p);
+    
   }
 
   input,
   textarea,
   select {
     width: 100%;
+    background-color: rgba(129, 129, 129, 0.224);
     padding: $input-padding;
     font-size: $input-font-size;
-    font-family: $font-primary;
+    font-family: var(--font-primary);
     border: 1px solid $input-border-color;
     border-radius: $input-border-radius;
-    background-color: var(--background-color);
+    // background-color: var(--background-color);
     color: var(--text-color);
     transition: border-color 0.3s ease;
 
     &:focus {
       outline: none;
-      border-color: $accent-color;
+      border-color: var(--accent-color);
     }
   }
 
@@ -102,5 +100,9 @@ $container-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // Box shadow par défaut 
   &:hover {
     background-color: $btn-hover-background-color;
     transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }

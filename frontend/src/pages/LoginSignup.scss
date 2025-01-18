@@ -1,74 +1,99 @@
-@import "../styles/variables.scss";
+@import "../styles/variables.scss"; // Import des variables globales
+@import "../styles/buttons.scss"; // Import des styles de boutons
 
 .login-signup-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .form-container {
-  background-color: #fff;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--container-background-color);
+  padding: 2.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
   width: 400px;
+
+  h2 {
+    text-align: center;
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-h2);
+    color: var(--heading-color);
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-size: var(--font-size-p);
+      color: var(--text-color);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.625rem;
+      font-size: var(--font-size-p);
+      font-family: var(--font-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      background-color: var(--background-color);
+      color: var(--text-color);
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--accent-color);
+      }
+    }
+  }
+
+  .btn-submit {
+    @include button-style; // Utilisation du mixin global pour les boutons
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .btn-submit:hover {
+    background-color: var(--accent-color-darker);
+  }
+
+  .toggle-text {
+    text-align: center;
+    margin-top: 1.25rem;
+    font-size: var(--font-size-small);
+
+    span {
+      color: var(--accent-color);
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: underline;
+
+      &:hover {
+        color: var(--accent-color-darker);
+      }
+    }
+  }
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+/* Mode sombre spécifique */
+.dark-mode {
+  .form-container {
+    background-color: var(--background-color-dark);
+    box-shadow: var(--box-shadow);
+  }
 
-.form-group {
-  margin-bottom: 15px;
-}
+  .toggle-text span {
+    color: var(--text-color);
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.btn-submit {
-  width: 100%;
-  padding: 12px;
-  background-color: #ffbb52;
-  color: #fff;
-  border: none;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.btn-submit:hover {
-  background-color: #ffa733;
-}
-
-.toggle-text {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 14px;
-}
-
-.toggle-text span {
-  color: #ffbb52;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.toggle-text span:hover {
-  color: #ffa733;
+    &:hover {
+      color: var(--accent-color);
+    }
+  }
 }

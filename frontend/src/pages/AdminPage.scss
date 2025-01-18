@@ -1,15 +1,17 @@
-// AdminPage.scss
+/* Fichier : AdminPage.scss */
 @import "../styles/variables.scss";
-// Styles pour la page d'administration
 
-// src/pages/AdminPage/AdminPage.scss
-
+/* Styles pour la page d'administration */
 .admin-page {
   padding: 20px;
+  color: var(--text-color);
 
   h1 {
     text-align: center;
     margin-bottom: 30px;
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-h1);
+    color: var(--heading-color);
   }
 
   .tabs {
@@ -18,21 +20,26 @@
     margin-bottom: 20px;
 
     button {
-      background-color: #f0f0f0;
-      border: none;
+      background-color: var(--container-background-color);
+      border: 1px solid var(--border-color);
       padding: 10px 20px;
       margin: 0 5px;
       cursor: pointer;
-      border-radius: 5px;
-      font-size: 1rem;
+      border-radius: var(--border-radius);
+      font-size: var(--font-size-p);
+      font-family: var(--font-primary);
+      transition: background-color 0.3s, color 0.3s, transform 0.2s;
 
       &.active {
-        background-color: #007bff;
-        color: #fff;
+        background-color: var(--accent-color);
+        color: var(--background-color);
+        font-weight: bold;
       }
 
       &:hover {
-        background-color: #e0e0e0;
+        background-color: var(--accent-color-darker);
+        color: var(--background-color);
+        transform: translateY(-2px);
       }
     }
   }
@@ -40,5 +47,33 @@
   .tab-content {
     max-width: 1200px;
     margin: 0 auto;
+    background-color: var(--container-background-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+  }
+}
+
+/* Mode sombre spécifique */
+.dark-mode {
+  .admin-page {
+    .tabs button {
+      background-color: var(--background-color-dark);
+      border-color: var(--border-color);
+
+      &:hover {
+        background-color: var(--accent-color-darker);
+      }
+
+      &.active {
+        background-color: var(--accent-color);
+        color: var(--background-color-dark);
+      }
+    }
+
+    .tab-content {
+      background-color: var(--background-color-dark);
+      box-shadow: var(--box-shadow);
+    }
   }
 }

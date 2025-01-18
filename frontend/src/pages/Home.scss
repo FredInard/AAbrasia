@@ -1,5 +1,6 @@
 // == Importation des variables globales ==
 @import "../styles/variables.scss";
+@import "../styles/buttons.scss";
 
 // == Styles globaux pour la page Home ==
 .home {
@@ -9,18 +10,18 @@
 
 // == Styles pour les boutons ==
 button {
-  background-color: $accent-color;
-  color: var(--text-color);
+  background-color: var(--color-brown);
+  color: var(--color-accent);
   padding: 0.8rem 1.2rem;
-  border: none;
-  border-radius: 5px;
+  border: var(--color-brown);
+  border-radius: var(--border-radius);
   cursor: pointer;
-  font-family: $font-primary;
-  font-size: 1rem;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-p);
   transition: background-color 0.3s ease, transform 0.2s;
 
   &:hover {
-    background-color: scale-color($accent-color, $lightness: -10%);
+    background-color: var(--color-darkbrown);
     transform: translateY(-3px);
   }
 }
@@ -32,21 +33,21 @@ button {
   align-items: center;
   gap: 2rem;
   margin-bottom: 3rem;
-  padding-left: 15%;
-  padding-right: 15%;
+  padding: 0 15%;
 
   .intro-text {
     flex: 1 1 50%;
+
     h1 {
-      font-family: $font-secondary;
-      font-size: 2.5rem;
+      font-family: var(--font-secondary);
+      font-size: var(--font-size-h1);
       line-height: 1.4;
-      color: var(--text-color);
+      color: var(--heading-color);
       margin-bottom: 1rem;
     }
 
     p {
-      font-size: 1.1rem;
+      font-size: var(--font-size-p);
       line-height: 1.6;
       color: var(--text-color);
     }
@@ -54,10 +55,11 @@ button {
 
   .intro-image {
     flex: 1 1 40%;
+
     img {
       width: 100%;
       height: auto;
-      border-radius: 15px;
+      border-radius: var(--border-radius);
     }
   }
 }
@@ -67,10 +69,10 @@ button {
   text-align: center;
   margin-bottom: 3rem;
 
-  button {
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
+  // button {
+  //   font-size: var(--font-size-p);
+  //   font-weight: bold;
+  // }
 }
 
 // == Section : C'est quoi le jeu de rôle ? ==
@@ -79,38 +81,36 @@ button {
   flex-wrap: nowrap;
   gap: 2rem;
   align-items: center;
-  padding: 3rem 5%;
-  background-color: #f3f3f3;
-  border-radius: 10px;
+  padding: 3rem 15%;
+  background-color: var(--container-background-color);
+  border-radius: var(--border-radius);
   margin-bottom: 3rem;
   flex-direction: row-reverse;
-  padding-left: 15%;
-  padding-right: 15%;
 
   .section-what-is-jdr1 {
     width: 50%;
   }
 
   h2 {
-    font-size: 2rem;
-    font-family: $font-secondary;
-    color: $accent-color;
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
     margin-bottom: 1rem;
   }
 
   p {
-    flex: 1;
-    font-size: 1rem;
+    font-size: var(--font-size-p);
     line-height: 1.6;
     color: var(--text-color);
   }
 
   .reflective-image {
     flex: 1 1 40%;
+
     img {
       width: 100%;
       height: auto;
-      border-radius: 15px;
+      border-radius: var(--border-radius);
     }
   }
 }
@@ -122,17 +122,16 @@ button {
   gap: 2rem;
   align-items: center;
   flex-direction: row-reverse;
-  padding: 3rem 5%;
+  padding: 3rem 15%;
   margin-bottom: 3rem;
-  padding-left: 15%;
-  padding-right: 15%;
 
   .divImageSectionAsso {
     flex: 1 1 40%;
+
     img {
       width: 100%;
       height: auto;
-      border-radius: 15px;
+      border-radius: var(--border-radius);
     }
   }
 
@@ -140,14 +139,14 @@ button {
     flex: 1 1 50%;
 
     h2 {
-      font-size: 2rem;
-      font-family: $font-secondary;
-      color: var(--text-color);
+      font-size: var(--font-size-h2);
+      font-family: var(--font-secondary);
+      color: var(--heading-color);
       margin-bottom: 1rem;
     }
 
     p {
-      font-size: 1rem;
+      font-size: var(--font-size-p);
       line-height: 1.6;
       color: var(--text-color);
     }
@@ -157,22 +156,23 @@ button {
 // == Section : Notre Agenda ==
 .section-agenda {
   padding: 3rem 5%;
-  background-color: #e8f0fe;
-  border-radius: 10px;
+  background-color: var(--container-background-color);
+  border-radius: var(--border-radius);
   margin-bottom: 3rem;
 
   h2 {
-    font-size: 2rem;
-    font-family: $font-secondary;
-    color: $accent-color;
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
     text-align: center;
     margin-bottom: 1rem;
   }
 
   p {
-    font-size: 1.1rem;
+    font-size: var(--font-size-p);
     text-align: center;
     margin-bottom: 2rem;
+    color: var(--text-color);
   }
 }
 
@@ -180,39 +180,37 @@ button {
 .section-team {
   text-align: center;
   margin-bottom: 3rem;
-  padding-left: 15%;
-  padding-right: 15%;
+  padding: 0 15%;
 
   h2 {
-    font-size: 2rem;
-    font-family: $font-secondary;
-    color: $accent-color;
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
     margin-bottom: 1rem;
   }
 
   p {
-    font-size: 1.1rem;
+    font-size: var(--font-size-p);
     color: var(--text-color);
     margin-bottom: 2rem;
   }
 
-  button {
-    font-size: 1.1rem;
-    font-weight: bold;
-  }
+  // button {
+  //   font-size: var(--font-size-p);
+  //   font-weight: bold;
+  // }
 }
 
 // == Section : HelloAsso ==
 .section-HelloAsso {
   text-align: center;
   margin-bottom: 3rem;
-  padding-left: 15%;
-  padding-right: 15%;
+  padding: 0 15%;
 
   h2 {
-    font-size: 2rem;
-    font-family: $font-secondary;
-    color: $accent-color;
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
     margin-bottom: 1rem;
   }
 
@@ -231,10 +229,11 @@ button {
         height: auto;
         max-width: 300px;
         margin-bottom: 1rem;
+        border-radius: var(--border-radius);
       }
 
       p {
-        font-size: 1rem;
+        font-size: var(--font-size-p);
         line-height: 1.6;
         color: var(--text-color);
       }
@@ -254,23 +253,22 @@ button {
 
 // == Section : Nous contacter ==
 .section-contact {
-  padding: 3rem 5%;
+  padding: 3rem 15%;
   margin-bottom: 3rem;
-  padding-left: 15%;
-  padding-right: 15%;
 
   h2 {
-    font-size: 2rem;
-    font-family: $font-secondary;
-    color: $accent-color;
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
     text-align: center;
     margin-bottom: 1rem;
   }
 
   p {
-    font-size: 1.1rem;
+    font-size: var(--font-size-p);
     text-align: center;
     margin-bottom: 2rem;
+    color: var(--text-color);
   }
 
   .contact-links {
@@ -284,14 +282,14 @@ button {
       text-align: left;
 
       h3 {
-        font-family: $font-secondary;
-        font-size: 1.5rem;
+        font-family: var(--font-secondary);
+        font-size: var(--font-size-h3);
         margin-bottom: 0.5rem;
-        color: var(--text-color);
+        color: var(--heading-color);
       }
 
       p {
-        font-size: 1rem;
+        font-size: var(--font-size-p);
         margin-bottom: 0.5rem;
         color: var(--text-color);
       }
@@ -304,7 +302,7 @@ button {
           margin-bottom: 0.5rem;
 
           a {
-            color: $accent-color;
+            color: var(--accent-color);
             text-decoration: none;
 
             &:hover {
@@ -361,16 +359,16 @@ button {
 
 @media (max-width: 480px) {
   h2 {
-    font-size: 1.5rem;
+    font-size: var(--font-size-h3);
   }
 
   p {
-    font-size: 0.9rem;
+    font-size: var(--font-size-small);
   }
 
-  button {
-    font-size: 0.9rem;
-  }
+  // button {
+  //   font-size: var(--font-size-small);
+  // }
 
   img {
     width: 100%;

@@ -51,7 +51,7 @@
         /* Bouton arrondi avec fond toujours visible */
         padding: 0.5rem 1rem;
         border-radius: 9999px;      /* angles très arrondis */
-        border: 2px solid #fff;    /* bordure blanche */
+        border: 2px solid #b81e1e;    /* bordure blanche */
         background-color: #fff;    /* fond blanc */
         color: #333;               /* texte foncé */
         text-decoration: none;
@@ -91,17 +91,15 @@
       display: inline-block;
       padding: 0.5rem 1rem;
       border-radius: 9999px;
-      border: 2px solid #fff;
-      background-color: #fff; /* fond toujours visible */
+      border: 2px solid #06c55c;      /* Bordure constante */
+      background-color: #ffffff00;      /* Fond blanc constant */
       color: #333;
       text-decoration: none;
       margin-left: 0.5rem;
       font-weight: 600;
       transition: 
         background-color 0.3s ease, 
-        color 0.3s ease,
-        border-color 0.3s ease;
-
+        color 0.3s ease;
       &:hover {
         background-color: #333;
         color: #fff;
