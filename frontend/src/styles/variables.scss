@@ -33,6 +33,7 @@ $font-secondary: "Segoe UI", sans-serif;
 
   // Autres variables
   --border-radius: 40px;
+  
 }
 
 // == Variables pour les boutons ==
@@ -60,7 +61,7 @@ $button-text-color: var(--text-color);
   --accent-color-darker: var(--color-accent-darker);
   --border-color: var(--color-darkbrown2);
   --box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.2);
-  --container-background-color: var(--color-darkbrown2);
+  --container-background-color: var(--color-snow);
 }
 
 // == Mixins pour les styles des boutons ==

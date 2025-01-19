@@ -186,17 +186,24 @@ const CreateGame = () => {
             />
           </div>
 
-          {/* Case à cocher pour la limitation stricte */}
+          {/* Toggle Oui/Non pour la limitation stricte */}
           <div className="form-group">
             <label htmlFor="strict_nb_joueurs">
               Limiter les participants ?
             </label>
-            <input
-              type="checkbox"
-              id="strict_nb_joueurs"
-              checked={strictNbJoueurs}
-              onChange={() => setStrictNbJoueurs(!strictNbJoueurs)}
-            />
+            <div className="toggle-switch">
+              <input
+                type="checkbox"
+                id="strict_nb_joueurs"
+                className="toggle-input"
+                checked={strictNbJoueurs}
+                onChange={() => setStrictNbJoueurs(!strictNbJoueurs)}
+              />
+              <label className="toggle-label" htmlFor="strict_nb_joueurs">
+                <span className="toggle-inner"></span>
+                <span className="toggle-switch-handle"></span>
+              </label>
+            </div>
           </div>
 
           <div className="form-group">

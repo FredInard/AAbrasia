@@ -16,6 +16,7 @@
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   width: 400px;
+  border: solid;
 
   h2 {
     text-align: center;
@@ -43,13 +44,15 @@
       font-family: var(--font-primary);
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius);
-      background-color: var(--background-color);
+      background-color: rgb(177 177 177);
       color: var(--text-color);
-      transition: border-color 0.3s ease;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
 
       &:focus {
         outline: none;
         border-color: var(--accent-color);
+        // background-color: var(--container-background-color);
+        background-color: rgb(177 177 177);
       }
     }
   }
@@ -58,10 +61,14 @@
     @include button-style; // Utilisation du mixin global pour les boutons
     width: 100%;
     margin-top: 1rem;
-  }
+    background-color: var(--color-darkbrown3);
+    color: var(--color-darkbrown);
+    border: 1px solid var(--border-color);
 
-  .btn-submit:hover {
-    background-color: var(--accent-color-darker);
+    &:hover {
+      background-color: var(--accent-color-darker);
+      color: var(--text-color);
+    }
   }
 
   .toggle-text {
@@ -86,14 +93,46 @@
 .dark-mode {
   .form-container {
     background-color: var(--background-color-dark);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+  }
+
+  h2 {
+    color: var(--accent-color);
+  }
+
+  label {
+    color: var(--accent-color);
+  }
+
+  input {
+    background-color: var(--container-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+
+    &:focus {
+      border-color: var(--accent-color);
+      background-color: var(--background-color-dark);
+    }
+  }
+
+  .btn-submit {
+    background-color: rgb(77 57 48);
+    color: white;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+
+    &:hover {
+      background-color: var(--color-darkbrown3);
+      color: var(--text-color);
+    }
   }
 
   .toggle-text span {
-    color: var(--text-color);
+    color: var(--accent-color);
 
     &:hover {
-      color: var(--accent-color);
+      color: var(--accent-color-darker);
     }
   }
 }

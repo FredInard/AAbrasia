@@ -28,7 +28,9 @@ $container-box-shadow: var(--box-shadow);
   border-radius: $container-border-radius;
   box-shadow: $container-box-shadow;
   color: var(--text-color);
-  border: none;
+  // border: none;
+  border: solid;
+  
 
   // Spécifique au mode sombre
   .dark-mode & {
@@ -44,11 +46,13 @@ $container-box-shadow: var(--box-shadow);
   margin-bottom: 20px;
   font-family: var(--font-secondary);
   font-size: var(--font-size-h2);
+  
 }
 
 // == Styles pour les groupes de formulaire ==
 .form-group {
   margin-bottom: 15px;
+  
 
   label {
     display: block;
@@ -72,6 +76,9 @@ $container-box-shadow: var(--box-shadow);
     // background-color: var(--background-color);
     color: var(--text-color);
     transition: border-color 0.3s ease;
+  // Spécifique au mode sombre
+  .dark-mode & {
+    background-color: rgba(129, 129, 129, 0.753);}
 
     &:focus {
       outline: none;
@@ -90,19 +97,82 @@ $container-box-shadow: var(--box-shadow);
   padding: $btn-padding;
   background-color: $btn-background-color;
   color: $btn-text-color;
-  border: none;
+  // border: none;
   font-size: $btn-font-size;
   font-weight: $btn-font-weight;
   border-radius: $btn-border-radius;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s;
+  background-color: rgb(77 57 48);
+    color: white;
 
   &:hover {
-    background-color: $btn-hover-background-color;
+    background-color: rgba(77, 57, 48, 0.584);
     transform: translateY(-2px);
   }
 
   &:active {
     transform: translateY(0);
   }
+}
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggle-input {
+  display: none; /* Cache l'input */
+}
+
+.toggle-label {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(136, 136, 136, 0.6); /* Fond par défaut */
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-label .toggle-inner {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: white;
+  text-transform: uppercase;
+  user-select: none;
+  transition: color 0.3s;
+}
+
+.toggle-label .toggle-switch-handle {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.toggle-input:checked + .toggle-label {
+  background-color: rgba(77, 57, 48, 0.584); /* Fond activé */
+  .dark-mode & {
+    background-color:rgba(77, 57, 48, 0.852);
+    color: var(--text-color);}
+}
+
+.toggle-input:checked + .toggle-label .toggle-inner {
+  left: 65%;
+  color: white; /* Texte Oui */
+}
+
+.toggle-input:checked + .toggle-label .toggle-switch-handle {
+  transform: translateX(26px);
 }
