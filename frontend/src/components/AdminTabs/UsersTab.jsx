@@ -4,6 +4,10 @@ import React, { useState, useEffect } from "react"
 import axios from "axios"
 import "./UsersTab.scss"
 
+// Import des icônes
+import deleteIcon from "../../assets/pics/icons8-déchets-50.png"
+import editIcon from "../../assets/pics/icons8-main-avec-stylo-100.png"
+
 const UsersTab = () => {
   const [users, setUsers] = useState([])
   const [filteredUsers, setFilteredUsers] = useState([])
@@ -406,11 +410,19 @@ const UsersTab = () => {
                 <td>{user.pseudo}</td>
                 <td>{user.email}</td>
                 <td>{user.role}</td>
-                <td>
-                  <button onClick={() => handleEdit(user)}>Modifier</button>
-                  <button onClick={() => handleDelete(user.id)}>
-                    Supprimer
-                  </button>
+                <td className="actions">
+                  <img
+                    src={editIcon}
+                    alt="Modifier"
+                    className="action-icon edit-icon"
+                    onClick={() => handleEdit(user)}
+                  />
+                  <img
+                    src={deleteIcon}
+                    alt="Supprimer"
+                    className="action-icon delete-icon"
+                    onClick={() => handleDelete(user.id)}
+                  />
                 </td>
               </tr>
             ))}

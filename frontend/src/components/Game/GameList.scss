@@ -1,120 +1,114 @@
-.navbar {
-  /* Rendre la navbar transparente */
-  background-color: transparent;
-  box-shadow: none;
+/* GameList.scss */
+
+.gameBox {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  border: none; /* Aucune bordure */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: var(--container-background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 
-  .navbar-logo {
-    img {
-      height: 50px;
-    }
-  }
+  .game-item {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
 
-  .menu-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 24px;
-    width: 30px;
+    .game-item {
+      display: flex;
+      flex-direction: column;
+      background: var(--background-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-    span {
-      display: block;
-      height: 2px;
-      width: 100%;
-      background: #fff; /* Couleur des barres du burger menu */
-      border-radius: 1px;
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .navbar-links {
-    list-style: none;
-    display: flex;
-    margin: 0;
-
-    li {
-      margin: 0 0.5rem; 
-
-      a {
-        display: inline-block;
-
-        /* Bouton arrondi avec fond toujours visible */
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;      /* angles très arrondis */
-        border: 2px solid #b81e1e;    /* bordure blanche */
-        background-color: #fff;    /* fond blanc */
-        color: #333;               /* texte foncé */
-        text-decoration: none;
-        font-weight: 600;          /* léger renforcement du texte */
-
-        /* Animation de transition */
-        transition: 
-          background-color 0.3s ease, 
-          color 0.3s ease,
-          border-color 0.3s ease;
-
-        &:hover {
-          background-color: #333;  /* au survol => fond foncé */
-          color: #fff;             /* texte blanc */
-          border-color: #333;      /* bordure également foncée */
-        }
-
-        &.active {
-          /* Lien actif */
-          background-color: #333;  /* fond foncé */
-          color: #fff;             /* texte blanc */
-          border-color: #333;
-        }
-      }
-    }
-
-    &.active {
-      /* Gère l’état du menu burger si besoin (mobile) */
-    }
-  }
-
-  .navbar-cta {
-    display: flex;
-    align-items: center;
-
-    .btn-cta {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      border-radius: 9999px;
-      border: 2px solid #06c55c;      /* Bordure constante */
-      background-color: #ffffff00;      /* Fond blanc constant */
-      color: #333;
-      text-decoration: none;
-      margin-left: 0.5rem;
-      font-weight: 600;
-      transition: 
-        background-color 0.3s ease, 
-        color 0.3s ease;
       &:hover {
-        background-color: #333;
-        color: #fff;
-        border-color: #333;
+        transform: scale(1.03);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
       }
 
-      &.logout-button {
-        /* Optionnel : si tu veux un style différent pour déconnexion */
-        border-color: #f44;
+      .illustrationPartie {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .content {
+        padding: 15px;
+
+        h3 {
+          font-family: var(--font-secondary);
+          font-size: var(--font-size-h3);
+          margin-bottom: 10px;
+          text-align: center;
+          color: var(--heading-color);
+        }
+
+        p {
+          font-family: var(--font-primary);
+          font-size: var(--font-size-p);
+          color: var(--text-color);
+          text-align: center;
+
+          strong {
+            color: var(--heading-color);
+          }
+        }
+      }
+
+      .card-footer {
+        margin-top: auto;
+        padding: 10px;
+        text-align: center;
+        background-color: var(--container-background-color);
+        border-top: 1px solid var(--border-color);
+      }
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      background-color: var(--container-background-color);
+      border-top: 1px solid var(--border-color);
+
+      button {
+        padding: 8px 16px;
+        font-size: var(--font-size-small);
+        font-family: var(--font-primary);
+        color: var(--text-color);
+        background-color: var(--accent-color);
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+
         &:hover {
-          border-color: #f44;
-          background-color: #f44;
-          color: #fff;
+          background-color: var(--accent-color-darker);
+          transform: translateY(-2px);
+        }
+
+        &:active {
+          transform: translateY(0);
         }
       }
     }
   }
+}
+
+.calendarDate {
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-h2);
+  color: var(--heading-color);
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }

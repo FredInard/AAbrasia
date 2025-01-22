@@ -1,41 +1,14 @@
-// src/components/AdminTabs/UsersTab.scss
+@import "../../styles/variables.scss"; // Assurez-vous que les variables globales sont disponibles
 
+/* Styles pour le composant UsersTab */
 .users-tab {
   padding: 20px;
 
   h2 {
     margin-bottom: 20px;
-  }
-
-  button {
-    margin-bottom: 20px;
-  }
-
-  .user-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 400px;
-
-    div {
-      margin-bottom: 15px;
-
-      label {
-        display: block;
-        margin-bottom: 5px;
-      }
-
-      input,
-      select {
-        width: 100%;
-        padding: 8px;
-        box-sizing: border-box;
-      }
-    }
-
-    button {
-      margin-right: 10px;
-      margin-top: 10px;
-    }
+    font-family: var(--font-secondary);
+    font-size: var(--font-size-h2);
+    color: var(--heading-color);
   }
 
   .users-table {
@@ -45,16 +18,65 @@
     th,
     td {
       padding: 10px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-color);
       text-align: left;
     }
 
     th {
-      background-color: #f4f4f4;
+      background-color: var(--container-background-color);
+      color: var(--text-color);
     }
 
-    button {
-      margin-right: 5px;
+    .actions {
+      display: flex;
+      gap: 10px;
+
+      .action-icon {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+
+        &:hover {
+          transform: scale(1.1);
+          opacity: 0.8;
+        }
+
+        &.edit-icon {
+          filter: hue-rotate(50deg); /* Ajustez pour un effet visuel */
+        }
+
+        &.delete-icon {
+          filter: hue-rotate(0deg);
+        }
+      }
+    }
+  }
+
+  .filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+
+    label {
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    input,
+    select {
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-family: var(--font-primary);
+      color: var(--text-color);
+      background-color: var(--background-color);
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: var(--accent-color);
+        outline: none;
+      }
     }
   }
 }
@@ -65,52 +87,39 @@
 
 /* Conteneur principal des toasts */
 .Toastify__toast-container {
-  /* Par défaut, Toastify utilise un z-index élevé,
-     vous pouvez changer si besoin */
   z-index: 9999;
-
-  /* Par exemple, si vous souhaitez un positionnement custom, 
-     vous pouvez ajouter ceci :
-     position: fixed; 
-     top: 2rem;
-     right: 2rem;
-  */
 }
 
 /* Style général d'un toast */
 .Toastify__toast {
-  border-radius: 4px;
-  font-family: sans-serif;
-  min-height: 48px; /* Ajustez si besoin */
+  border-radius: var(--border-radius);
+  font-family: var(--font-primary);
+  min-height: 48px;
   display: flex;
-  align-items: center; /* Centre le contenu verticalement */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  box-shadow: var(--box-shadow);
 
-  /* Couleur du texte par défaut */
-  color: #fff;
-
-  /* Pour l’icône de fermeture */
   .Toastify__close-button > svg {
-    fill: #fff;
+    fill: var(--text-color);
   }
 }
 
 /* Toast de succès */
 .Toastify__toast--success {
-  background-color: #4caf50; /* vert */
+  background-color: #4caf50; /* Vert */
 }
 
 /* Toast d'erreur */
 .Toastify__toast--error {
-  background-color: #f44336; /* rouge */
+  background-color: #f44336; /* Rouge */
 }
 
 /* Toast d'avertissement */
 .Toastify__toast--warning {
-  background-color: #ff9800; /* orange */
+  background-color: #ff9800; /* Orange */
 }
 
 /* Toast d'information */
 .Toastify__toast--info {
-  background-color: #2196f3; /* bleu */
+  background-color: #2196f3; /* Bleu */
 }

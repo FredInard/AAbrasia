@@ -1,189 +1,121 @@
-@import "../../styles/variables.scss";
-
-// == Définition des variables SCSS pour les polices ==
-$font-primary: "Poppins", sans-serif;
-$font-secondary: "system-ui", cursive;
-
-// == Styles pour la barre de navigation ==
 .navbar {
-  width: 100%;
-  padding: 0.5rem 1rem;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  /* Rendre la navbar transparente */
+  position: sticky;
+  top: 0; // La Navbar reste collée en haut de l'écran
+  z-index: 10; // Assurez-vous qu'elle est au-dessus des autres éléments
+  background-color: transparent;
+  box-shadow: none;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  box-shadow: var(--box-shadow);
+  justify-content: space-between;
+  padding: 1rem;
+  border: none; /* Aucune bordure */
 
-  // Logo de la navbar
-  &-logo {
+  .navbar-logo {
     img {
-      width: 150px;
-      height: auto;
-
-      @media (max-width: 768px) {
-        width: 100px;
-      }
+      height: 50px;
     }
   }
 
-  // Liens de navigation
-  &-links {
-    list-style: none;
-    display: flex;
-    align-items: center;
-
-    li {
-      margin-left: 1.5rem;
-
-      a {
-        text-decoration: none;
-        color: var(--text-color);
-        font-family: $font-primary;
-        font-size: 1rem;
-        transition: color 0.3s ease;
-
-        &:hover {
-          color: var(--accent-color);
-        }
-
-        &.active {
-          font-weight: bold;
-          border-bottom: 2px solid var(--accent-color);
-        }
-      }
-    }
-
-    // Cache les liens dans un menu burger pour les petits écrans
-    @media (max-width: 768px) {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background-color: var(--background-color);
-      box-shadow: var(--box-shadow);
-      width: 100%;
-      padding: 1rem;
-
-      li {
-        margin: 1rem 0;
-      }
-    }
-
-    &.active {
-      display: flex; // Affiche les liens quand le menu est ouvert
-    }
-  }
-
-  // Toggle pour le thème
-  .toggle-theme {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-
-    label {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-
-      .toggle-checkbox {
-        display: none;
-      }
-
-      .toggle-slot {
-        position: relative;
-        width: 50px;
-        height: 25px;
-        background-color: var(--accent-color);
-        border-radius: 12.5px;
-        margin-left: 0.5rem;
-        transition: background-color 0.3s ease;
-
-        .sun-icon-wrapper,
-        .moon-icon-wrapper {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          color: var(--background-color);
-        }
-
-        .sun-icon-wrapper {
-          left: 5px;
-        }
-
-        .moon-icon-wrapper {
-          right: 5px;
-        }
-
-        .toggle-button {
-          position: absolute;
-          top: 2.5px;
-          left: 2.5px;
-          width: 20px;
-          height: 20px;
-          background-color: var(--background-color);
-          border-radius: 50%;
-          transition: transform 0.3s ease;
-        }
-      }
-
-      // Changement de position du bouton quand le toggle est activé
-      .toggle-checkbox:checked + .toggle-slot .toggle-button {
-        transform: translateX(25px);
-      }
-    }
-  }
-
-  // Bouton menu burger pour les petits écrans
   .menu-toggle {
-    display: none;
     background: none;
     border: none;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 24px;
+    width: 30px;
 
     span {
       display: block;
-      width: 25px;
-      height: 3px;
-      background-color: var(--text-color);
-      margin: 5px 0;
-      transition: transform 0.3s ease;
+      height: 2px;
+      width: 100%;
+      background: #fff; /* Couleur des barres du burger menu */
+      border-radius: 1px;
     }
 
-    @media (max-width: 768px) {
-      display: block;
+    &:focus {
+      outline: none;
     }
   }
 
   .navbar-links {
-    display: flex;
     list-style: none;
+    display: flex;
+    margin: 0;
 
-    @media (max-width: 768px) {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 100%;
-      background-color: var(--background-color);
-      box-shadow: var(--box-shadow);
-      padding: 1rem;
+    li {
+      margin: 0 0.5rem;
 
-      &.active {
-        display: flex;
+      a {
+        display: inline-block;
+
+        /* Bouton arrondi avec fond toujours visible */
+        padding: 0.5rem 1rem;
+        border-radius: 9999px; /* angles très arrondis */
+        border: 2px solid #fff; /* bordure blanche */
+        background-color: #fff; /* fond blanc */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        color: #333; /* texte foncé */
+        text-decoration: none;
+        font-weight: 600; /* léger renforcement du texte */
+
+        /* Animation de transition */
+        transition: background-color 0.3s ease, color 0.3s ease,
+          border-color 0.3s ease;
+
+        &:hover {
+          background-color: #333; /* au survol => fond foncé */
+          color: #fff; /* texte blanc */
+          border-color: #333; /* bordure également foncée */
+        }
+
+        &.active {
+          /* Lien actif */
+          background-color: #333; /* fond foncé */
+          color: #fff; /* texte blanc */
+          border-color: #333;
+        }
+      }
+    }
+
+    &.active {
+      /* Gère l’état du menu burger si besoin (mobile) */
+    }
+  }
+
+  .navbar-cta {
+    display: flex;
+    align-items: center;
+
+    .btn-cta {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      border: 2px solid #fff;
+      background-color: #fff; /* fond toujours visible */
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      color: #333;
+      text-decoration: none;
+      margin-left: 0.5rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease, color 0.3s ease,
+        border-color 0.3s ease;
+
+      &:hover {
+        background-color: #333;
+        color: #fff;
+        border-color: #333;
       }
 
-      li {
-        margin: 1rem 0;
-
-        a {
-          text-align: center;
+      &.logout-button {
+        /* Optionnel : si tu veux un style différent pour déconnexion */
+        border-color: #f44;
+        &:hover {
+          border-color: #f44;
+          background-color: #f44;
+          color: #fff;
         }
       }
     }

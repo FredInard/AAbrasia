@@ -30,7 +30,6 @@ $container-box-shadow: var(--box-shadow);
   color: var(--text-color);
   // border: none;
   border: solid;
-  
 
   // Spécifique au mode sombre
   .dark-mode & {
@@ -46,13 +45,11 @@ $container-box-shadow: var(--box-shadow);
   margin-bottom: 20px;
   font-family: var(--font-secondary);
   font-size: var(--font-size-h2);
-  
 }
 
 // == Styles pour les groupes de formulaire ==
 .form-group {
   margin-bottom: 15px;
-  
 
   label {
     display: block;
@@ -60,7 +57,6 @@ $container-box-shadow: var(--box-shadow);
     margin-bottom: 5px;
     color: var(--text-color);
     font-size: var(--font-size-p);
-    
   }
 
   input,
@@ -76,9 +72,10 @@ $container-box-shadow: var(--box-shadow);
     // background-color: var(--background-color);
     color: var(--text-color);
     transition: border-color 0.3s ease;
-  // Spécifique au mode sombre
-  .dark-mode & {
-    background-color: rgba(129, 129, 129, 0.753);}
+    // Spécifique au mode sombre
+    .dark-mode & {
+      background-color: rgba(129, 129, 129, 0.753);
+    }
 
     &:focus {
       outline: none;
@@ -104,7 +101,7 @@ $container-box-shadow: var(--box-shadow);
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s;
   background-color: rgb(77 57 48);
-    color: white;
+  color: white;
 
   &:hover {
     background-color: rgba(77, 57, 48, 0.584);
@@ -164,8 +161,9 @@ $container-box-shadow: var(--box-shadow);
 .toggle-input:checked + .toggle-label {
   background-color: rgba(77, 57, 48, 0.584); /* Fond activé */
   .dark-mode & {
-    background-color:rgba(77, 57, 48, 0.852);
-    color: var(--text-color);}
+    background-color: rgba(77, 57, 48, 0.852);
+    color: var(--text-color);
+  }
 }
 
 .toggle-input:checked + .toggle-label .toggle-inner {

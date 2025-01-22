@@ -4,10 +4,61 @@
 
 // == Styles globaux pour la page Home ==
 .home {
-  padding-top: 5%;
+  // padding-top: 5%;
   padding-bottom: 5%;
 }
+.section-intro {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .video-background {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      color: #fff;
+      z-index: 1;
+
+      h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 15px;
+
+        img {
+          width: 700px;
+          height: auto;
+        }
+      }
+    }
+  }
+}
 // == Styles pour les boutons ==
 button {
   background-color: var(--color-brown);
@@ -33,7 +84,7 @@ button {
   align-items: center;
   gap: 2rem;
   margin-bottom: 3rem;
-  padding: 0 15%;
+  // padding: 0 15%;
 
   .intro-text {
     flex: 1 1 50%;
@@ -159,6 +210,9 @@ button {
   background-color: var(--container-background-color);
   border-radius: var(--border-radius);
   margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   h2 {
     font-size: var(--font-size-h2);

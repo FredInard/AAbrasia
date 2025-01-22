@@ -3,11 +3,17 @@ import "./Home.scss"
 
 import Calendar from "../components/schedule/Calendar"
 import NavBar from "../components/NavBar/NavBar"
+// import NavigationCard from "../components/NavBar/NavigationCard"
 import Image1 from "../assets/pics/headerPictureD.png"
 import iNeedYou from "../assets/pics/iNeedYou.svg"
-import reflective from "../assets/pics/characterReflectivePose.svg"
-import team from "../assets/pics/teamB.svg"
-import logoArpenteur from "../assets/pics/logoArpenteur.svg"
+// import reflective from "../assets/pics/characterReflectivePose.svg"
+// import team from "../assets/pics/teamB.svg"
+import videoFile1 from "../../src/assets/videos/6380503_Playing Kids Boardgame Team_By_Pressmaster_Artlist_HD.mp4"
+import videoFile2 from "../../src/assets/videos/6004610_Cheers Friends Drinking Drinking Glass_By_Evgenii_Petrunin_Artlist_HD.mp4"
+import videoFile3 from "../../src/assets/videos/616337_Play Fun Hands Dice_By_Brock_Roberts_Artlist_HD.mp4"
+import videoFile4 from "../../src/assets/videos/75093_Friends having beers together in a bar_By_JRVisuals_Artlist_HD.mp4"
+import videoFile5 from "../../src/assets/videos/6380520_Snacks Crisps Tabletop Munching_By_Pressmaster_Artlist_HD.mp4"
+import logoArpenteur from "../assets/pics/logoArpenteurBlanc.svg"
 // import logo from "../assets/pics/logo.svg"
 // import Carrousel from "../components/Carrousel/Carrousel"
 import Footer from "../components/Footer/Footer"
@@ -42,6 +48,16 @@ export default function Home() {
     setSelectedDate(formattedDate) // Met à jour selectedDate sous un format homogène
   }
 
+  // Liste des vidéos
+  const videos = [videoFile1, videoFile2, videoFile3, videoFile4, videoFile5]
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
+
+  const handleVideoEnd = () => {
+    setCurrentVideoIndex((prevIndex) =>
+      prevIndex + 1 < videos.length ? prevIndex + 1 : 0
+    ) // Passe à la vidéo suivante ou revient à la première
+  }
+
   return (
     <div>
       <NavBar className="NavBarHome" />
@@ -49,22 +65,23 @@ export default function Home() {
       <div className="home">
         {/* Section d'introduction */}
         <section className="section-intro">
-          <div className="intro-text">
-            <h1>
-              <img src={logoArpenteur} alt="Jeux de rôle" />
-              l'Association de jeux de rôle qui te fait oublier Netflix
-            </h1>
-            <p>
-              Bienvenue, <br />
-              Les Arpenteurs d’Abrasia sont une association qui organise des
-              parties de jeu de rôle sur table. Nous jouons principalement (mais
-              pas que) dans un univers fantastique nommé Abrasia, et tout le
-              monde est bienvenu·e, néophytes ou vétérans, pour créer des
-              moments conviviaux de rires et d’aventures !
-            </p>
-          </div>
-          <div className="intro-image">
-            <img src={team} alt="Jeux de rôle" />
+          <div className="video-wrapper">
+            <video
+              src={videos[currentVideoIndex]}
+              autoPlay
+              loop={false} // Désactive la boucle pour utiliser l'enchaînement
+              muted
+              className="video-background"
+              onEnded={handleVideoEnd} // Passe à la vidéo suivante lorsque la vidéo se termine
+            >
+              Votre navigateur ne supporte pas la lecture vidéo.
+            </video>
+            <div className="overlay">
+              <h1>
+                <img src={logoArpenteur} alt="Jeux de rôle" />
+                l'Association de jeux de rôle qui te fait oublier Netflix
+              </h1>
+            </div>
           </div>
         </section>
 
@@ -77,21 +94,27 @@ export default function Home() {
         {/* <Carrousel images={images} interval={4000} /> */}
 
         {/* Section : C'est quoi le jeu de rôle ? */}
-        <section className="section-what-is-jdr">
-          <div className="section-what-is-jdr1">
-            <h2>C’est quoi le jeu de rôle ?</h2>
+        <section className="section-intro">
+          <div className="intro-text">
             <p>
-              Le jeu de rôle est un loisir qui se pratique en petits groupes
-              (entre 3 et 6 personnes) autour d'une table. Une personne prend le
-              rôle de meneuse de jeu et raconte une histoire dans laquelle
-              chacune des personnes attablées incarne un personnage. Le but est
-              d’imaginer et mettre en place collectivement des solutions pour
-              déjouer les pièges et mener à bien l’aventure... À condition que
-              les dés le permettent !
+              Bienvenue, <br />
+              Les Arpenteurs d’Abrasia sont une association qui organise des
+              parties de jeu de rôle sur table. Nous jouons principalement (mais
+              pas que) dans un univers fantastique nommé Abrasia, et tout le
+              monde est bienvenu·e, néophytes ou vétérans, pour créer des
+              moments conviviaux de rires et d’aventures !
             </p>
           </div>
-          <div className="reflective-image">
-            <img src={reflective} alt="Jeux de rôle" />
+          <div className="intro-video">
+            <video
+              // src={videoFile}
+              autoPlay
+              loop
+              muted
+              className="video-background"
+            >
+              Votre navigateur ne supporte pas la lecture vidéo.
+            </video>
           </div>
         </section>
 
