@@ -1,9 +1,11 @@
+@import "../../styles/variables.scss"; // Import des variables globales
+
 .navbar {
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: none;
+  // box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   display: flex;
   align-items: center;
@@ -12,6 +14,7 @@
   &.desktop {
     .navbar-logo img {
       height: 50px;
+      
     }
 
     .navbar-links {
@@ -66,9 +69,10 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: var(--color-lightbrown);
       padding: 0.5rem 0;
       z-index: 1000;
+      
 
       li {
         flex: 1;
@@ -99,4 +103,22 @@
       display: flex;
     }
   }
+
+  .navbar-links li a,
+.navbar-icons li a {
+  /* Styles communs */
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+
+  &:hover {
+    color: #0077cc;
+  }
+
+  &.active {
+    color: #0077cc;
+    font-weight: bold;
+  }
+}
+
 }

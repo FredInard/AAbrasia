@@ -1,10 +1,10 @@
-import React, { useState } from "react"
+// import React, { useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import jwtDecode from "jwt-decode"
 import "./NavBar.scss"
 import ToggleTheme from "../ToggleTheme/ToggleTheme"
 import logo from "../../assets/pics/logoArpenteurBlanc.svg"
-// import IconHome from "../../assets/pics/IconHome.svg"
+import IconHome from "../../assets/pics/IconHome.svg"
 import IconReception from "../../assets/pics/IconReception.svg"
 import IconAsso from "../../assets/pics/IconAsso.svg"
 import IconCreatePartie from "../../assets/pics/IconCreatePartie.svg"
@@ -83,7 +83,11 @@ const NavBar = () => {
               <NavLink to="/admin">Administration</NavLink>
             </li>
           )}
-          {authData.isAuthenticated && (
+          {!authData.isAuthenticated ? (
+            <li>
+              <NavLink to="/login">Connexion</NavLink>
+            </li>
+          ) : (
             <li>
               <button className="logout-button" onClick={handleLogout}>
                 Déconnexion
@@ -125,6 +129,13 @@ const NavBar = () => {
             <li>
               <NavLink to="/admin">
                 <img src={IconSetting} alt="Administration" />
+              </NavLink>
+            </li>
+          )}
+          {!authData.isAuthenticated && (
+            <li>
+              <NavLink to="/login">
+                <img src={IconHome} alt="Connexion" />
               </NavLink>
             </li>
           )}
