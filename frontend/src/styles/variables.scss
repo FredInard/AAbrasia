@@ -4,35 +4,52 @@ $font-secondary: "Segoe UI", sans-serif;
 
 :root {
   // Polices
-  --font-primary: #{$font-primary};
-  --font-secondary: #{$font-secondary};
+  --font-primary: "Poppins", sans-serif;
+  --font-secondary: "Segoe UI", sans-serif;
 
-  // Couleurs
-  --color-lightbrown: 153 115 95;
-  --color-brown: 142 110 89;
-  --color-darkbrown: 77 57 48;
-  --color-darkbrown2: 117 109 105;
-  --color-darkbrown3: 136 136 136;
-  --color-accent: 251 247 244;
-  --color-accent-darker: 242 237 233;
-  --color-snow: 244 244 244;
-  --color-lighter-black: 20 20 20;
+  // Rayon des bordures (valeur par défaut)
+  --border-radius: 50px;
 
-  // Couleurs adaptatives
-  --heading-color: rgb(var(--color-darkbrown));
-  --text-color: rgb(var(--color-darkbrown3));
-  --background-color: rgb(var(--color-accent));
-  --background-color-dark: rgb(var(--color-lighter-black));
+  // Couleurs par défaut (mode jour)
+  --color-lightbrown: rgb(153, 115, 95);
+  --color-brown: rgb(142, 110, 89);
+  --color-darkbrown: rgb(77, 57, 48);
+  --color-darkbrown2: rgb(117, 109, 105);
+  --color-darkbrown3: rgb(136, 136, 136);
+  --color-accent: rgb(251, 247, 244);
+  --color-accent-darker: rgb(242, 237, 233);
+  --color-accent-green: rgb(0, 128, 0);
+  --color-snow: rgb(244, 244, 244);
+  --color-lighter-black: rgb(20, 20, 20);
 
-  // Tailles de police
-  --font-size-h1: 3rem;
-  --font-size-h2: 2rem;
-  --font-size-h3: 1.5rem;
-  --font-size-p: 1.2rem;
-  --font-size-small: 0.875rem;
+  // Couleurs adaptatives (par défaut : jour)
+  --heading-color: var(--color-darkbrown);
+  --text-color: var(--color-darkbrown3);
+  --background-color: var(--color-accent);
+  --border-color: var(--color-brown);
+  --accent-color: var(--color-accent);
+  --accent-color-darker: var(--color-accent-darker);
+  --box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
 
-  // Autres variables
-  --border-radius: 40px;
+.light-mode {
+  --background-color: var(--color-accent);
+  --text-color: var(--color-darkbrown3);
+  --heading-color: var(--color-darkbrown);
+  --border-color: var(--color-brown);
+  --accent-color: var(--color-accent-green);
+  --accent-color-darker: var(--color-accent-darker);
+  --box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode {
+  --background-color: var(--color-lighter-black);
+  --text-color: var(--color-snow);
+  --heading-color: var(--color-snow);
+  --border-color: var(--color-darkbrown2);
+  --accent-color: var(--color-accent-green);
+  --accent-color-darker: var(--color-accent-darker);
+  --box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.2);
 }
 
 // == Variables pour les boutons ==
@@ -46,8 +63,10 @@ $button-text-color: var(--text-color);
 @mixin light-theme {
   --background-color: var(--color-accent);
   --text-color: var(--color-darkbrown3);
+  --text-color2: var(--color-snow);
   --accent-color: var(--color-accent);
   --accent-color-darker: var(--color-accent-darker);
+  --accent-color-green: var(--color-accent-green);
   --border-color: var(--color-brown);
   --box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   --container-background-color: var(--color-snow);

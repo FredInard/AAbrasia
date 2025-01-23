@@ -85,36 +85,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Bouton pour découvrir l'association */}
-        <div className="cta">
-          <button>Découvrir l'asso</button>
-        </div>
-
-        {/* Carrousel */}
-        {/* <Carrousel images={images} interval={4000} /> */}
-
         {/* Section : C'est quoi le jeu de rôle ? */}
-        <section className="section-intro">
+        <section className="section-presentation">
           <div className="intro-text">
-            <p>
+            <h2>
               Bienvenue, <br />
               Les Arpenteurs d’Abrasia sont une association qui organise des
               parties de jeu de rôle sur table. Nous jouons principalement (mais
               pas que) dans un univers fantastique nommé Abrasia, et tout le
               monde est bienvenu·e, néophytes ou vétérans, pour créer des
               moments conviviaux de rires et d’aventures !
-            </p>
+            </h2>
           </div>
-          <div className="intro-video">
-            <video
-              // src={videoFile}
-              autoPlay
-              loop
-              muted
-              className="video-background"
-            >
-              Votre navigateur ne supporte pas la lecture vidéo.
-            </video>
+          {/* Bouton pour découvrir l'association */}
+          <div className="cta">
+            <button>Découvrir l'asso</button>
           </div>
         </section>
 

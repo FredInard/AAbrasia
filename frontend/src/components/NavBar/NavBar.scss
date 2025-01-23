@@ -1,123 +1,102 @@
 .navbar {
-  /* Rendre la navbar transparente */
   position: sticky;
-  top: 0; // La Navbar reste collée en haut de l'écran
-  z-index: 10; // Assurez-vous qu'elle est au-dessus des autres éléments
-  background-color: transparent;
-  box-shadow: none;
+  top: 0;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
-  border: none; /* Aucune bordure */
 
-  .navbar-logo {
-    img {
+  &.desktop {
+    .navbar-logo img {
       height: 50px;
     }
+
+    .navbar-links {
+      display: flex;
+      list-style: none;
+
+      li {
+        margin: 0 0.5rem;
+
+        a {
+          text-decoration: none;
+          font-size: 1rem;
+          color: #333;
+          font-weight: 600;
+
+          &:hover {
+            color: #0077cc;
+          }
+
+          &.active {
+            color: #0077cc;
+            font-weight: bold;
+          }
+        }
+
+        .logout-button {
+          background: none;
+          border: none;
+          font-size: 1rem;
+          color: #f44;
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
   }
 
-  .menu-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
+  &.mobile {
+    display: none;
     flex-direction: column;
-    justify-content: space-between;
-    height: 24px;
-    width: 30px;
+    background-color: transparent;
 
-    span {
-      display: block;
-      height: 2px;
-      width: 100%;
-      background: #fff; /* Couleur des barres du burger menu */
-      border-radius: 1px;
-    }
+    .navbar-icons {
+      list-style: none;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      padding: 0.5rem 0;
+      z-index: 1000;
 
-    &:focus {
-      outline: none;
+      li {
+        flex: 1;
+        text-align: center;
+
+        a {
+          display: inline-block;
+          padding: 0.5rem;
+          img {
+            width: 30px;
+            height: 30px;
+          }
+
+          &:hover img {
+            filter: brightness(1.2);
+          }
+        }
+      }
     }
   }
 
-  .navbar-links {
-    list-style: none;
-    display: flex;
-    margin: 0;
-
-    li {
-      margin: 0 0.5rem;
-
-      a {
-        display: inline-block;
-
-        /* Bouton arrondi avec fond toujours visible */
-        padding: 0.5rem 1rem;
-        border-radius: 9999px; /* angles très arrondis */
-        border: 2px solid #fff; /* bordure blanche */
-        background-color: #fff; /* fond blanc */
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        color: #333; /* texte foncé */
-        text-decoration: none;
-        font-weight: 600; /* léger renforcement du texte */
-
-        /* Animation de transition */
-        transition: background-color 0.3s ease, color 0.3s ease,
-          border-color 0.3s ease;
-
-        &:hover {
-          background-color: #333; /* au survol => fond foncé */
-          color: #fff; /* texte blanc */
-          border-color: #333; /* bordure également foncée */
-        }
-
-        &.active {
-          /* Lien actif */
-          background-color: #333; /* fond foncé */
-          color: #fff; /* texte blanc */
-          border-color: #333;
-        }
-      }
+  @media (max-width: 768px) {
+    &.desktop {
+      display: none;
     }
 
-    &.active {
-      /* Gère l’état du menu burger si besoin (mobile) */
-    }
-  }
-
-  .navbar-cta {
-    display: flex;
-    align-items: center;
-
-    .btn-cta {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      border-radius: 9999px;
-      border: 2px solid #fff;
-      background-color: #fff; /* fond toujours visible */
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-      color: #333;
-      text-decoration: none;
-      margin-left: 0.5rem;
-      font-weight: 600;
-      transition: background-color 0.3s ease, color 0.3s ease,
-        border-color 0.3s ease;
-
-      &:hover {
-        background-color: #333;
-        color: #fff;
-        border-color: #333;
-      }
-
-      &.logout-button {
-        /* Optionnel : si tu veux un style différent pour déconnexion */
-        border-color: #f44;
-        &:hover {
-          border-color: #f44;
-          background-color: #f44;
-          color: #fff;
-        }
-      }
+    &.mobile {
+      display: flex;
     }
   }
 }

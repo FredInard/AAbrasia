@@ -115,15 +115,59 @@ button {
   }
 }
 
-// == Bouton pour découvrir l'association ==
-.cta {
-  text-align: center;
+.section-presentation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  flex-direction: row-reverse;
+  padding: 3rem 15%;
   margin-bottom: 3rem;
+  justify-content: center;
 
-  // button {
-  //   font-size: var(--font-size-p);
-  //   font-weight: bold;
-  // }
+  h2 {
+    font-size: var(--font-size-h2);
+    font-family: var(--font-secondary);
+    color: var(--heading-color);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  // == Bouton pour découvrir l'association ==
+  .cta {
+    background-color: rgb(77, 57, 48);
+    border: 2px solid var(--border-color);
+    padding: 12px 24px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-p);
+    font-family: var(--font-primary);
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s,
+      box-shadow 0.3s;
+
+    &.active {
+      background-color: rgba(77, 57, 48, 0.507);
+      color: white;
+      font-weight: bold;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    &:hover {
+      background-color: var(--color-accent-green); /* Vert */
+      color: var(--color-snow); /* Blanc */
+      transform: translateY(-2px);
+      box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(var(--accent-color), 0.5);
+    }
+  }
 }
 
 // == Section : C'est quoi le jeu de rôle ? ==
@@ -146,6 +190,7 @@ button {
     font-size: var(--font-size-h2);
     font-family: var(--font-secondary);
     color: var(--heading-color);
+    line-height: 1.6;
     margin-bottom: 1rem;
   }
 
@@ -194,6 +239,7 @@ button {
       font-family: var(--font-secondary);
       color: var(--heading-color);
       margin-bottom: 1rem;
+      line-height: 1.6;
     }
 
     p {
@@ -219,6 +265,7 @@ button {
     font-family: var(--font-secondary);
     color: var(--heading-color);
     text-align: center;
+    line-height: 1.6;
     margin-bottom: 1rem;
   }
 
@@ -241,6 +288,7 @@ button {
     font-family: var(--font-secondary);
     color: var(--heading-color);
     margin-bottom: 1rem;
+    line-height: 1.6;
   }
 
   p {
@@ -266,6 +314,7 @@ button {
     font-family: var(--font-secondary);
     color: var(--heading-color);
     margin-bottom: 1rem;
+    line-height: 1.6;
   }
 
   .boxHelloAsso {
@@ -315,6 +364,7 @@ button {
     font-family: var(--font-secondary);
     color: var(--heading-color);
     text-align: center;
+    line-height: 1.6;
     margin-bottom: 1rem;
   }
 
