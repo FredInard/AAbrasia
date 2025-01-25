@@ -14,7 +14,6 @@
   &.desktop {
     .navbar-logo img {
       height: 50px;
-      
     }
 
     .navbar-links {
@@ -23,12 +22,29 @@
 
       li {
         margin: 0 0.5rem;
+        background-color: rgb(77, 57, 48);
+        border: 2px solid var(--border-color);
+        padding: 12px 24px;
+        margin: 0 5px;
+        cursor: pointer;
+        border-radius: var(--border-radius);
+        font-size: var(--font-size-p);
+        font-family: var(--font-primary);
+        color: white;
+        font-weight: bold;
+        transition: background-color 0.3s, color 0.3s, transform 0.2s,
+          box-shadow 0.3s;
 
         a {
           text-decoration: none;
           font-size: 1rem;
           color: #333;
           font-weight: 600;
+          background-color: brown;
+          height: 1em;
+          width: 3em;
+          border-radius: 50px;
+          margin: 5px;
 
           &:hover {
             color: #0077cc;
@@ -72,7 +88,6 @@
       background-color: var(--color-lightbrown);
       padding: 0.5rem 0;
       z-index: 1000;
-      
 
       li {
         flex: 1;
@@ -105,20 +120,19 @@
   }
 
   .navbar-links li a,
-.navbar-icons li a {
-  /* Styles communs */
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-
-  &:hover {
-    color: #0077cc;
-  }
-
-  &.active {
-    color: #0077cc;
+  .navbar-icons li a {
+    /* Styles communs */
+    text-decoration: none;
+    color: #333;
     font-weight: bold;
-  }
-}
 
+    &:hover {
+      color: #0077cc;
+    }
+
+    &.active {
+      color: #0077cc;
+      font-weight: bold;
+    }
+  }
 }
