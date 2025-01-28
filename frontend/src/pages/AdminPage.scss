@@ -1,6 +1,8 @@
 @import "../styles/variables.scss"; // Import des variables globales
 
-/* Styles pour la page d'administration */
+/* ======================================= */
+/*          STYLES DE BASE                */
+/* ======================================= */
 .admin-page {
   padding: 20px;
   color: var(--text-color);
@@ -13,6 +15,7 @@
     color: var(--heading-color);
   }
 
+  /* Section des onglets (Utilisateurs, Parties, etc.) */
   .tabs {
     display: flex;
     justify-content: center;
@@ -20,7 +23,7 @@
 
     button {
       background-color: rgb(77, 57, 48);
-      border: 2px solid var(--border-color);
+      // border: 2px solid var(--border-color);
       padding: 12px 24px;
       margin: 0 5px;
       cursor: pointer;
@@ -40,7 +43,7 @@
       }
 
       &:hover {
-        background-color: var(--accent-color-darker);
+        background-color: rgba(77, 57, 48, 0.507);
         color: var(--background-color);
         transform: translateY(-2px);
         box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
@@ -54,6 +57,7 @@
     }
   }
 
+  /* Section pour le bouton d'export */
   .actions {
     display: flex;
     justify-content: center;
@@ -61,18 +65,18 @@
 
     .export-button {
       padding: 12px 24px;
-      background-color: rgb(77 57 48);
+      background-color: rgba(48, 174, 48, 0.591);
       color: var(--background-color);
       font-size: var(--font-size-p);
       font-family: var(--font-primary);
       font-weight: bold;
-      border: 2px solid var(--accent-color-darker);
-      border-radius: var(--border-radius);
+      // border: 2px solid var(--accent-color-darker);
+      border-radius: 20px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 
       &:hover {
-        background-color: rgba(77, 57, 48, 0.534);
+        background-color: green;
         transform: translateY(-2px);
         box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
       }
@@ -90,6 +94,7 @@
     }
   }
 
+  /* Zone de contenu pour chaque onglet actif */
   .tab-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -101,7 +106,9 @@
   }
 }
 
-/* Mode sombre spécifique */
+/* ======================================= */
+/*        MODE SOMBRE SPÉCIFIQUE           */
+/* ======================================= */
 .dark-mode {
   .admin-page {
     color: var(--text-color);
@@ -152,6 +159,75 @@
         transform: translateY(0);
         box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.2);
       }
+    }
+  }
+}
+
+/* ======================================= */
+/*          MEDIA QUERIES RESPONSIVE       */
+/* ======================================= */
+@media (max-width: 768px) {
+  .admin-page {
+    padding: 10px;
+
+    h1 {
+      font-size: 1.25rem; /* Ajuste si besoin */
+      margin-bottom: 15px;
+    }
+
+    /* Les onglets se replient en colonne */
+    .tabs {
+      flex-direction: column;
+      align-items: center;
+
+      button {
+        margin: 5px 0;
+        width: 80%; /* ou 100% si tu veux */
+      }
+    }
+
+    /* Le bouton d'export se centre et peut prendre plus de largeur */
+    .actions {
+      flex-direction: column;
+
+      .export-button {
+        width: 80%;
+        margin-bottom: 10px;
+      }
+    }
+
+    /* Le contenu des onglets peut être un peu réduit */
+    .tab-content {
+      padding: 15px;
+      /* on peut aussi réduire la taille de police si nécessaire */
+      font-size: 0.95rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-page {
+    /* Autre ajustement encore plus serré */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+    }
+
+    .tabs button {
+      width: 40%;
+      margin: 5px 0;
+      font-size: 0.9rem;
+    }
+
+    .actions .export-button {
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    .tab-content {
+      padding: 10px;
+      font-size: 0.9rem;
     }
   }
 }

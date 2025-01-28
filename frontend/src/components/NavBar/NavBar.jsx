@@ -1,7 +1,7 @@
-// import React, { useState } from "react"
+// import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom"
 import jwtDecode from "jwt-decode"
-import "./NavBar.scss"
+import "./NavBar.scss" // <-- fichier SCSS
 import ToggleTheme from "../ToggleTheme/ToggleTheme"
 import logo from "../../assets/pics/logoArpenteurBlanc.svg"
 import IconHome from "../../assets/pics/IconHome.svg"
@@ -13,7 +13,6 @@ import IconSetting from "../../assets/pics/IconSetting.svg"
 
 const NavBar = () => {
   const navigate = useNavigate()
-  // const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const token = localStorage.getItem("authToken")
   let authData = {
@@ -42,13 +41,9 @@ const NavBar = () => {
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem("authToken")
-    navigate("/")
-  }
-
-  // const toggleMenu = () => {
-  //   setIsMenuOpen((prev) => !prev)
+  // const handleLogout = () => {
+  //   localStorage.removeItem("authToken")
+  //   navigate("/")
   // }
 
   return (
@@ -62,37 +57,55 @@ const NavBar = () => {
         </div>
         <ToggleTheme />
         <ul className="navbar-links">
-          <li>
-            <NavLink to="/">Accueil</NavLink>
-          </li>
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <li>Accueil</li>
+          </NavLink>
+
           {authData.isAuthenticated && (
-            <li>
-              <NavLink to="/creer-partie">Créer partie</NavLink>
-            </li>
+            <NavLink
+              to="/creer-partie"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              <li>Créer partie</li>
+            </NavLink>
           )}
-          <li>
-            <NavLink to="/association">L'association</NavLink>
-          </li>
+
+          <NavLink
+            to="/association"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <li>L'association</li>
+          </NavLink>
+
           {authData.isAuthenticated && (
-            <li>
-              <NavLink to="/profil">Mon Profil</NavLink>
-            </li>
+            <NavLink
+              to="/profil"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              <li>Mon Profil</li>
+            </NavLink>
           )}
+
           {authData.role === "admin" && (
-            <li>
-              <NavLink to="/admin">Administration</NavLink>
-            </li>
+            <NavLink
+              to="/admin"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              <li>Administration</li>
+            </NavLink>
           )}
-          {!authData.isAuthenticated ? (
-            <li>
-              <NavLink to="/login">Connexion</NavLink>
-            </li>
-          ) : (
-            <li>
-              <button className="logout-button" onClick={handleLogout}>
-                Déconnexion
-              </button>
-            </li>
+
+          {!authData.isAuthenticated && (
+            <NavLink
+              to="/login"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              <li>Connexion</li>
+            </NavLink>
           )}
         </ul>
       </nav>

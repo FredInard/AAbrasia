@@ -1,6 +1,8 @@
 @import "../../styles/variables.scss"; // Assurez-vous que les variables globales sont disponibles
 
-/* Styles pour le composant UsersTab */
+/* 
+  Styles pour le composant UsersTab 
+*/
 .users-tab {
   padding: 20px;
 
@@ -11,15 +13,26 @@
     color: var(--heading-color);
   }
 
+  /* 
+    Conteneur pour le tableau. 
+    Permet d'ajouter un overflow-x si besoin. 
+  */
+  .users-table-container {
+    width: 100%;
+    overflow-x: auto; /* Permet un défilement horizontal sur mobile */
+  }
+
   .users-table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 600px; /* Ajuste la largeur minimale si tu veux forcer un scroll horizontal */
 
     th,
     td {
       padding: 10px;
       border: 1px solid var(--border-color);
       text-align: left;
+      vertical-align: middle;
     }
 
     th {
@@ -27,6 +40,9 @@
       color: var(--text-color);
     }
 
+    /* 
+      Actions d'édition / suppression 
+    */
     .actions {
       display: flex;
       gap: 10px;
@@ -53,10 +69,14 @@
     }
   }
 
+  /*
+    Barre de filtres 
+  */
   .filters {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* Permet d'aller à la ligne sur petits écrans */
 
     label {
       font-weight: bold;
@@ -81,16 +101,15 @@
   }
 }
 
-/* ----------------------------- */
-/*    STYLES POUR REACT-TOASTIFY */
-/* ----------------------------- */
-
-/* Conteneur principal des toasts */
+/* 
+  -----------------------------
+    STYLES POUR REACT-TOASTIFY
+  -----------------------------
+*/
 .Toastify__toast-container {
   z-index: 9999;
 }
 
-/* Style général d'un toast */
 .Toastify__toast {
   border-radius: var(--border-radius);
   font-family: var(--font-primary);
@@ -104,22 +123,90 @@
   }
 }
 
-/* Toast de succès */
 .Toastify__toast--success {
   background-color: #4caf50; /* Vert */
 }
 
-/* Toast d'erreur */
 .Toastify__toast--error {
   background-color: #f44336; /* Rouge */
 }
 
-/* Toast d'avertissement */
 .Toastify__toast--warning {
   background-color: #ff9800; /* Orange */
 }
 
-/* Toast d'information */
 .Toastify__toast--info {
   background-color: #2196f3; /* Bleu */
+}
+
+/* ============================================= */
+/*            APPROCHE A: TABLEAU SCROLL         */
+/* ============================================= */
+
+/* 
+  Pour les petits écrans (moins de 768px),
+  on réduit un peu la taille du texte 
+  et on autorise le scroll horizontal (déjà géré par .users-table-container).
+*/
+@media (max-width: 768px) {
+  .users-tab {
+    .users-table {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* 
+  Si tu ne veux QUE le scroll horizontal sur mobile,
+  tu peux t'arrêter là.
+*/
+
+/* ============================================= */
+/*            APPROCHE B: TABLEAU EN CARTES      */
+/* ============================================= */
+/* 
+   OPTIONNEL : si tu préfères transformer 
+   le tableau en "cartes" sur mobile 
+   pour être plus lisible 
+*/
+@media (max-width: 600px) {
+  .users-tab {
+    .users-table {
+      border-collapse: separate; /* Nécessaire pour l'affichage en bloc */
+      width: 100%;
+      min-width: auto; /* Retire la min-width si tu en avais mis une */
+
+      thead {
+        display: none; /* On masque l'en-tête */
+      }
+
+      tbody {
+        tr {
+          display: block;
+          border-bottom: 1px solid var(--border-color);
+          margin-bottom: 1rem;
+        }
+
+        td {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.5rem;
+          border: none;
+
+          /* On peut ajouter un pseudo-élément pour afficher le nom de la colonne */
+          &::before {
+            content: attr(data-label); /* l'attribut data-label sur <td> */
+            font-weight: bold;
+            margin-right: 0.5rem;
+          }
+
+          /* Pour éviter un "double-bord" visuel, si besoin */
+          &:not(:last-child) {
+            border-bottom: 1px dashed var(--border-color);
+          }
+        }
+      }
+    }
+  }
 }

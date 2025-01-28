@@ -315,54 +315,56 @@ const ParticipationsTab = () => {
           </button>
         </form>
       ) : (
-        <table className="participations-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Utilisateur (Pseudo)</th>
-              <th>Partie (Titre)</th>
-              <th>Date de Participation</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+        <div className="participations-table-container">
+          <table className="participations-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Utilisateur (Pseudo)</th>
+                <th>Partie (Titre)</th>
+                <th>Date de Participation</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {filteredParticipations.length > 0 ? (
-              filteredParticipations.map((participation) => (
-                <tr key={participation.id}>
-                  <td>{participation.id}</td>
-                  <td>{participation.utilisateur_pseudo}</td>{" "}
-                  {/* Affiche le pseudo */}
-                  <td>{participation.partie_titre}</td> {/* Affiche le titre */}
-                  <td>
-                    {new Date(participation.date_participation).toLocaleString(
-                      "fr-FR",
-                      {
+            <tbody>
+              {filteredParticipations.length > 0 ? (
+                filteredParticipations.map((participation) => (
+                  <tr key={participation.id}>
+                    <td>{participation.id}</td>
+                    <td>{participation.utilisateur_pseudo}</td>{" "}
+                    {/* Affiche le pseudo */}
+                    <td>{participation.partie_titre}</td>{" "}
+                    {/* Affiche le titre */}
+                    <td>
+                      {new Date(
+                        participation.date_participation
+                      ).toLocaleString("fr-FR", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",
                         hour: "2-digit",
                         minute: "2-digit",
-                      }
-                    )}
-                  </td>
-                  <td>
-                    <button onClick={() => handleEdit(participation)}>
-                      Modifier
-                    </button>
-                    <button onClick={() => handleDelete(participation.id)}>
-                      Supprimer
-                    </button>
-                  </td>
+                      })}
+                    </td>
+                    <td>
+                      <button onClick={() => handleEdit(participation)}>
+                        Modifier
+                      </button>
+                      <button onClick={() => handleDelete(participation.id)}>
+                        Supprimer
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5">Aucune participation trouvée.</td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5">Aucune participation trouvée.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )

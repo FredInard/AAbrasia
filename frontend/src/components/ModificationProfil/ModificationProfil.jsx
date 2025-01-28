@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css"
 import jwtDecode from "jwt-decode"
 import ChangePassword from "./ChangePassword.jsx"
 import "./ModificationProfil.scss"
+import LogoutButton from "../Logout/LogoutButton.jsx"
 
 export default function ModificationProfil() {
   const [utilisateur, setUtilisateur] = useState({})
@@ -267,6 +268,7 @@ export default function ModificationProfil() {
   return (
     <>
       <div className="header">
+        <LogoutButton />
         {imageUrl || existingPhotoUrl ? (
           <img
             src={imageUrl || existingPhotoUrl}

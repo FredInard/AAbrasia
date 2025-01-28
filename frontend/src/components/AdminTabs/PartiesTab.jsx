@@ -501,71 +501,73 @@ const PartiesTab = () => {
           </button>
         </form>
       ) : (
-        <table className="parties-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Photo</th>
-              <th>Titre</th>
-              <th>Type</th>
-              <th>Description</th>
-              <th>Date</th>
-              <th>Nombre max</th>
-              <th>MJ (Pseudo)</th> {/* Indiquez que c'est le pseudo du MJ */}
-              <th>Durée</th>
-              <th>Lieu</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredParties.map((party) => (
-              <tr key={party.id}>
-                <td>{party.id}</td>
-                <td>
-                  {party.photo_scenario ? (
-                    <img
-                      src={`${
-                        import.meta.env.VITE_BACKEND_URL
-                      }/${party.photo_scenario.replace(/\\/g, "/")}`}
-                      alt={party.titre}
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        objectFit: "cover",
-                      }}
-                    />
-                  ) : (
-                    <p>Pas de photo</p>
-                  )}
-                </td>
-                <td>{party.titre}</td>
-                <td>{party.type}</td>
-                <td>{party.description}</td>
-                <td>
-                  {new Date(party.date).toLocaleString("fr-FR", {
-                    day: "numeric",
-                    month: "numeric",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </td>
-                <td>{party.nb_max_joueurs}</td>
-                <td>{party.maitre_du_jeu_pseudo}</td>{" "}
-                {/* Remplace id_maitre_du_jeu */}
-                <td>{party.duree_estimee}</td>
-                <td>{party.lieu}</td>
-                <td>
-                  <button onClick={() => handleEdit(party)}>Modifier</button>
-                  <button onClick={() => handleDelete(party.id)}>
-                    Supprimer
-                  </button>
-                </td>
+        <div className="parties-table-container">
+          <table className="parties-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Photo</th>
+                <th>Titre</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Nombre max</th>
+                <th>MJ (Pseudo)</th> {/* Indiquez que c'est le pseudo du MJ */}
+                <th>Durée</th>
+                <th>Lieu</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {filteredParties.map((party) => (
+                <tr key={party.id}>
+                  <td>{party.id}</td>
+                  <td>
+                    {party.photo_scenario ? (
+                      <img
+                        src={`${
+                          import.meta.env.VITE_BACKEND_URL
+                        }/${party.photo_scenario.replace(/\\/g, "/")}`}
+                        alt={party.titre}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    ) : (
+                      <p>Pas de photo</p>
+                    )}
+                  </td>
+                  <td>{party.titre}</td>
+                  <td>{party.type}</td>
+                  <td>{party.description}</td>
+                  <td>
+                    {new Date(party.date).toLocaleString("fr-FR", {
+                      day: "numeric",
+                      month: "numeric",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
+                  <td>{party.nb_max_joueurs}</td>
+                  <td>{party.maitre_du_jeu_pseudo}</td>{" "}
+                  {/* Remplace id_maitre_du_jeu */}
+                  <td>{party.duree_estimee}</td>
+                  <td>{party.lieu}</td>
+                  <td>
+                    <button onClick={() => handleEdit(party)}>Modifier</button>
+                    <button onClick={() => handleDelete(party.id)}>
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )

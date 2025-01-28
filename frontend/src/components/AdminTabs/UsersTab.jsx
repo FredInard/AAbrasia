@@ -393,41 +393,43 @@ const UsersTab = () => {
           </button>
         </form>
       ) : (
-        <table className="users-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Pseudo</th>
-              <th>Email</th>
-              <th>Rôle</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.pseudo}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td className="actions">
-                  <img
-                    src={editIcon}
-                    alt="Modifier"
-                    className="action-icon edit-icon"
-                    onClick={() => handleEdit(user)}
-                  />
-                  <img
-                    src={deleteIcon}
-                    alt="Supprimer"
-                    className="action-icon delete-icon"
-                    onClick={() => handleDelete(user.id)}
-                  />
-                </td>
+        <div className="users-table-container">
+          <table className="users-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Pseudo</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.pseudo}</td>
+                  <td>{user.email}</td>
+                  <td>{user.role}</td>
+                  <td className="actions">
+                    <img
+                      src={editIcon}
+                      alt="Modifier"
+                      className="action-icon edit-icon"
+                      onClick={() => handleEdit(user)}
+                    />
+                    <img
+                      src={deleteIcon}
+                      alt="Supprimer"
+                      className="action-icon delete-icon"
+                      onClick={() => handleDelete(user.id)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )
