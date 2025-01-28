@@ -13,13 +13,85 @@
     color: var(--heading-color);
   }
 
+  /*
+    Barre de filtres 
+  */
+  .filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permet de passer à la ligne sur petits écrans */
+
+    div {
+      display: flex;
+      flex-direction: column;
+      min-width: 140px; /* Évite que le champ devienne trop étroit */
+
+      label {
+        font-weight: bold;
+        color: var(--text-color);
+        margin-bottom: 5px;
+      }
+
+      input,
+      select {
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-family: var(--font-primary);
+        color: var(--text-color);
+        background-color: var(--background-color);
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: var(--accent-color);
+          outline: none;
+        }
+      }
+    }
+  }
+
+  /*
+    Formulaire (user-form) -> si tu veux l'améliorer encore, 
+    tu peux l’ajouter ici aussi
+  */
+  .user-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin-bottom: 20px; /* Séparer du tableau si besoin */
+
+    div {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+      }
+    }
+
+    button {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+  }
+
   /* 
-    Conteneur pour le tableau. 
-    Permet d'ajouter un overflow-x si besoin. 
+    Conteneur pour le tableau 
+    => permet un scroll horizontal sur mobile 
   */
   .users-table-container {
     width: 100%;
-    overflow-x: auto; /* Permet un défilement horizontal sur mobile */
+    overflow-x: auto;
   }
 
   .users-table {
@@ -68,42 +140,11 @@
       }
     }
   }
-
-  /*
-    Barre de filtres 
-  */
-  .filters {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap; /* Permet d'aller à la ligne sur petits écrans */
-
-    label {
-      font-weight: bold;
-      color: var(--text-color);
-    }
-
-    input,
-    select {
-      padding: 8px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius);
-      font-family: var(--font-primary);
-      color: var(--text-color);
-      background-color: var(--background-color);
-      transition: border-color 0.2s;
-
-      &:focus {
-        border-color: var(--accent-color);
-        outline: none;
-      }
-    }
-  }
 }
 
 /* 
   -----------------------------
-    STYLES POUR REACT-TOASTIFY
+  STYLES POUR REACT-TOASTIFY 
   -----------------------------
 */
 .Toastify__toast-container {
@@ -139,42 +180,28 @@
   background-color: #2196f3; /* Bleu */
 }
 
-/* ============================================= */
-/*            APPROCHE A: TABLEAU SCROLL         */
-/* ============================================= */
+/* ========================= */
+/*  Media Queries Responsive */
+/* ========================= */
 
-/* 
-  Pour les petits écrans (moins de 768px),
-  on réduit un peu la taille du texte 
-  et on autorise le scroll horizontal (déjà géré par .users-table-container).
-*/
+/* Option A : garder le tableau en scroll horizontal */
 @media (max-width: 768px) {
   .users-tab {
     .users-table {
-      font-size: 0.9rem;
+      font-size: 0.9rem; /* on réduit un peu la taille du texte sur mobile/tablette */
     }
   }
 }
 
-/* 
-  Si tu ne veux QUE le scroll horizontal sur mobile,
-  tu peux t'arrêter là.
-*/
-
-/* ============================================= */
-/*            APPROCHE B: TABLEAU EN CARTES      */
-/* ============================================= */
-/* 
-   OPTIONNEL : si tu préfères transformer 
-   le tableau en "cartes" sur mobile 
-   pour être plus lisible 
+/* Option B : Convertir en "cartes" si tu le souhaites 
+   sous un seuil plus bas, par ex. 600px 
 */
 @media (max-width: 600px) {
   .users-tab {
     .users-table {
       border-collapse: separate; /* Nécessaire pour l'affichage en bloc */
       width: 100%;
-      min-width: auto; /* Retire la min-width si tu en avais mis une */
+      min-width: auto; /* Retire la min-width pour laisser place aux cartes */
 
       thead {
         display: none; /* On masque l'en-tête */
@@ -193,15 +220,15 @@
           align-items: center;
           padding: 0.5rem;
           border: none;
-
-          /* On peut ajouter un pseudo-élément pour afficher le nom de la colonne */
+          /* On peut ajouter un pseudo-élément pour afficher le nom de la colonne 
+             Cf. le data-label dans <td data-label="Nom de la colonne"> 
+          */
           &::before {
-            content: attr(data-label); /* l'attribut data-label sur <td> */
+            content: attr(data-label);
             font-weight: bold;
             margin-right: 0.5rem;
           }
 
-          /* Pour éviter un "double-bord" visuel, si besoin */
           &:not(:last-child) {
             border-bottom: 1px dashed var(--border-color);
           }

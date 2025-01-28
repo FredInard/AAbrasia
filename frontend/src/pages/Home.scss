@@ -1,17 +1,25 @@
-// == Importation des variables globales ==
 @import "../styles/variables.scss";
 @import "../styles/buttons.scss";
 
-// == Styles globaux pour la page Home ==
+/* ===================================== */
+/*               PAGE HOME               */
+/* ===================================== */
 .home {
-  // padding-top: 5%;
+  /* Ajuste les marges verticales globales si besoin */
+  /* padding-top: 5%; */
   padding-bottom: 5%;
 }
+
+/* ===================================== */
+/*          SECTION INTRO (vidéo)        */
+/* ===================================== */
 .section-intro {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100vh; /* Remplit l’écran sur desktop */
   overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
 
   .video-wrapper {
     position: relative;
@@ -21,7 +29,8 @@
     .video-background {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover; /* Remplit tout le conteneur */
+      object-position: center; /* Centrer la vidéo si rognée */
     }
 
     .overlay {
@@ -39,8 +48,8 @@
         rgba(0, 0, 0, 0.4) 50%,
         rgba(0, 0, 0, 0) 100%
       );
-      color: #fff;
       z-index: 1;
+      color: #fff;
 
       h1 {
         text-align: center;
@@ -50,16 +59,22 @@
         align-items: center;
         flex-direction: column;
         gap: 15px;
+        max-width: 90%;
+        margin: 0 auto;
 
         img {
-          width: 700px;
+          max-width: 700px;
+          width: 100%;
           height: auto;
         }
       }
     }
   }
 }
-// == Styles pour les boutons ==
+
+/* ===================================== */
+/*    BOUTONS GLOBAUX (hérités)          */
+/* ===================================== */
 button {
   background-color: var(--color-brown);
   color: var(--color-accent);
@@ -77,141 +92,42 @@ button {
   }
 }
 
-// == Section d'introduction ==
-.section-intro {
+/* ===================================== */
+/*     SECTION PRÉSENTATION / INTRO      */
+/* ===================================== */
+.section-presentation {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 2rem;
   margin-bottom: 3rem;
-  // padding: 0 15%;
+  padding: 3rem 15%; /* Ajuste la marge interne si besoin */
 
   .intro-text {
-    flex: 1 1 50%;
-
-    h1 {
+    flex: 1 1 60%; /* On peut régler le ratio texte / CTA */
+    h2 {
       font-family: var(--font-secondary);
-      font-size: var(--font-size-h1);
+      font-size: var(--font-size-h2);
       line-height: 1.4;
       color: var(--heading-color);
       margin-bottom: 1rem;
     }
-
-    p {
-      font-size: var(--font-size-p);
-      line-height: 1.6;
-      color: var(--text-color);
-    }
   }
 
-  .intro-image {
-    flex: 1 1 40%;
-
-    img {
-      width: 100%;
-      height: auto;
-      border-radius: var(--border-radius);
-    }
-  }
-}
-
-.section-presentation {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  align-items: center;
-  flex-direction: row-reverse;
-  padding: 3rem 15%;
-  margin-bottom: 3rem;
-  justify-content: center;
-
-  h2 {
-    font-size: var(--font-size-h2);
-    font-family: var(--font-secondary);
-    color: var(--heading-color);
-    line-height: 1.6;
-    margin-bottom: 1rem;
-  }
-
-  // == Bouton pour découvrir l'association ==
   .cta {
-    // background-color: rgb(77, 57, 48);
-    // border: 2px solid var(--border-color);
-    // padding: 12px 24px;
-    // margin: 0 5px;
-    // cursor: pointer;
-    // border-radius: var(--border-radius);
-    // font-size: var(--font-size-p);
-    // font-family: var(--font-primary);
-    // color: white;
-    // font-weight: bold;
-    // transition: background-color 0.3s, color 0.3s, transform 0.2s,
-    //   box-shadow 0.3s;
-
-    // &.active {
-    //   background-color: rgba(77, 57, 48, 0.507);
-    //   color: white;
-    //   font-weight: bold;
-    //   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    // }
-
-    // &:hover {
-    //   background-color: var(--color-accent-green); /* Vert */
-    //   color: var(--color-snow); /* Blanc */
-    //   transform: translateY(-2px);
-    //   box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
-    // }
-
-    // &:focus {
-    //   outline: none;
-    //   border-color: var(--accent-color);
-    //   box-shadow: 0 0 0 3px rgba(var(--accent-color), 0.5);
-    // }
-  }
-}
-
-// == Section : C'est quoi le jeu de rôle ? ==
-.section-what-is-jdr {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 2rem;
-  align-items: center;
-  padding: 3rem 15%;
-  background-color: var(--container-background-color);
-  border-radius: var(--border-radius);
-  margin-bottom: 3rem;
-  flex-direction: row-reverse;
-
-  .section-what-is-jdr1 {
-    width: 50%;
-  }
-
-  h2 {
-    font-size: var(--font-size-h2);
-    font-family: var(--font-secondary);
-    color: var(--heading-color);
-    line-height: 1.6;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    font-size: var(--font-size-p);
-    line-height: 1.6;
-    color: var(--text-color);
-  }
-
-  .reflective-image {
     flex: 1 1 40%;
+    display: flex;
+    justify-content: center;
 
-    img {
-      width: 100%;
-      height: auto;
-      border-radius: var(--border-radius);
+    button {
+      /* Hérite déjà du style global */
     }
   }
 }
 
-// == Section : Notre association ==
+/* ===================================== */
+/*      SECTION NOTRE ASSOCIATION        */
+/* ===================================== */
 .section-our-association {
   display: flex;
   flex-wrap: wrap;
@@ -220,6 +136,7 @@ button {
   flex-direction: row-reverse;
   padding: 3rem 15%;
   margin-bottom: 3rem;
+  justify-content: center;
 
   .divImageSectionAsso {
     flex: 1 1 40%;
@@ -233,7 +150,6 @@ button {
 
   .section-what-is-jdr1 {
     flex: 1 1 50%;
-
     h2 {
       font-size: var(--font-size-h2);
       font-family: var(--font-secondary);
@@ -241,7 +157,6 @@ button {
       margin-bottom: 1rem;
       line-height: 1.6;
     }
-
     p {
       font-size: var(--font-size-p);
       line-height: 1.6;
@@ -250,7 +165,9 @@ button {
   }
 }
 
-// == Section : Notre Agenda ==
+/* ===================================== */
+/*          SECTION AGENDA               */
+/* ===================================== */
 .section-agenda {
   padding: 3rem 5%;
   background-color: var(--container-background-color);
@@ -277,7 +194,9 @@ button {
   }
 }
 
-// == Section : Team ==
+/* ===================================== */
+/*      SECTION ÉQUIPE (TEAM)            */
+/* ===================================== */
 .section-team {
   text-align: center;
   margin-bottom: 3rem;
@@ -296,14 +215,11 @@ button {
     color: var(--text-color);
     margin-bottom: 2rem;
   }
-
-  // button {
-  //   font-size: var(--font-size-p);
-  //   font-weight: bold;
-  // }
 }
 
-// == Section : HelloAsso ==
+/* ===================================== */
+/*      SECTION HELLOASSO (SOUTIEN)      */
+/* ===================================== */
 .section-HelloAsso {
   text-align: center;
   margin-bottom: 3rem;
@@ -326,7 +242,6 @@ button {
 
     .helloAsso1 {
       flex: 1 1 40%;
-
       img {
         width: 100%;
         height: auto;
@@ -334,7 +249,6 @@ button {
         margin-bottom: 1rem;
         border-radius: var(--border-radius);
       }
-
       p {
         font-size: var(--font-size-p);
         line-height: 1.6;
@@ -344,6 +258,8 @@ button {
 
     .helloAsso2 {
       flex: 1 1 40%;
+      display: flex;
+      justify-content: center;
 
       img {
         width: 80px;
@@ -354,7 +270,9 @@ button {
   }
 }
 
-// == Section : Nous contacter ==
+/* ===================================== */
+/*      SECTION NOUS CONTACTER           */
+/* ===================================== */
 .section-contact {
   padding: 3rem 15%;
   margin-bottom: 3rem;
@@ -382,7 +300,8 @@ button {
     justify-content: center;
 
     .contact-section {
-      flex: 1 1 30%;
+      flex: 1 1 25%;
+      min-width: 200px; /* Pour éviter que la section ne devienne trop étroite */
       text-align: left;
 
       h3 {
@@ -401,14 +320,11 @@ button {
       ul {
         list-style: none;
         padding: 0;
-
         li {
           margin-bottom: 0.5rem;
-
           a {
             color: var(--accent-color);
             text-decoration: none;
-
             &:hover {
               text-decoration: underline;
             }
@@ -419,12 +335,10 @@ button {
       .social-icons {
         display: flex;
         gap: 1rem;
-
         img {
           width: 40px;
           height: auto;
           transition: transform 0.3s ease;
-
           &:hover {
             transform: scale(1.1);
           }
@@ -434,48 +348,53 @@ button {
   }
 }
 
-// == Media Queries pour la réactivité ==
+/* ================ */
+/*  MEDIA QUERIES   */
+/* ================ */
+
+/* 1) Écran inférieur ou égal à 768px (tablette) */
 @media (max-width: 768px) {
-  .section-intro,
-  .section-what-is-jdr,
-  .section-our-association {
-    flex-direction: column;
-    text-align: center;
+  .section-intro {
+    /* Option : Pour laisser scroller la page si besoin,
+       désactive le 100vh sur mobile/tablette :
+       height: auto; 
+    */
 
-    .intro-text,
-    .reflective-image,
-    .divImageSectionAsso {
-      flex: 1;
-      margin: 0 auto;
-    }
-  }
+    .overlay {
+      h1 {
+        /* Réduit légèrement la taille du titre */
+        font-size: 1.8rem;
 
-  .boxHelloAsso {
-    flex-direction: column;
-    align-items: center;
+        /* Le texte ne dépasse pas 90% de la largeur de l'écran */
+        max-width: 90%;
+        margin: 0 auto; /* Pour centrer si besoin */
 
-    .helloAsso1,
-    .helloAsso2 {
-      flex: 1;
+        img {
+          /* L’image ne dépasse pas 80% de l’écran */
+          max-width: 80%;
+        }
+      }
     }
   }
 }
 
+/* 2) Écran inférieur ou égal à 480px (smartphone) */
 @media (max-width: 480px) {
-  h2 {
-    font-size: var(--font-size-h3);
-  }
+  .section-intro {
+    /* Option : Pour un défilement vertical complet sur mobile :
+       height: auto; 
+    */
 
-  p {
-    font-size: var(--font-size-small);
-  }
+    .overlay {
+      h1 {
+        /* Encore plus petit sur mobile */
+        font-size: 1.5rem;
 
-  // button {
-  //   font-size: var(--font-size-small);
-  // }
-
-  img {
-    width: 100%;
-    height: auto;
+        img {
+          /* On réduit encore la place de l’image sur très petit écran */
+          max-width: 70%;
+        }
+      }
+    }
   }
 }

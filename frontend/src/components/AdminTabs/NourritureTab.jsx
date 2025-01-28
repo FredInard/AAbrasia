@@ -241,41 +241,43 @@ const NourritureTab = () => {
           </button>
         </form>
       ) : (
-        <table className="nourriture-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Partie (Titre & ID)</th>
-              <th>Utilisateur (Pseudo & ID)</th>
-              <th>Contenu</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredNourritures.map((nourriture) => (
-              <tr key={nourriture.id}>
-                <td>{nourriture.id}</td>
-                <td>
-                  {nourriture.partie_titre} (ID: {nourriture.partie_id})
-                </td>
-                <td>
-                  {nourriture.utilisateur_pseudo} (ID:{" "}
-                  {nourriture.utilisateur_id})
-                </td>
-                <td>{nourriture.contenu}</td>
-                <td>
-                  <button onClick={() => handleEdit(nourriture)}>
-                    Modifier
-                  </button>
-                  <button onClick={() => handleDelete(nourriture.id)}>
-                    Supprimer
-                  </button>
-                </td>
+        <div className="nourriture-table-container">
+          <table className="nourriture-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Partie (Titre & ID)</th>
+                <th>Utilisateur (Pseudo & ID)</th>
+                <th>Contenu</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {filteredNourritures.map((nourriture) => (
+                <tr key={nourriture.id}>
+                  <td>{nourriture.id}</td>
+                  <td>
+                    {nourriture.partie_titre} (ID: {nourriture.partie_id})
+                  </td>
+                  <td>
+                    {nourriture.utilisateur_pseudo} (ID:{" "}
+                    {nourriture.utilisateur_id})
+                  </td>
+                  <td>{nourriture.contenu}</td>
+                  <td>
+                    <button onClick={() => handleEdit(nourriture)}>
+                      Modifier
+                    </button>
+                    <button onClick={() => handleDelete(nourriture.id)}>
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   )

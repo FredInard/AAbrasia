@@ -15,7 +15,7 @@
     color: var(--heading-color);
   }
 
-  /* Section des onglets (Utilisateurs, Parties, etc.) */
+  /* ----- Section des onglets (Utilisateurs, Parties, etc.) ----- */
   .tabs {
     display: flex;
     justify-content: center;
@@ -23,7 +23,6 @@
 
     button {
       background-color: rgb(77, 57, 48);
-      // border: 2px solid var(--border-color);
       padding: 12px 24px;
       margin: 0 5px;
       cursor: pointer;
@@ -57,11 +56,10 @@
     }
   }
 
-  /* Section pour le bouton d'export */
+  /* ----- Section pour le bouton d'export ----- */
   .actions {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
 
     .export-button {
       padding: 12px 24px;
@@ -70,7 +68,6 @@
       font-size: var(--font-size-p);
       font-family: var(--font-primary);
       font-weight: bold;
-      // border: 2px solid var(--accent-color-darker);
       border-radius: 20px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
@@ -94,7 +91,7 @@
     }
   }
 
-  /* Zone de contenu pour chaque onglet actif */
+  /* ----- Zone de contenu pour chaque onglet actif ----- */
   .tab-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -211,7 +208,7 @@
     .tabs {
       display: flex;
       flex-wrap: wrap;
-      flex-direction: row;
+      flex-direction: row; /* si tu préfères aligner 2 onglets par ligne */
     }
 
     .tabs button {
