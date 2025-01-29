@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 import jwtDecode from "jwt-decode"
 import "./NavBar.scss" // <-- fichier SCSS
 import ToggleTheme from "../ToggleTheme/ToggleTheme"
-import logo from "../../assets/pics/logoArpenteurBlanc.svg"
+// import logo from "../../assets/pics/logoArpenteurBlanc.svg"
 import IconHome from "../../assets/pics/IconHome.svg"
 import IconReception from "../../assets/pics/IconReception.svg"
 import IconAsso from "../../assets/pics/IconAsso.svg"
@@ -51,9 +51,9 @@ const NavBar = () => {
       {/* Navbar Desktop */}
       <nav className="navbar desktop">
         <div className="navbar-logo">
-          <NavLink to="/">
+          {/* <NavLink to="/">
             <img src={logo} alt="Logo de l'association" />
-          </NavLink>
+          </NavLink> */}
         </div>
         <ToggleTheme />
         <ul className="navbar-links">

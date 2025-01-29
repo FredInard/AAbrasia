@@ -37,6 +37,7 @@
         label {
           margin-bottom: 5px;
           font-weight: bold;
+          color: var(--heading-color);
           /* Optionnel : color: var(--text-color); */
         }
 
@@ -115,7 +116,7 @@
     }
 
     th {
-      background-color: #f4f4f4; /* ou var(--container-background-color) */
+      background-color: var(--container-background-color); /* ou var(--container-background-color) */
     }
 
     button {

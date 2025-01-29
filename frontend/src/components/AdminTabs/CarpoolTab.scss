@@ -29,6 +29,7 @@
       label {
         margin-bottom: 5px;
         font-weight: bold;
+        color: var(--heading-color);
         /* Option : color: var(--text-color); */
       }
 
@@ -109,12 +110,14 @@
     th,
     td {
       padding: 10px;
-      border: 1px solid #ddd; /* ou var(--border-color) */
+      border: 1px solid #ddd; /* #ddd ou var(--border-color) */
       text-align: left;
+      
     }
 
     th {
-      background-color: #f4f4f4; /* ou var(--container-background-color) */
+      background-color: var(--container-background-color); /* #f4f4f4 ou var(--container-background-color) */
+      color: var(--heading-color);
     }
 
     button {

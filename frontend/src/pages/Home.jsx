@@ -88,14 +88,14 @@ export default function Home() {
         {/* Section : C'est quoi le jeu de rôle ? */}
         <section className="section-presentation">
           <div className="intro-text">
-            <h2>
+            <h3>
               Bienvenue, <br />
               Les Arpenteurs d’Abrasia sont une association qui organise des
               parties de jeu de rôle sur table. Nous jouons principalement (mais
               pas que) dans un univers fantastique nommé Abrasia, et tout le
               monde est bienvenu·e, néophytes ou vétérans, pour créer des
               moments conviviaux de rires et d’aventures !
-            </h2>
+            </h3>
           </div>
           {/* Bouton pour découvrir l'association */}
           <div className="cta">
@@ -176,7 +176,7 @@ export default function Home() {
             {/* Nos amis */}
             <div className="contact-section">
               <h3>Nos amis</h3>
-              <p>Liens vers d’autres associations du 04 :</p>
+              {/* <p>Liens vers d’autres associations du 04 :</p> */}
               <ul>
                 <li>
                   <a
@@ -202,7 +202,7 @@ export default function Home() {
             {/* Partenaires */}
             <div className="contact-section">
               <h3>Partenaires</h3>
-              <p>Liens vers les sites de nos partenaires :</p>
+              {/* <p>Liens vers les sites de nos partenaires :</p> */}
               <ul>
                 <li>
                   <a
@@ -236,8 +236,8 @@ export default function Home() {
 
             {/* Abrasia */}
             <div className="contact-section">
-              <h3>Abrasia</h3>
-              <p>Découvrez l'univers d'Abrasia sur World Anvil :</p>
+              <h3>Découvrez l'univers d'Abrasia sur World Anvil</h3>
+              {/* <p>Découvrez l'univers d'Abrasia sur World Anvil :</p> */}
               <a
                 href="http://lien-vers-worldanvil-abrasia"
                 target="_blank"

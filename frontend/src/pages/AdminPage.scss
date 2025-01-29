@@ -71,6 +71,7 @@
       border-radius: 20px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+      margin-bottom: 20px;
 
       &:hover {
         background-color: green;
@@ -111,7 +112,7 @@
     color: var(--text-color);
 
     .tabs button {
-      background-color: var(--background-color-dark);
+      background-color: rgb(77 57 48);
       border-color: var(--border-color);
       color: var(--text-color);
 

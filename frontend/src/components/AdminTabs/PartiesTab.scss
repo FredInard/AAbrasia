@@ -33,10 +33,10 @@
       label {
         margin-bottom: 5px;
         font-weight: bold;
-        /* Optionnel:
-           color: var(--text-color);
+    
+        color: var(--heading-color);
            font-size: 0.95rem;
-        */
+        
       }
 
       input,
@@ -129,7 +129,7 @@
     }
 
     th {
-      background-color: #f4f4f4; /* ou var(--container-background-color); */
+      background-color: var(--container-background-color); /* ou var(--container-background-color); */
     }
 
     /* Boutons dans les lignes du tableau */

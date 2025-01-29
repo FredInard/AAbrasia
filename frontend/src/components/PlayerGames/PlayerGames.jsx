@@ -124,7 +124,7 @@ const PlayerGames = () => {
         />
       ) : (
         <div>
-          <h2>Parties de l'utilisateur</h2>
+          <h2>Tes parties :</h2>
 
           {/* Filtres */}
           <div className="filters">

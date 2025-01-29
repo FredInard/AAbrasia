@@ -20,6 +20,8 @@
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
+  top: -86px;
+
 
   .video-wrapper {
     position: relative;
@@ -53,7 +55,9 @@
 
       h1 {
         text-align: center;
-        font-size: 2.5rem;
+        // font-size: 2.5rem;
+        font-size: 1.875rem;
+        line-height: 2.25rem;
         color: white;
         display: flex;
         align-items: center;
@@ -239,6 +243,7 @@ button {
     justify-content: center;
     align-items: center;
     gap: 2rem;
+    flex-direction:column;
 
     .helloAsso1 {
       flex: 1 1 40%;
@@ -303,6 +308,7 @@ button {
       flex: 1 1 25%;
       min-width: 200px; /* Pour éviter que la section ne devienne trop étroite */
       text-align: left;
+      
 
       h3 {
         font-family: var(--font-secondary);
@@ -323,7 +329,7 @@ button {
         li {
           margin-bottom: 0.5rem;
           a {
-            color: var(--accent-color);
+            color: var(--text-color);
             text-decoration: none;
             &:hover {
               text-decoration: underline;
@@ -335,8 +341,9 @@ button {
       .social-icons {
         display: flex;
         gap: 1rem;
+        justify-content: center;
         img {
-          width: 40px;
+          width: 5rem;
           height: auto;
           transition: transform 0.3s ease;
           &:hover {
