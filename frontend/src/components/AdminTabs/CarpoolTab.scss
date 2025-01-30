@@ -112,11 +112,12 @@
       padding: 10px;
       border: 1px solid #ddd; /* #ddd ou var(--border-color) */
       text-align: left;
-      
     }
 
     th {
-      background-color: var(--container-background-color); /* #f4f4f4 ou var(--container-background-color) */
+      background-color: var(
+        --container-background-color
+      ); /* #f4f4f4 ou var(--container-background-color) */
       color: var(--heading-color);
     }
 

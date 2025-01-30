@@ -430,12 +430,14 @@ const GameDetails = ({ partyId, game, onClose, onUpdate }) => {
         </div>
 
         <h3>Participants :</h3>
-        <ParticipantsList
-          partyId={partyId}
-          isUpdated={isUpdated}
-          isCreator={isCreator}
-          onParticipantRemoved={refreshData}
-        />
+        <div className="participants-list-box">
+          <ParticipantsList
+            partyId={partyId}
+            isUpdated={isUpdated}
+            isCreator={isCreator}
+            onParticipantRemoved={refreshData}
+          />
+        </div>
 
         {user && (
           <>

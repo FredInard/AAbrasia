@@ -18,7 +18,7 @@
   /* ============================= */
   .filters {
     margin-bottom: 20px;
-
+    flex-direction: column;
     h3 {
       margin-bottom: 10px;
       /* Option : font-size: 1.1rem; font-weight: bold; */
@@ -27,6 +27,7 @@
     .filters-form {
       display: flex;
       flex-wrap: wrap;
+      // flex-direction: column;
       gap: 20px;
 
       div {
@@ -116,7 +117,9 @@
     }
 
     th {
-      background-color: var(--container-background-color); /* ou var(--container-background-color) */
+      background-color: var(
+        --container-background-color
+      ); /* ou var(--container-background-color) */
     }
 
     button {
@@ -185,6 +188,7 @@
 @media (max-width: 480px) {
   .participations-tab {
     .filters .filters-form {
+      flex-direction: column;
       gap: 10px;
 
       div {

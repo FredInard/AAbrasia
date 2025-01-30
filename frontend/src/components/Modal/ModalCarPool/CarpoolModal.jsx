@@ -19,49 +19,65 @@ const CarpoolModal = ({ partyId, user, onClose, onSubmit }) => {
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="close-btn" onClick={onClose}>
+    <div
+      className="modal-overlayCP"
+      onClick={onClose}
+      role="dialog"
+      aria-labelledby="modal-title"
+      aria-modal="true"
+    >
+      <div className="modal-contentCP" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="close-btnCP"
+          onClick={onClose}
+          aria-label="Fermer la modale"
+        >
           ✕
         </button>
-        <h2>Proposer un covoiturage</h2>
+        <h2 className="modal-title" id="modal-title">
+          Proposer un covoiturage
+        </h2>
         <form onSubmit={handleSubmit}>
-          <label>
-            Lieu de départ :
+          <label htmlFor="villeDepart">Lieu de départ :</label>
+          <input
+            id="villeDepart"
+            type="text"
+            value={villeDepart}
+            onChange={(e) => setVilleDepart(e.target.value)}
+            required
+          />
+
+          <label htmlFor="villeArrivee">Lieu d'arrivée :</label>
+          <input
+            id="villeArrivee"
+            type="text"
+            value={villeArrivee}
+            onChange={(e) => setVilleArrivee(e.target.value)}
+            required
+          />
+
+          <label htmlFor="heureDepart">Heure de départ :</label>
+          <input
+            id="heureDepart"
+            type="datetime-local"
+            value={heureDepart}
+            onChange={(e) => setHeureDepart(e.target.value)}
+            required
+          />
+
+          <div className="checkbox-container">
             <input
-              type="text"
-              value={villeDepart}
-              onChange={(e) => setVilleDepart(e.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Lieu d'arrivée :
-            <input
-              type="text"
-              value={villeArrivee}
-              onChange={(e) => setVilleArrivee(e.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Heure de départ :
-            <input
-              type="datetime-local"
-              value={heureDepart}
-              onChange={(e) => setHeureDepart(e.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Propose un retour :
-            <input
+              id="proposeRetour"
               type="checkbox"
               checked={proposeRetour}
               onChange={(e) => setProposeRetour(e.target.checked)}
             />
-          </label>
-          <button type="submit">Proposer</button>
+            <label htmlFor="proposeRetour">Propose un retour</label>
+          </div>
+
+          <button type="submit" className="submit-btn">
+            Proposer
+          </button>
         </form>
       </div>
     </div>

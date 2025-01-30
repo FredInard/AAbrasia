@@ -27,7 +27,7 @@
           Quand le <NavLink> (soit <a>) est "active", 
           on met le <li> en vert 
         */
-        background-color: green;
+        // background-color: green;
         color: #fff;
         transform: translateY(-2px);
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -48,7 +48,7 @@
           box-shadow 0.3s;
 
         &:hover {
-          background-color: var(--color-darkbrown);
+          // background-color: var(--color-darkbrown);
           transform: translateY(-2px);
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
@@ -112,7 +112,7 @@
 
           &.active {
             /* Fond vert ou autre style sur l'icône active en mobile */
-            background-color: green;
+            // background-color: green;
             color: #fff;
             border-radius: var(--border-radius);
           }

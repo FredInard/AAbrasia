@@ -134,7 +134,9 @@ const CreateGame = () => {
         <h1>Créer une nouvelle partie</h1>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="form-group">
-            <label htmlFor="titre">Titre de la partie</label>
+            <label className="labelCreateGame" htmlFor="titre">
+              Titre de la partie
+            </label>
             <input
               type="text"
               id="titre"
@@ -144,7 +146,9 @@ const CreateGame = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="description">Description</label>
+            <label className="labelCreateGame" htmlFor="description">
+              Description
+            </label>
             <textarea
               id="description"
               value={description}
@@ -165,7 +169,9 @@ const CreateGame = () => {
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="date">Date de la partie</label>
+            <label className="labelCreateGame" htmlFor="date">
+              Date de la partie
+            </label>
             <input
               type="datetime-local"
               id="date"
@@ -175,7 +181,9 @@ const CreateGame = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="nbMaxJoueurs">Nombre maximum de joueurs</label>
+            <label className="labelCreateGame" htmlFor="nbMaxJoueurs">
+              Nombre maximum de joueurs
+            </label>
             <input
               type="number"
               id="nbMaxJoueurs"
@@ -188,7 +196,7 @@ const CreateGame = () => {
 
           {/* Toggle Oui/Non pour la limitation stricte */}
           <div className="form-group">
-            <label htmlFor="strict_nb_joueurs">
+            <label className="labelCreateGame" htmlFor="strict_nb_joueurs">
               Limiter les participants ?
             </label>
             <div className="toggle-switch">
@@ -207,7 +215,9 @@ const CreateGame = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="lieu">Lieu</label>
+            <label className="labelCreateGame" htmlFor="lieu">
+              Lieu
+            </label>
             <input
               type="text"
               id="lieu"
@@ -217,7 +227,9 @@ const CreateGame = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="dureeEstimee">Durée estimée (en heures)</label>
+            <label className="labelCreateGame" htmlFor="dureeEstimee">
+              Durée estimée (en heures)
+            </label>
             <input
               type="number"
               id="dureeEstimee"
@@ -228,7 +240,9 @@ const CreateGame = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="photoScenario">Photo du scénario</label>
+            <label className="labelCreateGame" htmlFor="photoScenario">
+              Photo du scénario
+            </label>
             <input
               type="file"
               id="photoScenario"

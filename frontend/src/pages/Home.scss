@@ -22,7 +22,6 @@
   flex-wrap: wrap;
   top: -86px;
 
-
   .video-wrapper {
     position: relative;
     width: 100%;
@@ -91,7 +90,7 @@ button {
   transition: background-color 0.3s ease, transform 0.2s;
 
   &:hover {
-    background-color: var(--color-darkbrown);
+    // background-color: var(--color-darkbrown);
     transform: translateY(-3px);
   }
 }
@@ -243,7 +242,7 @@ button {
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    flex-direction:column;
+    flex-direction: column;
 
     .helloAsso1 {
       flex: 1 1 40%;
@@ -308,7 +307,6 @@ button {
       flex: 1 1 25%;
       min-width: 200px; /* Pour éviter que la section ne devienne trop étroite */
       text-align: left;
-      
 
       h3 {
         font-family: var(--font-secondary);

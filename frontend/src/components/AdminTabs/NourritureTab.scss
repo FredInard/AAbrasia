@@ -107,7 +107,9 @@
     }
 
     th {
-      background-color: var(--container-background-color); /* ou var(--container-background-color) */
+      background-color: var(
+        --container-background-color
+      ); /* ou var(--container-background-color) */
     }
 
     button {

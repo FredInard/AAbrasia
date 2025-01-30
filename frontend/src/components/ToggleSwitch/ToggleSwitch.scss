@@ -4,17 +4,30 @@
   display: inline-block;
 }
 
+/* === Conteneur du switch === */
 .switch {
   display: inline-block;
   width: 60px;
   height: 34px;
   position: relative;
+
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 28px;
+  }
+
+  @media (max-width: 480px) {
+    width: 40px;
+    height: 22px;
+  }
 }
 
+/* Cache l'input */
 .switch input {
   display: none;
 }
 
+/* === Style du slider === */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -23,7 +36,7 @@
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: 0.4s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 
   &::before {
     content: "";
@@ -33,22 +46,63 @@
     left: 4px;
     bottom: 4px;
     background-color: #fff;
-    transition: 0.4s;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    &::before {
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    &::before {
+      height: 18px;
+      width: 18px;
+      left: 2px;
+      bottom: 2px;
+    }
   }
 }
 
+/* === Quand le toggle est activé === */
 input:checked + .slider {
   background-color: #66bb6a;
+
+  &::before {
+    transform: translateX(26px);
+    background-color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    &::before {
+      transform: translateX(22px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    &::before {
+      transform: translateX(18px);
+    }
+  }
 }
 
-input:checked + .slider::before {
-  transform: translateX(26px);
-}
-
+/* === Style arrondi === */
 .slider.round {
   border-radius: 34px;
 
   &::before {
     border-radius: 50%;
+  }
+
+  @media (max-width: 768px) {
+    border-radius: 28px;
+  }
+
+  @media (max-width: 480px) {
+    border-radius: 22px;
   }
 }

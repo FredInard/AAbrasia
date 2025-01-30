@@ -23,7 +23,7 @@ const MealModal = ({ partyId, user, onClose, onSubmit }) => {
         <button className="close-btn" onClick={onClose}>
           ✕
         </button>
-        <h2>Apporter de quoi manger</h2>
+        <div className="titleModalh2Meal">Apporte de quoi manger</div>
         <form onSubmit={handleSubmit}>
           <label>
             Décris ce que tu apportes :

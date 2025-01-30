@@ -21,7 +21,7 @@ $font-secondary: "Segoe UI", sans-serif;
   --color-darkbrown2: rgb(117, 109, 105);
   --color-darkbrown3: rgb(136, 136, 136);
 
-  --color-accent: rgb(251, 247, 244);      /* Fond principal clair */
+  --color-accent: rgb(251, 247, 244); /* Fond principal clair */
   --color-accent-darker: rgb(242, 237, 233);
   --color-accent-green: rgb(0, 128, 0);
   --color-snow: rgb(244, 244, 244);
@@ -31,7 +31,7 @@ $font-secondary: "Segoe UI", sans-serif;
   --color-lighter-black: rgb(20, 20, 20);
 
   // --- Couleurs adaptatives (par défaut : jour) ---
-  --heading-color: var(--color-darkbrown);  /* Couleur des titres h1/h2 */
+  --heading-color: var(--color-darkbrown); /* Couleur des titres h1/h2 */
   --text-color: var(--color-darkbrown3);
   --background-color: var(--color-accent);
   --border-color: var(--color-brown);
@@ -54,14 +54,14 @@ $font-secondary: "Segoe UI", sans-serif;
   /* ======================== */
   /*   Couleurs titres (jour) */
   /* ======================== */
-  --h1-color-day: rgb(77, 57, 48);  /* h1 day */
+  --h1-color-day: rgb(77, 57, 48); /* h1 day */
   --h2-color-day: rgb(136, 136, 136); /* h2 day */
 
   /* ======================== */
   /*   Couleurs titres (nuit) */
   /* ======================== */
   --h1-color-night: rgb(251, 247, 244); /* h1 night */
-  --h2-color-night: #ffffff;            /* h2 night */
+  --h2-color-night: #ffffff; /* h2 night */
 }
 
 /* ================================================== */
@@ -84,7 +84,7 @@ $font-secondary: "Segoe UI", sans-serif;
   --h2-color: var(--h2-color-day);
 
   /* Exemple si tu veux un fond secondaire clair */
-  --background-color-secondary: #f9f9f9; 
+  --background-color-secondary: #f9f9f9;
 }
 
 /* ================================================== */
@@ -95,8 +95,8 @@ $font-secondary: "Segoe UI", sans-serif;
     Fond principal : rgb(20, 20, 20)
     Fond secondaire (pour d’autres blocs) : #161618
   */
-  --background-color: rgba(20, 20, 20, 0.947);           /* principal */
-  --background-color-secondary: #161618;         /* secondaire */
+  --background-color: rgba(20, 20, 20, 0.947); /* principal */
+  --background-color-secondary: #161618; /* secondaire */
 
   --text-color: var(--color-snow);
   --heading-color: var(--color-snow);
@@ -138,8 +138,8 @@ $font-secondary: "Segoe UI", sans-serif;
 
 /* Boutons */
 @mixin button-style {
-  padding: 0.75rem 1.5rem;          /* ou $button-padding */
-  border-radius: 5px;              /* ou $button-border-radius */
+  padding: 0.75rem 1.5rem; /* ou $button-padding */
+  border-radius: 5px; /* ou $button-border-radius */
   background-color: var(--accent-color);
   color: var(--text-color);
   border: 1px solid var(--border-color);
