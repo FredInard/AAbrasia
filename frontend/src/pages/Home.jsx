@@ -3,31 +3,17 @@ import "./Home.scss"
 
 import Calendar from "../components/schedule/Calendar"
 import NavBar from "../components/NavBar/NavBar"
-// import NavigationCard from "../components/NavBar/NavigationCard"
 import Image1 from "../assets/pics/headerPictureD.png"
 import iNeedYou from "../assets/pics/iNeedYou.svg"
-// import reflective from "../assets/pics/characterReflectivePose.svg"
-// import team from "../assets/pics/teamB.svg"
 import videoFile1 from "../../src/assets/videos/6380503_Playing Kids Boardgame Team_By_Pressmaster_Artlist_HD.mp4"
 import videoFile2 from "../../src/assets/videos/6004610_Cheers Friends Drinking Drinking Glass_By_Evgenii_Petrunin_Artlist_HD.mp4"
 import videoFile3 from "../../src/assets/videos/616337_Play Fun Hands Dice_By_Brock_Roberts_Artlist_HD.mp4"
 import videoFile4 from "../../src/assets/videos/75093_Friends having beers together in a bar_By_JRVisuals_Artlist_HD.mp4"
 import videoFile5 from "../../src/assets/videos/6380520_Snacks Crisps Tabletop Munching_By_Pressmaster_Artlist_HD.mp4"
 import logoArpenteur from "../assets/pics/logoArpenteurBlanc.svg"
-// import logo from "../assets/pics/logo.svg"
-// import Carrousel from "../components/Carrousel/Carrousel"
-import Footer from "../components/Footer/Footer"
-import iconeDiscorde from "../assets/pics/discord.svg"
-import iconeFacebook from "../assets/pics/facebook.svg"
-import iconeMail from "../assets/pics/mail.svg"
-import give from "../assets/pics/give.svg"
-import GameList from "../components/Game/GameList"
 
-// const images = [
-//   "https://img.lamontagne.fr/dC7lKP3qe-GxvvOjOL58e7cZoN3fz7YAf9bjOeWLz9I/fit/657/438/sm/0/bG9jYWw6Ly8vMDAvMDAvMDIvOTEvNjcvMjAwMDAwMjkxNjc1Nw.jpg",
-//   "https://cdn-s-www.republicain-lorrain.fr/images/4C0D3920-CE05-41DC-91E6-93F0A40520CF/NW_raw/les-jeux-de-role-sur-table-sont-tout-aussi-animes-qu-en-grandeur-nature-photo-rl-1546706878.jpg",
-//   "https://cdn.svc.asmodee.net/production-asmodeefrblog/uploads/2023/08/Dice_header.jpg",
-// ]
+import Footer from "../components/Footer/Footer"
+import GameList from "../components/Game/GameList"
 
 export default function Home() {
   // Initialiser `selectedDate` avec la date d'aujourd'hui
@@ -158,9 +144,9 @@ export default function Home() {
                 href="https://www.helloasso.com/associations/les-arpenteurs-d-abrasia"
                 target="_blank"
                 rel="noopener noreferrer"
-              >
-                <img className="contact-icon" src={give} alt="Logo HelloAsso" />
-              </a>
+                className="contact-icon contact-icon-helloasso"
+                title="HelloAsso"
+              ></a>
             </div>
           </div>
         </div>
@@ -255,33 +241,23 @@ export default function Home() {
               <div className="social-icons">
                 <a
                   href="https://discord.gg/Vv3Fa4DwYK"
+                  className="contact-icon contact-icon-discord"
+                  title="Discord"
                   target="_blank"
                   rel="noopener noreferrer"
-                >
-                  <img
-                    className="contact-icon"
-                    src={iconeDiscorde}
-                    alt="Logo Discord"
-                  />
-                </a>
+                />
                 <a
                   href="https://www.facebook.com/arpenteurs.abrasia"
                   target="_blank"
                   rel="noopener noreferrer"
-                >
-                  <img
-                    className="contact-icon"
-                    src={iconeFacebook}
-                    alt="Logo Facebook"
-                  />
-                </a>
-                <a href="mailto:arpenteurs.jdr@gmail.com">
-                  <img
-                    className="contact-icon"
-                    src={iconeMail}
-                    alt="Logo Email"
-                  />
-                </a>
+                  className="contact-icon contact-icon-facebook"
+                  title="Facebook"
+                />
+                <a
+                  href="mailto:arpenteurs.jdr@gmail.com"
+                  className="contact-icon contact-icon-mail"
+                  title="E-mail"
+                />
               </div>
             </div>
           </div>

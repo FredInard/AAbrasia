@@ -112,7 +112,7 @@ const NavBar = () => {
 
       {/* Navbar Mobile */}
       <nav className="navbar mobile">
-        <ToggleTheme />
+        {/* <ToggleTheme /> */}
         <ul className="navbar-icons">
           <li>
             <NavLink to="/">

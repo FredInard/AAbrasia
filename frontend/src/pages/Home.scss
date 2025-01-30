@@ -296,86 +296,145 @@ button {
     margin-bottom: 2rem;
     color: var(--text-color);
   }
+}
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
 
-  .contact-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
+  .contact-section {
+    flex: 1 1 25%;
+    min-width: 200px; /* Pour éviter que la section ne devienne trop étroite */
+    text-align: left;
 
-    .contact-section {
-      flex: 1 1 25%;
-      min-width: 200px; /* Pour éviter que la section ne devienne trop étroite */
-      text-align: left;
+    h3 {
+      font-family: var(--font-secondary);
+      font-size: var(--font-size-h3);
+      margin-bottom: 0.5rem;
+      color: var(--heading-color);
+    }
 
-      h3 {
-        font-family: var(--font-secondary);
-        font-size: var(--font-size-h3);
+    p {
+      font-size: var(--font-size-p);
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
         margin-bottom: 0.5rem;
-        color: var(--heading-color);
-      }
-
-      p {
-        font-size: var(--font-size-p);
-        margin-bottom: 0.5rem;
-        color: var(--text-color);
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-        li {
-          margin-bottom: 0.5rem;
-          a {
-            color: var(--text-color);
-            text-decoration: none;
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-        }
-      }
-
-      .social-icons {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        img {
-          width: 5rem;
-          height: auto;
-          transition: transform 0.3s ease;
+        a {
+          color: var(--text-color);
+          text-decoration: none;
           &:hover {
-            transform: scale(1.1);
+            text-decoration: underline;
           }
         }
       }
     }
   }
+} /* Taille et base commune */
+.contact-icon {
+  display: inline-block;
+  width: 30px; /* Ajuste la taille si tu veux plus grand/petit */
+  height: 30px;
+  background-size: contain; /* L’image s’adapte */
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 0.5rem; /* Espace horizontal si besoin */
 }
 
+/* Icone Discord (jour) */
+.contact-icon-discord {
+  background-image: url("../assets/pics/IconDiscorde.svg");
+}
+
+/* Icone Facebook (jour) */
+.contact-icon-facebook {
+  background-image: url("../assets/pics/IconFacebook.svg");
+}
+
+/* Icone Mail (jour) */
+.contact-icon-mail {
+  background-image: url("../assets/pics/IconMail.png");
+}
+
+/* Icone HelloAsso (jour) */
+.contact-icon-helloasso {
+  background-image: url("../assets/pics/iconsConfiance.png");
+}
+
+/* ===================================== */
+/*    ICONES : MODE JOUR + MODE NUIT     */
+/* ===================================== */
+/* 
+   On utilise .contact-icon + .contact-icon-xxx 
+   => .dark-mode écrase le background-image 
+*/
+
+/* Base pour les icônes (jour) */
+.contact-icon {
+  display: inline-block;
+  width: 90px;
+  height: 90px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Jour (couleurs par défaut) */
+.contact-icon-discord {
+  background-image: url("../assets/pics/discord.svg");
+}
+.contact-icon-facebook {
+  background-image: url("../assets/pics/facebook.svg");
+}
+.contact-icon-mail {
+  background-image: url("../assets/pics/mail.svg");
+}
+.contact-icon-helloasso {
+  background-image: url("../assets/pics/iconConfianceB.png");
+}
+
+/* Nuit (versions blanches) */
+.dark-mode {
+  .contact-icon-discord {
+    background-image: url("../assets/pics/IconDiscordeW.svg");
+  }
+  .contact-icon-facebook {
+    background-image: url("../assets/pics/IconFacebookW.svg");
+  }
+  .contact-icon-mail {
+    background-image: url("../assets/pics/IconMailW.png");
+  }
+  .contact-icon-helloasso {
+    background-image: url("../assets/pics/iconsConfianceW.png");
+  }
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
 /* ================ */
 /*  MEDIA QUERIES   */
 /* ================ */
 
-/* 1) Écran inférieur ou égal à 768px (tablette) */
+/* 1) Écran ≤ 768px (tablette) */
 @media (max-width: 768px) {
   .section-intro {
-    /* Option : Pour laisser scroller la page si besoin,
-       désactive le 100vh sur mobile/tablette :
+    /* Option : Désactive le 100vh sur mobile :
        height: auto; 
     */
-
     .overlay {
       h1 {
-        /* Réduit légèrement la taille du titre */
         font-size: 1.8rem;
-
-        /* Le texte ne dépasse pas 90% de la largeur de l'écran */
         max-width: 90%;
-        margin: 0 auto; /* Pour centrer si besoin */
+        margin: 0 auto;
 
         img {
-          /* L’image ne dépasse pas 80% de l’écran */
           max-width: 80%;
         }
       }
@@ -383,20 +442,17 @@ button {
   }
 }
 
-/* 2) Écran inférieur ou égal à 480px (smartphone) */
+/* 2) Écran ≤ 480px (smartphone) */
 @media (max-width: 480px) {
   .section-intro {
-    /* Option : Pour un défilement vertical complet sur mobile :
-       height: auto; 
+    /* Si besoin de scroller verticalement :
+       height: auto;
     */
-
     .overlay {
       h1 {
-        /* Encore plus petit sur mobile */
         font-size: 1.5rem;
 
         img {
-          /* On réduit encore la place de l’image sur très petit écran */
           max-width: 70%;
         }
       }
